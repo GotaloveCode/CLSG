@@ -1,9 +1,10 @@
 <?php
+namespace Database\Seeders;
 
-use App\Models\EssentialOperation;
+use App\Models\Contractor;
 use Illuminate\Database\Seeder;
 
-class EssentialOperationSeeder extends Seeder
+class ContractorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +13,6 @@ class EssentialOperationSeeder extends Seeder
      */
     public function run()
     {
-        factory(EssentialOperation::class, 10)->create();
+        Contractor::factory()->count(10)->create();
     }
 }

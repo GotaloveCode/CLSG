@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Contractor extends Model
 {
-
+    use HasFactory;
     /**
      * The attributes that are mass assignable.
      *
@@ -46,12 +47,12 @@ class Contractor extends Model
         return $this->belongsTo(PostalCode::class,'postal_code_id','id');
     }
 
-    /**
-     * Get the essentialsupply_wsps for the Contractor.
-     */
-    public function essentialsupplyWsps()
-    {
-        return $this->hasMany(\App\essentialsupply_wsp::class);
-    }
+//    /**
+//     * Get the essentialsupply_wsps for the Contractor.
+//     */
+//    public function essentialsupplyWsps()
+//    {
+//        return $this->hasMany(essentialsupply_wsp::class);
+//    }
 
 }

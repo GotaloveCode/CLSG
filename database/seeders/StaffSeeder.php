@@ -1,9 +1,10 @@
 <?php
+namespace Database\Seeders;
 
-use App\Models\Wsp;
+use App\Models\Staff;
 use Illuminate\Database\Seeder;
 
-class WspSeeder extends Seeder
+class StaffSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +13,6 @@ class WspSeeder extends Seeder
      */
     public function run()
     {
-        factory(Wsp::class, 10)->create();
+        Staff::factory()->count(10)->create();
     }
 }

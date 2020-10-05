@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use App\Models\Operationcost;
 use Illuminate\Database\Seeder;

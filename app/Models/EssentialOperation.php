@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class EssentialOperation extends Model
 {
-
+    use HasFactory;
     /**
      * The attributes that are mass assignable.
      *
@@ -47,7 +48,7 @@ class EssentialOperation extends Model
      */
     public function bcp()
     {
-        return $this->belongsTo(\App\Bcp::class);
+        return $this->belongsTo(Bcp::class);
     }
 
 
@@ -56,7 +57,7 @@ class EssentialOperation extends Model
      */
     public function essentialfunction()
     {
-        return $this->belongsTo(\App\Essentialfunction::class);
+        return $this->belongsTo(Essentialfunction::class);
     }
 
 }

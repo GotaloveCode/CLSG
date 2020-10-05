@@ -1,9 +1,10 @@
 <?php
+namespace Database\Seeders;
 
-use App\Models\Eoi;
+use App\Models\Bcpteam;
 use Illuminate\Database\Seeder;
 
-class EoiSeeder extends Seeder
+class BcpteamSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +13,6 @@ class EoiSeeder extends Seeder
      */
     public function run()
     {
-        factory(Eoi::class, 10)->create();
+        Bcpteam::factory()->count(10)->create();
     }
 }

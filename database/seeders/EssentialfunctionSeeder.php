@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use App\Models\Essentialfunction;
 use Illuminate\Database\Seeder;

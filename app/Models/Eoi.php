@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Eoi extends Model
 {
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -47,7 +49,7 @@ class Eoi extends Model
      */
     public function wsp()
     {
-        return $this->belongsTo(\App\Wsp::class);
+        return $this->belongsTo(Wsp::class);
     }
 
 
@@ -56,7 +58,7 @@ class Eoi extends Model
      */
     public function services()
     {
-        return $this->belongsToMany(\App\Service::class);
+        return $this->belongsToMany(Service::class);
     }
 
     /**
@@ -64,7 +66,7 @@ class Eoi extends Model
      */
     public function connections()
     {
-        return $this->belongsToMany(\App\Connection::class);
+        return $this->belongsToMany(Connection::class);
     }
 
     /**
@@ -72,7 +74,7 @@ class Eoi extends Model
      */
     public function estimatedcosts()
     {
-        return $this->belongsToMany(\App\Estimatedcost::class);
+        return $this->belongsToMany(Estimatedcost::class);
     }
 
     /**
@@ -80,7 +82,7 @@ class Eoi extends Model
      */
     public function operationcosts()
     {
-        return $this->belongsToMany(\App\Operationcost::class);
+        return $this->belongsToMany(Operationcost::class);
     }
 
 }

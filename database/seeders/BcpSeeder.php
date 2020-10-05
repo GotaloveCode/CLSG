@@ -1,9 +1,10 @@
 <?php
+namespace Database\Seeders;
 
-use App\Models\Contractor;
+use App\Models\Bcp;
 use Illuminate\Database\Seeder;
 
-class ContractorSeeder extends Seeder
+class BcpSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +13,6 @@ class ContractorSeeder extends Seeder
      */
     public function run()
     {
-        factory(Contractor::class, 10)->create();
+        Bcp::factory()->count(10)->create();
     }
 }

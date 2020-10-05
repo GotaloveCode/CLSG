@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Revenue extends Model
 {
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -46,7 +48,7 @@ class Revenue extends Model
      */
     public function wsp()
     {
-        return $this->belongsTo(\App\Wsp::class);
+        return $this->belongsTo(Wsp::class);
     }
 
 }

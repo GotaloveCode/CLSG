@@ -1,9 +1,10 @@
 <?php
+namespace Database\Seeders;
 
-use App\Models\Bcp;
+use App\Models\Revenue;
 use Illuminate\Database\Seeder;
 
-class BcpSeeder extends Seeder
+class RevenueSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +13,6 @@ class BcpSeeder extends Seeder
      */
     public function run()
     {
-        factory(Bcp::class, 10)->create();
+        Revenue::factory()->count(10)->create();
     }
 }

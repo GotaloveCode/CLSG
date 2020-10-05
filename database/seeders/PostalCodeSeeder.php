@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,6 @@ class PostalCodeSeeder extends Seeder
      */
     public function run()
     {
-        DB::unprepared(file_get_contents(database_path('seeds/sql/postal_codes.sql')));
+        DB::unprepared(file_get_contents(database_path('seeders/sql/postal_codes.sql')));
     }
 }

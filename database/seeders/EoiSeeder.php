@@ -1,9 +1,10 @@
 <?php
+namespace Database\Seeders;
 
-use App\Models\Staff;
+use App\Models\Eoi;
 use Illuminate\Database\Seeder;
 
-class StaffSeeder extends Seeder
+class EoiSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +13,6 @@ class StaffSeeder extends Seeder
      */
     public function run()
     {
-        factory(Staff::class, 10)->create();
+        Eoi::factory()->count(10)->create();
     }
 }

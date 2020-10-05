@@ -25,7 +25,7 @@ class RevenueFactory extends Factory
         return [
             'amount' => random_int(1000, 1200000000),
             'month' => random_int(10, 12),
-            'year' => now()->Year,
+            'year' => '2020',
             'wsp_id' => random_int(1, 10)
         ];
     }

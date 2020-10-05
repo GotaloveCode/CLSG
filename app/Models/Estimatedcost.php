@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Estimatedcost extends Model
 {
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -46,7 +48,7 @@ class Estimatedcost extends Model
      */
     public function eois()
     {
-        return $this->belongsToMany(\App\Eoi::class);
+        return $this->belongsToMany(Eoi::class);
     }
 
 }

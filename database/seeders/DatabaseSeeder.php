@@ -2,22 +2,7 @@
 
 namespace Database\Seeders;
 
-use BcpSeeder;
-use BcpteamSeeder;
-use ConnectionSeeder;
-use ContractorSeeder;
-use EoiSeeder;
-use EssentialfunctionSeeder;
-use EssentialOperationSeeder;
-use EssentialsupplySeeder;
-use EstimatedcostSeeder;
 use Illuminate\Database\Seeder;
-use OperationcostSeeder;
-use PostalCodeSeeder;
-use RevenueSeeder;
-use ServiceSeeder;
-use StaffSeeder;
-use WspSeeder;
 
 class DatabaseSeeder extends Seeder
 {

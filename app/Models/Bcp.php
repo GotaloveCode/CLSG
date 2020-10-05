@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Bcp extends Model
 {
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -46,7 +48,7 @@ class Bcp extends Model
      */
     public function bcpteams()
     {
-        return $this->hasMany(\App\Bcpteam::class);
+        return $this->hasMany(Bcpteam::class);
     }
 
 
@@ -55,7 +57,7 @@ class Bcp extends Model
      */
     public function essentialOperations()
     {
-        return $this->hasMany(\App\Models\EssentialOperation::class);
+        return $this->hasMany(EssentialOperation::class);
     }
 
 
@@ -64,7 +66,7 @@ class Bcp extends Model
      */
     public function wsp()
     {
-        return $this->belongsTo(\App\Models\Wsp::class);
+        return $this->belongsTo(Wsp::class);
     }
 
 }

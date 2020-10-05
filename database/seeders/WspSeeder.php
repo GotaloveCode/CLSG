@@ -1,9 +1,10 @@
 <?php
+namespace Database\Seeders;
 
-use App\Models\Bcpteam;
+use App\Models\Wsp;
 use Illuminate\Database\Seeder;
 
-class BcpteamSeeder extends Seeder
+class WspSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +13,6 @@ class BcpteamSeeder extends Seeder
      */
     public function run()
     {
-        factory(Bcpteam::class, 10)->create();
+        Wsp::factory()->count(10)->create();
     }
 }
