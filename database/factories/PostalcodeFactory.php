@@ -1,28 +1,36 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Postalcode;
-use Illuminate\Support\Str;
-use Faker\Generator as Faker;
-use Carbon\Carbon;
+namespace Database\Factories;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+use App\Models\Postalcode;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Postalcode::class, function (Faker $faker) {
-    return [
-        'name' => $faker->name(),
-        'code' => $faker->word(),
-        'constituency' => $faker->word(),
-        'county' => $faker->word(),
-        'country' => $faker->word()
-    ];
-});
+
+class PostalcodeFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Postalcode::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->name(),
+            'code' => $this->faker->word(),
+            'constituency' => $this->faker->word(),
+            'county' => $this->faker->word(),
+            'country' => $this->faker->word()
+        ];
+    }
+}
+
+
+

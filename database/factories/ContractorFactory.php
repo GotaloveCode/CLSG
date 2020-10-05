@@ -1,29 +1,37 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Contractor;
-use Illuminate\Support\Str;
-use Faker\Generator as Faker;
-use Carbon\Carbon;
+namespace Database\Factories;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+use App\Models\Contractor;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Contractor::class, function (Faker $faker) {
-    return [
-        'name' => $faker->name(),
-        'postal_address' => $faker->word(),
-        'physical_address' => $faker->word(),
-        'postal_code_id' => random_int(1, 10),
-        'phone' => $faker->word(),
-        'email' => $faker->unique()->safeEmail
-    ];
-});
+
+class ContractorFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Contractor::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->name(),
+            'postal_address' => $this->faker->word(),
+            'physical_address' => $this->faker->word(),
+            'postal_code_id' => random_int(1, 10),
+            'phone' => $this->faker->word(),
+            'email' => $this->faker->unique()->safeEmail
+        ];
+    }
+}
+
+
+

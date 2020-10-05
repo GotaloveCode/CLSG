@@ -19,7 +19,7 @@ use Carbon\Carbon;
 
 $factory->define(Bcp::class, function (Faker $faker) {
     return [
-        'excecutive_summary' => BAD_DATATYPE,
+        'executive_summary' => BAD_DATATYPE,
         'introduction' => $faker->realText(),
         'planning_assumptions' => $faker->realText(),
         'wsp_id' => random_int(1, 10)

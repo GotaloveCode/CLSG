@@ -13,7 +13,7 @@ class Bcp extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'excecutive_summary', 'introduction', 'planning_assumptions', 'wsp_id'
+        'id', 'executive_summary', 'introduction', 'planning_assumptions', 'wsp_id'
     ];
 
     /**
@@ -55,7 +55,7 @@ class Bcp extends Model
      */
     public function essentialOperations()
     {
-        return $this->hasMany(\App\EssentialOperation::class);
+        return $this->hasMany(\App\Models\EssentialOperation::class);
     }
 
 
@@ -64,7 +64,7 @@ class Bcp extends Model
      */
     public function wsp()
     {
-        return $this->belongsTo(\App\Wsp::class);
+        return $this->belongsTo(\App\Models\Wsp::class);
     }
 
 }

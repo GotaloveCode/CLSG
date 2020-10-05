@@ -1,31 +1,37 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Bcpteam;
-use Illuminate\Support\Str;
-use Faker\Generator as Faker;
-use Carbon\Carbon;
+namespace Database\Factories;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+use App\Models\Bcpteam;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Bcpteam::class, function (Faker $faker) {
-    return [
-        'firstname' => $faker->word(),
-        'lastname' => $faker->word(),
-        'unit' => $faker->word(),
-        'role' => $faker->word(),
-        'training' => $faker->word(),
-        'bpi_plan' => $faker->word(),
-        'erp' => $faker->word(),
-        'bcp_id' => random_int(1, 10)
-    ];
-});
+
+class BcpteamFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Bcpteam::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'firstname' => $this->faker->word(),
+            'lastname' => $this->faker->word(),
+            'unit' => $this->faker->word(),
+            'role' => $this->faker->word(),
+            'training' => $this->faker->word(),
+            'bpi_plan' => $this->faker->word(),
+            'erp' => $this->faker->word(),
+            'bcp_id' => random_int(1, 10)
+        ];
+    }
+}
+
