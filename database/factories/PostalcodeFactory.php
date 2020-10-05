@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Postalcode;
+use App\Models\PostalCode;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 
@@ -13,7 +13,7 @@ class PostalcodeFactory extends Factory
      *
      * @var string
      */
-    protected $model = Postalcode::class;
+    protected $model = PostalCode::class;
 
     /**
      * Define the model's default state.

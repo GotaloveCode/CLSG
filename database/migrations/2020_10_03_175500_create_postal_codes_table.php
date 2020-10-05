@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContractorsTable extends Migration
+class CreatePostalCodesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateContractorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('contractors', function (Blueprint $table) {
+        Schema::create('postal_codes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('postal_address');
-            $table->string('physical_address');
-            $table->unsignedBigInteger('postal_code_id')->nullable();
-            $table->foreign('postal_code_id')->references('id')->on('postal_codes');
-            $table->string('phone');
-            $table->string('email');
+            $table->string('code');
+            $table->string('constituency');
+            $table->string('county');
+            $table->string('country');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
 
@@ -35,6 +33,6 @@ class CreateContractorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contractors');
+        Schema::dropIfExists('postal_codes');
     }
 }

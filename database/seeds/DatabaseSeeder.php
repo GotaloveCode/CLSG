@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(PostalcodeSeeder::class);
+        $this->call(PostalCodeSeeder::class);
         $this->call(WspSeeder::class);
         $this->call(EssentialfunctionSeeder::class);
         $this->call(StaffSeeder::class);

@@ -46,7 +46,7 @@ class Essentialsupply extends Model
      */
     public function wsps()
     {
-        return $this->belongsToMany(\App\Wsp::class);
+        return $this->belongsToMany(Wsp::class);
     }
 
 }

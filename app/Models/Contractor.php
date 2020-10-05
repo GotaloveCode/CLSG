@@ -41,6 +41,11 @@ class Contractor extends Model
         //
     ];
 
+    public function postal_codes()
+    {
+        return $this->belongsTo(PostalCode::class,'postal_code_id','id');
+    }
+
     /**
      * Get the essentialsupply_wsps for the Contractor.
      */

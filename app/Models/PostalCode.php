@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Postalcode extends Model
+class PostalCode extends Model
 {
 
     /**
@@ -41,5 +41,9 @@ class Postalcode extends Model
         //
     ];
 
+    public function contractors()
+    {
+        return $this->hasMany(Contractor::class);
+    }
 
 }

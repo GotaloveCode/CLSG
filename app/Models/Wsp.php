@@ -46,7 +46,7 @@ class Wsp extends Model
      */
     public function eois()
     {
-        return $this->hasMany(\App\Eoi::class);
+        return $this->hasMany(Eoi::class);
     }
 
 
@@ -55,7 +55,7 @@ class Wsp extends Model
      */
     public function bcps()
     {
-        return $this->hasMany(\App\Bcp::class);
+        return $this->hasMany(Bcp::class);
     }
 
 
@@ -64,7 +64,7 @@ class Wsp extends Model
      */
     public function staff()
     {
-        return $this->hasMany(\App\Staff::class);
+        return $this->hasMany(Staff::class);
     }
 
 
@@ -73,7 +73,7 @@ class Wsp extends Model
      */
     public function revenues()
     {
-        return $this->hasMany(\App\Revenue::class);
+        return $this->hasMany(Revenue::class);
     }
 
 
@@ -82,7 +82,7 @@ class Wsp extends Model
      */
     public function essentialsupplies()
     {
-        return $this->belongsToMany(\App\Essentialsupply::class);
+        return $this->belongsToMany(Essentialsupply::class);
     }
 
 }
