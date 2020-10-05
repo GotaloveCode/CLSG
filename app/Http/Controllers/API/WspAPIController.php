@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Wsp;
+use App\Models\Wsp;
 use App\Http\Resources\WspCollection;
 use App\Http\Resources\WspResource;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ class WspAPIController extends Controller
     {
         return new WspCollection(Wsp::paginate());
     }
- 
+
     public function show(Wsp $wsp)
     {
         return new WspResource($wsp->load(['eois', 'bcps', 'staff', 'revenues', 'essentialsupplies']));
