@@ -25,6 +25,7 @@ class WspFactory extends Factory
         return [
             'name' => $name,
             'acronym' => substr($name,0,3),
+            'email' => $this->faker->safeEmail(),
             'postal_address' => $this->faker->word(),
             'physical_address' => $this->faker->word(),
             'postal_code_id' => random_int(0, 200)
