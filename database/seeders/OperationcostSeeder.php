@@ -13,11 +13,11 @@ class OperationcostSeeder extends Seeder
      */
     public function run()
     {
-        Operationcost::create(['name' => 'Chemicals']);
-        Operationcost::create(['name' => 'Electricity ']);
-        Operationcost::create(['name' => 'Spare parts for essential maintenance']);
-        Operationcost::create(['name' => 'Administration costs']);
-        Operationcost::create(['name' => 'Regulatory levies and fees']);
-        Operationcost::create(['name' => 'Salaries for WSP staff ']);
+        Operationcost::firstOrCreate(['name' => 'Chemicals']);
+        Operationcost::firstOrCreate(['name' => 'Electricity ']);
+        Operationcost::firstOrCreate(['name' => 'Spare parts for essential maintenance']);
+        Operationcost::firstOrCreate(['name' => 'Administration costs']);
+        Operationcost::firstOrCreate(['name' => 'Regulatory levies and fees']);
+        Operationcost::firstOrCreate(['name' => 'Salaries for WSP staff ']);
     }
 }

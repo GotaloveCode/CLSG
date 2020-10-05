@@ -13,7 +13,7 @@ class ConnectionSeeder extends Seeder
      */
     public function run()
     {
-        Connection::create(['name' => 'Individual connections (x Average house Size)']);
-        Connection::create(['name' => 'Public standpoints (x Average no served per kiosk)']);
+        Connection::firstOrCreate(['name' => 'Individual connections (x Average house Size)']);
+        Connection::firstOrCreate(['name' => 'Public standpoints (x Average no served per kiosk)']);
     }
 }

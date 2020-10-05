@@ -13,9 +13,9 @@ class ServiceSeeder extends Seeder
      */
     public function run()
     {
-        Service::create(['name' => 'Hand washing stations ']);
-        Service::create(['name' => 'Individual connections']);
-        Service::create(['name' => 'Free connections']);
-        Service::create(['name' => 'Public standpoints']);
+        Service::firstOrCreate(['name' => 'Hand washing stations ']);
+        Service::firstOrCreate(['name' => 'Individual connections']);
+        Service::firstOrCreate(['name' => 'Free connections']);
+        Service::firstOrCreate(['name' => 'Public standpoints']);
     }
 }

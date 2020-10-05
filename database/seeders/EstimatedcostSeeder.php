@@ -13,10 +13,10 @@ class EstimatedcostSeeder extends Seeder
      */
     public function run()
     {
-        Estimatedcost::create(['name' => 'Tanker services']);
-        Estimatedcost::create(['name' => 'Hand washing stations ']);
-        Estimatedcost::create(['name' => 'Individual connections']);
-        Estimatedcost::create(['name' => 'Free connections']);
-        Estimatedcost::create(['name' => 'Public standpoints']);
+        Estimatedcost::firstOrCreate(['name' => 'Tanker services']);
+        Estimatedcost::firstOrCreate(['name' => 'Hand washing stations ']);
+        Estimatedcost::firstOrCreate(['name' => 'Individual connections']);
+        Estimatedcost::firstOrCreate(['name' => 'Free connections']);
+        Estimatedcost::firstOrCreate(['name' => 'Public standpoints']);
     }
 }
