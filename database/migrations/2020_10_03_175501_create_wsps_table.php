@@ -17,10 +17,11 @@ class CreateWspsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->string('acronym');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('postal_address');
             $table->string('physical_address');
-            $table->unsignedBigInteger('postal_code_id');
+            $table->foreign('postal_code_id')->references('id')->on('postal_codes');
+            $table->unsignedInteger('postal_code_id');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
 

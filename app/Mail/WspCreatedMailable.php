@@ -11,14 +11,17 @@ class WspCreatedMailable extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $wsp, $password;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($wsp,$password)
     {
-        //
+        $this->wsp = $wsp;
+        $password = $this->password;
     }
 
     /**
@@ -28,6 +31,6 @@ class WspCreatedMailable extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.wsp_created');
+        return $this->subject('WSP Account Created')->markdown('emails.wsp_created');
     }
 }

@@ -18,7 +18,7 @@ class CreateContractorsTable extends Migration
             $table->string('name');
             $table->string('postal_address');
             $table->string('physical_address');
-            $table->unsignedBigInteger('postal_code_id')->nullable();
+            $table->unsignedInteger('postal_code_id')->nullable();
             $table->foreign('postal_code_id')->references('id')->on('postal_codes');
             $table->string('phone');
             $table->string('email');

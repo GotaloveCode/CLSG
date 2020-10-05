@@ -14,7 +14,7 @@ class CreatePostalCodesTable extends Migration
     public function up()
     {
         Schema::create('postal_codes', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->Increments('id');
             $table->string('name');
             $table->string('code');
             $table->string('constituency');

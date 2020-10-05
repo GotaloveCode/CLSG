@@ -1,10 +1,14 @@
 @component('mail::message')
-# Introduction
+# Account Registered
 
-The body of your message.
+Your company {{ $wsp->name }} has been successfully registered.
 
-@component('mail::button', ['url' => ''])
-Button Text
+Login using the details below:
+<b>Email: </b>{{ $wsp->email }}<br>
+<b>Password: </b>{{ $password }}
+
+@component('mail::button', ['url' => route('login')])
+Login
 @endcomponent
 
 Thanks,<br>
