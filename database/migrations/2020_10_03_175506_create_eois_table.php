@@ -14,7 +14,7 @@ class CreateEoisTable extends Migration
     public function up()
     {
         Schema::create('eois', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->timestamp('date')->nullable();
             $table->string('program_manager');
             $table->string('fixed_grant');
@@ -25,10 +25,11 @@ class CreateEoisTable extends Migration
             $table->text('water_service_areas');
             $table->integer('total_people_water_served');
             $table->string('proportion_served');
-            $table->unsignedBigInteger('wsp_id')->nullable();
+            $table->unsignedInteger('wsp_id')->nullable();
             $table->foreign('wsp_id')->references('id')->on('wsps');
             $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+
         });
     }
 

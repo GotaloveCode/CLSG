@@ -14,7 +14,7 @@ class CreateContractorsTable extends Migration
     public function up()
     {
         Schema::create('contractors', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('name');
             $table->string('postal_address');
             $table->string('physical_address');

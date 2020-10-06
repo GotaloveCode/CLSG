@@ -18,7 +18,7 @@ class CreateUserWspTable extends Migration
             $table->foreign('wsp_id')->references('id')->on('wsps');
             $table->unsignedInteger('wsp_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
             $table->unique(['wsp_id','user_id']);
         });

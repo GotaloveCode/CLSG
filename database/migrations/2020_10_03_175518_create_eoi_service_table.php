@@ -14,15 +14,16 @@ class CreateEoiServiceTable extends Migration
     public function up()
     {
         Schema::create('eoi_service', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('areas');
             $table->integer('total');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
-            $table->unsignedBigInteger('eoi_id')->nullable();
+            $table->unsignedInteger('eoi_id')->nullable();
             $table->foreign('eoi_id')->references('id')->on('eois');
-            $table->unsignedBigInteger('service_id')->nullable();
-            $table->foreign('service_id')->references('id')->on('services');
+            $table->unsignedInteger('service_id')->nullable();
+            $table->foreign('service_id')->references('id')->on('services');
+
         });
     }
 

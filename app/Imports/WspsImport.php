@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Wsp;
 use App\Traits\GenerateTokenTrait;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -30,7 +31,7 @@ class WspsImport implements ToCollection,WithHeadingRow
             '*.email' => 'required|max:191|unique:wsps,email',
             '*.postaladdress' => 'required|max:191',
             '*.physicaladdress' => 'required|max:191',
-            '*.postalcode' => 'required|max:191|exists:company.postal_codes,code'
+            '*.postalcode' => 'required|max:191|exists:postal_codes,code'
         ])->validate();
 
         $postalcodes = PostalCode::all();
@@ -39,10 +40,10 @@ class WspsImport implements ToCollection,WithHeadingRow
 
             $wsp = Wsp::create([
                 'name' => $row['name'],
-                'acronym' => row['acronym'],
+                'acronym' => $row['acronym'],
                 'email' => $row['email'],
-                'postal_address' => row['postaladdress'],
-                'physical_address' => row['physicaladdress'],
+                'postal_address' => $row['postaladdress'],
+                'physical_address' => $row['physicaladdress'],
                 'postal_code_id' => $postal_code->id
             ]);
 
@@ -51,7 +52,7 @@ class WspsImport implements ToCollection,WithHeadingRow
             $user = User::create([
                 'name' => $row['name'],
                 'email' => $row['email'],
-                'password' => $password,
+                'password' => Hash::make($password),
             ]);
 
             $user->assignRole('wsp');

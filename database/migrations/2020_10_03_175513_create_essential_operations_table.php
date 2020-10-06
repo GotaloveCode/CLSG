@@ -14,16 +14,17 @@ class CreateEssentialOperationsTable extends Migration
     public function up()
     {
         Schema::create('essential_operations', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('priority_level');
-            $table->unsignedBigInteger('essentialfunction_id')->nullable();
+            $table->unsignedInteger('essentialfunction_id')->nullable();
             $table->foreign('essentialfunction_id')->references('id')->on('essentialfunctions');
             $table->integer('primary_staff');
             $table->integer('backup_staff');
-            $table->unsignedBigInteger('bcp_id')->nullable();
+            $table->unsignedInteger('bcp_id')->nullable();
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+
         });
     }
 

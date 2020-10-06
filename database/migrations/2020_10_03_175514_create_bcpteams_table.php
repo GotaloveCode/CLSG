@@ -14,7 +14,7 @@ class CreateBcpteamsTable extends Migration
     public function up()
     {
         Schema::create('bcpteams', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('firstname');
             $table->string('lastname');
             $table->string('unit');
@@ -22,10 +22,11 @@ class CreateBcpteamsTable extends Migration
             $table->string('training');
             $table->string('bpi_plan');
             $table->string('erp');
-            $table->unsignedBigInteger('bcp_id')->nullable();
+            $table->unsignedInteger('bcp_id')->nullable();
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+
         });
     }
 

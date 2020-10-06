@@ -14,16 +14,17 @@ class CreateEssentialsupplyWspTable extends Migration
     public function up()
     {
         Schema::create('essentialsupply_wsp', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('contractor_id')->nullable();
+            $table->increments('id');
+            $table->unsignedInteger('contractor_id')->nullable();
             $table->foreign('contractor_id')->references('id')->on('contractors');
             $table->string('type');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
-            $table->unsignedBigInteger('essentialsupply_id')->nullable();
+            $table->unsignedInteger('essentialsupply_id')->nullable();
             $table->foreign('essentialsupply_id')->references('id')->on('essentialsupplies');
-            $table->unsignedBigInteger('wsp_id')->nullable();
-            $table->foreign('wsp_id')->references('id')->on('wsps');
+            $table->unsignedInteger('wsp_id')->nullable();
+            $table->foreign('wsp_id')->references('id')->on('wsps');
+
         });
     }
 

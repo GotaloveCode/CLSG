@@ -4,6 +4,7 @@
 Dear {{ $user->name }} your account has been created on {{ config('app.name') }}.
 
 Login using the details below:
+
 <b>Email: </b>{{ $user->email }}<br>
 <b>Password: </b>{{ $password }}
 

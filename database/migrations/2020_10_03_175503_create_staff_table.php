@@ -14,16 +14,17 @@ class CreateStaffTable extends Migration
     public function up()
     {
         Schema::create('staff', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('firstname');
             $table->string('lastname');
             $table->string('position');
             $table->text('skills');
             $table->text('qualifications');
-            $table->unsignedBigInteger('wsp_id')->nullable();
+            $table->unsignedInteger('wsp_id')->nullable();
             $table->foreign('wsp_id')->references('id')->on('wsps');
             $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+
         });
     }
 

@@ -26,4 +26,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('wsps/export', [App\Http\Controllers\WspController::class, 'import_view'])->name('wsps.export');
     Route::post('wsps/import', [App\Http\Controllers\WspController::class, 'import'])->name('wsps.import');
 
+    Route::get('eoi', [App\Http\Controllers\EoiController::class, 'create']);
+
 });

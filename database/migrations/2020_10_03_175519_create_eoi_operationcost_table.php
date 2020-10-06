@@ -14,15 +14,16 @@ class CreateEoiOperationcostTable extends Migration
     public function up()
     {
         Schema::create('eoi_operationcost', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('quantity');
             $table->string('unit_rate');
             $table->string('total');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
-            $table->unsignedBigInteger('eoi_id')->nullable();
+            $table->unsignedInteger('eoi_id')->nullable();
             $table->foreign('eoi_id')->references('id')->on('eois');
-            $table->unsignedBigInteger('operationcost_id');
+            $table->unsignedInteger('operationcost_id');
+
         });
     }
 
