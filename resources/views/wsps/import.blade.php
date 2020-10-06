@@ -42,7 +42,6 @@
                                 <thead>
                                 <tr>
                                     <th>Column</th>
-                                    <th>Description</th>
                                 </tr>
                                 </thead>
                                 <tbody>

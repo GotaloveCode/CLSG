@@ -7,16 +7,15 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class WspCreatedMailable extends Mailable
+class UserCreatedMailable extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $wsp, $password;
+    public $user, $password;
 
-
-    public function __construct($wsp, $password)
+    public function __construct($user, $password)
     {
-        $this->wsp = $wsp;
+        $this->user = $user;
         $this->password = $password;
     }
 
@@ -27,6 +26,6 @@ class WspCreatedMailable extends Mailable
      */
     public function build()
     {
-        return $this->subject('WSP Account Created')->markdown('emails.wsp_created');
+        return $this->subject('User account created')->markdown('emails.user_created');
     }
 }

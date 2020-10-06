@@ -44,6 +44,14 @@ class Wsp extends Model
     ];
 
     /**
+     * Get the Users for the Wsp.
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
      * Get the Eois for the Wsp.
      */
     public function eois()

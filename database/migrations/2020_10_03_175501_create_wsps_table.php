@@ -14,7 +14,7 @@ class CreateWspsTable extends Migration
     public function up()
     {
         Schema::create('wsps', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->Increments('id');
             $table->string('name')->unique();
             $table->string('acronym');
             $table->string('email')->unique();

@@ -17,7 +17,8 @@ class WspsImport implements ToCollection,WithHeadingRow
 {
     use GenerateTokenTrait;
 
-    /**
+    /*
+    *
     * @param Collection $collection
     *
     */
@@ -52,6 +53,10 @@ class WspsImport implements ToCollection,WithHeadingRow
                 'email' => $row['email'],
                 'password' => $password,
             ]);
+
+            $user->assignRole('wsp');
+            $user->givePermissionTo('create-users');
+            $user->wsps()->attach($wsp->id);
 
             Mail::to($user)->queue(new WspCreatedMailable($wsp, $password));
         }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\CustomerImport;
 use App\Imports\WspsImport;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -94,8 +94,4 @@ class WspController extends Controller
         }
     }
 
-    public function export()
-    {
-        return new UserExport();
-    }
 }
