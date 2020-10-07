@@ -22,7 +22,10 @@ class RoleSeeder extends Seeder
         $admin = Role::firstOrCreate(['name' => 'Super Admin']);
 
         Permission::firstOrCreate(['name' => 'create-wsps']);
-        Permission::firstOrCreate(['name' => 'create-users']);
+        $create_users = Permission::firstOrCreate(['name' => 'create-users']);
+        $create_eoi = Permission::firstOrCreate(['name' => 'create-eoi']);
+
+        $wsp->syncPermissions([$create_eoi]);
 
         $user = User::firstOrCreate([
             'name' => 'Super Admin',
