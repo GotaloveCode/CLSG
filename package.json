@@ -26,6 +26,7 @@
     "dependencies": {
         "@pipe-dream/laravel-file-factory": "^1.1.0-c",
         "vee-validate": "^3.4.0",
+        "vue-select": "^3.10.8",
         "vue-toastr": "^2.1.2"
     }
 }

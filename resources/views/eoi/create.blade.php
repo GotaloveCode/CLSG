@@ -6,7 +6,10 @@
             <div class="card">
                 <div class="card-header">{{ __('Expression Of Interest Form') }}</div>
                 <div class="card-body">
-                    <eoi-form submit-url="{{ route('eoi.store') }}"></eoi-form>
+                    <eoi-form submit-url="{{ route('eoi.store') }}"
+                              :services="{{ $services }}" :connections="{{ $connections }}"
+                              :estimated-costs="{{ $estimatedCosts }}"
+                    />
                 </div>
             </div>
         </div>

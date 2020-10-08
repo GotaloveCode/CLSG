@@ -1,102 +1,55 @@
 <template>
     <ValidationObserver v-slot="{ handleSubmit }">
-        <div class="col-md-12">
-            <form @submit.prevent="handleSubmit(onSubmit)" class="row">
-                <div class="col-md-6">
-                    <ValidationProvider name="Program Manager" rules="required" v-slot="{ errors }"
-                                        class="row form-group">
-                        <label class="control-label col-md-4">Program Manager</label>
-                        <input v-model="eoi.program_manager" type="text" class="form-control col-md-8">
-                        <span class="text-danger">{{ errors[0] }}</span>
-                    </ValidationProvider>
-                    <ValidationProvider name="Fixed Grant" rules="required|numeric" v-slot="{ errors }"
-                                        class="row form-group">
-                        <label class="control-label col-md-4">Fixed Grant</label>
-                        <input type="text" v-model="eoi.fixed_grant" class="form-control col-md-8">
-                        <span>{{ errors[0] }}</span>
-                    </ValidationProvider>
-                    <ValidationProvider name="Variable Grant" rules="required|numeric" v-slot="{ errors }"
-                                        class="row form-group">
-                        <label class="control-label col-md-4">Estimated Variable
-                            Grant</label>
-                        <input type="text" v-model="eoi.variable_grant" class="form-control col-md-8">
-                        <span class="text-danger">{{ errors[0] }}</span>
-                    </ValidationProvider>
-                    <div class="row form-group">
-                        <label class="control-label col-md-4">Total</label>
-                        <input type="text" name="total" v-model="total" readonly class="form-control col-md-8">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <p>Total Funding will be used as indicated:</p>
-                    <ValidationProvider name="COVID-19 emergency interventions" rules="required" v-slot="{ errors }"
-                                        class="row form-group">
-                        <label class="control-label col-md-6">1. Short-term
-                            COVID-19 emergency interventions</label>
-                        <input type="text" v-model="eoi.emergency_intervention" class="form-control col-md-6">
-                        <span class="text-danger">{{ errors[0] }}</span>
-                    </ValidationProvider>
-                    <ValidationProvider name="Operation & Maintenanance Costs" rules="required" v-slot="{ errors }"
-                                        class="row form-group">
-                        <label class="control-label col-md-6">2. Operation & Maintenance
-                            Costs</label>
-                        <input type="text" v-model="eoi.operation_costs" class="form-control col-md-6">
-                        <span class="text-danger">{{ errors[0] }}</span>
-                    </ValidationProvider>
-                </div>
-                <hr>
-                <p class="col-md-12">The company serves low income areas as detailed in the table below</p>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Population Served</th>
-                        <th>Name of Low Income Areas</th>
-                        <th>Total No of People Served</th>
-                    </tr>
-                    </thead>
-                    <tr>
-                        <td>Water Services</td>
-                        <td>
-                            <ValidationProvider name="Name of low income areas" rules="required|min:5"
-                                                v-slot="{ errors }">
-                                <textarea v-model="eoi.water_service_areas" class="form-control"
-                                          rows="3"></textarea>
-                                <span class="text-danger">{{ errors[0] }}</span>
-                            </ValidationProvider>
-
-                        </td>
-                        <td>
-                            <ValidationProvider name="Total No of People Served" rules="required|numeric"
-                                                v-slot="{ errors }">
-                                <input type="text" v-model="eoi.total_people_water_served" class="form-control">
-                                <span class="text-danger">{{ errors[0] }}</span>
-                            </ValidationProvider>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Proportion of low income population served</td>
-                        <td>
-                            <ValidationProvider name="Proportion of low income population" rules="required|numeric"
-                                                v-slot="{ errors }">
-                                <input type="text" v-model="eoi.proportion_served" class="form-control">
-                                <span class="text-danger">{{ errors[0] }}</span>
-                            </ValidationProvider>
-                        </td>
-                    </tr>
-                </table>
+        <ul class="nav nav-tabs nav-fill">
+            <li class="nav-item">
+                <span :class="{'nav-link':true, active: currentStep === 1}">Step 1</span>
+            </li>
+            <li class="nav-item">
+                <span :class="{'nav-link':true, active: currentStep === 2}">Step 2</span>
+            </li>
+            <li class="nav-item">
+                <span :class="{'nav-link':true, active: currentStep === 3}">Summary</span>
+            </li>
+            <li class="nav-item">
+                <span :class="{'nav-link':true, active: currentStep === 4}">Complete</span>
+            </li>
+        </ul>
+        <form @submit.prevent="handleSubmit(onSubmit)" class="col-md-12 mt-4">
+                <ValidationObserver v-if="currentStep === 1">
+                    <step-one :eoi="eoi"/>
+                </ValidationObserver>
+                <ValidationObserver v-else-if="currentStep === 2">
+                    <step-two :services="services"/>
+                </ValidationObserver>
+                <ValidationObserver v-else-if="currentStep === 3">
+                    <step-three :service="service" :services="services"/>
+                </ValidationObserver>
                 <div class="form-group pull-right">
-                    <button class="btn btn-primary" type="submit">Submit</button>
+                    <button v-if="currentStep > 1" class="btn btn-primary" type="submit"><i
+                        class="fa fa-chevron-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary" type="submit">
+                        <span v-if="currentStep ===4">Submit</span>
+                        <span v-else>Next <i class="fa fa-chevron-right"></i></span>
+                    </button>
                 </div>
             </form>
-        </div>
     </ValidationObserver>
 </template>
 
 <script>
+import StepOne from "./StepOne";
+import StepTwo from "./EoiServiceForm";
+import StepThree from "./OperationCostForm";
+
 export default {
+    components: {
+        StepOne,
+        StepTwo,
+        StepThree
+    },
     props: {
         submitUrl: {required: true, type: String},
-        current_eoi: {required: false, type: Object}
     },
     data: () => ({
         error: '',
@@ -108,19 +61,29 @@ export default {
             operation_costs: null,
             water_service_areas: '',
             total_people_water_served: null,
-            proportion_served: null
-        }
+            proportion_served: null,
+            services:[],
+        },
+        currentStep: 1,
     }),
     computed: {
         total() {
-            if (this.fixed_grant && this.variable_grant) {
-                return parseFloat(this.fixed_grant) + parseFloat(this.variable_grant);
+            if (this.eoi.fixed_grant && this.eoi.variable_grant) {
+                return parseFloat(this.eoi.fixed_grant) + parseFloat(this.eoi.variable_grant);
             }
             return 0;
         }
     },
     methods: {
         onSubmit() {
+            if (this.currentStep === 3) {
+                this.postData();
+                return;
+            }
+
+            this.currentStep++;
+        },
+        postData() {
             axios.post(this.submitUrl, {
                 program_manager: this.program_manager,
                 fixed_grant: this.fixed_grant,
@@ -137,10 +100,7 @@ export default {
                 console.log("err", error);
             });
         }
-    },
-    mounted() {
-        this.current_eoi ? this.eoi = this.current_eoi : this.eoi;
-    },
+    }
 }
 </script>
 

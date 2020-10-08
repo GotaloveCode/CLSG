@@ -48,7 +48,9 @@ class Service extends Model
      */
     public function eois()
     {
-        return $this->belongsToMany(Eoi::class);
+        return $this->belongsToMany(Eoi::class)
+            ->withPivot('areas', 'total')
+            ->withTimestamps();
     }
 
 }
