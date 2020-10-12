@@ -12,5 +12,6 @@ npm-debug.log
 yarn-error.log
 .idea
 .DS_Store
-/.idea/
+/.idea/*
 /storage/
+/public/js/app.js
