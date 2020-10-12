@@ -17,13 +17,12 @@ class CreateConnectionEoiTable extends Migration
             $table->increments('id');
             $table->string('areas');
             $table->integer('total');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
             $table->unsignedInteger('connection_id')->nullable();
             $table->foreign('connection_id')->references('id')->on('connections');
             $table->unsignedInteger('eoi_id')->nullable();
             $table->foreign('eoi_id')->references('id')->on('eois');
-
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 

@@ -31,6 +31,7 @@ class WspsImport implements ToCollection,WithHeadingRow
             '*.email' => 'required|max:191|unique:wsps,email',
             '*.postaladdress' => 'required|max:191',
             '*.physicaladdress' => 'required|max:191',
+            '*.managingdirector' => 'required|max:191',
             '*.postalcode' => 'required|max:191|exists:postal_codes,code'
         ])->validate();
 
@@ -44,7 +45,8 @@ class WspsImport implements ToCollection,WithHeadingRow
                 'email' => $row['email'],
                 'postal_address' => $row['postaladdress'],
                 'physical_address' => $row['physicaladdress'],
-                'postal_code_id' => $postal_code->id
+                'postal_code_id' => $postal_code->id,
+                'managing_director' => $row['managingdirector']
             ]);
 
             $password = $this->getToken();

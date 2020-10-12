@@ -15,7 +15,7 @@ class Eoi extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'program_manager', 'fixed_grant', 'variable_grant', 'emergency_intervention', 'operation_costs', 'months', 'water_service_areas', 'total_people_water_served', 'proportion_served', 'wsp_id'
+        'id', 'program_manager', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'months', 'water_service_areas', 'total_people_water_served', 'proportion_served', 'wsp_id'
     ];
 
     /**
@@ -68,7 +68,9 @@ class Eoi extends Model
      */
     public function connections()
     {
-        return $this->belongsToMany(Connection::class);
+        return $this->belongsToMany(Connection::class)
+            ->withPivot('areas', 'total')
+            ->withTimestamps();
     }
 
     /**
@@ -76,7 +78,9 @@ class Eoi extends Model
      */
     public function estimatedcosts()
     {
-        return $this->belongsToMany(Estimatedcost::class);
+        return $this->belongsToMany(Estimatedcost::class)
+            ->withPivot('unit', 'total')
+            ->withTimestamps();
     }
 
     /**
@@ -84,7 +88,17 @@ class Eoi extends Model
      */
     public function operationcosts()
     {
-        return $this->belongsToMany(Operationcost::class);
+        return $this->belongsToMany(Operationcost::class)
+            ->withPivot('quantity','unit_rate', 'total')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the attachments for the Eoi.
+     */
+    public function attachments()
+    {
+        return $this->morphMany(Attachment::class, 'attachable');
     }
 
 }

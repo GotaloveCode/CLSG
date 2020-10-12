@@ -1,21 +1,21 @@
 <template>
     <tr>
-        <ValidationProvider tag="td" name="service[]" rules="required"
+        <ValidationProvider tag="td" name="Connection[]" rules="required"
                             v-slot="{ errors }">
-            <v-select name="service" label="name" placeholder="Select Service Type"
-                      v-model="service.service_id" :reduce="s => s.id" :options="services">
+            <v-select label="name" placeholder="Select Connection Type"
+                      v-model="connection.connection_id" :reduce="s => s.id" :options="connections">
             </v-select>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
         <ValidationProvider tag="td" name="Name of Low income areas[]" rules="required"
                             v-slot="{ errors }">
-            <input type="text" v-model="service.areas" class="form-control">
+            <input type="text" v-model="connection.areas" class="form-control">
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
 
         <ValidationProvider tag="td" name="Total No[]" rules="required|numeric"
                             v-slot="{ errors }">
-            <input type="text" v-model="service.total" class="form-control">
+            <vue-numeric separator="," v-model="connection.total" class="form-control"></vue-numeric>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
         <td>
@@ -31,10 +31,10 @@
 
 <script>
 export default {
-    name: "ServiceRow",
+    name: "ConnectionRow",
     props: {
-        services: {required: true, type: Array},
-        service: {required: true, type: Object},
+        connections: {required: true, type: Array},
+        connection: {required: true, type: Object},
     }
 }
 </script>

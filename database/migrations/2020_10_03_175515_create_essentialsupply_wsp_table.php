@@ -18,13 +18,12 @@ class CreateEssentialsupplyWspTable extends Migration
             $table->unsignedInteger('contractor_id')->nullable();
             $table->foreign('contractor_id')->references('id')->on('contractors');
             $table->string('type');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
             $table->unsignedInteger('essentialsupply_id')->nullable();
             $table->foreign('essentialsupply_id')->references('id')->on('essentialsupplies');
             $table->unsignedInteger('wsp_id')->nullable();
             $table->foreign('wsp_id')->references('id')->on('wsps');
-
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 

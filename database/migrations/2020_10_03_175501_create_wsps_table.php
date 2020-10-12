@@ -21,6 +21,7 @@ class CreateWspsTable extends Migration
             $table->string('postal_address');
             $table->string('physical_address');
             $table->foreign('postal_code_id')->references('id')->on('postal_codes');
+            $table->string('managing_director')->nullable();
             $table->unsignedInteger('postal_code_id');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();

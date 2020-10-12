@@ -95,4 +95,9 @@ class Wsp extends Model
         return $this->belongsToMany(Essentialsupply::class);
     }
 
+    public function postalcode()
+    {
+        return $this->belongsTo(PostalCode::class,'postal_code_id');
+    }
+
 }

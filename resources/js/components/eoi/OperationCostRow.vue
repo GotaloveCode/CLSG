@@ -7,7 +7,7 @@
             </v-select>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
-        <ValidationProvider tag="td" name="Quantity[]" rules="required"
+        <ValidationProvider tag="td" name="Quantity[]" rules="numeric"
                             v-slot="{ errors }">
             <input type="text" v-model="operation.quantity" class="form-control">
             <span class="text-danger">{{ errors[0] }}</span>
@@ -15,7 +15,12 @@
 
         <ValidationProvider tag="td" name="Unit Rate[]" rules="required|numeric"
                             v-slot="{ errors }">
-            <input type="text" v-model="operation.unit_rate" class="form-control">
+            <vue-numeric separator="," :precision="2" v-model="operation.unit_rate" class="form-control"></vue-numeric>
+            <span class="text-danger">{{ errors[0] }}</span>
+        </ValidationProvider>
+        <ValidationProvider tag="td" name="Total[]" rules="required|numeric"
+                            v-slot="{ errors }">
+            <vue-numeric separator="," v-model="operation.total" class="form-control"></vue-numeric>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
         <td>

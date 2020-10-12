@@ -19,8 +19,8 @@ class CreateEoisTable extends Migration
             $table->string('program_manager');
             $table->string('fixed_grant');
             $table->string('variable_grant');
-            $table->string('emergency_intervention');
-            $table->string('operation_costs');
+            $table->string('emergency_intervention_total');
+            $table->string('operation_costs_total');
             $table->integer('months');
             $table->text('water_service_areas');
             $table->integer('total_people_water_served');

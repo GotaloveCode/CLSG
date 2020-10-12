@@ -2,7 +2,7 @@
     <tr>
         <ValidationProvider tag="td" name="service[]" rules="required"
                             v-slot="{ errors }">
-            <v-select name="service" label="name" placeholder="Select Service Type"
+            <v-select label="name" placeholder="Select Service Type"
                       v-model="service.service_id" :reduce="s => s.id" :options="services">
             </v-select>
             <span class="text-danger">{{ errors[0] }}</span>
@@ -15,7 +15,7 @@
 
         <ValidationProvider tag="td" name="Total No[]" rules="required|numeric"
                             v-slot="{ errors }">
-            <input type="text" v-model="service.total" class="form-control">
+            <vue-numeric separator="," v-model="service.total" class="form-control"></vue-numeric>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
         <td>

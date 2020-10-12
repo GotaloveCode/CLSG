@@ -9,13 +9,13 @@
         </ValidationProvider>
         <ValidationProvider tag="td" name="Unit cost[]" rules="required|numeric"
                             v-slot="{ errors }">
-            <input type="text" v-model="cost.unit" class="form-control">
+            <vue-numeric separator="," :precision="2" v-model="cost.unit" class="form-control"></vue-numeric>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
 
         <ValidationProvider tag="td" name="Total[]" rules="required|numeric"
                             v-slot="{ errors }">
-            <input type="text" v-model="cost.total" class="form-control">
+            <vue-numeric separator="," v-model="cost.total" class="form-control"></vue-numeric>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
         <td>
