@@ -22,7 +22,7 @@
             </ValidationProvider>
             <div class="row form-group">
                 <label class="control-label col-md-4">Total</label>
-                <vue-numeric v-model="total" readonly class="form-control col-md-8"/>
+                <vue-numeric v-model="total" readonly="true" class="form-control col-md-8"/>
             </div>
         </div>
         <div class="col-md-6">
@@ -31,14 +31,22 @@
                                 class="row form-group">
                 <label class="control-label col-md-6">1. Short-term
                     COVID-19 emergency interventions</label>
-                <vue-numeric separator="," v-model="eoi.emergency_intervention_total" class="form-control col-md-6"></vue-numeric>
+                <vue-numeric separator="," v-model="eoi.emergency_intervention_total"
+                             class="form-control col-md-6"></vue-numeric>
                 <span class="ml-2 text-danger"> {{ errors[0] }}</span>
             </ValidationProvider>
             <ValidationProvider name="Operation & Maintenanance Costs" rules="required" v-slot="{ errors }"
                                 class="row form-group">
                 <label class="control-label col-md-6">2. Operation & Maintenance
                     Costs</label>
-                <vue-numeric separator="," v-model="eoi.operation_costs_total" class="form-control col-md-6"></vue-numeric>
+                <vue-numeric separator="," v-model="eoi.operation_costs_total"
+                             class="form-control col-md-6"></vue-numeric>
+                <span class="ml-2 text-danger"> {{ errors[0] }}</span>
+            </ValidationProvider>
+            <ValidationProvider name="Breakdown" :rules="'min_value:'+total+'|max_value:'+total"
+                                v-slot="{ errors }"
+                                class="row form-group">
+                <input type="hidden" readonly="true" v-model="total_breakdown"/>
                 <span class="ml-2 text-danger"> {{ errors[0] }}</span>
             </ValidationProvider>
         </div>
@@ -66,17 +74,19 @@
                 <td>
                     <ValidationProvider name="Total No of People Served" rules="required|numeric"
                                         v-slot="{ errors }">
-                        <vue-numeric separator="," v-model="eoi.total_people_water_served" class="form-control"></vue-numeric>
+                        <vue-numeric separator="," v-model="eoi.total_people_water_served"
+                                     class="form-control"></vue-numeric>
                         <span class="text-danger">{{ errors[0] }}</span>
                     </ValidationProvider>
                 </td>
             </tr>
             <tr>
-                <td>Proportion of low income population  (%)</td>
+                <td>Proportion of low income population (%)</td>
                 <td>
                     <ValidationProvider name="Proportion of low income population" rules="required|numeric"
                                         v-slot="{ errors }">
-                        <input type="text" placeholder="% of people served" v-model="eoi.proportion_served" class="form-control">
+                        <input type="text" placeholder="% of people served" v-model="eoi.proportion_served"
+                               class="form-control">
                         <span class="text-danger">{{ errors[0] }}</span>
                     </ValidationProvider>
                 </td>
@@ -91,11 +101,27 @@ export default {
         eoi: {required: false, type: Object}
     },
     computed: {
-        total() {
-            if (this.eoi.fixed_grant && this.eoi.variable_grant) {
-                return parseFloat(this.eoi.fixed_grant) + parseFloat(this.eoi.variable_grant);
+        total: {
+            get: function () {
+                if (this.eoi.fixed_grant && this.eoi.variable_grant) {
+                    return parseFloat(this.eoi.fixed_grant) + parseFloat(this.eoi.variable_grant);
+                }
+                return 0;
+            },
+            set: function (n) {
+                return n;
             }
-            return 0;
+        },
+        total_breakdown: {
+            get: function () {
+                if (this.eoi.emergency_intervention_total && this.eoi.operation_costs_total) {
+                    return parseFloat(this.eoi.emergency_intervention_total) + parseFloat(this.eoi.operation_costs_total);
+                }
+                return 0;
+            },
+            set: function (n) {
+                return n;
+            }
         }
     },
 }

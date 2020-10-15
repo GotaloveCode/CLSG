@@ -36,6 +36,13 @@ class EoiFactory extends Factory
             'wsp_id' => random_int(1, 10)
         ];
     }
+
+    public function published()
+    {
+        return $this->state([
+            'status' => 'published',
+        ]);
+    }
 }
 
 

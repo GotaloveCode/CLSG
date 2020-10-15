@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -43,6 +44,11 @@ class Eoi extends Model
         'months' => 'integer',
         'total_people_water_served' => 'integer'
     ];
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d');
+    }
 
     /**
      * Get the Wsp for the Eoi.
@@ -89,7 +95,7 @@ class Eoi extends Model
     public function operationcosts()
     {
         return $this->belongsToMany(Operationcost::class)
-            ->withPivot('quantity','unit_rate', 'total')
+            ->withPivot('quantity', 'unit_rate', 'total')
             ->withTimestamps();
     }
 
@@ -99,6 +105,22 @@ class Eoi extends Model
     public function attachments()
     {
         return $this->morphMany(Attachment::class, 'attachable');
+    }
+
+    public function scopeOfStatus($builder, $value): void
+    {
+        $builder->where('status', $value);
+    }
+
+    public function list()
+    {
+        return $this->select('id','fixed_grant','variable_grant','emergency_intervention_total','operation_costs_total','wsp_id','wsps.name')
+            ->with('wsp:id,name');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
 }

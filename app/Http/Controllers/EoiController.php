@@ -2,25 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EoiAttachmentRequest;
+use App\Http\Requests\EoiCommentRequest;
 use App\Http\Requests\EoiRequest;
-use App\Http\Requests\EoiServiceRequest;
-use App\Models\Attachment;
+use App\Http\Requests\EoiReviewRequest;
 use App\Models\Connection;
 use App\Models\Eoi;
 use App\Models\Estimatedcost;
 use App\Models\Operationcost;
 use App\Models\Service;
+use App\Traits\EoiAuthTrait;
 use App\Traits\FilesTrait;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Response;
+use Yajra\DataTables\Facades\DataTables;
 
 
 class EoiController extends Controller
 {
-    use FilesTrait;
+    use FilesTrait, EoiAuthTrait;
+
+    public function index()
+    {
+        return view('eoi.index');
+    }
+
+
+    public function list()
+    {
+        $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at')
+            ->with('wsp:id,name');
+//        ->ofStatus('published')
+        return Datatables::of($eois)
+            ->addColumn('action', function ($eoi) {
+                return '<a href="' . route("eoi.preview", $eoi->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Review</a>';
+            })
+            ->make(true);
+    }
 
     public function create()
     {
@@ -90,68 +106,68 @@ class EoiController extends Controller
         return redirect()->back()->with(['eoi' => $eoi]);
     }
 
-    public function attachments(Eoi $eoi)
-    {
-        $eoi = $eoi->load('attachments');
-        $progress = ceil($eoi->attachments->pluck('document_type')->unique()->count()/5 *100);
-        return view('eoi.attachments')->with(compact('eoi','progress'));
-    }
-
-    public function store_attachments(Eoi $eoi, EoiAttachmentRequest $request)
-    {
-        if(!$eoi->wsp->users()->pluck('user_id')->contains(auth()->id()))
-        {
-            abort('403','You do not have the permissions to perform this action');
-        }
-
-        $fileName = $this->storeDocument($request->attachment, $request->display_name);
-
-        $eoi->attachments()->create([
-            'name' => $fileName,
-            'display_name' => $request->display_name,
-            'document_type' => $request->document_type,
-        ]);
-
-        return view('eoi.attachments')->with(compact('eoi'));
-    }
-
-    public function getAttachment($filename)
-    {
-        $path = storage_path('app/Eoi/' . $filename);
-
-        if (!File::exists($path)) {
-            abort(404);
-        }
-
-        $file = File::get($path);
-        $type = File::mimeType($path);
-
-        $response = Response::make($file, 200);
-        $response->header("Content-Type", $type);
-
-        return $response;
-    }
-
-    public function deleteAttachment(Attachment $attachment)
-    {
-        Attachment::remove($attachment);
-
-        if(request()->ajax()){
-            return response()->json(['message' => "Attachment deleted successfully!"]);
-        }
-
-        return redirect()->back()->with(['message' => "Attachment deleted successfully!"]);
-    }
 
     public function preview(Eoi $eoi)
     {
+        switch ($eoi->status) {
+            case 'WFT Approved':
+                $progress = 100;
+                break;
+            case 'WASREB Approved':
+                $progress = 75;
+                break;
+            case 'Needs Approval':
+                $progress = 50;
+                break;
+            default:
+                $progress = 25;
+        }
+
         $eoi = $eoi->load(['wsp', 'services', 'connections', 'estimatedcosts', 'operationcosts']);
-        return view('eoi.preview')->with(compact('eoi'));
+        return view('eoi.preview')->with(compact('eoi','progress'));
+    }
+
+    public function review(Eoi $eoi, EoiReviewRequest $request)
+    {
+        if (!auth()->user()->can('review-eoi')) {
+            $this->canAccessEoi($eoi);
+        }
+        $eoi->status = $request->status;
+        $eoi->save();
+
+        //todo: notification of action
+
+        $route = route('eoi.preview', $eoi->id);
+
+        if ($request->status == 'WFT Approved') {
+            $route = route('eoi.commitment_letter', $eoi->id);
+        }
+
+        return response()->json([
+            'message' => 'Eoi status changed to ' . $request->status,
+            'route' => $route
+        ]);
+    }
+
+    public function comment(Eoi $eoi, EoiCommentRequest $request)
+    {
+        if (!auth()->user()->can('comment-eoi')) {
+            $this->canAccessEoi($eoi);
+        }
+
+        $eoi->comments()->create([
+            'description' => $request->description,
+            'user_id' => auth()->id()
+        ]);
+
+        //todo: notification on activity
+
+        return response()->json(['message' => 'Comment posted successfully']);
     }
 
     public function commitment_letter(Eoi $eoi)
     {
-        $eoi = $eoi->load(['wsp','wsp.postalcode']);
+        $eoi = $eoi->load(['wsp', 'wsp.postalcode']);
         return view('wsps.commitment-letter')->with(compact('eoi'));
     }
 

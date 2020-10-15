@@ -37,9 +37,11 @@
                 <button v-if="currentStep > 1" class="btn btn-primary" @click="previousStep"><i
                     class="fa fa-chevron-left"></i> Previous
                 </button>
-                <button class="btn btn-primary" type="submit">
-                    <span v-if="currentStep ===5">Submit</span>
-                    <span v-else>Next <i class="fa fa-chevron-right"></i></span>
+                <button class="btn btn-success" v-if="currentStep ===5" type="submit">
+                    Submit <i class="fa fa-send"></i>
+                </button>
+                <button v-else class="btn btn-primary" type="submit">
+                    Next <i class="fa fa-chevron-right"></i>
                 </button>
             </div>
         </form>
@@ -54,6 +56,7 @@ import StepFour from "./StepFour";
 import StepFive from "./StepFive";
 
 export default {
+    name: 'eoi-form',
     components: {
         StepOne,
         StepTwo,
@@ -75,7 +78,7 @@ export default {
             fixed_grant: 0,
             variable_grant: 0,
             emergency_intervention_total: 0,
-            operation_costs_total:0,
+            operation_costs_total: 0,
             water_service_areas: '',
             total_people_water_served: 0,
             proportion_served: null,

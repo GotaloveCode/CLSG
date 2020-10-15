@@ -1,0 +1,47 @@
+<template>
+    <ValidationObserver v-slot="{ handleSubmit }">
+        <form @submit.prevent="handleSubmit(onSubmit)" class="col-md-12 mt-3">
+            <ValidationProvider name="Comment" rules="required" v-slot="{ errors }"
+                                class="row form-group">
+                <label class="control-label col-md-12">Leave your comment below</label>
+                <tinymce id="da" placeholder="Leave your comment" v-model="description"/>
+                <span class="ml-2 text-danger"> {{ errors[0] }}</span>
+            </ValidationProvider>
+
+            <button class="btn btn-info" type="submit">
+                POST
+            </button>
+        </form>
+    </ValidationObserver>
+</template>
+
+<script>
+import tinymce from 'vue-tinymce-editor'
+
+export default {
+    name: "CommentForm",
+    components: {
+        tinymce
+    },
+    props: {
+        submitUrl: {required: true, type: String},
+    },
+    data() {
+        return {
+            description: '',
+        };
+    },
+    methods: {
+        onSubmit() {
+            axios.post(this.submitUrl, {
+                description: this.description
+            }).then(response => {
+                this.$toastr.s(response.data.message, "Success");
+                location.reload();
+            }).catch(error => {
+                console.log("err", error);
+            });
+        }
+    }
+}
+</script>

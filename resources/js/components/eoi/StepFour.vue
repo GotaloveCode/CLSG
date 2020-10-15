@@ -17,6 +17,19 @@
                 :cost="d"
                 v-bind:key="index"
                 :index="index"></tr>
+            <tr>
+                <th>Total costs</th>
+                <td></td>
+                <ValidationProvider tag="td" name="Total" :rules="'required|numeric|max_value:'+eoi.emergency_intervention_total"
+                                    v-slot="{ errors }">
+                    <vue-numeric separator="," v-model="total" readonly="true" class="form-control"></vue-numeric>
+                    <span class="text-danger">{{ errors[0] }}</span>
+                </ValidationProvider>
+            </tr>
+            <tr v-if="total>eoi.emergency_intervention_total">
+                <td class="text-danger" colspan="3">The total Estimated Cost should not exceed Short-term COVID-19 emergency interventions total
+                </td>
+            </tr>
         </table>
     </div>
 </template>
@@ -40,6 +53,16 @@ export default {
         removeCost(index) {
             if (this.eoi.estimated_costs.length > 1) {
                 this.eoi.estimated_costs.splice(index, 1);
+            }
+        }
+    },
+    computed: {
+        total: {
+            get: function () {
+                return this.eoi.estimated_costs.reduce((a, b) => ({total: a.total + b.total})).total;
+            },
+            set: function (n) {
+                return n;
             }
         }
     }
