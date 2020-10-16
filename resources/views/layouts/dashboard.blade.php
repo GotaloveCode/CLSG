@@ -40,7 +40,7 @@
     <!-- BEGIN: Custom CSS-->
 {{--    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">--}}
 <!-- END: Custom CSS-->
-    
+
     @stack('css')
 </head>
 <body class="vertical-layout vertical-menu content-detached-right-sidebar   fixed-navbar" data-open="click"

@@ -12,6 +12,10 @@
                         <li class="breadcrumb-item active">{{ __('Expression Of Interest Form') }}
                         </li>
                     </ol>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="content-body"><!-- Content start -->
         <div class="row">
             <div class="col-12">
