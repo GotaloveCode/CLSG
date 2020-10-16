@@ -540,21 +540,7 @@
 
     // main menu internationalization
 
-    // init i18n and load language file
-    i18next
-        .use(window.i18nextXHRBackend)
-        .init({
-                debug: false,
-                fallbackLng: "en",
-                backend: {
-                    loadPath: "../../../app-assets/data/locales/{{lng}}.json",
-                },
-                returnObjects: true
-            },
-            function (err, t) {
-                // resources have been loaded
-                jqueryI18next.init(i18next, $);
-            });
+
 
     // change language according to data-language of dropdown item
     $(".dropdown-language .dropdown-item").on("click", function () {
@@ -566,9 +552,7 @@
         $("#dropdown-flag .selected-language").text(selectedLang);
         $("#dropdown-flag .flag-icon").removeClass().addClass(selectedFlag);
         var currentLanguage = $this.data("language");
-        i18next.changeLanguage(currentLanguage, function (err, t) {
-            $(".main-menu , .horizontal-menu").localize();
-        });
+     
     })
 
       // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
@@ -582,6 +566,6 @@
         let vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
         })
-  
+
 
 })(window, document, jQuery);

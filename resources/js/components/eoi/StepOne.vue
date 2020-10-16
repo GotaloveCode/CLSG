@@ -63,7 +63,7 @@
             <tr>
                 <td>Water Services</td>
                 <td>
-                    <ValidationProvider name="Name of low income areas" rules="required|min:5"
+                    <ValidationProvider name="Name of low income areas" rules="required"
                                         v-slot="{ errors }">
                                 <textarea v-model="eoi.water_service_areas" class="form-control"
                                           rows="3"></textarea>

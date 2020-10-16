@@ -1,132 +1,1716 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+Template Name: Stack - Stack - Bootstrap 4 Admin Template
+Author: PixInvent
+Website: http://www.pixinvent.com/
+Contact: hello@pixinvent.com
+Follow: www.twitter.com/pixinvents
+Like: www.facebook.com/pixinvents
+Purchase: https://1.envato.market/stack_admin
+Renew Support: https://1.envato.market/stack_admin
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
 
-        <title>Laravel</title>
+-->
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Stack admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, stack admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title>Tables Sizing - Stack Responsive Bootstrap 4 Admin Template</title>
+    <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
+    <!-- END: Vendor CSS-->
 
-        <!-- Styles -->
-        <style>
-            /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}a{background-color:transparent}[hidden]{display:none}html{font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;line-height:1.5}*,:after,:before{box-sizing:border-box;border:0 solid #e2e8f0}a{color:inherit;text-decoration:inherit}svg,video{display:block;vertical-align:middle}video{max-width:100%;height:auto}.bg-white{--bg-opacity:1;background-color:#fff;background-color:rgba(255,255,255,var(--bg-opacity))}.bg-gray-100{--bg-opacity:1;background-color:#f7fafc;background-color:rgba(247,250,252,var(--bg-opacity))}.border-gray-200{--border-opacity:1;border-color:#edf2f7;border-color:rgba(237,242,247,var(--border-opacity))}.border-t{border-top-width:1px}.flex{display:flex}.grid{display:grid}.hidden{display:none}.items-center{align-items:center}.justify-center{justify-content:center}.font-semibold{font-weight:600}.h-5{height:1.25rem}.h-8{height:2rem}.h-16{height:4rem}.text-sm{font-size:.875rem}.text-lg{font-size:1.125rem}.leading-7{line-height:1.75rem}.mx-auto{margin-left:auto;margin-right:auto}.ml-1{margin-left:.25rem}.mt-2{margin-top:.5rem}.mr-2{margin-right:.5rem}.ml-2{margin-left:.5rem}.mt-4{margin-top:1rem}.ml-4{margin-left:1rem}.mt-8{margin-top:2rem}.ml-12{margin-left:3rem}.-mt-px{margin-top:-1px}.max-w-6xl{max-width:72rem}.min-h-screen{min-height:100vh}.overflow-hidden{overflow:hidden}.p-6{padding:1.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.pt-8{padding-top:2rem}.fixed{position:fixed}.relative{position:relative}.top-0{top:0}.right-0{right:0}.shadow{box-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06)}.text-center{text-align:center}.text-gray-200{--text-opacity:1;color:#edf2f7;color:rgba(237,242,247,var(--text-opacity))}.text-gray-300{--text-opacity:1;color:#e2e8f0;color:rgba(226,232,240,var(--text-opacity))}.text-gray-400{--text-opacity:1;color:#cbd5e0;color:rgba(203,213,224,var(--text-opacity))}.text-gray-500{--text-opacity:1;color:#a0aec0;color:rgba(160,174,192,var(--text-opacity))}.text-gray-600{--text-opacity:1;color:#718096;color:rgba(113,128,150,var(--text-opacity))}.text-gray-700{--text-opacity:1;color:#4a5568;color:rgba(74,85,104,var(--text-opacity))}.text-gray-900{--text-opacity:1;color:#1a202c;color:rgba(26,32,44,var(--text-opacity))}.underline{text-decoration:underline}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.w-5{width:1.25rem}.w-8{width:2rem}.w-auto{width:auto}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.sm\:rounded-lg{border-radius:.5rem}.sm\:block{display:block}.sm\:items-center{align-items:center}.sm\:justify-start{justify-content:flex-start}.sm\:justify-between{justify-content:space-between}.sm\:h-20{height:5rem}.sm\:ml-0{margin-left:0}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}.sm\:pt-0{padding-top:0}.sm\:text-left{text-align:left}.sm\:text-right{text-align:right}}@media (min-width:768px){.md\:border-t-0{border-top-width:0}.md\:border-l{border-left-width:1px}.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (min-width:1024px){.lg\:px-8{padding-left:2rem;padding-right:2rem}}@media (prefers-color-scheme:dark){.dark\:bg-gray-800{--bg-opacity:1;background-color:#2d3748;background-color:rgba(45,55,72,var(--bg-opacity))}.dark\:bg-gray-900{--bg-opacity:1;background-color:#1a202c;background-color:rgba(26,32,44,var(--bg-opacity))}.dark\:border-gray-700{--border-opacity:1;border-color:#4a5568;border-color:rgba(74,85,104,var(--border-opacity))}.dark\:text-white{--text-opacity:1;color:#fff;color:rgba(255,255,255,var(--text-opacity))}.dark\:text-gray-400{--text-opacity:1;color:#cbd5e0;color:rgba(203,213,224,var(--text-opacity))}}
-        </style>
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap-extended.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/colors.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/components.min.css">
+    <!-- END: Theme CSS-->
 
-        <style>
-            body {
-                font-family: 'Nunito';
-            }
-        </style>
-    </head>
-    <body class="antialiased">
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
-            @if (Route::has('login'))
-                <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-                    @auth
-                        <a href="{{ url('/home') }}" class="text-sm text-gray-700 underline">Home</a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Login</a>
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/colors/palette-gradient.min.css">
+    <!-- END: Page CSS-->
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
-                        @endif
-                    @endif
-                </div>
-            @endif
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+    <!-- END: Custom CSS-->
 
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-                    <svg viewBox="0 0 651 192" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-16 w-auto text-gray-700 sm:h-20">
-                        <g clip-path="url(#clip0)" fill="#EF3B2D">
-                            <path d="M248.032 44.676h-16.466v100.23h47.394v-14.748h-30.928V44.676zM337.091 87.202c-2.101-3.341-5.083-5.965-8.949-7.875-3.865-1.909-7.756-2.864-11.669-2.864-5.062 0-9.69.931-13.89 2.792-4.201 1.861-7.804 4.417-10.811 7.661-3.007 3.246-5.347 6.993-7.016 11.239-1.672 4.249-2.506 8.713-2.506 13.389 0 4.774.834 9.26 2.506 13.459 1.669 4.202 4.009 7.925 7.016 11.169 3.007 3.246 6.609 5.799 10.811 7.66 4.199 1.861 8.828 2.792 13.89 2.792 3.913 0 7.804-.955 11.669-2.863 3.866-1.908 6.849-4.533 8.949-7.875v9.021h15.607V78.182h-15.607v9.02zm-1.431 32.503c-.955 2.578-2.291 4.821-4.009 6.73-1.719 1.91-3.795 3.437-6.229 4.582-2.435 1.146-5.133 1.718-8.091 1.718-2.96 0-5.633-.572-8.019-1.718-2.387-1.146-4.438-2.672-6.156-4.582-1.719-1.909-3.032-4.152-3.938-6.73-.909-2.577-1.36-5.298-1.36-8.161 0-2.864.451-5.585 1.36-8.162.905-2.577 2.219-4.819 3.938-6.729 1.718-1.908 3.77-3.437 6.156-4.582 2.386-1.146 5.059-1.718 8.019-1.718 2.958 0 5.656.572 8.091 1.718 2.434 1.146 4.51 2.674 6.229 4.582 1.718 1.91 3.054 4.152 4.009 6.729.953 2.577 1.432 5.298 1.432 8.162-.001 2.863-.479 5.584-1.432 8.161zM463.954 87.202c-2.101-3.341-5.083-5.965-8.949-7.875-3.865-1.909-7.756-2.864-11.669-2.864-5.062 0-9.69.931-13.89 2.792-4.201 1.861-7.804 4.417-10.811 7.661-3.007 3.246-5.347 6.993-7.016 11.239-1.672 4.249-2.506 8.713-2.506 13.389 0 4.774.834 9.26 2.506 13.459 1.669 4.202 4.009 7.925 7.016 11.169 3.007 3.246 6.609 5.799 10.811 7.66 4.199 1.861 8.828 2.792 13.89 2.792 3.913 0 7.804-.955 11.669-2.863 3.866-1.908 6.849-4.533 8.949-7.875v9.021h15.607V78.182h-15.607v9.02zm-1.432 32.503c-.955 2.578-2.291 4.821-4.009 6.73-1.719 1.91-3.795 3.437-6.229 4.582-2.435 1.146-5.133 1.718-8.091 1.718-2.96 0-5.633-.572-8.019-1.718-2.387-1.146-4.438-2.672-6.156-4.582-1.719-1.909-3.032-4.152-3.938-6.73-.909-2.577-1.36-5.298-1.36-8.161 0-2.864.451-5.585 1.36-8.162.905-2.577 2.219-4.819 3.938-6.729 1.718-1.908 3.77-3.437 6.156-4.582 2.386-1.146 5.059-1.718 8.019-1.718 2.958 0 5.656.572 8.091 1.718 2.434 1.146 4.51 2.674 6.229 4.582 1.718 1.91 3.054 4.152 4.009 6.729.953 2.577 1.432 5.298 1.432 8.162 0 2.863-.479 5.584-1.432 8.161zM650.772 44.676h-15.606v100.23h15.606V44.676zM365.013 144.906h15.607V93.538h26.776V78.182h-42.383v66.724zM542.133 78.182l-19.616 51.096-19.616-51.096h-15.808l25.617 66.724h19.614l25.617-66.724h-15.808zM591.98 76.466c-19.112 0-34.239 15.706-34.239 35.079 0 21.416 14.641 35.079 36.239 35.079 12.088 0 19.806-4.622 29.234-14.688l-10.544-8.158c-.006.008-7.958 10.449-19.832 10.449-13.802 0-19.612-11.127-19.612-16.884h51.777c2.72-22.043-11.772-40.877-33.023-40.877zm-18.713 29.28c.12-1.284 1.917-16.884 18.589-16.884 16.671 0 18.697 15.598 18.813 16.884h-37.402zM184.068 43.892c-.024-.088-.073-.165-.104-.25-.058-.157-.108-.316-.191-.46-.056-.097-.137-.176-.203-.265-.087-.117-.161-.242-.265-.345-.085-.086-.194-.148-.29-.223-.109-.085-.206-.182-.327-.252l-.002-.001-.002-.002-35.648-20.524a2.971 2.971 0 00-2.964 0l-35.647 20.522-.002.002-.002.001c-.121.07-.219.167-.327.252-.096.075-.205.138-.29.223-.103.103-.178.228-.265.345-.066.089-.147.169-.203.265-.083.144-.133.304-.191.46-.031.085-.08.162-.104.25-.067.249-.103.51-.103.776v38.979l-29.706 17.103V24.493a3 3 0 00-.103-.776c-.024-.088-.073-.165-.104-.25-.058-.157-.108-.316-.191-.46-.056-.097-.137-.176-.203-.265-.087-.117-.161-.242-.265-.345-.085-.086-.194-.148-.29-.223-.109-.085-.206-.182-.327-.252l-.002-.001-.002-.002L40.098 1.396a2.971 2.971 0 00-2.964 0L1.487 21.919l-.002.002-.002.001c-.121.07-.219.167-.327.252-.096.075-.205.138-.29.223-.103.103-.178.228-.265.345-.066.089-.147.169-.203.265-.083.144-.133.304-.191.46-.031.085-.08.162-.104.25-.067.249-.103.51-.103.776v122.09c0 1.063.568 2.044 1.489 2.575l71.293 41.045c.156.089.324.143.49.202.078.028.15.074.23.095a2.98 2.98 0 001.524 0c.069-.018.132-.059.2-.083.176-.061.354-.119.519-.214l71.293-41.045a2.971 2.971 0 001.489-2.575v-38.979l34.158-19.666a2.971 2.971 0 001.489-2.575V44.666a3.075 3.075 0 00-.106-.774zM74.255 143.167l-29.648-16.779 31.136-17.926.001-.001 34.164-19.669 29.674 17.084-21.772 12.428-43.555 24.863zm68.329-76.259v33.841l-12.475-7.182-17.231-9.92V49.806l12.475 7.182 17.231 9.92zm2.97-39.335l29.693 17.095-29.693 17.095-29.693-17.095 29.693-17.095zM54.06 114.089l-12.475 7.182V46.733l17.231-9.92 12.475-7.182v74.537l-17.231 9.921zM38.614 7.398l29.693 17.095-29.693 17.095L8.921 24.493 38.614 7.398zM5.938 29.632l12.475 7.182 17.231 9.92v79.676l.001.005-.001.006c0 .114.032.221.045.333.017.146.021.294.059.434l.002.007c.032.117.094.222.14.334.051.124.088.255.156.371a.036.036 0 00.004.009c.061.105.149.191.222.288.081.105.149.22.244.314l.008.01c.084.083.19.142.284.215.106.083.202.178.32.247l.013.005.011.008 34.139 19.321v34.175L5.939 144.867V29.632h-.001zm136.646 115.235l-65.352 37.625V148.31l48.399-27.628 16.953-9.677v33.862zm35.646-61.22l-29.706 17.102V66.908l17.231-9.92 12.475-7.182v33.841z"/>
-                        </g>
-                    </svg>
-                </div>
+</head>
+<!-- END: Head-->
 
-                <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
-                    <div class="grid grid-cols-1 md:grid-cols-2">
-                        <div class="p-6">
-                            <div class="flex items-center">
-                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laravel.com/docs" class="underline text-gray-900 dark:text-white">Documentation</a></div>
-                            </div>
+<!-- BEGIN: Body-->
+<body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
 
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laravel has wonderful, thorough documentation covering every aspect of the framework. Whether you are new to the framework or have previous experience with Laravel, we recommend reading all of the documentation from beginning to end.
-                                </div>
-                            </div>
+<!-- BEGIN: Header-->
+<nav class="header-navbar navbar-expand-md navbar navbar-with-menu fixed-top navbar-semi-light bg-gradient-x-grey-blue">
+    <div class="navbar-wrapper">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav flex-row">
+                <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="feather icon-menu font-large-1"></i></a></li>
+                <li class="nav-item"><a class="navbar-brand" href="index.html"><img class="brand-logo" alt="stack admin logo" src="../../../app-assets/images/logo/stack-logo.png">
+                        <h2 class="brand-text">Stack</h2></a></li>
+                <li class="nav-item d-md-none"><a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile"><i class="fa fa-ellipsis-v"></i></a></li>
+            </ul>
+        </div>
+        <div class="navbar-container content">
+            <div class="collapse navbar-collapse" id="navbar-mobile">
+                <ul class="nav navbar-nav mr-auto float-left">
+                    <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="feather icon-menu"></i></a></li>
+                    <li class="dropdown nav-item mega-dropdown d-none d-lg-block"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Mega</a>
+                        <ul class="mega-dropdown-menu dropdown-menu row p-1">
+                            <li class="col-md-4 bg-mega p-2">
+                                <h3 class="text-white mb-1 font-weight-bold">Mega Menu Sidebar</h3>
+                                <p class="text-white line-height-2">Candy canes bonbon toffee. Cheesecake dragée gummi bears chupa chups powder bonbon. Apple pie cookie sweet.</p>
+                                <button class="btn btn-outline-white">Learn More</button>
+                            </li>
+                            <li class="col-md-5 px-2">
+                                <h6 class="font-weight-bold font-medium-2 ml-1">Apps</h6>
+                                <ul class="row mt-2">
+                                    <li class="col-6 col-xl-4"><a class="text-center mb-2 mb-xl-3" href="app-email.html" target="_blank"><i class="feather icon-mail font-large-1 mr-0"></i>
+                                            <p class="font-medium-2 mt-25 mb-0">Email</p></a></li>
+                                    <li class="col-6 col-xl-4"><a class="text-center mb-2 mb-xl-3" href="app-chat.html" target="_blank"><i class="feather icon-message-square font-large-1 mr-0"></i>
+                                            <p class="font-medium-2 mt-25 mb-0">Chat</p></a></li>
+                                    <li class="col-6 col-xl-4"><a class="text-center mb-2 mb-xl-3 mt-75 mt-xl-0" href="app-todo.html" target="_blank"><i class="feather icon-check-square font-large-1 mr-0"></i>
+                                            <p class="font-medium-2 mt-25 mb-0">Todo</p></a></li>
+                                    <li class="col-6 col-xl-4"><a class="text-center mb-2 mt-75 mt-xl-0" href="app-kanban.html" target="_blank"><i class="feather icon-file-plus font-large-1 mr-0"></i>
+                                            <p class="font-medium-2 mt-25 mb-50">Kanban</p></a></li>
+                                    <li class="col-6 col-xl-4"><a class="text-center mb-2 mt-75 mt-xl-0" href="app-contacts.html" target="_blank"><i class="feather icon-users font-large-1 mr-0"></i>
+                                            <p class="font-medium-2 mt-25 mb-50">Contacts</p></a></li>
+                                    <li class="col-6 col-xl-4"><a class="text-center mb-2 mt-75 mt-xl-0" href="../../../../index.html" target="_blank"><i class="feather icon-printer font-large-1 mr-0"></i>
+                                            <p class="font-medium-2 mt-25 mb-50">Invoice</p></a></li>
+                                </ul>
+                            </li>
+                            <li class="col-md-3">
+                                <h6 class="font-weight-bold font-medium-2">Components</h6>
+                                <ul class="row mt-1 mt-xl-2">
+                                    <li class="col-12 col-xl-6 pl-0">
+                                        <ul class="mega-component-list">
+                                            <li class="mega-component-item"><a class="mb-1 mb-xl-2" href="component-alerts.html" target="_blank">Alert</a></li>
+                                            <li class="mega-component-item"><a class="mb-1 mb-xl-2" href="component-callout.html" target="_blank">Callout</a></li>
+                                            <li class="mega-component-item"><a class="mb-1 mb-xl-2" href="component-buttons-basic.html" target="_blank">Buttons</a></li>
+                                            <li class="mega-component-item"><a class="mb-1 mb-xl-2" href="component-carousel.html" target="_blank">Carousel</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="col-12 col-xl-6 pl-0">
+                                        <ul class="mega-component-list">
+                                            <li class="mega-component-item"><a class="mb-1 mb-xl-2" href="component-dropdowns.html" target="_blank">Drop Down</a></li>
+                                            <li class="mega-component-item"><a class="mb-1 mb-xl-2" href="component-list-group.html" target="_blank">List Group</a></li>
+                                            <li class="mega-component-item"><a class="mb-1 mb-xl-2" href="component-modals.html" target="_blank">Modals</a></li>
+                                            <li class="mega-component-item"><a class="mb-1 mb-xl-2" href="component-pagination.html" target="_blank">Pagination</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-none d-md-block"><a class="nav-link nav-link-expand" href="#"><i class="ficon feather icon-maximize"></i></a></li>
+                    <li class="nav-item nav-search"><a class="nav-link nav-link-search" href="#"><i class="ficon feather icon-search"></i></a>
+                        <div class="search-input">
+                            <input class="input" type="text" placeholder="Explore Stack..." tabindex="0" data-search="template-search">
+                            <div class="search-input-close"><i class="feather icon-x"></i></div>
+                            <ul class="search-list"></ul>
                         </div>
-
-                        <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
-                            <div class="flex items-center">
-                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laracasts.com" class="underline text-gray-900 dark:text-white">Laracasts</a></div>
-                            </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laracasts offers thousands of video tutorials on Laravel, PHP, and JavaScript development. Check them out, see for yourself, and massively level up your development skills in the process.
-                                </div>
-                            </div>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav float-right">
+                    <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-us"></i><span class="selected-language"></span></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown-flag"><a class="dropdown-item" href="#" data-language="en"><i class="flag-icon flag-icon-us"></i> English</a><a class="dropdown-item" href="#" data-language="fr"><i class="flag-icon flag-icon-fr"></i> French</a><a class="dropdown-item" href="#" data-language="pt"><i class="flag-icon flag-icon-pt"></i> Portuguese</a><a class="dropdown-item" href="#" data-language="de"><i class="flag-icon flag-icon-de"></i> German</a></div>
+                    </li>
+                    <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon feather icon-bell"></i><span class="badge badge-pill badge-danger badge-up">5</span></a>
+                        <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+                            <li class="dropdown-menu-header">
+                                <h6 class="dropdown-header m-0"><span class="grey darken-2">Notifications</span><span class="notification-tag badge badge-danger float-right m-0">5 New</span></h6>
+                            </li>
+                            <li class="scrollable-container media-list"><a href="javascript:void(0)">
+                                    <div class="media">
+                                        <div class="media-left align-self-center"><i class="feather icon-plus-square icon-bg-circle bg-cyan"></i></div>
+                                        <div class="media-body">
+                                            <h6 class="media-heading">You have new order!</h6>
+                                            <p class="notification-text font-small-3 text-muted">Lorem ipsum dolor sit amet, consectetuer elit.</p><small>
+                                                <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">30 minutes ago</time></small>
+                                        </div>
+                                    </div></a><a href="javascript:void(0)">
+                                    <div class="media">
+                                        <div class="media-left align-self-center"><i class="feather icon-download-cloud icon-bg-circle bg-red bg-darken-1"></i></div>
+                                        <div class="media-body">
+                                            <h6 class="media-heading red darken-1">99% Server load</h6>
+                                            <p class="notification-text font-small-3 text-muted">Aliquam tincidunt mauris eu risus.</p><small>
+                                                <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Five hour ago</time></small>
+                                        </div>
+                                    </div></a><a href="javascript:void(0)">
+                                    <div class="media">
+                                        <div class="media-left align-self-center"><i class="feather icon-alert-triangle icon-bg-circle bg-yellow bg-darken-3"></i></div>
+                                        <div class="media-body">
+                                            <h6 class="media-heading yellow darken-3">Warning notifixation</h6>
+                                            <p class="notification-text font-small-3 text-muted">Vestibulum auctor dapibus neque.</p><small>
+                                                <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Today</time></small>
+                                        </div>
+                                    </div></a><a href="javascript:void(0)">
+                                    <div class="media">
+                                        <div class="media-left align-self-center"><i class="feather icon-check-circle icon-bg-circle bg-cyan"></i></div>
+                                        <div class="media-body">
+                                            <h6 class="media-heading">Complete the task</h6><small>
+                                                <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Last week</time></small>
+                                        </div>
+                                    </div></a><a href="javascript:void(0)">
+                                    <div class="media">
+                                        <div class="media-left align-self-center"><i class="feather icon-file icon-bg-circle bg-teal"></i></div>
+                                        <div class="media-body">
+                                            <h6 class="media-heading">Generate monthly report</h6><small>
+                                                <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Last month</time></small>
+                                        </div>
+                                    </div></a></li>
+                            <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center" href="javascript:void(0)">Read all notifications</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon feather icon-mail"></i><span class="badge badge-pill badge-warning badge-up">3</span></a>
+                        <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+                            <li class="dropdown-menu-header">
+                                <h6 class="dropdown-header m-0"><span class="grey darken-2">Messages</span><span class="notification-tag badge badge-warning float-right m-0">4 New</span></h6>
+                            </li>
+                            <li class="scrollable-container media-list"><a href="javascript:void(0)">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <div class="avatar avatar-online avatar-sm rounded-circle"><img src="../../../app-assets/images/portrait/small/avatar-s-1.png" alt="avatar"><i></i></div>
+                                        </div>
+                                        <div class="media-body">
+                                            <h6 class="media-heading">Margaret Govan</h6>
+                                            <p class="notification-text font-small-3 text-muted">I like your portfolio, let's start.</p><small>
+                                                <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Today</time></small>
+                                        </div>
+                                    </div></a><a href="javascript:void(0)">
+                                    <div class="media">
+                                        <div class="media-left"><span class="avatar avatar-sm avatar-busy rounded-circle"><img src="../../../app-assets/images/portrait/small/avatar-s-2.png" alt="avatar"><i></i></span></div>
+                                        <div class="media-body">
+                                            <h6 class="media-heading">Bret Lezama</h6>
+                                            <p class="notification-text font-small-3 text-muted">I have seen your work, there is</p><small>
+                                                <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Tuesday</time></small>
+                                        </div>
+                                    </div></a><a href="javascript:void(0)">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <div class="avatar avatar-online avatar-sm rounded-circle"><img src="../../../app-assets/images/portrait/small/avatar-s-3.png" alt="avatar"><i></i></div>
+                                        </div>
+                                        <div class="media-body">
+                                            <h6 class="media-heading">Carie Berra</h6>
+                                            <p class="notification-text font-small-3 text-muted">Can we have call in this week ?</p><small>
+                                                <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Friday</time></small>
+                                        </div>
+                                    </div></a><a href="javascript:void(0)">
+                                    <div class="media">
+                                        <div class="media-left"><span class="avatar avatar-sm avatar-away rounded-circle"><img src="../../../app-assets/images/portrait/small/avatar-s-6.png" alt="avatar"><i></i></span></div>
+                                        <div class="media-body">
+                                            <h6 class="media-heading">Eric Alsobrook</h6>
+                                            <p class="notification-text font-small-3 text-muted">We have project party this saturday.</p><small>
+                                                <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">last month</time></small>
+                                        </div>
+                                    </div></a></li>
+                            <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center" href="javascript:void(0)">Read all messages</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                            <div class="avatar avatar-online"><img src="../../../app-assets/images/portrait/small/avatar-s-1.png" alt="avatar"><i></i></div><span class="user-name">John Doe</span></a>
+                        <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="user-profile.html"><i class="feather icon-user"></i> Edit Profile</a><a class="dropdown-item" href="app-email.html"><i class="feather icon-mail"></i> My Inbox</a><a class="dropdown-item" href="user-cards.html"><i class="feather icon-check-square"></i> Task</a><a class="dropdown-item" href="app-chat.html"><i class="feather icon-message-square"></i> Chats</a>
+                            <div class="dropdown-divider"></div><a class="dropdown-item" href="login-with-bg-image.html"><i class="feather icon-power"></i> Logout</a>
                         </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- END: Header-->
 
-                        <div class="p-6 border-t border-gray-200 dark:border-gray-700">
-                            <div class="flex items-center">
-                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500"><path d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laravel-news.com/" class="underline text-gray-900 dark:text-white">Laravel News</a></div>
-                            </div>
 
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laravel News is a community driven portal and newsletter aggregating all of the latest and most important news in the Laravel ecosystem, including new package releases and tutorials.
-                                </div>
-                            </div>
-                        </div>
+<!-- BEGIN: Main Menu-->
+<div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
+    <div class="main-menu-content">
+        <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+            <li class=" navigation-header"><span>General</span><i class=" feather icon-minus" data-toggle="tooltip" data-placement="right" data-original-title="General"></i>
+            </li>
+            <li class=" nav-item"><a href="index.html"><i class="feather icon-home"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span><span class="badge badge badge-primary badge-pill float-right mr-2">3</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="dashboard-ecommerce.html" data-i18n="eCommerce">eCommerce</a>
+                    </li>
+                    <li><a class="menu-item" href="dashboard-analytics.html" data-i18n="Analytics">Analytics</a>
+                    </li>
+                    <li><a class="menu-item" href="dashboard-fitness.html" data-i18n="Fitness">Fitness</a>
+                    </li>
+                    <li><a class="menu-item" href="dashboard-crm.html" data-i18n="CRM">CRM</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-monitor"></i><span class="menu-title" data-i18n="Templates">Templates</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="#" data-i18n="Vertical">Vertical</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="../vertical-modern-menu-template/index.html" data-i18n="Modern Menu">Modern Menu</a>
+                            </li>
+                            <li><a class="menu-item" href="../vertical-collapsed-menu-template/index.html" data-i18n="Collapsed Menu">Collapsed Menu</a>
+                            </li>
+                            <li><a class="menu-item" href="index.html" data-i18n="Semi Light">Semi Light</a>
+                            </li>
+                            <li><a class="menu-item" href="../vertical-menu-template-semi-dark/index.html" data-i18n="Semi Dark">Semi Dark</a>
+                            </li>
+                            <li><a class="menu-item" href="../vertical-menu-template-nav-dark/index.html" data-i18n="Nav Dark">Nav Dark</a>
+                            </li>
+                            <li><a class="menu-item" href="../vertical-menu-template-light/index.html" data-i18n="Light">Light</a>
+                            </li>
+                            <li><a class="menu-item" href="../vertical-overlay-menu-template/index.html" data-i18n="Overlay Menu">Overlay Menu</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="Horizontal">Horizontal</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="../horizontal-menu-template/index.html" data-i18n="Classic">Classic</a>
+                            </li>
+                            <li><a class="menu-item" href="../horizontal-menu-template-nav/index.html" data-i18n="Nav Dark">Nav Dark</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-layout"></i><span class="menu-title" data-i18n="Layouts">Layouts</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="#" data-i18n="Page Layouts">Page Layouts</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="layout-1-column.html" data-i18n="1 column">1 column</a>
+                            </li>
+                            <li><a class="menu-item" href="layout-2-columns.html" data-i18n="2 columns">2 columns</a>
+                            </li>
+                            <li><a class="menu-item" href="#" data-i18n="Sidebar">Sidebar</a>
+                                <ul class="menu-content">
+                                    <li><a class="menu-item" href="layout-content-detached-left-sidebar.html" data-i18n="Detached left sidebar">Detached left sidebar</a>
+                                    </li>
+                                    <li><a class="menu-item" href="layout-content-detached-left-sticky-sidebar.html" data-i18n="Detached sticky left sidebar">Detached sticky left sidebar</a>
+                                    </li>
+                                    <li><a class="menu-item" href="layout-content-detached-right-sidebar.html" data-i18n="Detached right sidebar">Detached right sidebar</a>
+                                    </li>
+                                    <li><a class="menu-item" href="layout-content-detached-right-sticky-sidebar.html" data-i18n="Detached sticky right sidebar">Detached sticky right sidebar</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="navigation-divider"></li>
+                            <li><a class="menu-item" href="layout-fixed-navbar.html" data-i18n="Fixed navbar">Fixed navbar</a>
+                            </li>
+                            <li><a class="menu-item" href="layout-fixed-navigation.html" data-i18n="Fixed navigation">Fixed navigation</a>
+                            </li>
+                            <li><a class="menu-item" href="layout-fixed-navbar-navigation.html" data-i18n="Fixed navbar &amp; navigation">Fixed navbar &amp; navigation</a>
+                            </li>
+                            <li><a class="menu-item" href="layout-fixed-navbar-footer.html" data-i18n="Fixed navbar &amp; footer">Fixed navbar &amp; footer</a>
+                            </li>
+                            <li class="navigation-divider"></li>
+                            <li><a class="menu-item" href="layout-fixed.html" data-i18n="Fixed layout">Fixed layout</a>
+                            </li>
+                            <li><a class="menu-item" href="layout-boxed.html" data-i18n="Boxed layout">Boxed layout</a>
+                            </li>
+                            <li><a class="menu-item" href="layout-static.html" data-i18n="Static layout">Static layout</a>
+                            </li>
+                            <li class="navigation-divider"></li>
+                            <li><a class="menu-item" href="layout-light.html" data-i18n="Light layout">Light layout</a>
+                            </li>
+                            <li><a class="menu-item" href="layout-dark.html" data-i18n="Dark layout">Dark layout</a>
+                            </li>
+                            <li><a class="menu-item" href="layout-semi-dark.html" data-i18n="Semi dark layout">Semi dark layout</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="Navbars">Navbars</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="navbar-light.html" data-i18n="Navbar Light">Navbar Light</a>
+                            </li>
+                            <li><a class="menu-item" href="navbar-dark.html" data-i18n="Navbar Dark">Navbar Dark</a>
+                            </li>
+                            <li><a class="menu-item" href="navbar-semi-dark.html" data-i18n="Navbar Semi Dark">Navbar Semi Dark</a>
+                            </li>
+                            <li><a class="menu-item" href="navbar-brand-center.html" data-i18n="Brand Center">Brand Center</a>
+                            </li>
+                            <li><a class="menu-item" href="navbar-fixed-top.html" data-i18n="Fixed Top">Fixed Top</a>
+                            </li>
+                            <li><a class="menu-item" href="#" data-i18n="Hide on Scroll">Hide on Scroll</a>
+                                <ul class="menu-content">
+                                    <li><a class="menu-item" href="navbar-hide-on-scroll-top.html" data-i18n="Hide on Scroll Top">Hide on Scroll Top</a>
+                                    </li>
+                                    <li><a class="menu-item" href="navbar-hide-on-scroll-bottom.html" data-i18n="Hide on Scroll Bottom">Hide on Scroll Bottom</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a class="menu-item" href="navbar-components.html" data-i18n="Navbar Components">Navbar Components</a>
+                            </li>
+                            <li><a class="menu-item" href="navbar-styling.html" data-i18n="Navbar Styling">Navbar Styling</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="Vertical Nav">Vertical Nav</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="#" data-i18n="Navigation Types">Navigation Types</a>
+                                <ul class="menu-content">
+                                    <li><a class="menu-item" href="index.html" data-i18n="Vertical Menu">Vertical Menu</a>
+                                    </li>
+                                    <li><a class="menu-item" href="../vertical-overlay-menu-template/index.html" data-i18n="Vertical Overlay">Vertical Overlay</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-compact-menu.html" data-i18n="Compact Menu">Compact Menu</a>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-fixed.html" data-i18n="Fixed Navigation">Fixed Navigation</a>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-static.html" data-i18n="Static Navigation">Static Navigation</a>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-light.html" data-i18n="Navigation Light">Navigation Light</a>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-dark.html" data-i18n="Navigation Dark">Navigation Dark</a>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-accordion.html" data-i18n="Accordion Navigation">Accordion Navigation</a>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-collapsible.html" data-i18n="Collapsible Navigation">Collapsible Navigation</a>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-flipped.html" data-i18n="Flipped Navigation">Flipped Navigation</a>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-native-scroll.html" data-i18n="Native scroll">Native scroll</a>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-right-side-icon.html" data-i18n="Right side icons">Right side icons</a>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-bordered.html" data-i18n="Bordered Navigation">Bordered Navigation</a>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-disabled-link.html" data-i18n="Disabled Navigation">Disabled Navigation</a>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-styling.html" data-i18n="Navigation Styling">Navigation Styling</a>
+                            </li>
+                            <li><a class="menu-item" href="vertical-nav-tags-pills.html" data-i18n="Tags &amp; Pills">Tags &amp; Pills</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="Horizontal Nav">Horizontal Nav</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="#" data-i18n="Navigation Types">Navigation Types</a>
+                                <ul class="menu-content">
+                                    <li><a class="menu-item" href="../horizontal-menu-template/index.html" data-i18n="Classic">Classic</a>
+                                    </li>
+                                    <li><a class="menu-item" href="../horizontal-menu-template-nav/index.html" data-i18n="Nav Dark">Nav Dark</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="Dashboard">Page Headers</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="headers-breadcrumbs-basic.html" data-i18n="Breadcrumbs basic">Breadcrumbs basic</a>
+                            </li>
+                            <li><a class="menu-item" href="headers-breadcrumbs-top.html" data-i18n="Breadcrumbs top">Breadcrumbs top</a>
+                            </li>
+                            <li><a class="menu-item" href="headers-breadcrumbs-bottom.html" data-i18n="Breadcrumbs bottom">Breadcrumbs bottom</a>
+                            </li>
+                            <li><a class="menu-item" href="headers-breadcrumbs-with-button.html" data-i18n="Breadcrumbs with button">Breadcrumbs with button</a>
+                            </li>
+                            <li><a class="menu-item" href="headers-breadcrumbs-with-round-button.html" data-i18n="Breadcrumbs with round button 2">Breadcrumbs with round button 2</a>
+                            </li>
+                            <li><a class="menu-item" href="headers-breadcrumbs-with-stats.html" data-i18n="Breadcrumbs with stats">Breadcrumbs with stats</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="Footers">Footers</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="footer-light.html" data-i18n="Footer Light">Footer Light</a>
+                            </li>
+                            <li><a class="menu-item" href="footer-dark.html" data-i18n="Footer Dark">Footer Dark</a>
+                            </li>
+                            <li><a class="menu-item" href="footer-transparent.html" data-i18n="Footer Transparent">Footer Transparent</a>
+                            </li>
+                            <li><a class="menu-item" href="footer-fixed.html" data-i18n="Footer Fixed">Footer Fixed</a>
+                            </li>
+                            <li><a class="menu-item" href="footer-components.html" data-i18n="Footer Components">Footer Components</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-zap"></i><span class="menu-title" data-i18n="Starter kit">Starter kit</span><span class="badge badge badge-danger badge-pill float-right mr-2">New</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-1-column.html" data-i18n="1 column">1 column</a>
+                    </li>
+                    <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-2-columns.html" data-i18n="2 columns">2 columns</a>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="Content Detached Sidebar">Content Detached Sidebar</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-content-detached-left-sidebar.html" data-i18n="Detached left sidebar">Detached left sidebar</a>
+                            </li>
+                            <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-content-detached-left-sticky-sidebar.html" data-i18n="Detached sticky left sidebar">Detached sticky left sidebar</a>
+                            </li>
+                            <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-content-detached-right-sidebar.html" data-i18n="Detached right sidebar">Detached right sidebar</a>
+                            </li>
+                            <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-content-detached-right-sticky-sidebar.html" data-i18n="Detached sticky right sidebar">Detached sticky right sidebar</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="navigation-divider"></li>
+                    <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-fixed-navbar.html" data-i18n="Fixed navbar">Fixed navbar</a>
+                    </li>
+                    <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-fixed-navigation.html" data-i18n="Fixed navigation">Fixed navigation</a>
+                    </li>
+                    <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-fixed-navbar-navigation.html" data-i18n="Fixed navbar &amp; navigation">Fixed navbar &amp; navigation</a>
+                    </li>
+                    <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-fixed-navbar-footer.html" data-i18n="Fixed navbar &amp; footer">Fixed navbar &amp; footer</a>
+                    </li>
+                    <li class="navigation-divider"></li>
+                    <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-fixed.html" data-i18n="Fixed layout">Fixed layout</a>
+                    </li>
+                    <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-boxed.html" data-i18n="Boxed layout">Boxed layout</a>
+                    </li>
+                    <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-static.html" data-i18n="Static layout">Static layout</a>
+                    </li>
+                    <li class="navigation-divider"></li>
+                    <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-light.html" data-i18n="Light layout">Light layout</a>
+                    </li>
+                    <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-dark.html" data-i18n="Dark layout">Dark layout</a>
+                    </li>
+                    <li><a class="menu-item" href="../../../starter-kit/ltr/vertical-menu-template/layout-semi-dark.html" data-i18n="Semi dark layout">Semi dark layout</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" navigation-header"><span>Apps</span><i class=" feather icon-minus" data-toggle="tooltip" data-placement="right" data-original-title="Apps"></i>
+            </li>
+            <li class=" nav-item"><a href="app-email.html"><i class="feather icon-mail"></i><span class="menu-title" data-i18n="Email Application">Email Application</span></a>
+            </li>
+            <li class=" nav-item"><a href="app-chat.html"><i class="feather icon-message-square"></i><span class="menu-title" data-i18n="Chat Application">Chat Application</span></a>
+            </li>
+            <li class=" nav-item"><a href="app-todo.html"><i class="feather icon-check-square"></i><span class="menu-title" data-i18n="Todo Application">Todo Application</span></a>
+            </li>
+            <li class=" nav-item"><a href="app-kanban.html"><i class="feather icon-file-plus"></i><span class="menu-title" data-i18n="Kanban Application">Kanban Application</span></a>
+            </li>
+            <li class=" nav-item"><a href="app-contacts.html"><i class="feather icon-users"></i><span class="menu-title" data-i18n="Contacts">Contacts</span></a>
+            </li>
+            <li class=" nav-item"><a href="project-summary.html"><i class="feather icon-airplay"></i><span class="menu-title" data-i18n="Project Summary">Project Summary</span></a>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-plus-square"></i><span class="menu-title" data-i18n="Calender">Calender</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="full-calender-basic.html" data-i18n="Full Calender Basic">Full Calender Basic</a>
+                    </li>
+                    <li><a class="menu-item" href="full-calender-events.html" data-i18n="Full Calender Events">Full Calender Events</a>
+                    </li>
+                    <li><a class="menu-item" href="full-calender-advance.html" data-i18n="Full Calender Advance">Full Calender Advance</a>
+                    </li>
+                    <li><a class="menu-item" href="full-calender-extra.html" data-i18n="Full Calender Extra">Full Calender Extra</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-file-text"></i><span class="menu-title" data-i18n="Invoice">Invoice</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="invoice-list.html" data-i18n="Invoice List">Invoice List</a>
+                    </li>
+                    <li><a class="menu-item" href="invoice-view.html" data-i18n="Invoice View">Invoice View</a>
+                    </li>
+                    <li><a class="menu-item" href="invoice-edit.html" data-i18n="Invoice Edit">invoice Edit</a>
+                    </li>
+                    <li><a class="menu-item" href="invoice-add.html" data-i18n="Invoice Add">invoice Add</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" navigation-header"><span>Pages</span><i class=" feather icon-minus" data-toggle="tooltip" data-placement="right" data-original-title="Pages"></i>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-share"></i><span class="menu-title" data-i18n="Timelines">Timelines</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="timeline-center.html" data-i18n="Timelines Center">Timelines Center</a>
+                    </li>
+                    <li><a class="menu-item" href="timeline-horizontal.html" data-i18n="Timelines Horizontal">Timelines Horizontal</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="account-setting.html"><i class="feather icon-user-plus"></i><span class="menu-title" data-i18n="Account setting">Account setting</span></a>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-user"></i><span class="menu-title" data-i18n="Users">Users</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="page-users-list.html" data-i18n="Users List">Users List</a>
+                    </li>
+                    <li><a class="menu-item" href="page-users-view.html" data-i18n="Users View">Users View</a>
+                    </li>
+                    <li><a class="menu-item" href="page-users-edit.html" data-i18n="Users Edit">Users Edit</a>
+                    </li>
+                    <li><a class="menu-item" href="user-profile.html" data-i18n="Users Profile">Users Profile</a>
+                    </li>
+                    <li><a class="menu-item" href="user-cards.html" data-i18n="Users Cards">Users Cards</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-image"></i><span class="menu-title" data-i18n="Gallery">Gallery</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="gallery-grid.html" data-i18n="Gallery Grid">Gallery Grid</a>
+                    </li>
+                    <li><a class="menu-item" href="gallery-grid-with-desc.html" data-i18n="Gallery Grid with Desc">Gallery Grid with Desc</a>
+                    </li>
+                    <li><a class="menu-item" href="gallery-masonry.html" data-i18n="Masonry Gallery">Masonry Gallery</a>
+                    </li>
+                    <li><a class="menu-item" href="gallery-masonry-with-desc.html" data-i18n="Masonry Gallery with Desc">Masonry Gallery with Desc</a>
+                    </li>
+                    <li><a class="menu-item" href="gallery-hover-effects.html" data-i18n="Hover Effects">Hover Effects</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-search"></i><span class="menu-title" data-i18n="Search">Search</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="search-page.html" data-i18n="Search Page">Search Page</a>
+                    </li>
+                    <li><a class="menu-item" href="search-website.html" data-i18n="Search Website">Search Website</a>
+                    </li>
+                    <li><a class="menu-item" href="search-images.html" data-i18n="Search Images">Search Images</a>
+                    </li>
+                    <li><a class="menu-item" href="search-videos.html" data-i18n="Search Videos">Search Videos</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-unlock"></i><span class="menu-title" data-i18n="Authentication">Authentication</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="login-simple.html" data-i18n="Login Simple">Login Simple</a>
+                    </li>
+                    <li><a class="menu-item" href="login-with-bg.html" data-i18n="Login with Bg">Login with Bg</a>
+                    </li>
+                    <li><a class="menu-item" href="login-with-bg-image.html" data-i18n="Login with Bg Image">Login with Bg Image</a>
+                    </li>
+                    <li><a class="menu-item" href="register-simple.html" data-i18n="Register Simple">Register Simple</a>
+                    </li>
+                    <li><a class="menu-item" href="register-with-bg.html" data-i18n="Register with Bg">Register with Bg</a>
+                    </li>
+                    <li><a class="menu-item" href="register-with-bg-image.html" data-i18n="Register with Bg Image">Register with Bg Image</a>
+                    </li>
+                    <li><a class="menu-item" href="unlock-user.html" data-i18n="Unlock User">Unlock User</a>
+                    </li>
+                    <li><a class="menu-item" href="recover-password.html" data-i18n="Recover Password">Recover Password</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-alert-triangle"></i><span class="menu-title" data-i18n="Error">Error</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="error-400.html" data-i18n="Error 400">Error 400</a>
+                    </li>
+                    <li><a class="menu-item" href="error-401.html" data-i18n="Error 401">Error 401</a>
+                    </li>
+                    <li><a class="menu-item" href="error-403.html" data-i18n="Error 403">Error 403</a>
+                    </li>
+                    <li><a class="menu-item" href="error-404.html" data-i18n="Error 404">Error 404</a>
+                    </li>
+                    <li><a class="menu-item" href="error-500.html" data-i18n="Error 500">Error 500</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-watch"></i><span class="menu-title" data-i18n="Coming Soon">Coming Soon</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="coming-soon-flat.html" data-i18n="Flat">Flat</a>
+                    </li>
+                    <li><a class="menu-item" href="coming-soon-bg-image.html" data-i18n="Bg image">Bg image</a>
+                    </li>
+                    <li><a class="menu-item" href="coming-soon-bg-video.html" data-i18n="Bg video">Bg video</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="under-maintenance.html"><i class="feather icon-cloud-off"></i><span class="menu-title" data-i18n="Maintenance">Maintenance</span></a>
+            </li>
+            <li class=" navigation-header"><span>UI</span><i class="feather icon-droplet feather icon-minus" data-toggle="tooltip" data-placement="right" data-original-title="UI"></i>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-globe"></i><span class="menu-title" data-i18n="Content">Content</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="content-grid.html" data-i18n="Grid">Grid</a>
+                    </li>
+                    <li><a class="menu-item" href="content-typography.html" data-i18n="Typography">Typography</a>
+                    </li>
+                    <li><a class="menu-item" href="content-text-utilities.html" data-i18n="Text utilities">Text utilities</a>
+                    </li>
+                    <li><a class="menu-item" href="content-syntax-highlighter.html" data-i18n="Syntax highlighter">Syntax highlighter</a>
+                    </li>
+                    <li><a class="menu-item" href="content-helper-classes.html" data-i18n="Helper classes">Helper classes</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-square"></i><span class="menu-title" data-i18n="Cards">Cards</span><span class="badge badge badge-pill badge-success float-right mr-2">Hot</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="card-bootstrap.html" data-i18n="Bootstrap">Bootstrap</a>
+                    </li>
+                    <li><a class="menu-item" href="card-headings.html" data-i18n="Headings">Headings</a>
+                    </li>
+                    <li><a class="menu-item" href="card-options.html" data-i18n="Options">Options</a>
+                    </li>
+                    <li><a class="menu-item" href="card-actions.html" data-i18n="Action">Action</a>
+                    </li>
+                    <li><a class="menu-item" href="card-draggable.html" data-i18n="Draggable">Draggable</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-layers"></i><span class="menu-title" data-i18n="Advance Cards">Advance Cards</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="card-statistics.html" data-i18n="Statistics">Statistics</a>
+                    </li>
+                    <li><a class="menu-item" href="card-weather.html" data-i18n="Weather">Weather</a>
+                    </li>
+                    <li><a class="menu-item" href="card-charts.html" data-i18n="Charts">Charts</a>
+                    </li>
+                    <li><a class="menu-item" href="card-maps.html" data-i18n="Maps">Maps</a>
+                    </li>
+                    <li><a class="menu-item" href="card-social.html" data-i18n="Social">Social</a>
+                    </li>
+                    <li><a class="menu-item" href="card-ecommerce.html" data-i18n="E-Commerce">E-Commerce</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-droplet"></i><span class="menu-title" data-i18n="Color Palette">Color Palette</span><span class="badge badge badge-warning badge-pill float-right mr-2">14</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="color-palette-primary.html" data-i18n="Primary palette">Primary palette</a>
+                    </li>
+                    <li><a class="menu-item" href="color-palette-danger.html" data-i18n="Danger palette">Danger palette</a>
+                    </li>
+                    <li><a class="menu-item" href="color-palette-success.html" data-i18n="Success palette">Success palette</a>
+                    </li>
+                    <li><a class="menu-item" href="color-palette-warning.html" data-i18n="Warning palette">Warning palette</a>
+                    </li>
+                    <li><a class="menu-item" href="color-palette-info.html" data-i18n="Info palette">Info palette</a>
+                    </li>
+                    <li class="navigation-divider"></li>
+                    <li><a class="menu-item" href="color-palette-red.html" data-i18n="Red palette">Red palette</a>
+                    </li>
+                    <li><a class="menu-item" href="color-palette-pink.html" data-i18n="Pink palette">Pink palette</a>
+                    </li>
+                    <li><a class="menu-item" href="color-palette-purple.html" data-i18n="Purple palette">Purple palette</a>
+                    </li>
+                    <li><a class="menu-item" href="color-palette-blue.html" data-i18n="Blue palette">Blue palette</a>
+                    </li>
+                    <li><a class="menu-item" href="color-palette-cyan.html" data-i18n="Cyan palette">Cyan palette</a>
+                    </li>
+                    <li><a class="menu-item" href="color-palette-teal.html" data-i18n="Teal palette">Teal palette</a>
+                    </li>
+                    <li><a class="menu-item" href="color-palette-yellow.html" data-i18n="Yellow palette">Yellow palette</a>
+                    </li>
+                    <li><a class="menu-item" href="color-palette-amber.html" data-i18n="Amber palette">Amber palette</a>
+                    </li>
+                    <li><a class="menu-item" href="color-palette-blue-grey.html" data-i18n="Blue Grey palette">Blue Grey palette</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-eye"></i><span class="menu-title" data-i18n="Icons">Icons</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="icons-feather.html" data-i18n="Feather">Feather</a>
+                    </li>
+                    <li><a class="menu-item" href="icons-font-awesome.html" data-i18n="Font Awesome">Font Awesome</a>
+                    </li>
+                    <li><a class="menu-item" href="icons-simple-line-icons.html" data-i18n="Simple Line Icons">Simple Line Icons</a>
+                    </li>
+                    <li><a class="menu-item" href="icons-meteocons.html" data-i18n="Meteocons">Meteocons</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" navigation-header"><span>Components</span><i class=" feather icon-minus" data-toggle="tooltip" data-placement="right" data-original-title="Components"></i>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-briefcase"></i><span class="menu-title" data-i18n="Bootstrap Components">Bootstrap Components</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="component-alerts.html" data-i18n="Alerts">Alerts</a>
+                    </li>
+                    <li><a class="menu-item" href="component-callout.html" data-i18n="Callout">Callout</a>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="Buttons">Buttons</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="component-buttons-basic.html" data-i18n="Basic Buttons">Basic Buttons</a>
+                            </li>
+                            <li><a class="menu-item" href="component-buttons-extended.html" data-i18n="Extended Buttons">Extended Buttons</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="menu-item" href="component-carousel.html" data-i18n="Carousel">Carousel</a>
+                    </li>
+                    <li><a class="menu-item" href="component-collapse.html" data-i18n="Collapse">Collapse</a>
+                    </li>
+                    <li><a class="menu-item" href="component-dropdowns.html" data-i18n="Dropdowns">Dropdowns</a>
+                    </li>
+                    <li><a class="menu-item" href="component-list-group.html" data-i18n="List Group">List Group</a>
+                    </li>
+                    <li><a class="menu-item" href="component-modals.html" data-i18n="Modals">Modals</a>
+                    </li>
+                    <li><a class="menu-item" href="component-pagination.html" data-i18n="Pagination">Pagination</a>
+                    </li>
+                    <li><a class="menu-item" href="component-navs-component.html" data-i18n="Navs Component">Navs Component</a>
+                    </li>
+                    <li><a class="menu-item" href="component-tabs-component.html" data-i18n="Tabs Component">Tabs Component</a>
+                    </li>
+                    <li><a class="menu-item" href="component-pills-component.html" data-i18n="Pills Component">Pills Component</a>
+                    </li>
+                    <li><a class="menu-item" href="component-tooltips.html" data-i18n="Tooltips">Tooltips</a>
+                    </li>
+                    <li><a class="menu-item" href="component-popovers.html" data-i18n="Popovers">Popovers</a>
+                    </li>
+                    <li><a class="menu-item" href="component-badges.html" data-i18n="Badges">Badges</a>
+                    </li>
+                    <li><a class="menu-item" href="component-pill-badges.html" data-i18n="Pill Badges">Pill Badges</a>
+                    </li>
+                    <li><a class="menu-item" href="component-progress.html" data-i18n="Progress">Progress</a>
+                    </li>
+                    <li><a class="menu-item" href="component-media-objects.html" data-i18n="Media Objects">Media Objects</a>
+                    </li>
+                    <li><a class="menu-item" href="component-scrollable.html" data-i18n="Scrollable">Scrollable</a>
+                    </li>
+                    <li><a class="menu-item" href="component-bs-spinner.html" data-i18n="Spinner">Spinner</a>
+                    </li>
+                    <li><a class="menu-item" href="component-bs-toast.html" data-i18n="Toasts">Toasts</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-box"></i><span class="menu-title" data-i18n="Extra Components">Extra Components</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="ex-component-avatar.html" data-i18n="Avatar">Avatar</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-sweet-alerts.html" data-i18n="Sweet Alerts">Sweet Alerts</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-ratings.html" data-i18n="Ratings">Ratings</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-toastr.html" data-i18n="Toastr">Toastr</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-noui-slider.html" data-i18n="NoUI Slider">NoUI Slider</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-knob.html" data-i18n="Knob">Knob</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-block-ui.html" data-i18n="Block UI">Block UI</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-date-time-picker.html" data-i18n="DateTime Picker">DateTime Picker</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-file-uploader-dropzone.html" data-i18n="File Uploader">File Uploader</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-image-cropper.html" data-i18n="Image Cropper">Image Cropper</a>
+                    </li>
+                    <li><a class="menu-item" href="component-spinners.html" data-i18n="Spinners">Spinners</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-tour.html" data-i18n="Tour">Tour</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-swiper.html" data-i18n="Swiper">Swiper</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-treeview.html" data-i18n="TreeView">TreeView</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-drag-drop.html" data-i18n="Drag &amp; Drop">Drag &amp; Drop</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-media-player.html" data-i18n="Media player">Media player</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-i18n.html" data-i18n="i18n">i18n</a>
+                    </li>
+                    <li><a class="menu-item" href="ex-component-miscellaneous.html" data-i18n="Miscellaneous">Miscellaneous</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-edit"></i><span class="menu-title" data-i18n="Forms">Forms</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="#" data-i18n="Form Elements">Form Elements</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="form-inputs.html" data-i18n="Form Inputs">Form Inputs</a>
+                            </li>
+                            <li><a class="menu-item" href="form-input-groups.html" data-i18n="Input Groups">Input Groups</a>
+                            </li>
+                            <li><a class="menu-item" href="form-input-grid.html" data-i18n="Input Grid">Input Grid</a>
+                            </li>
+                            <li><a class="menu-item" href="form-extended-inputs.html" data-i18n="Extended Inputs">Extended Inputs</a>
+                            </li>
+                            <li><a class="menu-item" href="form-checkboxes-radios.html" data-i18n="Checkboxes &amp; Radios">Checkboxes &amp; Radios</a>
+                            </li>
+                            <li><a class="menu-item" href="form-switch.html" data-i18n="Switch">Switch</a>
+                            </li>
+                            <li><a class="menu-item" href="form-select2.html" data-i18n="Select2">Select2</a>
+                            </li>
+                            <li><a class="menu-item" href="form-tags-input.html" data-i18n="Tags Input">Tags Input</a>
+                            </li>
+                            <li><a class="menu-item" href="form-validation.html" data-i18n="Validation">Validation</a>
+                            </li>
+                            <li><a class="menu-item" href="form-text-editor.html" data-i18n="Text editor">Text editor</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="Form Layouts">Form Layouts</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="form-layout-basic.html" data-i18n="Basic Forms">Basic Forms</a>
+                            </li>
+                            <li><a class="menu-item" href="form-layout-horizontal.html" data-i18n="Horizontal Forms">Horizontal Forms</a>
+                            </li>
+                            <li><a class="menu-item" href="form-layout-hidden-labels.html" data-i18n="Hidden Labels">Hidden Labels</a>
+                            </li>
+                            <li><a class="menu-item" href="form-layout-form-actions.html" data-i18n="Form Actions">Form Actions</a>
+                            </li>
+                            <li><a class="menu-item" href="form-layout-bordered.html" data-i18n="Bordered">Bordered</a>
+                            </li>
+                            <li><a class="menu-item" href="form-layout-striped-rows.html" data-i18n="Striped Rows">Striped Rows</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="menu-item" href="form-dual-listbox.html" data-i18n="Dual Listbox">Dual Listbox</a>
+                    </li>
+                    <li><a class="menu-item" href="form-wizard.html" data-i18n="Form Wizard">Form Wizard</a>
+                    </li>
+                    <li><a class="menu-item" href="form-repeater.html" data-i18n="Form Repeater">Form Repeater</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-grid"></i><span class="menu-title" data-i18n="Tables">Tables</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="#" data-i18n="Bootstrap Tables">Bootstrap Tables</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="table-basic.html" data-i18n="Basic Tables">Basic Tables</a>
+                            </li>
+                            <li><a class="menu-item" href="table-border.html" data-i18n="Table Border">Table Border</a>
+                            </li>
+                            <li class="active"><a class="menu-item" href="table-sizing.html" data-i18n="Table Sizing">Table Sizing</a>
+                            </li>
+                            <li><a class="menu-item" href="table-styling.html" data-i18n="Table Styling">Table Styling</a>
+                            </li>
+                            <li><a class="menu-item" href="table-components.html" data-i18n="Table Components">Table Components</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="DataTables">DataTables</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="dt-basic-initialization.html" data-i18n="Basic Initialisation">Basic Initialisation</a>
+                            </li>
+                            <li><a class="menu-item" href="dt-advanced-initialization.html" data-i18n="Advanced initialisation">Advanced initialisation</a>
+                            </li>
+                            <li><a class="menu-item" href="dt-styling.html" data-i18n="Styling">Styling</a>
+                            </li>
+                            <li><a class="menu-item" href="dt-data-sources.html" data-i18n="Data Sources">Data Sources</a>
+                            </li>
+                            <li><a class="menu-item" href="dt-api.html" data-i18n="API">API</a>
+                            </li>
+                            <li><a class="menu-item" href="#" data-i18n="DataTables Ext">DataTables Ext</a>
+                                <ul class="menu-content">
+                                    <li><a class="menu-item" href="dt-extensions-autofill.html" data-i18n="AutoFill">AutoFill</a>
+                                    </li>
+                                    <li><a class="menu-item" href="#" data-i18n="Buttons">Buttons</a>
+                                        <ul class="menu-content">
+                                            <li><a class="menu-item" href="dt-extensions-buttons-basic.html" data-i18n="Basic Buttons">Basic Buttons</a>
+                                            </li>
+                                            <li><a class="menu-item" href="dt-extensions-buttons-html-5-data-export.html" data-i18n="HTML 5 Data Export">HTML 5 Data Export</a>
+                                            </li>
+                                            <li><a class="menu-item" href="dt-extensions-buttons-flash-data-export.html" data-i18n="Flash Data Export">Flash Data Export</a>
+                                            </li>
+                                            <li><a class="menu-item" href="dt-extensions-buttons-column-visibility.html" data-i18n="Column Visibility">Column Visibility</a>
+                                            </li>
+                                            <li><a class="menu-item" href="dt-extensions-buttons-print.html" data-i18n="Print">Print</a>
+                                            </li>
+                                            <li><a class="menu-item" href="dt-extensions-buttons-api.html" data-i18n="API">API</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="menu-item" href="dt-extensions-column-reorder.html" data-i18n="Column Reorder">Column Reorder</a>
+                                    </li>
+                                    <li><a class="menu-item" href="dt-extensions-fixed-columns.html" data-i18n="Fixed Columns">Fixed Columns</a>
+                                    </li>
+                                    <li><a class="menu-item" href="dt-extensions-key-table.html" data-i18n="Key Table">Key Table</a>
+                                    </li>
+                                    <li><a class="menu-item" href="dt-extensions-row-reorder.html" data-i18n="Row Reorder">Row Reorder</a>
+                                    </li>
+                                    <li><a class="menu-item" href="dt-extensions-select.html" data-i18n="Select">Select</a>
+                                    </li>
+                                    <li><a class="menu-item" href="dt-extensions-fix-header.html" data-i18n="Fix Header">Fix Header</a>
+                                    </li>
+                                    <li><a class="menu-item" href="dt-extensions-responsive.html" data-i18n="Responsive">Responsive</a>
+                                    </li>
+                                    <li><a class="menu-item" href="dt-extensions-column-visibility.html" data-i18n="Column Visibility">Column Visibility</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-bar-chart-2"></i><span class="menu-title" data-i18n="Charts">Charts</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="charts-apexcharts.html" data-i18n="Apex Charts">Apex Charts</a>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="Chartjs">Chartjs</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="chartjs-line-charts.html" data-i18n="Line charts">Line charts</a>
+                            </li>
+                            <li><a class="menu-item" href="chartjs-bar-charts.html" data-i18n="Bar charts">Bar charts</a>
+                            </li>
+                            <li><a class="menu-item" href="chartjs-pie-doughnut-charts.html" data-i18n="Pie &amp; Doughnut charts">Pie &amp; Doughnut charts</a>
+                            </li>
+                            <li><a class="menu-item" href="chartjs-scatter-charts.html" data-i18n="Scatter charts">Scatter charts</a>
+                            </li>
+                            <li><a class="menu-item" href="chartjs-polar-radar-charts.html" data-i18n="Polar &amp; Radar charts">Polar &amp; Radar charts</a>
+                            </li>
+                            <li><a class="menu-item" href="chartjs-advance-charts.html" data-i18n="Advance charts">Advance charts</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="menu-item" href="morris-charts.html" data-i18n="Morris Charts">Morris Charts</a>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="Chartist">Chartist</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="chartist-line-charts.html" data-i18n="Line charts">Line charts</a>
+                            </li>
+                            <li><a class="menu-item" href="chartist-bar-charts.html" data-i18n="Bar charts">Bar charts</a>
+                            </li>
+                            <li><a class="menu-item" href="chartist-pie-charts.html" data-i18n="Pie charts">Pie charts</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-map"></i><span class="menu-title" data-i18n="Maps">Maps</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="maps-leaflet.html" data-i18n="Leaflet Maps">Leaflet Maps</a>
+                    </li>
+                    <li><a class="menu-item" href="vector-maps-jvector.html" data-i18n="jVector Map">jVector Map</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" navigation-header"><span>Others</span><i class=" feather icon-minus" data-toggle="tooltip" data-placement="right" data-original-title="Others"></i>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-align-left"></i><span class="menu-title" data-i18n="Menu levels">Menu levels</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="#" data-i18n="Second level">Second level</a>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="Second level child">Second level child</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="#" data-i18n="Third level">Third level</a>
+                            </li>
+                            <li><a class="menu-item" href="#" data-i18n="Third level child">Third level child</a>
+                                <ul class="menu-content">
+                                    <li><a class="menu-item" href="#" data-i18n="Fourth level">Fourth level</a>
+                                    </li>
+                                    <li><a class="menu-item" href="#" data-i18n="Fourth level">Fourth level</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="disabled nav-item"><a href="#"><i class="feather icon-slash"></i><span class="menu-title" data-i18n="Disabled Menu">Disabled Menu</span></a>
+            </li>
+            <li class=" nav-item"><a href="https://pixinvent.ticksy.com/" target="_blank"><i class="feather icon-life-buoy"></i><span class="menu-title" data-i18n="Raise Support">Raise Support</span></a>
+            </li>
+            <li class=" nav-item"><a href="../../../documentation/index.html" target="_blank"><i class="feather icon-folder"></i><span class="menu-title" data-i18n="Documentation">Documentation</span></a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- END: Main Menu-->
 
-                        <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
-                            <div class="flex items-center">
-                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold text-gray-900 dark:text-white">Vibrant Ecosystem</div>
-                            </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laravel's robust library of first-party tools and libraries, such as <a href="https://forge.laravel.com" class="underline">Forge</a>, <a href="https://vapor.laravel.com" class="underline">Vapor</a>, <a href="https://nova.laravel.com" class="underline">Nova</a>, and <a href="https://envoyer.io" class="underline">Envoyer</a> help you take your projects to the next level. Pair them with powerful open source libraries like <a href="https://laravel.com/docs/billing" class="underline">Cashier</a>, <a href="https://laravel.com/docs/dusk" class="underline">Dusk</a>, <a href="https://laravel.com/docs/broadcasting" class="underline">Echo</a>, <a href="https://laravel.com/docs/horizon" class="underline">Horizon</a>, <a href="https://laravel.com/docs/sanctum" class="underline">Sanctum</a>, <a href="https://laravel.com/docs/telescope" class="underline">Telescope</a>, and more.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
-                    <div class="text-center text-sm text-gray-500 sm:text-left">
-                        <div class="flex items-center">
-                            <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" class="-mt-px w-5 h-5 text-gray-400">
-                                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                            </svg>
-
-                            <a href="https://laravel.bigcartel.com" class="ml-1 underline">
-                                Shop
-                            </a>
-
-                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="ml-4 -mt-px w-5 h-5 text-gray-400">
-                                <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                            </svg>
-
-                            <a href="https://github.com/sponsors/taylorotwell" class="ml-1 underline">
-                                Sponsor
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
-                        Build v{{ Illuminate\Foundation\Application::VERSION }}
+<!-- BEGIN: Content-->
+<div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-header row">
+            <div class="content-header-left col-md-6 col-12 mb-2">
+                <h3 class="content-header-title mb-0">Tables Sizing</h3>
+                <div class="row breadcrumbs-top">
+                    <div class="breadcrumb-wrapper col-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#">Tables</a>
+                            </li>
+                            <li class="breadcrumb-item active">Tables Sizing
+                            </li>
+                        </ol>
                     </div>
                 </div>
             </div>
+            <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
+                <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-outline-primary dropdown-toggle dropdown-menu-right" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="feather icon-settings icon-left"></i> Settings</button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="card-bootstrap.html">Bootstrap Cards</a><a class="dropdown-item" href="component-buttons-extended.html">Buttons Extended</a></div>
+                    </div><a class="btn btn-outline-primary" href="full-calender-basic.html"><i class="feather icon-mail"></i></a><a class="btn btn-outline-primary" href="timeline-center.html"><i class="feather icon-pie-chart"></i></a>
+                </div>
+            </div>
         </div>
-    </body>
+        <div class="content-body"><!-- Extra large table start -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Extra large table</h4>
+                            <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                    <li><a data-action="reload"><i class="feather icon-rotate-cw"></i></a></li>
+                                    <li><a data-action="expand"><i class="feather icon-maximize"></i></a></li>
+                                    <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body card-dashboard">
+                                <p class="card-text">Example of Extra large table, Add <code>.table-xl</code> class to the <code>.table</code> to create a table with extra large spacing. Extra larger table all rows have <code>1.25rem</code> height.</p>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-xl mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Username</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Extra large table end -->
+
+            <!-- Large table start -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Large table</h4>
+                            <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                    <li><a data-action="reload"><i class="feather icon-rotate-cw"></i></a></li>
+                                    <li><a data-action="expand"><i class="feather icon-maximize"></i></a></li>
+                                    <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body card-dashboard">
+                                <p class="card-text">Example of large table, Add <code>.table-lg</code> class to the <code>.table</code> to create a table with large spacing. Larger table all rows have <code>0.9rem</code> height.</p>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-lg mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Username</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Large table end -->
+
+            <!-- Default table start -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Default table</h4>
+                            <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                    <li><a data-action="reload"><i class="feather icon-rotate-cw"></i></a></li>
+                                    <li><a data-action="expand"><i class="feather icon-maximize"></i></a></li>
+                                    <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body card-dashboard">
+                                <p class="card-text">Example of default table, Add <code>.table-de</code> class to the <code>.table</code> to create a table with default spacing. Default table all rows have <code>0.75rem</code> height.</p>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-de mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Username</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Default table end -->
+
+            <!-- Small table start -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Small table</h4>
+                            <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                    <li><a data-action="reload"><i class="feather icon-rotate-cw"></i></a></li>
+                                    <li><a data-action="expand"><i class="feather icon-maximize"></i></a></li>
+                                    <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body card-dashboard">
+                                <p class="card-text">Example of small table, Add <code>.table-sm</code> class to the <code>.table</code> to create a table with small spacing. Small table all rows have <code>0.6rem</code> height.</p>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-sm mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Username</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Small table end -->
+
+            <!-- Extra Small table start -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Extra Small table</h4>
+                            <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                    <li><a data-action="reload"><i class="feather icon-rotate-cw"></i></a></li>
+                                    <li><a data-action="expand"><i class="feather icon-maximize"></i></a></li>
+                                    <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body card-dashboard">
+                                <p class="card-text">Example of extra small table, Add <code>.table-xs</code> class to the <code>.table</code> to create a table with extra small spacing. Extra small table all rows have <code>0.4rem</code> height.</p>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-xs">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Username</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Extra Small table end -->
+        </div>
+    </div>
+</div>
+<!-- END: Content-->
+
+
+<!-- BEGIN: Customizer-->
+<div class="customizer border-left-blue-grey border-left-lighten-4 d-none d-xl-block"><a class="customizer-close" href="#"><i class="feather icon-x font-medium-3"></i></a><a class="customizer-toggle bg-danger" href="#"><i class="feather icon-settings font-medium-3 fa-spin fa fa-spin fa-fw white"></i></a><div class="customizer-content p-2">
+        <h4 class="text-uppercase mb-0">Theme Customizer</h4>
+        <hr>
+        <p>Customize & Preview in Real Time</p>
+
+        <h5 class="mt-1 text-bold-500">Layout Options</h5>
+        <ul class="nav nav-tabs nav-underline nav-justified layout-options">
+            <li class="nav-item">
+                <a class="nav-link layouts active" id="baseIcon-tab21-base" data-toggle="tab" aria-controls="tabIcon21-base" href="#tabIcon21-base" aria-expanded="true">Layouts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link navigation" id="baseIcon-tab22-base" data-toggle="tab" aria-controls="tabIcon22-base" href="#tabIcon22-base" aria-expanded="false">Navigation</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link navbar" id="baseIcon-tab23-base" data-toggle="tab" aria-controls="tabIcon23-base" href="#tabIcon23-base" aria-expanded="false">Navbar</a>
+            </li>
+        </ul>
+        <div class="tab-content px-1 pt-1">
+            <div role="tabpanel" class="tab-pane active" id="tabIcon21-base" aria-expanded="true" aria-labelledby="baseIcon-tab21-base">
+
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" name="collapsed-sidebar" id="collapsed-sidebar">
+                    <label class="custom-control-label" for="collapsed-sidebar">Collapsed Menu</label>
+                </div>
+
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" name="fixed-layout" id="fixed-layout">
+                    <label class="custom-control-label" for="fixed-layout">Fixed Layout</label>
+                </div>
+
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" name="boxed-layout" id="boxed-layout">
+                    <label class="custom-control-label" for="boxed-layout">Boxed Layout</label>
+                </div>
+
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" name="static-layout" id="static-layout">
+                    <label class="custom-control-label" for="static-layout">Static Layout</label>
+                </div>
+
+            </div>
+            <div class="tab-pane" id="tabIcon22-base" aria-labelledby="baseIcon-tab22-base">
+
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" name="native-scroll" id="native-scroll">
+                    <label class="custom-control-label" for="native-scroll">Native Scroll</label>
+                </div>
+
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" name="right-side-icons" id="right-side-icons">
+                    <label class="custom-control-label" for="right-side-icons">Right Side Icons</label>
+                </div>
+
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" name="bordered-navigation" id="bordered-navigation">
+                    <label class="custom-control-label" for="bordered-navigation">Bordered Navigation</label>
+                </div>
+
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" name="flipped-navigation" id="flipped-navigation">
+                    <label class="custom-control-label" for="flipped-navigation">Flipped Navigation</label>
+                </div>
+
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" name="collapsible-navigation" id="collapsible-navigation">
+                    <label class="custom-control-label" for="collapsible-navigation">Collapsible Navigation</label>
+                </div>
+
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" name="static-navigation" id="static-navigation">
+                    <label class="custom-control-label" for="static-navigation">Static Navigation</label>
+                </div>
+
+            </div>
+            <div class="tab-pane" id="tabIcon23-base" aria-labelledby="baseIcon-tab23-base">
+
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" name="brand-center" id="brand-center">
+                    <label class="custom-control-label" for="brand-center">Brand Center</label>
+                </div>
+
+                <div class="custom-control custom-checkbox mb-1">
+                    <input type="checkbox" class="custom-control-input" name="navbar-static-top" id="navbar-static-top">
+                    <label class="custom-control-label" for="navbar-static-top">Static Top</label>
+                </div>
+
+            </div>
+        </div>
+
+        <hr>
+
+        <h5 class="mt-1 text-bold-500">Navigation Color Options</h5>
+        <ul class="nav nav-tabs nav-underline nav-justified color-options">
+            <li class="nav-item">
+                <a class="nav-link nav-semi-light active" id="color-opt-1" data-toggle="tab" aria-controls="clrOpt1" href="#clrOpt1" aria-expanded="false">Semi Light</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-semi-dark" id="color-opt-2" data-toggle="tab" aria-controls="clrOpt2" href="#clrOpt2" aria-expanded="false">Semi Dark</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-dark" id="color-opt-3" data-toggle="tab" aria-controls="clrOpt3" href="#clrOpt3" aria-expanded="false">Dark</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-light" id="color-opt-4" data-toggle="tab" aria-controls="clrOpt4" href="#clrOpt4" aria-expanded="true">Light</a>
+            </li>
+        </ul>
+        <div class="tab-content px-1 pt-1">
+            <div role="tabpanel" class="tab-pane active" id="clrOpt1" aria-expanded="true" aria-labelledby="color-opt-1">
+                <div class="row">
+                    <div class="col-6">
+                        <h6>Solid</h6>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" class="custom-control-input bg-blue-grey" data-bg="bg-blue-grey" id="default-solid">
+                            <label class="custom-control-label" for="default-solid">Default</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" class="custom-control-input bg-primary" data-bg="bg-primary" id="primary-solid">
+                            <label class="custom-control-label" for="primary-solid">Primary</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" class="custom-control-input bg-danger" data-bg="bg-danger" id="danger-solid">
+                            <label class="custom-control-label" for="danger-solid">Danger</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" class="custom-control-input bg-success" data-bg="bg-success" id="success-solid">
+                            <label class="custom-control-label" for="success-solid">Success</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" class="custom-control-input bg-blue" data-bg="bg-blue" id="blue">
+                            <label class="custom-control-label" for="blue">Blue</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" class="custom-control-input bg-cyan" data-bg="bg-cyan" id="cyan">
+                            <label class="custom-control-label" for="cyan">Cyan</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" class="custom-control-input bg-pink" data-bg="bg-pink" id="pink">
+                            <label class="custom-control-label" for="pink">Pink</label>
+                        </div>
+
+                    </div>
+                    <div class="col-6">
+                        <h6>Gradient</h6>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" checked class="custom-control-input bg-blue-grey" data-bg="bg-gradient-x-grey-blue" id="bg-gradient-x-grey-blue">
+                            <label class="custom-control-label" for="bg-gradient-x-grey-blue">Default</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" class="custom-control-input bg-primary" data-bg="bg-gradient-x-primary" id="bg-gradient-x-primary">
+                            <label class="custom-control-label" for="bg-gradient-x-primary">Primary</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" class="custom-control-input bg-danger" data-bg="bg-gradient-x-danger" id="bg-gradient-x-danger">
+                            <label class="custom-control-label" for="bg-gradient-x-danger">Danger</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" class="custom-control-input bg-success" data-bg="bg-gradient-x-success" id="bg-gradient-x-success">
+                            <label class="custom-control-label" for="bg-gradient-x-success">Success</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" class="custom-control-input bg-blue" data-bg="bg-gradient-x-blue" id="bg-gradient-x-blue">
+                            <label class="custom-control-label" for="bg-gradient-x-blue">Blue</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" class="custom-control-input bg-cyan" data-bg="bg-gradient-x-cyan" id="bg-gradient-x-cyan">
+                            <label class="custom-control-label" for="bg-gradient-x-cyan">Cyan</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-slight-clr" class="custom-control-input bg-pink" data-bg="bg-gradient-x-pink" id="bg-gradient-x-pink">
+                            <label class="custom-control-label" for="bg-gradient-x-pink">Pink</label>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="clrOpt2" aria-labelledby="color-opt-2">
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-sdark-clr" checked class="custom-control-input bg-default" data-bg="bg-default" id="opt-default">
+                    <label class="custom-control-label" for="opt-default">Default</label>
+                </div>
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-sdark-clr" class="custom-control-input bg-primary" data-bg="bg-primary" id="opt-primary">
+                    <label class="custom-control-label" for="opt-primary">Primary</label>
+                </div>
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-sdark-clr" class="custom-control-input bg-danger" data-bg="bg-danger" id="opt-danger">
+                    <label class="custom-control-label" for="opt-danger">Danger</label>
+                </div>
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-sdark-clr" class="custom-control-input bg-success" data-bg="bg-success" id="opt-success">
+                    <label class="custom-control-label" for="opt-success">Success</label>
+                </div>
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-sdark-clr" class="custom-control-input bg-blue" data-bg="bg-blue" id="opt-blue">
+                    <label class="custom-control-label" for="opt-blue">Blue</label>
+                </div>
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-sdark-clr" class="custom-control-input bg-cyan" data-bg="bg-cyan" id="opt-cyan">
+                    <label class="custom-control-label" for="opt-cyan">Cyan</label>
+                </div>
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-sdark-clr" class="custom-control-input bg-pink" data-bg="bg-pink" id="opt-pink">
+                    <label class="custom-control-label" for="opt-pink">Pink</label>
+                </div>
+
+            </div>
+            <div class="tab-pane" id="clrOpt3" aria-labelledby="color-opt-3">
+                <div class="row">
+                    <div class="col-6">
+                        <h3>Solid</h3>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" class="custom-control-input bg-blue-grey" data-bg="bg-blue-grey" id="solid-blue-grey">
+                            <label class="custom-control-label" for="solid-blue-grey">Default</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" class="custom-control-input bg-primary" data-bg="bg-primary" id="solid-primary">
+                            <label class="custom-control-label" for="solid-primary">Primary</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" class="custom-control-input bg-danger" data-bg="bg-danger" id="solid-danger">
+                            <label class="custom-control-label" for="solid-danger">Danger</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" class="custom-control-input bg-success" data-bg="bg-success" id="solid-success">
+                            <label class="custom-control-label" for="solid-success">Success</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" class="custom-control-input bg-blue" data-bg="bg-blue" id="solid-blue">
+                            <label class="custom-control-label" for="solid-blue">Blue</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" class="custom-control-input bg-cyan" data-bg="bg-cyan" id="solid-cyan">
+                            <label class="custom-control-label" for="solid-cyan">Cyan</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" class="custom-control-input bg-pink" data-bg="bg-pink" id="solid-pink">
+                            <label class="custom-control-label" for="solid-pink">Pink</label>
+                        </div>
+
+                    </div>
+
+                    <div class="col-6">
+                        <h3>Gradient</h3>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" class="custom-control-input bg-blue-grey" data-bg="bg-gradient-x-grey-blue" id="bg-gradient-x-grey-blue1">
+                            <label class="custom-control-label" for="bg-gradient-x-grey-blue1">Default</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" checked class="custom-control-input bg-primary" data-bg="bg-gradient-x-primary" id="bg-gradient-x-primary1">
+                            <label class="custom-control-label" for="bg-gradient-x-primary1">Primary</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" checked class="custom-control-input bg-danger" data-bg="bg-gradient-x-danger" id="bg-gradient-x-danger1">
+                            <label class="custom-control-label" for="bg-gradient-x-danger1">Danger</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" checked class="custom-control-input bg-success" data-bg="bg-gradient-x-success" id="bg-gradient-x-success1">
+                            <label class="custom-control-label" for="bg-gradient-x-success1">Success</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" checked class="custom-control-input bg-blue" data-bg="bg-gradient-x-blue" id="bg-gradient-x-blue1">
+                            <label class="custom-control-label" for="bg-gradient-x-blue1">Blue</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" checked class="custom-control-input bg-cyan" data-bg="bg-gradient-x-cyan" id="bg-gradient-x-cyan1">
+                            <label class="custom-control-label" for="bg-gradient-x-cyan1">Cyan</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mb-1">
+                            <input type="radio" name="nav-dark-clr" checked class="custom-control-input bg-pink" data-bg="bg-gradient-x-pink" id="bg-gradient-x-pink1">
+                            <label class="custom-control-label" for="bg-gradient-x-pink1">Pink</label>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="clrOpt4" aria-labelledby="color-opt-4">
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-light-clr" class="custom-control-input bg-blue-grey" data-bg="bg-blue-grey bg-lighten-4" id="light-blue-grey">
+                    <label class="custom-control-label" for="light-blue-grey">Default</label>
+                </div>
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-light-clr" class="custom-control-input bg-primary" data-bg="bg-primary bg-lighten-4" id="light-primary">
+                    <label class="custom-control-label" for="light-primary">Primary</label>
+                </div>
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-light-clr" class="custom-control-input bg-danger" data-bg="bg-danger bg-lighten-4" id="light-danger">
+                    <label class="custom-control-label" for="light-danger">Danger</label>
+                </div>
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-light-clr" class="custom-control-input bg-success" data-bg="bg-success bg-lighten-4" id="light-success">
+                    <label class="custom-control-label" for="light-success">Success</label>
+                </div>
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-light-clr" class="custom-control-input bg-blue" data-bg="bg-blue bg-lighten-4" id="light-blue">
+                    <label class="custom-control-label" for="light-blue">Blue</label>
+                </div>
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-light-clr" class="custom-control-input bg-cyan" data-bg="bg-cyan bg-lighten-4" id="light-cyan">
+                    <label class="custom-control-label" for="light-cyan">Cyan</label>
+                </div>
+
+                <div class="custom-control custom-radio mb-1">
+                    <input type="radio" name="nav-light-clr" class="custom-control-input bg-pink" data-bg="bg-pink bg-lighten-4" id="light-pink">
+                    <label class="custom-control-label" for="light-pink">Pink</label>
+                </div>
+
+            </div>
+        </div>
+
+        <hr>
+
+        <h5 class="mt-1 mb-1 text-bold-500">Menu Color Options</h5>
+        <div class="form-group">
+            <!-- Outline Button group -->
+            <div class="btn-group customizer-sidebar-options" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-outline-info" data-sidebar="menu-light">Light Menu</button>
+                <button type="button" class="btn btn-outline-info" data-sidebar="menu-dark">Dark Menu</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End: Customizer-->
+
+<!-- Buynow Button-->
+<div class="buy-now"><a href="https://1.envato.market/stack_admin" target="_blank" class="btn bg-gradient-directional-purple white btn-purple btn-glow px-2">Buy Now</a></div>
+<div class="sidenav-overlay"></div>
+<div class="drag-target"></div>
+
+<!-- BEGIN: Footer-->
+<footer class="footer footer-static footer-dark navbar-border">
+    <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">Copyright  &copy; 2020 <a class="text-bold-800 grey darken-2" href="https://1.envato.market/pixinvent_portfolio" target="_blank">PIXINVENT 			</a></span><span class="float-md-right d-none d-lg-block">Hand-crafted & Made with <i class="feather icon-heart pink"></i></span></p>
+</footer>
+<!-- END: Footer-->
+
+
+<!-- BEGIN: Vendor JS-->
+<script src="../../../app-assets/vendors/js/vendors.min.js"></script>
+<!-- BEGIN Vendor JS-->
+
+<!-- BEGIN: Page Vendor JS-->
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Theme JS-->
+<script src="../../../app-assets/js/core/app-menu.min.js"></script>
+<script src="../../../app-assets/js/core/app.min.js"></script>
+<script src="../../../app-assets/js/scripts/customizer.min.js"></script>
+<!-- END: Theme JS-->
+
+<!-- BEGIN: Page JS-->
+<!-- END: Page JS-->
+
+</body>
+<!-- END: Body-->
 </html>
