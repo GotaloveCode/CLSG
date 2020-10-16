@@ -11,14 +11,17 @@ class EoiReview extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $content;
+    public $user;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($content)
     {
-        //
+        $this->content = $content;
+        $this->user = auth()->user();
     }
 
     /**
@@ -28,6 +31,7 @@ class EoiReview extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.eoi.review');
+        return $this->subject("EOI Review")
+         ->markdown('emails.eoi.review');
     }
 }

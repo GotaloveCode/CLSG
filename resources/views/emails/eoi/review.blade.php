@@ -1,10 +1,10 @@
 @component('mail::message')
-# Hello 
+# Hello {{$user->name}}
 
-The body of your message.
+{{$content}}.
 
 @component('mail::button', ['url' => ''])
-Button Text
+Preview
 @endcomponent
 
 Thanks,<br>
