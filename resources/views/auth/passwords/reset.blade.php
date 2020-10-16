@@ -1,65 +1,67 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+    <div class="col-lg-4 col-md-8 col-10 box-shadow-2 p-0">
+        <div class="row justify-content-center">
+            <div class="card border-grey border-lighten-3 m-0">
+                <div class="card-header border-0">
+                    <div class="card-title text-center">
+                        <div class="p-1"><img src="{{asset('images/logo.png')}}"
+                                              alt="logo"></div>
+                    </div>
+                    <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2">
+                        <span>Reset Password</span></h6>
+                </div>
+                <div class="card-content">
+                    <div class="card-body">
+                        <form method="POST" class="form-horizontal form-simple" action="{{ route('password.update') }}">
+                            @csrf
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('password.update') }}">
-                        @csrf
-
-                        <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
-
+                            <input type="hidden" name="token" value="{{ $token }}">
+                            <fieldset class="form-group position-relative has-icon-left">
+                                <input id="email" type="email"
+                                       class="form-control form-control-lg @error('email') is-invalid @enderror"
+                                       name="email" value="{{ $email ?? old('email') }}"
+                                       placeholder="Your Email Address" required autocomplete="email" autofocus>
+                                <div class="form-control-position">
+                                    <i class="feather icon-mail"></i>
+                                </div>
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
+                                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
+                            </fieldset>
+                            <fieldset class="form-group position-relative has-icon-left mb-1">
+                                <input type="password"
+                                       class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                       id="password" name="password"
+                                       placeholder="Enter Password" required autocomplete="new-password">
+                                <div class="form-control-position">
+                                    <i class="fa fa-key"></i>
+                                </div>
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
+                                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Reset Password') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                            </fieldset>
+                            <fieldset class="form-group position-relative has-icon-left">
+                                <input type="password"
+                                       class="form-control form-control-lg"
+                                       id="password-confirm" name="password_confirmation"
+                                       placeholder="Confirm Password" required autocomplete="new-password">
+                                <div class="form-control-position">
+                                    <i class="fa fa-key"></i>
+                                </div>
+                            </fieldset>
+                            <button type="submit" class="btn btn-primary btn-lg btn-block"><i
+                                    class="feather icon-unlock"></i> Reset Password
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection

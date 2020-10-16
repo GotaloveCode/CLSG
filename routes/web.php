@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('content');
+});
+Route::get('/preview', function () {
+    return view('index');
 });
 
 Auth::routes();
@@ -26,8 +29,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('wsps/export', 'WspController@import_view')->name('wsps.export');
     Route::post('wsps/import','WspController@import')->name('wsps.import');
 
-    Route::get('eois', 'EoiController@index');
-    Route::get('eois/list', 'EoiController@list')->name('eois.list');
+
+    Route::get('eois', 'EoiController@list_view');
+    Route::get('eois/list', 'EoiController@index')->name('eois.list');
     Route::get('eoi', 'EoiController@create');
     Route::post('eoi', 'EoiController@store')->name('eoi.store');
 
@@ -40,6 +44,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('eoi/{eoi}/review','EoiController@review')->name('eoi.review');
     Route::post('eoi/{eoi}/comment', 'EoiController@comment')->name('eoi.comment');
     Route::get('eoi/{eoi}/commitment_letter', 'EoiController@commitment_letter')->name('eoi.commitment_letter');
+
+    Route::resource('users', App\Http\Controllers\UserController::class)->only('index');
 
 //    Route::get('eoi/{eoi}/services', [App\Http\Controllers\EoiController::class, 'services'])->name('eoi.services');
 //    Route::post('eoi/{eoi}/services', [App\Http\Controllers\EoiController::class, 'update_services'])->name('eoi.services.update');

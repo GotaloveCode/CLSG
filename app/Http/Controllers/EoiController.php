@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EoiComment;
+use App\Mail\EoiReview;
 use App\Http\Requests\EoiCommentRequest;
 use App\Http\Requests\EoiRequest;
 use App\Http\Requests\EoiReviewRequest;
@@ -13,6 +15,7 @@ use App\Models\Service;
 use App\Traits\EoiAuthTrait;
 use App\Traits\FilesTrait;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -20,13 +23,13 @@ class EoiController extends Controller
 {
     use FilesTrait, EoiAuthTrait;
 
-    public function index()
+    public function list_view()
     {
         return view('eoi.index');
     }
 
 
-    public function list()
+    public function index()
     {
         $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at')
             ->with('wsp:id,name');
@@ -136,7 +139,7 @@ class EoiController extends Controller
         $eoi->save();
 
         //todo: notification of action
-
+          Mail::to(auth()->user()->email)->send(new EoiReview());
         $route = route('eoi.preview', $eoi->id);
 
         if ($request->status == 'WFT Approved') {
@@ -159,7 +162,7 @@ class EoiController extends Controller
             'description' => $request->description,
             'user_id' => auth()->id()
         ]);
-
+        Mail::to(auth()->user()->email)->send(new EioComment($request->description));
         //todo: notification on activity
 
         return response()->json(['message' => 'Comment posted successfully']);
