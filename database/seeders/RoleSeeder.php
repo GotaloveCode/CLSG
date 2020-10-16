@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Wsp;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -42,11 +43,36 @@ class RoleSeeder extends Seeder
 
         $user = User::firstOrCreate([
             'name' => 'Wasreb Admin'],
-            ['email' => 'admin@wareb.com',
+            ['email' => 'admin@wasreb.test',
                 'password' => bcrypt('password')
             ]);
 
         $user->assignRole($wasreb);
+
+        $user = User::firstOrCreate([
+            'email' => 'info@nairobiwater.test'],
+            [  'name' => 'Nairobi Water & Sewerage Company',
+                'password' => bcrypt('password')
+            ]);
+
+        $user->assignRole($wsp);
+
+        $water_company = Wsp::firstOrCreate([
+            'name' => 'Nairobi Water & Sewerage Company'],
+            [
+                'email' => 'info@nairobiwater.test',
+                'acronym' => 'NWS',
+                'postal_address' => '494',
+                'physical_address' => 'Westlands',
+                'postal_code_id' => 12,
+                'managing_director' => 'Alehandro DMore'
+            ]);
+
+        $user_exists = $water_company->users->contains($user->id);
+
+        if (!$user_exists) {
+            $water_company->users()->attach($user->id);
+        }
 
     }
 }

@@ -15,7 +15,7 @@ class Wsp extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'acronym', 'postal_address', 'physical_address', 'postal_code_id'
+        'name', 'email', 'acronym', 'postal_address', 'physical_address', 'postal_code_id','managing_director'
     ];
 
     /**
