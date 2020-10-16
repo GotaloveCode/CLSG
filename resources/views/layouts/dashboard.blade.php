@@ -11,14 +11,17 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i"
+        rel="stylesheet">
 
     <!-- Styles -->
 {{--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"--}}
 {{--          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">--}}
 {{--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
-    <!-- BEGIN: Vendor CSS-->
+<!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/vendors.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -31,12 +34,12 @@
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/colors/palette-gradient.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/pages/project.min.css') }}">
+{{--    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/pages/pages-users.min.css') }}">--}}
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
 {{--    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">--}}
-    <!-- END: Custom CSS-->
+<!-- END: Custom CSS-->
 
     @stack('css')
 </head>
@@ -45,20 +48,27 @@
 <div id="app">
     @include('layouts.partials.header')
     @include('layouts.partials.sidebar')
-    @yield('content')
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+{{--            <div class="content-body">--}}
+                @yield('content')
+{{--            </div>--}}
+        </div>
+    </div>
     @include('layouts.partials.footer')
 </div>
 
 
 <!-- Scripts -->
-<script src="{{ asset('js/app.js') }}"></script>
+{{--<script src="{{ asset('js/app.js') }}"></script>--}}
 
 <!-- BEGIN: Vendor JS-->
 <script src="{{ asset('app-assets/vendors/js/vendors.min.js') }}"></script>
 <!-- BEGIN Vendor JS-->
 
 <!-- BEGIN: Page Vendor JS-->
-<script src="{{ asset('app-assets/vendors/js/charts/apexcharts/apexcharts.min.js') }}"></script>
+<script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
 <!-- END: Page Vendor JS-->
 
 <!-- BEGIN: Theme JS-->
@@ -68,7 +78,7 @@
 <!-- END: Theme JS-->
 
 <!-- BEGIN: Page JS-->
-<script src="{{ asset('app-assets/js/scripts/pages/project-summary.min.js') }}"></script>
+{{--<script src="{{ asset('app-assets/js/scripts/pages/page-users.min.js') }}"></script>--}}
 <!-- END: Page JS-->
 @stack('scripts')
 </body>

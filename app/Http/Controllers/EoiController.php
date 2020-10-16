@@ -20,13 +20,13 @@ class EoiController extends Controller
 {
     use FilesTrait, EoiAuthTrait;
 
-    public function index()
+    public function list_view()
     {
         return view('eoi.index');
     }
 
 
-    public function list()
+    public function index()
     {
         $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at')
             ->with('wsp:id,name');
