@@ -22,27 +22,27 @@ Route::get('/preview', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::get('wsps/export', [App\Http\Controllers\WspController::class, 'import_view'])->name('wsps.export');
-    Route::post('wsps/import', [App\Http\Controllers\WspController::class, 'import'])->name('wsps.import');
+    Route::get('wsps/export', 'WspController@import_view')->name('wsps.export');
+    Route::post('wsps/import','WspController@import')->name('wsps.import');
 
-    Route::get('eois', [App\Http\Controllers\EoiController::class, 'list_view']);
-    Route::get('eois/list', [App\Http\Controllers\EoiController::class, 'index'])->name('eois.list');
-    Route::get('eois', [App\Http\Controllers\EoiController::class, 'create']);
-    Route::post('eois', [App\Http\Controllers\EoiController::class, 'store'])->name('eoi.store');
+    Route::get('eois', 'EoiController@index');
+    Route::get('eois/list', 'EoiController@list')->name('eois.list');
+    Route::get('eoi', 'EoiController@create');
+    Route::post('eoi', 'EoiController@store')->name('eoi.store');
 
-    Route::get('eoi/attachments/{filename}', [App\Http\Controllers\EoiAttachmentController::class, 'show'])->name('eoi.attachments.show');
-    Route::delete('eoi/attachments/{attachment}', [App\Http\Controllers\EoiAttachmentController::class, 'destroy'])->name('eoi.attachments.destroy');
-    Route::get('eoi/{eoi}/attachments', [App\Http\Controllers\EoiAttachmentController::class, 'index'])->name('eoi.attachments');
-    Route::post('eoi/{eoi}/attachments', [App\Http\Controllers\EoiAttachmentController::class, 'store'])->name('eoi.attachments.store');
+    Route::get('eoi/attachments/{filename}', 'EoiAttachmentController@show')->name('eoi.attachments.show');
+    Route::delete('eoi/attachments/{attachment}', 'EoiAttachmentController@destroy')->name('eoi.attachments.destroy');
+    Route::get('eoi/{eoi}/attachments', 'EoiAttachmentController@index')->name('eoi.attachments');
+    Route::post('eoi/{eoi}/attachments','EoiAttachmentController@store')->name('eoi.attachments.store');
 
-    Route::get('eoi/{eoi}/review', [App\Http\Controllers\EoiController::class, 'preview'])->name('eoi.preview');
-    Route::post('eoi/{eoi}/review', [App\Http\Controllers\EoiController::class, 'review'])->name('eoi.review');
-    Route::post('eoi/{eoi}/comment', [App\Http\Controllers\EoiController::class, 'comment'])->name('eoi.comment');
-    Route::get('eoi/{eoi}/commitment_letter', [App\Http\Controllers\EoiController::class, 'commitment_letter'])->name('eoi.commitment_letter');
+    Route::get('eoi/{eoi}/review', 'EoiController@preview')->name('eoi.preview');
+    Route::post('eoi/{eoi}/review','EoiController@review')->name('eoi.review');
+    Route::post('eoi/{eoi}/comment', 'EoiController@comment')->name('eoi.comment');
+    Route::get('eoi/{eoi}/commitment_letter', 'EoiController@commitment_letter')->name('eoi.commitment_letter');
 
     Route::resource('users', App\Http\Controllers\UserController::class)->only('index');
 
