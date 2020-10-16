@@ -10,7 +10,14 @@
                     </li>
                 </ul>
             </li>
-
+            <li class="nav-item"><a href="#"><i class="feather icon-edit"></i><span class="menu-title" data-i18n="Eois">EOIs</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="{{ route('eois.create') }}" data-i18n="Eoi List">Create EOI</a>
+                    </li>
+                    <li><a class="menu-item" href="{{ route('eois.index') }}" data-i18n="Eoi List">EOI List</a>
+                    </li>
+                </ul>
+            </li>
             <li class=" nav-item"><a href="#"><i class="feather icon-user"></i><span class="menu-title" data-i18n="Users">Users</span></a>
                 <ul class="menu-content">
                     <li><a class="menu-item" href="{{ route('users.index') }}" data-i18n="Users List">Users List</a>

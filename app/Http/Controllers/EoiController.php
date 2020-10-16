@@ -23,14 +23,12 @@ class EoiController extends Controller
 {
     use FilesTrait, EoiAuthTrait;
 
-    public function list_view()
-    {
-        return view('eoi.index');
-    }
-
-
     public function index()
     {
+        if(!request()->ajax()){
+            return view('eoi.index');
+        }
+
         $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at')
             ->with('wsp:id,name');
 //        ->ofStatus('published')
@@ -170,6 +168,9 @@ class EoiController extends Controller
 
     public function commitment_letter(Eoi $eoi)
     {
+        if($eoi->status !== 'WFT Approved'){
+            return redirect()->back()->withErrors("Expression of Interest must have been approved by Water Trust Fund");
+        }
         $eoi = $eoi->load(['wsp', 'wsp.postalcode']);
         return view('wsps.commitment-letter')->with(compact('eoi'));
     }

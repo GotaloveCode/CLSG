@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\EoiAttachmentController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,10 +32,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('wsps/import','WspController@import')->name('wsps.import');
 
 
-    Route::get('eois', 'EoiController@list_view');
+
+
     Route::get('eois/list', 'EoiController@index')->name('eois.list');
     Route::get('eoi', 'EoiController@create');
     Route::post('eoi', 'EoiController@store')->name('eoi.store');
+
+    Route::resource('eois', 'EoiController')->only('index','store','create');
 
     Route::get('eoi/attachments/{filename}', 'EoiAttachmentController@show')->name('eoi.attachments.show');
     Route::delete('eoi/attachments/{attachment}', 'EoiAttachmentController@destroy')->name('eoi.attachments.destroy');

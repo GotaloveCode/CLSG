@@ -17,7 +17,7 @@
                         @csrf
                         <fieldset class="form-group position-relative has-icon-left mb-0">
                             <input type="email"
-                                   class="form-control form-control-lg @error('email') is-invalid @enderror" id="email"
+                                   class="form-control form-control-lg @error('email') is-invalid @enderror" name="email"
                                    placeholder="Your Email" required autocomplete="email" autofocus>
                             <div class="form-control-position">
                                 <i class="feather icon-user"></i>

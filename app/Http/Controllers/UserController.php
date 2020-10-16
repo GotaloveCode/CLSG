@@ -7,7 +7,6 @@ use App\Mail\UserCreatedMailable;
 use App\Traits\GenerateTokenTrait;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
-use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
