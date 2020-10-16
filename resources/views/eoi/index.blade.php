@@ -26,7 +26,7 @@
             $('#eois-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{!! route('eois.list') !!}',
+                ajax: '{!! route('eois.index') !!}',
                 columns: [
                     {data: 'wsp.name', name: 'wsp.name'},
                     {data: 'fixed_grant', name: 'fixed_grant'},
