@@ -52,8 +52,10 @@
 
 
 <!-- Scripts -->
+<script src="{{ asset('js/app.js') }}"></script>
 
 <!-- BEGIN: Vendor JS-->
+{{--commented out jquery,bootstrap,popper since they are in app.js--}}
 <script src="{{ asset('app-assets/vendors/js/vendors.min.js') }}"></script>
 <!-- BEGIN Vendor JS-->
 
@@ -66,7 +68,7 @@
 <script src="{{ asset('app-assets/js/scripts/customizer.min.js') }}"></script>
 <!-- END: Theme JS-->
 
-<script src="{{ asset('js/app.js') }}"></script>
+
 <!-- BEGIN: Page JS-->
 @stack('scripts')
 <!-- END: Page JS-->

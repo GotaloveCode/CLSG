@@ -17,6 +17,7 @@ use App\Traits\FilesTrait;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 
 
 class EoiController extends Controller
@@ -111,7 +112,7 @@ class EoiController extends Controller
     public function preview(Eoi $eoi)
     {
         switch ($eoi->status) {
-            case 'WFT Approved':
+            case 'WSTF Approved':
                 $progress = 100;
                 break;
             case 'WASREB Approved':
@@ -137,10 +138,10 @@ class EoiController extends Controller
         $eoi->save();
 
         //todo: notification of action
-          Mail::to(auth()->user()->email)->send(new EoiReview());
+//          Mail::to(auth()->user()->email)->send(new EoiReview());
         $route = route('eoi.preview', $eoi->id);
 
-        if ($request->status == 'WFT Approved') {
+        if ($request->status == 'WSTF Approved') {
             $route = route('eoi.commitment_letter', $eoi->id);
         }
 
@@ -168,10 +169,14 @@ class EoiController extends Controller
 
     public function commitment_letter(Eoi $eoi)
     {
-        if($eoi->status !== 'WFT Approved'){
+        if($eoi->status !== 'WSTF Approved'){
             return redirect()->back()->withErrors("Expression of Interest must have been approved by Water Trust Fund");
         }
-        $eoi = $eoi->load(['wsp', 'wsp.postalcode']);
+        if(request()->input('download')){
+            $pdf = PDF::loadView('preview.eoi', compact('eoi'));
+            return $pdf->inline('commitment-letter.pdf');
+        }
+        $eoi = $eoi->load(['wsp', 'wsp.postalcode','attachments']);
         return view('wsps.commitment-letter')->with(compact('eoi'));
     }
 

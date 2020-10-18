@@ -1,5 +1,5 @@
 <div>
-    <p>{{ now()->format('d/M/Y') }}</p>
+    <p>{{ $eoi->date ? $eoi->date->format('d/m/Y') : now()->format('d/m/Y') }}</p>
 
     <p>
         The Chief Executive Officer<br>

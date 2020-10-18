@@ -34,32 +34,6 @@
             </div>
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
-                    <div>
-                        @can('review-eoi')
-                            @if(auth()->user()->hasRole('wasreb'))
-                                @if($eoi->status=='Pending' || $eoi->status =='Needs Review')
-                                    <button class="btn btn-success mb-2 ml-2" @click.prevent="review('WASREB Approved')"><i
-                                            class="fa fa-check"></i>
-                                        Approve
-                                    </button>
-                                @endif
-                                @if($eoi->status =='Pending')
-                                    <button class="btn btn-danger mb-2" @click.prevent="review('Needs Review')"><i
-                                            class="fa fa-pencil"></i>
-                                        Review
-                                    </button>
-                                @endif
-                            @elseif(auth()->user()->hasRole('wft'))
-                                @if($eoi->status =='Wasreb Approved')
-                                    <button class="btn btn-success ml-2" @click.prevent="review('WFT Approved')"><i
-                                            class="fa fa-check"></i>
-                                        Approve
-                                    </button>
-                                @endif
-                            @endif
-
-                        @endcan
-                    </div>
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">EOI Status</h4>
@@ -74,6 +48,47 @@
                                              style="width: {{$progress}}%"
                                              aria-valuenow="{{$progress}}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
+                                </div>
+                                <div>
+                                    @can('review-eoi')
+                                        @if(auth()->user()->hasRole('wasreb'))
+                                            @if($eoi->status=='Pending' || $eoi->status =='Needs Review')
+                                                <button class="btn btn-success ml-2 mb-1"
+                                                        @click.prevent="review('WASREB Approved')"><i
+                                                        class="fa fa-check"></i>
+                                                    Approve
+                                                </button>
+                                            @endif
+                                            @if($eoi->status =='Pending')
+                                                <button class="btn btn-danger mb-1"
+                                                        @click.prevent="review('Needs Review')"><i
+                                                        class="fa fa-pencil"></i>
+                                                    Review
+                                                </button>
+                                            @endif
+                                        @elseif(auth()->user()->hasRole('wstf'))
+                                            @if($eoi->status =='WASREB Approved')
+                                                <button class="btn btn-success ml-2 mb-1"
+                                                        @click.prevent="review('WSTF Approved')"><i
+                                                        class="fa fa-check"></i>
+                                                    Approve
+                                                </button>
+                                                <button class="btn btn-danger mb-1"
+                                                        @click.prevent="review('Needs Review')"><i
+                                                        class="fa fa-pencil"></i>
+                                                    Review
+                                                </button>
+                                            @endif
+                                            @if($eoi->status =='WSTF Approved')
+                                                <a class="btn btn-info mt-2"
+                                                   href="{{ route('eoi.commitment_letter',$eoi->id) }}"><i
+                                                        class="fa fa-eye"></i>
+                                                    View Commitment Letter
+                                                </a>
+                                            @endif
+                                        @endif
+
+                                    @endcan
                                 </div>
                             </div>
                         </div>
