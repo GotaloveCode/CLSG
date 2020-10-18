@@ -55,7 +55,7 @@
         from the date of signing a CLSG agreement between the WSTF and {{$eoi->wsp->name}}.
     </p>
     <p>The company serves low income areas as detailed in the table below. </p>
-    <table class="table table-bordered">
+    <table class="table table-bordered table-responsive">
         <tr>
             <th>Population served</th>
             <th>Name of Low income areas</th>
@@ -72,7 +72,7 @@
         </tr>
     </table>
     <p>A. Breakdown of short-term COVID-19 related emergency interventions and estimated costs:</p>
-    <table class="table table-bordered">
+    <table class="table table-bordered table-responsive">
         <thead>
         <tr>
             <th>Type of service / items</th>
@@ -116,7 +116,7 @@
         </tr>
     </table>
     <p>B. Breakdown of O&M estimated costs:</p>
-    <table class="table table-bordered">
+    <table class="table table-bordered table-responsive">
         <thead>
         <tr>
             <th>S/N</th>
