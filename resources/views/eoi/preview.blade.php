@@ -34,13 +34,19 @@
             </div>
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
-                    <div class="mb-2">
+                    <div>
                         @can('review-eoi')
                             @if(auth()->user()->hasRole('wasreb'))
                                 @if($eoi->status=='Pending' || $eoi->status =='Needs Review')
-                                    <button class="btn btn-success ml-2" @click.prevent="review('WASREB Approved')"><i
+                                    <button class="btn btn-success mb-2 ml-2" @click.prevent="review('WASREB Approved')"><i
                                             class="fa fa-check"></i>
                                         Approve
+                                    </button>
+                                @endif
+                                @if($eoi->status =='Pending')
+                                    <button class="btn btn-danger mb-2" @click.prevent="review('Needs Review')"><i
+                                            class="fa fa-pencil"></i>
+                                        Review
                                     </button>
                                 @endif
                             @elseif(auth()->user()->hasRole('wft'))
@@ -51,10 +57,7 @@
                                     </button>
                                 @endif
                             @endif
-                            <button class="btn btn-danger" @click.prevent="review('Needs Review')"><i
-                                    class="fa fa-pencil"></i>
-                                Review
-                            </button>
+
                         @endcan
                     </div>
                     <div class="card">
@@ -64,9 +67,11 @@
                         <div class="card-content">
                             <div class="card-body">
                                 <div class="insights">
-                                    <p>{{$eoi->status}}<span class="float-right text-warning h3">{{$progress}}%</span></p>
+                                    <p>{{$eoi->status}}<span class="float-right text-warning h3">{{$progress}}%</span>
+                                    </p>
                                     <div class="progress progress-sm mt-1 mb-0">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: {{$progress}}%"
+                                        <div class="progress-bar bg-warning" role="progressbar"
+                                             style="width: {{$progress}}%"
                                              aria-valuenow="{{$progress}}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </div>
