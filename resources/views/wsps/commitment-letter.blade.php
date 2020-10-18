@@ -44,27 +44,33 @@
                 </div>
                 <div class="card-content collapse show">
                     <div class="card-body">
-                        <p><strong>Proceed as guided below</strong></p>
+                        <p><strong>The wsp should proceed as guided below:</strong></p>
                         <ol>
                             <li>Download Commitment Letter</li>
                             <li>Sign commitment letter</li>
-                            <li>Upload Copy of signed commitment letter</li>
+                            <li>Upload signed commitment letter</li>
                         </ol>
-                        {{--                        @if(auth()->user()->hasRole('wsp'))--}}
-                        @if($eoi->status=='WSTF Approved' && $eoi->attachments->count() == 0)
-                            <a class="btn btn-primary mb-1"
-                               href="{{ route('eoi.commitment_letter',['eoi'=> $eoi->id,'download' => 'pdf']) }}"><i
-                                    class="fa fa-download"></i>
-                                Download
-                            </a>
+                        @if($eoi->status =='WSTF Approved')
+                            @if($eoi->attachments->where('document_type','Commitment Letter')->count() == 0)
+                                <a class="btn btn-primary mb-1" target="_blank"
+                                   href="{{ route('eoi.commitment_letter',['eoi'=> $eoi->id,'download' => 'pdf']) }}"><i
+                                        class="fa fa-download"></i>
+                                    Download
+                                </a>
+                            @endif
+                            <form action="{{ route('eoi.commitment_letter.store', $eoi->id) }}" method="post"
+                                  enctype="multipart/form-data" class="form">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="attachment" class="control-label">Signed Commitment letter</label>
+                                    <input type="file" required name="attachment" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-info" type="submit"><i class="fa fa-upload"></i>Upload
+                                    </button>
+                                </div>
+                            </form>
                         @endif
-                        {{--                        @elseif(auth()->user()->hasRole('wstf'))--}}
-                        {{--                            <button class="btn btn-success ml-2 mb-1"--}}
-                        {{--                                    @click.prevent="review('WASREB Approved')"><i--}}
-                        {{--                                    class="fa fa-upload"></i>--}}
-                        {{--                                Upload--}}
-                        {{--                            </button>--}}
-                        {{--                        @endif--}}
                     </div>
                 </div>
             </div>
@@ -93,8 +99,10 @@
 
                         @endif
                         <ol>
-                            @foreach($eoi->attachments as $attachment)
-                                <li><a href="">{{$attachment->name}}</a></li>
+                            @foreach($eoi->attachments->where('document_type','Commitment Letter') as $attachment)
+                                <li>
+                                    <a href="{{ route('eoi.attachments.show',['filename' =>$attachment->name, 'download' =>'true']) }}"
+                                       target="_blank">{{$attachment->name}} <i class="fa fa-download"></i></a></li>
                             @endforeach
                         </ol>
                     </div>

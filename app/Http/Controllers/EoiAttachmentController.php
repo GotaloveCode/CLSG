@@ -5,24 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EoiAttachmentRequest;
 use App\Models\Attachment;
 use App\Models\Eoi;
-use Illuminate\Http\Request;
+use App\Traits\FilesTrait;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 
 class EoiAttachmentController extends Controller
 {
+    use FilesTrait;
+
     public function index(Eoi $eoi)
     {
         $eoi = $eoi->load('attachments');
-        $progress = ceil($eoi->attachments->pluck('document_type')->unique()->count()/5 *100);
-        return view('eoi.attachments')->with(compact('eoi','progress'));
+        $progress = ceil($eoi->attachments->pluck('document_type')->unique()->count() / 5 * 100);
+        return view('eoi.attachments')->with(compact('eoi', 'progress'));
     }
 
     public function store(Eoi $eoi, EoiAttachmentRequest $request)
     {
-        if(!$eoi->wsp->users()->pluck('user_id')->contains(auth()->id()))
-        {
-            abort('403','You do not have the permissions to perform this action');
+        if (!$eoi->wsp->users()->pluck('user_id')->contains(auth()->id())) {
+            abort('403', 'You do not have the permissions to perform this action');
         }
 
         $fileName = $this->storeDocument($request->attachment, $request->display_name);
@@ -44,11 +45,16 @@ class EoiAttachmentController extends Controller
             abort(404);
         }
 
+        if (request()->has('download')) {
+            return Response::download($path);
+        }
+
         $file = File::get($path);
         $type = File::mimeType($path);
 
         $response = Response::make($file, 200);
         $response->header("Content-Type", $type);
+
 
         return $response;
     }
@@ -57,10 +63,10 @@ class EoiAttachmentController extends Controller
     {
         Attachment::remove($attachment);
 
-        if(request()->ajax()){
+        if (request()->ajax()) {
             return response()->json(['message' => "Attachment deleted successfully!"]);
         }
 
-        return redirect()->back()->with(['message' => "Attachment deleted successfully!"]);
+        return back()->with(['message' => "Attachment deleted successfully!"]);
     }
 }

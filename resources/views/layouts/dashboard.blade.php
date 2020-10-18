@@ -67,8 +67,16 @@
 <script src="{{ asset('app-assets/js/core/app.min.js') }}"></script>
 <script src="{{ asset('app-assets/js/scripts/customizer.min.js') }}"></script>
 <!-- END: Theme JS-->
-
-
+<script>
+    @if(Session::has('success'))
+    window.Vue.swal("Success","{{ Session::get('success') }}");
+    @endif
+    @if($errors->any())
+    @foreach($errors->all() as $error)
+    window.Vue.swal('Error','{{$error}}');
+    @endforeach
+    @endif
+</script>
 <!-- BEGIN: Page JS-->
 @stack('scripts')
 <!-- END: Page JS-->
