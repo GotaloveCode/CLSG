@@ -29,7 +29,7 @@ class EoiController extends Controller
             return view('eoi.index');
         }
 
-        $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at')
+        $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at','status')
             ->with('wsp:id,name');
 //        ->ofStatus('published')
         return Datatables::of($eois)

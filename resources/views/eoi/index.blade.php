@@ -34,6 +34,7 @@
                                     <th>Variable Grant</th>
                                     <th>Emergency Intervention Total</th>
                                     <th>Operation Costs Total</th>
+                                    <th>Status</th>
                                     <th>Created At</th>
                                     <th></th>
                                 </tr>
@@ -57,10 +58,11 @@
                 ajax: '{!! route('eois.index') !!}',
                 columns: [
                     {data: 'wsp.name', name: 'wsp.name'},
-                    {data: 'fixed_grant', name: 'fixed_grant'},
-                    {data: 'variable_grant', name: 'variable_grant'},
-                    {data: 'emergency_intervention_total', name: 'emergency_intervention_total'},
-                    {data: 'operation_costs_total', name: 'operation_costs_total'},
+                    {data: 'fixed_grant', name: 'fixed_grant', render: $.fn.dataTable.render.number(',', '.', 2,'')},
+                    {data: 'variable_grant', name: 'variable_grant', render: $.fn.dataTable.render.number(',', '.', 2,'')},
+                    {data: 'emergency_intervention_total', name: 'emergency_intervention_total', render: $.fn.dataTable.render.number(',', '.', 2,'')},
+                    {data: 'operation_costs_total', name: 'operation_costs_total', render: $.fn.dataTable.render.number(',', '.', 2,'')},
+                    {data: 'status', name: 'status'},
                     {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
