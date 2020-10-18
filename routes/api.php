@@ -20,7 +20,7 @@ use Illuminate\Routing\Router;
 Route::get('/', function (Router $router) {
     return collect($router->getRoutes()->getRoutesByMethod()["GET"])->map(function($value, $key) {
         return url($key);
-    })->values();   
+    })->values();
 });
 
 Route::apiResource('contractors', '\App\Http\Controllers\API\ContractorAPIController');

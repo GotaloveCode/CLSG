@@ -42,6 +42,9 @@
 <!-- END: Custom CSS-->
 
     @stack('css')
+    <script>
+     window.url ="{{url('/')}}";
+    </script>
 </head>
 <body class="vertical-layout vertical-menu content-detached-right-sidebar   fixed-navbar" data-open="click"
       data-menu="vertical-menu" data-col="content-detached-right-sidebar">
@@ -81,6 +84,8 @@
 {{--<script src="{{ asset('app-assets/js/scripts/pages/page-users.min.js') }}"></script>--}}
 <!-- END: Page JS-->
 <script src="{{ asset('js/app.js') }}"></script>
+
 @stack('scripts')
+
 </body>
 </html>

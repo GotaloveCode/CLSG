@@ -14,9 +14,12 @@ use App\Models\Operationcost;
 use App\Models\Service;
 use App\Traits\EoiAuthTrait;
 use App\Traits\FilesTrait;
+use App\Http\Resources\EoiCustomResource;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
+use function PHPUnit\Framework\isEmpty;
 
 
 class EoiController extends Controller
@@ -41,6 +44,9 @@ class EoiController extends Controller
 
     public function create()
     {
+      if (!isset(auth()->user()->wsps()->first()->pivot->wsp_id)){
+          return false;
+      }
         $services = Cache::rememberForever('services', function () {
             return Service::select('id', 'name')->get();
         });
@@ -53,7 +59,12 @@ class EoiController extends Controller
         $operationCosts = Cache::rememberForever('operationCosts', function () {
             return Operationcost::select('id', 'name')->get();
         });
-        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts'));
+
+        $wsp = auth()->user()->wsps()->first()->pivot->wsp_id;
+       if (Eoi::where('wsp_id',$wsp)->first()) $eoi = json_encode(new EoiCustomResource(Eoi::where('wsp_id',$wsp)->first()));
+       else $eoi = json_encode([]);
+
+        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts','eoi','wsp'));
     }
 
     public function store(EoiRequest $request)
@@ -102,11 +113,10 @@ class EoiController extends Controller
         }
 
         if ($request->ajax()) {
-            return response()->json(['eoi' => $eoi]);
+            return response()->json($eoi);
         }
         return redirect()->back()->with(['eoi' => $eoi]);
     }
-
 
     public function preview(Eoi $eoi)
     {

@@ -4,6 +4,9 @@ require('./bootstrap');
 window.Vue = require('vue');
 import "./components/components";
 
+window.axios = require('axios')
+axios.defaults.baseURL =url+'/api/';
+
 const EoiForm = () => import('./components/eoi/EoiForm.vue' /* webpackChunkName: "js/components/eoi/eoi-form" */);
 const AttachmentForm = () => import('./components/eoi/AttachmentForm.vue' /* webpackChunkName: "js/components/eoi/attachment-form" */);
 const Modal = () => import('./components/Modal.vue' /* webpackChunkName: "js/components/modal" */);

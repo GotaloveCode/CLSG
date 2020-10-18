@@ -16,7 +16,9 @@
                 :services="services"
                 :service="d"
                 v-bind:key="index"
-                :index="index"></tr>
+                :index="index">
+
+            </tr>
         </table>
     </div>
 </template>

@@ -10,6 +10,7 @@
         <ValidationProvider tag="td" name="Name of Low income areas[]" rules="required"
                             v-slot="{ errors }">
             <input type="text" v-model="service.areas" class="form-control">
+
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
 
@@ -35,6 +36,6 @@ export default {
     props: {
         services: {required: true, type: Array},
         service: {required: true, type: Object},
-    }
+    },
 }
 </script>

@@ -25,11 +25,13 @@
                         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                     </div>
                     <div class="card-content collapse show">
-                        <eoi-form submit-url="{{ route('eoi.store') }}"
+                        <eoi-form
                                   :services="{{ $services }}"
                                   :connections="{{ $connections }}"
                                   :estimated-costs="{{ $estimatedCosts }}"
+                                  :existing-eoi="{{ $eoi }}"
                                   :operation-costs="{{ $operationCosts }}"
+                                  :wsp="{{ $wsp }}"
                         ></eoi-form>
 
                     </div>
