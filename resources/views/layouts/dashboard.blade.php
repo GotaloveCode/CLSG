@@ -30,7 +30,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/colors.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/components.min.css') }}">
     <!-- END: Theme CSS-->
-
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/colors/palette-gradient.min.css') }}">

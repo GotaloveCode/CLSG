@@ -15,6 +15,7 @@ use App\Models\Service;
 use App\Traits\EoiAuthTrait;
 use App\Traits\FilesTrait;
 use App\Http\Resources\EoiCustomResource;
+use App\Http\Resources\EoiListResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
@@ -28,6 +29,9 @@ class EoiController extends Controller
 
     public function index()
     {
+       $eois = json_encode(EoiListResource::collection(Eoi::get()));
+        
+        return view('eoi.eoi_index',compact('eois'));
         if(!request()->ajax()){
             return view('eoi.index');
         }
@@ -65,57 +69,6 @@ class EoiController extends Controller
        else $eoi = json_encode([]);
 
         return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts','eoi','wsp'));
-    }
-
-    public function store(EoiRequest $request)
-    {
-        $eoi = Eoi::create([
-            'program_manager' => $request->input('program_manager'),
-            'fixed_grant' => $request->input('fixed_grant'),
-            'variable_grant' => $request->input('variable_grant'),
-            'emergency_intervention_total' => $request->input('emergency_intervention_total'),
-            'operation_costs_total' => $request->input('operation_costs_total'),
-            'water_service_areas' => $request->input('water_service_areas'),
-            'total_people_water_served' => $request->input('total_people_water_served'),
-            'proportion_served' => $request->input('proportion_served'),
-            'date' => now(),
-            'months' => 3,
-            'wsp_id' => auth()->user()->wsps()->first()->id
-        ]);
-
-        foreach ($request->input('services') as $service) {
-            $eoi->services()->attach($service['service_id'], [
-                'areas' => $service['areas'],
-                'total' => $service['total'],
-            ]);
-        }
-
-        foreach ($request->input('connections') as $connection) {
-            $eoi->connections()->attach($connection['connection_id'], [
-                'areas' => $connection['areas'],
-                'total' => $connection['total'],
-            ]);
-        }
-
-        foreach ($request->input('estimated_costs') as $estimated_cost) {
-            $eoi->estimatedcosts()->attach($estimated_cost['estimatedcost_id'], [
-                'unit' => $estimated_cost['unit'],
-                'total' => $estimated_cost['total'],
-            ]);
-        }
-
-        foreach ($request->input('operation_costs') as $operation_cost) {
-            $eoi->operationcosts()->attach($operation_cost['operationcost_id'], [
-                'unit_rate' => $operation_cost['unit_rate'],
-                'quantity' => $operation_cost['quantity'],
-                'total' => $operation_cost['total'],
-            ]);
-        }
-
-        if ($request->ajax()) {
-            return response()->json($eoi);
-        }
-        return redirect()->back()->with(['eoi' => $eoi]);
     }
 
     public function preview(Eoi $eoi)

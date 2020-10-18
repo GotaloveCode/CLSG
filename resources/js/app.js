@@ -1,4 +1,9 @@
 import * as Vue from "vue";
+import Vuetify from 'vuetify';
+import '@mdi/font/css/materialdesignicons.css'
+
+
+Vue.use(Vuetify);
 
 require('./bootstrap');
 window.Vue = require('vue');
@@ -12,14 +17,17 @@ const AttachmentForm = () => import('./components/eoi/AttachmentForm.vue' /* web
 const Modal = () => import('./components/Modal.vue' /* webpackChunkName: "js/components/modal" */);
 const ManageReview = () => import('./components/eoi/ManageReview' /* webpackChunkName: "js/components/eoi/manage-review" */);
 const ReviewForm = () => import('./components/eoi/CommentForm' /* webpackChunkName: "js/components/eoi/review-form" */);
+const EoiList = () => import('./components/eoi/EoiList' /* webpackChunkName: "js/components/eoi/review-form" */);
 
 const app = new Vue({
     el: '#app',
+    vuetify: new Vuetify(),
     components: {
         EoiForm,
         AttachmentForm,
         Modal,
         ManageReview,
-        ReviewForm
+        ReviewForm,
+        EoiList
     },
 });

@@ -21,10 +21,6 @@ class EoiAPIController extends Controller
         return new EoiResource($eoi->load(['wsp', 'services', 'connections', 'estimatedcosts', 'operationcosts']));
     }
 
-//    public function store(Request $request)
-//    {
-//        return new EoiResource(Eoi::create($request->all()));
-//    }
     public function store(Request $request)
     {
         $eoi = Eoi::create([

@@ -91,12 +91,11 @@ export default {
         currentStep: 1,
     }),
      created(){
-        console.log(this.existingEoi)
         if (this.existingEoi.id !=undefined){
             this.initEoi();
         }
         },
-    
+
     methods: {
         initEoi(){
             this.eoi.program_manager = this.existingEoi.program_manager;
@@ -147,7 +146,6 @@ export default {
         postData() {
             this.eoi.wsp = this.wsp;
             axios.post('eois', this.eoi).then(response => {
-
                 this.$toastr.s("Expression of interest created!Proceed to attach Expression Of Interest Documents");
                 location.href = "/eoi/" + response.data.id + "/services"
             }).catch(error => {
@@ -157,7 +155,6 @@ export default {
         updateData(id) {
             this.eoi.wsp = this.wsp;
             axios.patch(`eois/${id}`, this.eoi).then(response => {
-                console.log("inside")
                 this.$toastr.s("Expression of interest updated!Proceed to attach Expression Of Interest Documents");
                 location.href = "/eoi/" + response.data.id + "/services"
             }).catch(error => {
