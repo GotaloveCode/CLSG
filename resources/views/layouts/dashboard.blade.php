@@ -15,7 +15,7 @@
         href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i"
         rel="stylesheet">
 
-<!-- BEGIN: Vendor CSS-->
+    <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/vendors.min.css') }}">
     <!-- END: Vendor CSS-->
 
@@ -34,7 +34,9 @@
     <!-- BEGIN: Custom CSS-->
 @stack('css')
 <!-- END: Custom CSS-->
-
+    <script>
+    window.url ="{{url('/')}}";
+    </script>
 </head>
 <body class="vertical-layout vertical-menu content-detached-right-sidebar   fixed-navbar" data-open="click"
       data-menu="vertical-menu" data-col="content-detached-right-sidebar">

@@ -13,6 +13,6 @@ class EoiSeeder extends Seeder
      */
     public function run()
     {
-        Eoi::factory()->count(10)->create();
+        //Eoi::factory()->count(10)->create();
     }
 }

@@ -1,11 +1,11 @@
 @component('mail::message')
-# Hello {{$user->name}}
+# Hello {{$wsp->name}}
 
-{{$content}}.
+The status has been changed by {{$user->name}} to: {{$content}}.
 
-@component('mail::button', ['url' => ''])
-Preview
-@endcomponent
+{{--@component('mail::button', ['url' => ''])--}}
+{{--Preview--}}
+{{--@endcomponent--}}
 
 Thanks,<br>
 {{ config('app.name') }}

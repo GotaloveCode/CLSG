@@ -26,7 +26,7 @@
                     <li><a class="menu-item" href="{{ route('bcps.create') }}">Create BCP</a>
                     </li>
                     @endcan
-                    <li><a class="menu-item" href="{{ route('eois.index') }}">BCP List</a>
+                    <li><a class="menu-item" href="{{ route('bcps.index') }}">BCP List</a>
                     </li>
                 </ul>
             </li>

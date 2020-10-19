@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Mail\EioReview;
 use App\Http\Requests\EoiCommentRequest;
 use App\Http\Requests\EoiRequest;
 use App\Http\Requests\EoiReviewRequest;
@@ -13,21 +15,29 @@ use App\Models\Operationcost;
 use App\Models\Service;
 use App\Traits\EoiAuthTrait;
 use App\Traits\FilesTrait;
+use App\Traits\SendMailNotification;
+use App\Http\Resources\EoiCustomResource;
+use App\Http\Resources\EoiListResource;
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
-use PDF;
 
+use function PHPUnit\Framework\isEmpty;
+use PDF;
 
 class EoiController extends Controller
 {
-    use FilesTrait, EoiAuthTrait;
+    use FilesTrait, EoiAuthTrait, SendMailNotification;
 
     public function index()
     {
-        if (!request()->ajax()) {
-            return view('eoi.index');
+       $eois = json_encode(EoiListResource::collection(Eoi::get()));
+
+        return view('eoi.eoi_index',compact('eois'));
+        if(!request()->ajax()){
+           return view('eoi.index');
         }
 
         $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at', 'status')
@@ -42,6 +52,9 @@ class EoiController extends Controller
 
     public function create()
     {
+      if (!isset(auth()->user()->wsps()->first()->pivot->wsp_id)){
+          return false;
+      }
         $services = Cache::rememberForever('services', function () {
             return Service::select('id', 'name')->get();
         });
@@ -54,10 +67,15 @@ class EoiController extends Controller
         $operationCosts = Cache::rememberForever('operationCosts', function () {
             return Operationcost::select('id', 'name')->get();
         });
-        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts'));
+
+        $wsp = auth()->user()->wsps()->first()->pivot->wsp_id;
+       if (Eoi::where('wsp_id',$wsp)->first()) $eoi = json_encode(new EoiCustomResource(Eoi::where('wsp_id',$wsp)->first()));
+       else $eoi = json_encode([]);
+
+        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts','eoi','wsp'));
     }
 
-    public function store(EoiRequest $request)
+    public function store(Request $request)
     {
         $eoi = Eoi::create([
             'program_manager' => $request->input('program_manager'),
@@ -70,7 +88,7 @@ class EoiController extends Controller
             'proportion_served' => $request->input('proportion_served'),
             'date' => now(),
             'months' => 3,
-            'wsp_id' => auth()->user()->wsps()->first()->id
+            'wsp_id' => $request->input('wsp')
         ]);
 
         foreach ($request->input('services') as $service) {
@@ -103,11 +121,65 @@ class EoiController extends Controller
         }
 
         if ($request->ajax()) {
-            return response()->json(['eoi' => $eoi]);
+            return response()->json($eoi);
         }
         return back()->with(['eoi' => $eoi]);
     }
+    public function update(Request $request,Eoi $eoi)
+    {
+        $eoi->update([
+            'program_manager' => $request->input('program_manager'),
+            'fixed_grant' => $request->input('fixed_grant'),
+            'variable_grant' => $request->input('variable_grant'),
+            'emergency_intervention_total' => $request->input('emergency_intervention_total'),
+            'operation_costs_total' => $request->input('operation_costs_total'),
+            'water_service_areas' => $request->input('water_service_areas'),
+            'total_people_water_served' => $request->input('total_people_water_served'),
+            'proportion_served' => $request->input('proportion_served'),
+            'date' => now(),
+            'months' => 3,
+            'wsp_id' => $request->input('wsp')
+        ]);
 
+        $eoi->services()->detach();
+        $eoi->connections()->detach();
+        $eoi->estimatedcosts()->detach();
+        $eoi->operationcosts()->detach();
+
+        foreach ($request->input('services') as $service) {
+            $eoi->services()->attach($service['service_id'], [
+                'areas' => $service['areas'],
+                'total' => $service['total'],
+            ]);
+        }
+
+        foreach ($request->input('connections') as $connection) {
+            $eoi->connections()->attach($connection['connection_id'], [
+                'areas' => $connection['areas'],
+                'total' => $connection['total'],
+            ]);
+        }
+
+        foreach ($request->input('estimated_costs') as $estimated_cost) {
+            $eoi->estimatedcosts()->attach($estimated_cost['estimatedcost_id'], [
+                'unit' => $estimated_cost['unit'],
+                'total' => $estimated_cost['total'],
+            ]);
+        }
+
+        foreach ($request->input('operation_costs') as $operation_cost) {
+            $eoi->operationcosts()->attach($operation_cost['operationcost_id'], [
+                'unit_rate' => $operation_cost['unit_rate'],
+                'quantity' => $operation_cost['quantity'],
+                'total' => $operation_cost['total'],
+            ]);
+        }
+
+        if ($request->ajax()) {
+            return response()->json($eoi);
+        }
+        return redirect()->back()->with(['eoi' => $eoi]);
+    }
 
     public function preview(Eoi $eoi)
     {
@@ -124,8 +196,8 @@ class EoiController extends Controller
         $eoi->status = $request->status;
         $eoi->save();
 
-        //todo: notification of action
-//          Mail::to(auth()->user()->email)->send(new EoiReview());
+
+        SendMailNotification::postReview($request->status);
         $route = route('eoi.preview', $eoi->id);
 
         if ($request->status == 'WSTF Approved') {
@@ -148,11 +220,11 @@ class EoiController extends Controller
             'description' => $request->description,
             'user_id' => auth()->id()
         ]);
-        Mail::to(auth()->user()->email)->send(new EioComment($request->description));
-        //todo: notification on activity
+        SendMailNotification::postComment($request->description);
 
         return response()->json(['message' => 'Comment posted successfully']);
     }
+
 
     public function commitment_letter(Eoi $eoi)
     {
@@ -188,6 +260,7 @@ class EoiController extends Controller
 
         return back()->with('success', 'Commitment letter uploaded successfully');
     }
+
 
     private function validate_eoi_approved(Eoi $eoi)
     {
