@@ -15,7 +15,8 @@ class Bcp extends Model
      * @var array
      */
     protected $fillable = [
-        'executive_summary', 'rationale', 'environment_analysis', 'company_overview', 'financing', 'strategic_direction', 'wsp_id'
+        'executive_summary', 'rationale', 'environment_analysis', 'company_overview', 'financing', 'strategic_direction',
+        'strategic_plans','wsp_id'
     ];
 
     /**
@@ -49,6 +50,16 @@ class Bcp extends Model
     public function objectives()
     {
         return $this->hasMany(Objective::class);
+    }
+
+    /**
+     * Get the Operationcosts for the Eoi.
+     */
+    public function operationcosts()
+    {
+        return $this->belongsToMany(Operationcost::class)
+            ->withPivot('quantity', 'unit_rate', 'total')
+            ->withTimestamps();
     }
 
 

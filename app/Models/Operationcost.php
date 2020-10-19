@@ -47,7 +47,15 @@ class Operationcost extends Model
      */
     public function eois()
     {
-        return $this->belongsToMany(\App\Eoi::class);
+        return $this->belongsToMany(Eoi::class);
+    }
+
+    /**
+     * Get the Bcps for the Operationcost.
+     */
+    public function bcps()
+    {
+        return $this->belongsToMany(Bcp::class);
     }
 
 }

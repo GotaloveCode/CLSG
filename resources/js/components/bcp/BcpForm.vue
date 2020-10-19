@@ -1,6 +1,6 @@
 <template>
     <ValidationObserver v-slot="{ handleSubmit }">
-        <div v-html="$error.handle(error)" />
+        <div v-html="$error.handle(error)"/>
         <form class="form" @submit.prevent="handleSubmit(onSubmit)">
             <div class="form-body">
                 <div class="row">
@@ -73,6 +73,26 @@ Business Environment in addition to the SWOT Analysis, the company should provid
                          :objective="d"
                          v-bind:key="index"
                          :index="index"></div>
+                    <h5 class="col-md-12">Breakdown of O&M costs:</h5>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Type of Service/item</th>
+                            <th>Qty</th>
+                            <th>Unit Cost (KES)</th>
+                            <th>Total Cost (KES)</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tr is="operation-cost-row"
+                            v-for="(d, index) in bcp.operation_costs"
+                            @add="addCost"
+                            @remove="removeCost(index)"
+                            :operations="operationCostFields"
+                            :operation="d"
+                            v-bind:key="index"
+                            :index="index"/>
+                    </table>
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">
@@ -86,17 +106,21 @@ Business Environment in addition to the SWOT Analysis, the company should provid
 
 <script>
 import ObjectiveRow from "./ObjectiveRow";
+import OperationCostRow from "../eoi/OperationCostRow";
 
 export default {
     name: "BcpForm",
     components: {
         ObjectiveRow,
+        OperationCostRow
     },
     props: {
         submitUrl: {required: true, type: String},
+        operationCosts: {required: true, type: Array},
+        operationCostFields: {required: true, type: Array},
     },
     data: () => ({
-        error:'',
+        error: '',
         bcp: {
             executive_summary: '',
             rationale: '',
@@ -105,11 +129,18 @@ export default {
             strategic_direction: '',
             financing: '',
             implementation_matrix: '',
-            objectives: [{description: ''}]
+            objectives: [{description: ''}],
+            operation_costs: [{quantity: null, unit_rate: null, total: "", operationcost_id: null}],
         }
     }),
+    created() {
+        if (this.operationCosts.length) {
+            this.initCosts();
+        }
+    },
     methods: {
         onSubmit() {
+            this.error = '';
             axios.post(this.submitUrl, this.bcp).then(response => {
                 this.$toastr.s(response.data.message);
             }).catch(error => {
@@ -123,11 +154,28 @@ export default {
             if (this.bcp.objectives.length > 1) {
                 this.bcp.objectives.splice(index, 1);
             }
+        },
+        addCost() {
+            this.bcp.operation_costs.push({quantity: null, unit_rate: null, total: null, operationcost_id: null});
+        },
+        removeCost(index) {
+            if (this.bcp.operation_costs.length > 1) {
+                this.bcp.operation_costs.splice(index, 1);
+            }
+        },
+        initCosts() {
+            let costs = []
+            this.operationCosts.forEach(x => {
+                costs.push({
+                    quantity: x.pivot.quantity,
+                    unit_rate: x.pivot.unit_rate,
+                    total: x.pivot.total,
+                    operationcost_id: x.id
+                });
+            });
+            this.bcp.operation_costs = costs;
         }
     }
 }
 </script>
 
-<style scoped>
-
-</style>

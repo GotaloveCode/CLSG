@@ -22,7 +22,9 @@
                 <div class="card">
                     <div class="card-content collapse show">
                         <div class="card-body">
-                            <bcp-form submit-url="{{ route('bcps.store') }}"></bcp-form>
+                            <bcp-form :operation-costs="{{ $operation_costs }}"
+                                      :operation-cost-fields="{{ $operation_cost_fields }}"
+                                      submit-url="{{ route('bcps.store') }}"></bcp-form>
                         </div>
                     </div>
                 </div>

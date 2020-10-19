@@ -18,7 +18,7 @@
             </li>
         </ul>
         <form @submit.prevent="handleSubmit(onSubmit)" class="col-md-12 mt-4">
-            <div v-html="$error.handle(error)" />
+            <div v-html="$error.handle(error)"/>
             <ValidationObserver v-if="currentStep === 1">
                 <step-one :eoi="eoi"/>
             </ValidationObserver>
@@ -70,7 +70,7 @@ export default {
         connections: {required: true, type: Array},
         estimatedCosts: {required: true, type: Array},
         operationCosts: {required: true, type: Array},
-        existingEoi: {type:[Object,Array]},
+        existingEoi: {type: [Object, Array]},
         wsp: {type: Number},
     },
     data: () => ({
@@ -91,14 +91,13 @@ export default {
         },
         currentStep: 1,
     }),
-     created(){
-        if (this.existingEoi.id !=undefined){
+    created() {
+        if (this.existingEoi.id != undefined) {
             this.initEoi();
         }
-        },
-
+    },
     methods: {
-        initEoi(){
+        initEoi() {
             this.eoi.program_manager = this.existingEoi.program_manager;
             this.eoi.fixed_grant = this.existingEoi.fixed_grant;
             this.eoi.variable_grant = this.existingEoi.variable_grant;
@@ -110,19 +109,32 @@ export default {
 
             this.eoi.services = [];
             this.eoi.connections = [];
-            this.eoi.estimated_costs= [];
-            this.eoi.operation_costs= [];
+            this.eoi.estimated_costs = [];
+            this.eoi.operation_costs = [];
             this.existingEoi.services.forEach(s => {
-                this.eoi.services.push({areas:s.pivot.areas,total:s.pivot.total,service_id:s.pivot.service_id});
+                this.eoi.services.push({areas: s.pivot.areas, total: s.pivot.total, service_id: s.pivot.service_id});
             })
             this.existingEoi.connections.forEach(s => {
-                this.eoi.connections.push({areas:s.pivot.areas,total:s.pivot.total,connection_id:s.pivot.connection_id});
+                this.eoi.connections.push({
+                    areas: s.pivot.areas,
+                    total: s.pivot.total,
+                    connection_id: s.pivot.connection_id
+                });
             })
             this.existingEoi.estimatedCosts.forEach(s => {
-                this.eoi.estimated_costs.push({unit:s.pivot.unit,total:s.pivot.total,estimatedcost_id:s.pivot.estimatedcost_id});
+                this.eoi.estimated_costs.push({
+                    unit: s.pivot.unit,
+                    total: s.pivot.total,
+                    estimatedcost_id: s.pivot.estimatedcost_id
+                });
             })
             this.existingEoi.operationCosts.forEach(s => {
-                this.eoi.operation_costs.push({quantity:s.pivot.quantity,unit_rate:s.pivot.unit_rate,total:s.pivot.total,operationcost_id:s.pivot.operationcost_id});
+                this.eoi.operation_costs.push({
+                    quantity: s.pivot.quantity,
+                    unit_rate: s.pivot.unit_rate,
+                    total: s.pivot.total,
+                    operationcost_id: s.pivot.operationcost_id
+                });
             })
         },
         previousStep() {
@@ -132,11 +144,10 @@ export default {
         },
         onSubmit() {
             if (this.currentStep === 5) {
-                if (this.existingEoi.id != undefined){
-                  this.updateData(this.existingEoi.id);
-                }
-                else
-                this.postData();
+                if (this.existingEoi.id != undefined) {
+                    this.updateData(this.existingEoi.id);
+                } else
+                    this.postData();
                 return;
             }
 

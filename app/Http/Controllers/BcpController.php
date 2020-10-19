@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BcpFormRequest;
 use App\Models\Bcp;
+use App\Models\Operationcost;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class BcpController extends Controller
@@ -25,7 +26,12 @@ class BcpController extends Controller
 
     public function create()
     {
-        return view('bcps.create');
+        $wsp = auth()->user()->wsps()->first();
+        $operation_costs = $wsp->eois()->first()->operationcosts()->get();
+        $operation_cost_fields = Cache::rememberForever('operationCosts', function () {
+            return Operationcost::select('id', 'name')->get();
+        });
+        return view('bcps.create')->with(compact( 'operation_cost_fields','operation_costs'));
     }
 
     public function store(BcpFormRequest $request)
@@ -39,13 +45,21 @@ class BcpController extends Controller
             ],422);
         }
 
-        $bcp = Bcp::create(Arr::except($request->validated(), 'objectives') + [
+        $bcp = Bcp::create(Arr::except($request->validated(), ['objectives','strategic_plans']) + [
                 'wsp_id' => $wsp_id
             ]);
 
         foreach ($request->input('objectives') as $objective) {
             $bcp->objectives()->create([
                 'description' => $objective['description']
+            ]);
+        }
+
+        foreach ($request->input('operation_costs') as $operation_cost) {
+            $bcp->operationcosts()->attach($operation_cost['operationcost_id'], [
+                'unit_rate' => $operation_cost['unit_rate'],
+                'quantity' => $operation_cost['quantity'],
+                'total' => $operation_cost['total'],
             ]);
         }
 

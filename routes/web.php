@@ -33,7 +33,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 
-    Route::resource('eoi', 'EoiController');
+    Route::resource('eois', 'EoiController');
 
     Route::get('eoi/attachments/{filename}', 'EoiAttachmentController@show')->name('eoi.attachments.show');
     Route::delete('eoi/attachments/{attachment}', 'EoiAttachmentController@destroy')->name('eoi.attachments.destroy');

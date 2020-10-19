@@ -30,7 +30,8 @@ class BcpFormRequest extends FormRequest
             'company_overview' => 'required',
             'financing' => 'required',
             'strategic_direction' => 'required',
-            'objectives' => 'required|array'
+            'objectives' => 'required|array',
+            'operation_costs' => 'required|array'
         ];
     }
 
