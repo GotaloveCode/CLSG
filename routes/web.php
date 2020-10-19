@@ -44,6 +44,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('eoi/{eoi}/review','EoiController@review')->name('eoi.review');
     Route::post('eoi/{eoi}/comment', 'EoiController@comment')->name('eoi.comment');
     Route::get('eoi/{eoi}/commitment_letter', 'EoiController@commitment_letter')->name('eoi.commitment_letter');
+    Route::post('eoi/{eoi}/commitment_letter', 'EoiController@upload_commitment_letter')->name('eoi.commitment_letter.store');
+
 
     Route::resource('users', 'UserController')->only('index');
 

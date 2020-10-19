@@ -42,6 +42,14 @@ class RoleSeeder extends Seeder
         $user->assignRole($admin);
 
         $user = User::firstOrCreate([
+            'name' => 'WSTF Admin'],
+            ['email' => 'admin@wstf.test',
+                'password' => bcrypt('password')
+            ]);
+
+        $user->assignRole($wstf);
+
+        $user = User::firstOrCreate([
             'name' => 'Wasreb Admin'],
             ['email' => 'admin@wasreb.test',
                 'password' => bcrypt('password')

@@ -24,7 +24,7 @@ class EoiReviewRequest extends FormRequest
     public function rules()
     {
         return [
-            'status' => 'required|in:WASREB Approved,Needs Review,WFT Approved',
+            'status' => 'required|in:WASREB Approved,Needs Review,WSTF Approved',
         ];
     }
 }

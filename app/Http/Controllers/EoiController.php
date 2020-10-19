@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\EoiComment;
-use App\Mail\EoiReview;
+
+use App\Mail\EioReview;
 use App\Http\Requests\EoiCommentRequest;
 use App\Http\Requests\EoiRequest;
 use App\Http\Requests\EoiReviewRequest;
+use App\Models\Attachment;
 use App\Models\Connection;
 use App\Models\Eoi;
 use App\Models\Estimatedcost;
@@ -14,29 +15,32 @@ use App\Models\Operationcost;
 use App\Models\Service;
 use App\Traits\EoiAuthTrait;
 use App\Traits\FilesTrait;
+use App\Traits\SendMailNotification;
 use App\Http\Resources\EoiCustomResource;
 use App\Http\Resources\EoiListResource;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
-use function PHPUnit\Framework\isEmpty;
 
+use function PHPUnit\Framework\isEmpty;
+use PDF;
 
 class EoiController extends Controller
 {
-    use FilesTrait, EoiAuthTrait;
+    use FilesTrait, EoiAuthTrait, SendMailNotification;
 
     public function index()
     {
        $eois = json_encode(EoiListResource::collection(Eoi::get()));
-        
+
         return view('eoi.eoi_index',compact('eois'));
         if(!request()->ajax()){
-            return view('eoi.index');
+           return view('eoi.index');
         }
 
-        $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at')
+        $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at', 'status')
             ->with('wsp:id,name');
 //        ->ofStatus('published')
         return Datatables::of($eois)
@@ -74,7 +78,7 @@ class EoiController extends Controller
     public function preview(Eoi $eoi)
     {
         switch ($eoi->status) {
-            case 'WFT Approved':
+            case 'WSTF Approved':
                 $progress = 100;
                 break;
             case 'WASREB Approved':
@@ -88,7 +92,7 @@ class EoiController extends Controller
         }
 
         $eoi = $eoi->load(['wsp', 'services', 'connections', 'estimatedcosts', 'operationcosts']);
-        return view('eoi.preview')->with(compact('eoi','progress'));
+        return view('eoi.preview')->with(compact('eoi', 'progress'));
     }
 
     public function review(Eoi $eoi, EoiReviewRequest $request)
@@ -99,11 +103,11 @@ class EoiController extends Controller
         $eoi->status = $request->status;
         $eoi->save();
 
-        //todo: notification of action
-          Mail::to(auth()->user()->email)->send(new EoiReview());
+
+        SendMailNotification::postReview($request->status);
         $route = route('eoi.preview', $eoi->id);
 
-        if ($request->status == 'WFT Approved') {
+        if ($request->status == 'WSTF Approved') {
             $route = route('eoi.commitment_letter', $eoi->id);
         }
 
@@ -123,19 +127,51 @@ class EoiController extends Controller
             'description' => $request->description,
             'user_id' => auth()->id()
         ]);
-        Mail::to(auth()->user()->email)->send(new EioComment($request->description));
-        //todo: notification on activity
+        SendMailNotification::postComment($request->description);
 
         return response()->json(['message' => 'Comment posted successfully']);
     }
 
     public function commitment_letter(Eoi $eoi)
     {
-        if($eoi->status !== 'WFT Approved'){
-            return redirect()->back()->withErrors("Expression of Interest must have been approved by Water Trust Fund");
+        $this->validate_eoi_approved($eoi);
+        if (request()->input('download')) {
+            $pdf = PDF::loadView('preview.eoi', compact('eoi'));
+            return $pdf->download('commitment-letter.pdf');
         }
-        $eoi = $eoi->load(['wsp', 'wsp.postalcode']);
-        return view('wsps.commitment-letter')->with(compact('eoi'));
+        $eoi = $eoi->load(['wsp', 'wsp.postalcode', 'attachments']);
+        return view('wsps.commitment-letter')->with(['eoi' => $eoi]);
+    }
+
+    public function upload_commitment_letter(Eoi $eoi, Request $request)
+    {
+        $this->validate_eoi_approved($eoi);
+        $request->validate(['attachment' => 'required|file|mimes:pdf,jpg,jpeg,png,docx,doc']);
+
+        $attachment = $eoi->attachments()->where('document_type', 'Commitment Letter')->first();
+
+        if ($attachment) {
+            Attachment::remove($attachment);
+        }
+
+        $fileName = $this->storeDocument($request->attachment, 'Commitment Letter');
+
+        $eoi->attachments()->create([
+            'name' => $fileName,
+            'display_name' => 'Commitment Letter',
+            'document_type' => 'Commitment Letter',
+        ]);
+
+        //todo: send notification to wft if wsp uploaded signed copy and vice-versa
+
+        return back()->with('success', 'Commitment letter uploaded successfully');
+    }
+
+    private function validate_eoi_approved(Eoi $eoi)
+    {
+        if ($eoi->status !== 'WSTF Approved') {
+            return back()->withErrors("Expression of Interest must have been approved by Water Trust Fund");
+        }
     }
 
 //    public function services(Eoi $eoi)

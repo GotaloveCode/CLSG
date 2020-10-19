@@ -19,9 +19,8 @@
                   :search="search"
               >
                   <template v-slot:item.actions="{ item }">
-                      <v-btn class="mx-1 my-1"  dark color="cyan" small @click="showItem(item.createdAt)">
-                          <v-icon small>mdi-eye</v-icon>
-                      </v-btn>
+                   <button class="btn btn-info btn-sm" :title="'Review'" @click="review(item.id)"><i class="fa fa-eye"></i></button>
+
                   </template>
               </v-data-table>
 
@@ -32,6 +31,7 @@
 
 <style lang="scss">
 @import "~vuetify/dist/vuetify.min.css";
+
 .theme--light.v-application {
     background: transparent !important;
 }
@@ -39,14 +39,15 @@
     box-shadow: none !important;
 }
 .v-menu__content{
-    left: 73% !important;
-    top: 70% !important;
+    left: 74% !important;
+    top: 58% !important;
 }
 
 </style>
 
 <script>
-import FielDefs from "./FieldDefs"
+import '@mdi/font/css/materialdesignicons.css';
+import FielDefs from "./FieldDefs";
 export default {
     props:{
         eois:{type: Array}
@@ -57,9 +58,9 @@ export default {
             headers: FielDefs
         }
     },
-    method:{
-        showItem(item){
-            return item;
+    methods:{
+        review(id){
+          window.location.href='/eoi/'+id+'/review';
         }
     }
 }

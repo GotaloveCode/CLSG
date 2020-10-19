@@ -15,13 +15,8 @@
         href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i"
         rel="stylesheet">
 
-    <!-- Styles -->
-{{--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"--}}
-{{--          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">--}}
-{{--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
-<!-- BEGIN: Vendor CSS-->
+    <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/vendors.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -30,20 +25,17 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/colors.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/components.min.css') }}">
     <!-- END: Theme CSS-->
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/colors/palette-gradient.min.css') }}">
-{{--    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/pages/pages-users.min.css') }}">--}}
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
-{{--    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">--}}
+@stack('css')
 <!-- END: Custom CSS-->
-
-    @stack('css')
     <script>
-     window.url ="{{url('/')}}";
+    window.url ="{{url('/')}}";
     </script>
 </head>
 <body class="vertical-layout vertical-menu content-detached-right-sidebar   fixed-navbar" data-open="click"
@@ -54,9 +46,7 @@
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="content-wrapper">
-{{--            <div class="content-body">--}}
-                @yield('content')
-{{--            </div>--}}
+            @yield('content')
         </div>
     </div>
     @include('layouts.partials.footer')
@@ -64,14 +54,14 @@
 
 
 <!-- Scripts -->
-{{--<script src="{{ asset('js/app.js') }}"></script>--}}
+<script src="{{ asset('js/app.js') }}"></script>
 
 <!-- BEGIN: Vendor JS-->
+{{--commented out jquery,bootstrap,popper since they are in app.js--}}
 <script src="{{ asset('app-assets/vendors/js/vendors.min.js') }}"></script>
 <!-- BEGIN Vendor JS-->
 
 <!-- BEGIN: Page Vendor JS-->
-<script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
 <!-- END: Page Vendor JS-->
 
 <!-- BEGIN: Theme JS-->
@@ -79,13 +69,18 @@
 <script src="{{ asset('app-assets/js/core/app.min.js') }}"></script>
 <script src="{{ asset('app-assets/js/scripts/customizer.min.js') }}"></script>
 <!-- END: Theme JS-->
-
+<script>
+    @if(Session::has('success'))
+    window.Vue.swal("Success","{{ Session::get('success') }}");
+    @endif
+    @if($errors->any())
+    @foreach($errors->all() as $error)
+    window.Vue.swal('Error','{{$error}}');
+    @endforeach
+    @endif
+</script>
 <!-- BEGIN: Page JS-->
-{{--<script src="{{ asset('app-assets/js/scripts/pages/page-users.min.js') }}"></script>--}}
-<!-- END: Page JS-->
-<script src="{{ asset('js/app.js') }}"></script>
-
 @stack('scripts')
-
+<!-- END: Page JS-->
 </body>
 </html>

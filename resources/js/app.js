@@ -1,12 +1,11 @@
-import * as Vue from "vue";
+window.Vue = require('vue')
 import Vuetify from 'vuetify';
 import '@mdi/font/css/materialdesignicons.css'
-
 
 Vue.use(Vuetify);
 
 require('./bootstrap');
-window.Vue = require('vue');
+
 import "./components/components";
 
 window.axios = require('axios')

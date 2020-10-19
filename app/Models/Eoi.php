@@ -123,4 +123,12 @@ class Eoi extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+    public function scopeSearch($query, string $terms = null)
+    {
+        if (!$terms) return;
+        collect(str_getcsv($terms, ' ', '"'))->filter()->each(function ($term) use ($query) {
+            $query->where('wsps.name', 'like', $term. '%');
+        });
+    }
+
 }

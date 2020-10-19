@@ -183,6 +183,9 @@
                                                      document.getElementById('logout-form').submit();"><i
                                         class="feather icon-power"></i> {{ __('Logout') }}</a>
                             </div>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
                         </li>
                     </ul>
                 </div>
