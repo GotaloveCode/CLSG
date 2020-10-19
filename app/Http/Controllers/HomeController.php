@@ -23,6 +23,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $role = auth()->user()->getRoleNames()->first();
+        switch ($role) {
+            case 'wsp':
+                $wsp = auth()->user()->wsps()->first();
+                $eoi = $wsp->eois()->first();
+                $bcp = $wsp->bcps()->first();
+                return view('dashboard.wsp')->with(compact('wsp','eoi','bcp'));
+            case 'wstf':
+                return view('dashboard.wstf');
+            case 'wasreb':
+                return view('dashboard.wasreb');
+            default:
+                return view('dashboard.admin');
+        }
     }
 }

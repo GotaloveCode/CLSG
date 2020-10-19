@@ -1,6 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/js/components/bcp/bcp-form.js": "/js/components/bcp/bcp-form.js",
     "/js/components/eoi/attachment-form.js": "/js/components/eoi/attachment-form.js",
     "/js/components/eoi/eoi-form.js": "/js/components/eoi/eoi-form.js",
     "/js/components/eoi/manage-review.js": "/js/components/eoi/manage-review.js",

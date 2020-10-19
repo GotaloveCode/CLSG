@@ -55,7 +55,7 @@
                                             @if($eoi->status=='Pending' || $eoi->status =='Needs Review')
                                                 <button class="btn btn-success ml-2 mb-1"
                                                         @click.prevent="review('WASREB Approved')"><i
-                                                        class="fa fa-check"></i>
+                                                        class="feather icon-check"></i>
                                                     Approve
                                                 </button>
                                             @endif
@@ -82,7 +82,7 @@
                                             @if($eoi->status =='WSTF Approved')
                                                 <a class="btn btn-info mt-2"
                                                    href="{{ route('eoi.commitment_letter',$eoi->id) }}"><i
-                                                        class="fa fa-eye"></i>
+                                                        class="feather icon-eye"></i>
                                                     View Commitment Letter
                                                 </a>
                                             @endif
