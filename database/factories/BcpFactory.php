@@ -24,8 +24,11 @@ class BcpFactory extends Factory
     {
         return [
             'executive_summary' => $this->faker->realText(),
-            'introduction' => $this->faker->realText(),
-            'planning_assumptions' => $this->faker->realText(),
+            'rationale' => $this->faker->realText(),
+            'environment_analysis' => $this->faker->realText(),
+            'company_overview' => $this->faker->realText(),
+            'financing' => $this->faker->realText(),
+            'strategic_direction' => $this->faker->realText(),
             'wsp_id' => random_int(1, 10)
         ];
     }

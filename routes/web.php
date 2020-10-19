@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::resource('users', 'UserController')->only('index');
+    Route::resource('bcps', 'BcpController')->only('create','store');
 
 //    Route::get('eoi/{eoi}/services', [App\Http\Controllers\EoiController::class, 'services'])->name('eoi.services');
 //    Route::post('eoi/{eoi}/services', [App\Http\Controllers\EoiController::class, 'update_services'])->name('eoi.services.update');

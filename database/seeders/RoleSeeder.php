@@ -25,11 +25,12 @@ class RoleSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'create-wsps']);
         $create_users = Permission::firstOrCreate(['name' => 'create-users']);
         $create_eoi = Permission::firstOrCreate(['name' => 'create-eoi']);
+        $create_bcp = Permission::firstOrCreate(['name' => 'create-bcp']);
         $list_eoi = Permission::firstOrCreate(['name' => 'list-eoi']);
         $review_eoi = Permission::firstOrCreate(['name' => 'review-eoi']);
         $comment_eoi = Permission::firstOrCreate(['name' => 'comment-eoi']);
 
-        $wsp->syncPermissions([$create_eoi, $comment_eoi]);
+        $wsp->syncPermissions([$create_eoi, $comment_eoi,$create_bcp]);
         $wasreb->syncPermissions([$list_eoi, $review_eoi, $comment_eoi]);
         $wstf->syncPermissions([$list_eoi, $review_eoi, $comment_eoi,]);
 

@@ -15,7 +15,7 @@ class Bcp extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'executive_summary', 'introduction', 'planning_assumptions', 'wsp_id'
+        'executive_summary', 'rationale', 'environment_analysis', 'company_overview', 'financing', 'strategic_direction', 'wsp_id'
     ];
 
     /**

@@ -105,26 +105,13 @@ class EoiController extends Controller
         if ($request->ajax()) {
             return response()->json(['eoi' => $eoi]);
         }
-        return redirect()->back()->with(['eoi' => $eoi]);
+        return back()->with(['eoi' => $eoi]);
     }
 
 
     public function preview(Eoi $eoi)
     {
-        switch ($eoi->status) {
-            case 'WSTF Approved':
-                $progress = 100;
-                break;
-            case 'WASREB Approved':
-                $progress = 75;
-                break;
-            case 'Needs Approval':
-                $progress = 50;
-                break;
-            default:
-                $progress = 25;
-        }
-
+        $progress = $eoi->progress();
         $eoi = $eoi->load(['wsp', 'services', 'connections', 'estimatedcosts', 'operationcosts']);
         return view('eoi.preview')->with(compact('eoi', 'progress'));
     }
