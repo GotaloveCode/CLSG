@@ -18,6 +18,7 @@
             </li>
         </ul>
         <form @submit.prevent="handleSubmit(onSubmit)" class="col-md-12 mt-4">
+            <div v-html="$error.handle(error)" />
             <ValidationObserver v-if="currentStep === 1">
                 <step-one :eoi="eoi"/>
             </ValidationObserver>
@@ -104,12 +105,11 @@ export default {
             this.currentStep++;
         },
         postData() {
-            console.log(this.eoi);
             axios.post(this.submitUrl, this.eoi).then(response => {
                 this.$toastr.s("Expression of interest created!Proceed to attach Expression Of Interest Documents");
                 location.href = "/eoi/" + response.data.id + "/services"
             }).catch(error => {
-                console.log("err", error);
+                this.error = error.response;
             });
         }
     }

@@ -1,5 +1,6 @@
 <template>
     <ValidationObserver v-slot="{ handleSubmit }">
+        <div v-html="$error.handle(error)" />
         <form class="form" @submit.prevent="handleSubmit(onSubmit)">
             <div class="form-body">
                 <div class="row">
@@ -95,6 +96,7 @@ export default {
         submitUrl: {required: true, type: String},
     },
     data: () => ({
+        error:'',
         bcp: {
             executive_summary: '',
             rationale: '',
@@ -111,7 +113,7 @@ export default {
             axios.post(this.submitUrl, this.bcp).then(response => {
                 this.$toastr.s(response.data.message);
             }).catch(error => {
-                console.log("err", error.response.data);
+                this.error = error.response;
             });
         },
         addObjective() {

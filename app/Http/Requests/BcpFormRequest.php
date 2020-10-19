@@ -26,7 +26,7 @@ class BcpFormRequest extends FormRequest
         return [
             'executive_summary' => 'required',
             'rationale' => 'required',
-            'environment_analysis' => 'required',
+            'environment_analysis' => 'required|numeric',
             'company_overview' => 'required',
             'financing' => 'required',
             'strategic_direction' => 'required',

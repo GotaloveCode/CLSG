@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import $ from 'jquery';
 
 export function Errors() {
     Vue.errors = {
@@ -11,7 +10,7 @@ export function Errors() {
             }
 
             if (error.status == 422) {
-                return this._handle(error.data.error);
+                return this._handle(error.data.errors);
             }
 
             if (error.status == 401) {
@@ -48,7 +47,7 @@ export function Errors() {
                 let message = '<p>There was a problem processing your request. Please try again later.</p>';
                 message += '<p><a class="btn btn-primary" href="">Try Again</a></p>';
 
-                return $('#main-content').html(this._handle(message));
+                return document.getElementsByClassName('content-wrapper').innerHTML= this._handle(message);
             }
         },
 
