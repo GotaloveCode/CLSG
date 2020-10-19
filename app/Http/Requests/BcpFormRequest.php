@@ -31,7 +31,11 @@ class BcpFormRequest extends FormRequest
             'financing' => 'required',
             'strategic_direction' => 'required',
             'objectives' => 'required|array',
-            'operation_costs' => 'required|array'
+            'operation_costs.*.total' => 'required|numeric',
+            'government_subsidy' => 'numeric',
+            'projected_revenues.*.month' => 'required|numeric|between:1,12',
+            'projected_revenues.*.year' => 'required|numeric|min:2020',
+            'projected_revenues.*.amount' => 'required|numeric|min:1',
         ];
     }
 

@@ -40,8 +40,8 @@ class BcpController extends Controller
         $bcp = Bcp::where('wsp_id', $wsp_id)->first();
         if ($bcp) {
             return response()->json([
-                'errors' => [['wsp_id' => 'A BCP already exists!']],
-                'message' => 'The given field was invalid'
+                'message' => 'The given field was invalid',
+                'errors' => ['wsp_id' => ['A BCP already exists!']]
             ],422);
         }
 
@@ -60,6 +60,14 @@ class BcpController extends Controller
                 'unit_rate' => $operation_cost['unit_rate'],
                 'quantity' => $operation_cost['quantity'],
                 'total' => $operation_cost['total'],
+            ]);
+        }
+
+        foreach ($request->input('projected_revenues') as $revenue) {
+            $bcp->revenue_projections()->create([
+                'amount' => $revenue['amount'],
+                'month' => $revenue['month'],
+                'year' => now()->year,
             ]);
         }
 

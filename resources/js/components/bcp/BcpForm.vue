@@ -58,10 +58,16 @@ Business Environment in addition to the SWOT Analysis, the company should provid
                         <span class="ml-2 text-danger"> {{ errors[0] }}</span>
                     </ValidationProvider>
                     <ValidationProvider name="Implementation Matrix" rules="required" v-slot="{ errors }"
-                                        class="col-md-12 form-group">
+                                        class="col-md-6 form-group">
                         <label>Implementation Matrix</label>
                         <textarea v-model="bcp.implementation_matrix" type="text" class="form-control"
                                   placeholder="The BCP shall contain a log frame of the activities to be undertaken with clear indicators to measure their attainment as well as the required resources i.e. What, how to measure attainment, Who, When, Resources required."></textarea>
+                        <span class="ml-2 text-danger"> {{ errors[0] }}</span>
+                    </ValidationProvider>
+                    <ValidationProvider name="Government Subsidy" rules="required" v-slot="{ errors }"
+                                        class="col-md-6 form-group">
+                        <label>Existing Government Subsidy</label>
+                        <vue-numeric v-model="bcp.government_subsidy" separator="," class="form-control"></vue-numeric>
                         <span class="ml-2 text-danger"> {{ errors[0] }}</span>
                     </ValidationProvider>
                     <div class="col-md-12">
@@ -93,6 +99,24 @@ Business Environment in addition to the SWOT Analysis, the company should provid
                             v-bind:key="index"
                             :index="index"/>
                     </table>
+                    <h5 class="col-md-12">Revenue Projections:</h5>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Year</th>
+                            <th>Amount (KES)</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tr is="revenue-row"
+                            v-for="(d, index) in bcp.projected_revenues"
+                            @add="addRevenue"
+                            @remove="removeRevenue(index)"
+                            :revenue="d"
+                            v-bind:key="index"
+                            :index="index"/>
+                    </table>
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">
@@ -107,12 +131,14 @@ Business Environment in addition to the SWOT Analysis, the company should provid
 <script>
 import ObjectiveRow from "./ObjectiveRow";
 import OperationCostRow from "../eoi/OperationCostRow";
+import RevenueRow from "./RevenueRow";
 
 export default {
     name: "BcpForm",
     components: {
         ObjectiveRow,
-        OperationCostRow
+        OperationCostRow,
+        RevenueRow
     },
     props: {
         submitUrl: {required: true, type: String},
@@ -122,6 +148,7 @@ export default {
     data: () => ({
         error: '',
         bcp: {
+            government_subsidy: 0,
             executive_summary: '',
             rationale: '',
             company_overview: '',
@@ -130,7 +157,8 @@ export default {
             financing: '',
             implementation_matrix: '',
             objectives: [{description: ''}],
-            operation_costs: [{quantity: null, unit_rate: null, total: "", operationcost_id: null}],
+            operation_costs: [{quantity: 0, unit_rate: 0, total: 0, operationcost_id: null}],
+            projected_revenues: [{month: 10, year: 2020, amount: 0}]
         }
     }),
     created() {
@@ -161,6 +189,14 @@ export default {
         removeCost(index) {
             if (this.bcp.operation_costs.length > 1) {
                 this.bcp.operation_costs.splice(index, 1);
+            }
+        },
+        addRevenue() {
+            this.bcp.projected_revenues.push({month: 10, year: 2020, amount: 0});
+        },
+        removeRevenue(index) {
+            if (this.bcp.projected_revenues.length > 1) {
+                this.bcp.projected_revenues.splice(index, 1);
             }
         },
         initCosts() {

@@ -62,6 +62,14 @@ class Bcp extends Model
             ->withTimestamps();
     }
 
+    /**
+     * Get the Revenue Projections for the Bcp.
+     */
+    public function revenue_projections()
+    {
+        return $this->hasMany(RevenueProjection::class);
+    }
+
 
     /**
      * Get the EssentialOperations for the Bcp.
