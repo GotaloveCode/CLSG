@@ -1,7 +1,7 @@
 <?php
 namespace Database\Seeders;
 
-use App\Models\Bcpteam;
+use App\Models\Objective;
 use Illuminate\Database\Seeder;
 
 class BcpteamSeeder extends Seeder
@@ -13,6 +13,6 @@ class BcpteamSeeder extends Seeder
      */
     public function run()
     {
-        Bcpteam::factory()->count(10)->create();
+        Objective::factory()->count(10)->create();
     }
 }

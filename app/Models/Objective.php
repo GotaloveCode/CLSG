@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Bcpteam extends Model
+class Objective extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class Bcpteam extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'firstname', 'lastname', 'unit', 'role', 'training', 'bpi_plan', 'erp', 'bcp_id'
+        'description', 'bcp_id'
     ];
 
     /**
@@ -44,11 +44,11 @@ class Bcpteam extends Model
     ];
 
     /**
-     * Get the Bcp for the Bcpteam.
+     * Get the Bcp for the Objective.
      */
     public function bcp()
     {
-        return $this->belongsTo(\App\Bcp::class);
+        return $this->belongsTo(Bcp::class);
     }
 
 }

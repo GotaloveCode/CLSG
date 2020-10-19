@@ -22,7 +22,7 @@ class BcpResource extends JsonResource
             'wsp_id' => $this->wsp_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'bcpteams' => new BcpteamCollection($this->whenLoaded('bcpteams')),
+            'objectives' => new ObjectiveCollection($this->whenLoaded('objectives')),
             'essential_operations' => new EssentialOperationCollection($this->whenLoaded('essential_operations')),
             'wsp' => new WspResource($this->whenLoaded('wsp'))
         ];

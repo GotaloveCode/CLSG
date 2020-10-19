@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BcpteamCollection extends JsonResource
+class ObjectiveCollection extends JsonResource
 {
     /**
      * Transform the resource into an array.

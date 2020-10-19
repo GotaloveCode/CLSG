@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BcpFormRequest;
 use App\Models\Bcp;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class BcpController extends Controller
@@ -28,8 +30,24 @@ class BcpController extends Controller
 
     public function store(BcpFormRequest $request)
     {
-        $request->validate(['wsp_id' => 'unique:bcps,wsp_id']);
-        Bcp::create($request->all());
+        $wsp_id = auth()->user()->wsps()->first()->id;
+        $bcp = Bcp::where('wsp_id', $wsp_id)->first();
+        if ($bcp) {
+            return response()->json([
+                'errors' => [['wsp_id' => 'A BCP already exists!']],
+                'message' => 'The given field was invalid'
+            ],422);
+        }
+
+        $bcp = Bcp::create(Arr::except($request->validated(), 'objectives') + [
+                'wsp_id' => $wsp_id
+            ]);
+
+        foreach ($request->input('objectives') as $objective) {
+            $bcp->objectives()->create([
+                'description' => $objective['description']
+            ]);
+        }
 
         if ($request->ajax()) {
             return response()->json(['message' => 'Business Continuity Plan submitted successfully']);

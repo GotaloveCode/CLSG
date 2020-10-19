@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBcpteamsTable extends Migration
+class CreateObjectivesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,9 @@ class CreateBcpteamsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bcpteams', function (Blueprint $table) {
+        Schema::create('objectives', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('unit');
-            $table->string('role');
-            $table->string('training');
-            $table->string('bpi_plan');
-            $table->string('erp');
+            $table->text('description');
             $table->unsignedInteger('bcp_id')->nullable();
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->timestamp('created_at')->nullable();
@@ -37,6 +31,6 @@ class CreateBcpteamsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bcpteams');
+        Schema::dropIfExists('objectives');
     }
 }

@@ -20,10 +20,10 @@
         </ValidationProvider>
         <td>
             <button type="button" class="btn btn-sm btn-primary" @click="$emit('add')">
-                <span class="fa fa-plus"></span>
+                <span class="feather icon-plus"></span>
             </button>
             <button type="button" class="btn btn-sm btn-danger" @click="$emit('remove')">
-                <span class="fa fa-minus"></span>
+                <span class="feather icon-minus"></span>
             </button>
         </td>
     </tr>

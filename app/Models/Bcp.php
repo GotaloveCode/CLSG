@@ -44,11 +44,11 @@ class Bcp extends Model
     ];
 
     /**
-     * Get the Bcpteams for the Bcp.
+     * Get the Objectives for the Bcp.
      */
-    public function bcpteams()
+    public function objectives()
     {
-        return $this->hasMany(Bcpteam::class);
+        return $this->hasMany(Objective::class);
     }
 
 

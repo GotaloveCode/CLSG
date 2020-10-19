@@ -29,14 +29,9 @@ class BcpFormRequest extends FormRequest
             'environment_analysis' => 'required',
             'company_overview' => 'required',
             'financing' => 'required',
-            'strategic_direction' => 'required'
+            'strategic_direction' => 'required',
+            'objectives' => 'required|array'
         ];
     }
 
-    public function validated()
-    {
-        return array_merge(parent::validated(), [
-            'wsp_id' => $this->user()->wsps()->first()->id
-        ]);
-    }
 }

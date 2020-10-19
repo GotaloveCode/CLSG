@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Bcpteam;
-use App\Http\Resources\BcpteamCollection;
-use App\Http\Resources\BcpteamResource;
+use App\Models\Objective;
+use App\Http\Resources\ObjectiveCollection;
+use App\Http\Resources\ObjectiveResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -12,27 +12,27 @@ class BcpteamAPIController extends Controller
 {
     public function index()
     {
-        return new BcpteamCollection(Bcpteam::paginate());
+        return new ObjectiveCollection(Objective::paginate());
     }
 
-    public function show(Bcpteam $bcpteam)
+    public function show(Objective $bcpteam)
     {
-        return new BcpteamResource($bcpteam->load(['bcp']));
+        return new ObjectiveResource($bcpteam->load(['bcp']));
     }
 
     public function store(Request $request)
     {
-        return new BcpteamResource(Bcpteam::create($request->all()));
+        return new ObjectiveResource(Objective::create($request->all()));
     }
 
-    public function update(Request $request, Bcpteam $bcpteam)
+    public function update(Request $request, Objective $bcpteam)
     {
         $bcpteam->update($request->all());
 
-        return new BcpteamResource($bcpteam);
+        return new ObjectiveResource($bcpteam);
     }
 
-    public function destroy(Request $request, Bcpteam $bcpteam)
+    public function destroy(Request $request, Objective $bcpteam)
     {
         $bcpteam->delete();
 
