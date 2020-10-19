@@ -17,8 +17,9 @@ class AddColumnsToBcpsTable extends Migration
             $table->renameColumn('planning_assumptions', 'rationale');
             $table->renameColumn('introduction', 'environment_analysis');
             $table->text('company_overview')->after('executive_summary');
-            $table->text('financing')->after('executive_summary');
-            $table->text('strategic_direction')->after('executive_summary');
+            $table->text('financing')->after('company_overview');
+            $table->text('strategic_direction')->after('financing');
+            $table->string('status')->default('Pending')->after('planning_assumptions');
         });
     }
 
@@ -35,6 +36,7 @@ class AddColumnsToBcpsTable extends Migration
             $table->dropColumn('company_overview');
             $table->dropColumn('financing');
             $table->dropColumn('strategic_direction');
+            $table->dropColumn('status');
         });
     }
 }
