@@ -7,6 +7,5 @@
     "/js/components/eoi/manage-review.js": "/js/components/eoi/manage-review.js",
     "/js/components/eoi/review-form.js": "/js/components/eoi/review-form.js",
     "/js/components/modal.js": "/js/components/modal.js",
-    "/vendors~js/components/eoi/manage-review~js/components/eoi/review-form.js": "/vendors~js/components/eoi/manage-review~js/components/eoi/review-form.js",
-    "/vendors~js/components/eoi/review-form.js": "/vendors~js/components/eoi/review-form.js"
+    "/vendors~js/components/eoi/manage-review~js/components/eoi/review-form.js": "/vendors~js/components/eoi/manage-review~js/components/eoi/review-form.js"
 }
