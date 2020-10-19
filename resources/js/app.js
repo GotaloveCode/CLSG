@@ -9,7 +9,7 @@ require('./bootstrap');
 import "./components/components";
 
 window.axios = require('axios')
-axios.defaults.baseURL =url+'/api/';
+axios.defaults.baseURL =url+'/';
 
 const EoiForm = () => import('./components/eoi/EoiForm.vue' /* webpackChunkName: "js/components/eoi/eoi-form" */);
 const AttachmentForm = () => import('./components/eoi/AttachmentForm.vue' /* webpackChunkName: "js/components/eoi/attachment-form" */);

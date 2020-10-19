@@ -13,15 +13,17 @@ class EoiComment extends Mailable
 
     public $description;
     public $user;
+    public $wsp;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($description)
+    public function __construct($description,$wsp)
     {
         $this->description = $description;
         $this->user = auth()->user();
+        $this->wsp = $wsp;
     }
 
     /**

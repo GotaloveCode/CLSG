@@ -13,15 +13,17 @@ class EoiReview extends Mailable
 
     public $content;
     public $user;
+    public $wsp;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($content)
+    public function __construct($content,$wsp)
     {
         $this->content = $content;
         $this->user = auth()->user();
+        $this->wsp = $wsp;
     }
 
     /**
