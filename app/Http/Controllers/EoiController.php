@@ -200,7 +200,7 @@ class EoiController extends Controller
         $eoi->save();
 
 
-        SendMailNotification::postReview($request->status);
+        SendMailNotification::postReview($request->status,'Eoi Review');
         $route = route('eoi.preview', $eoi->id);
 
         if ($request->status == 'WSTF Approved') {
@@ -223,8 +223,8 @@ class EoiController extends Controller
             'description' => $request->description,
             'user_id' => auth()->id()
         ]);
-        
-        SendMailNotification::postComment($request->description,$eoi->status);
+
+        SendMailNotification::postComment($request->description,$eoi->status,'Eoi Comment');
 
         return response()->json(['message' => 'Comment posted successfully']);
     }

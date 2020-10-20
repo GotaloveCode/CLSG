@@ -1,5 +1,5 @@
 @component('mail::message')
-# Hello {{$wsp->name}}
+# Hello,
 
 {{$description}}
 
