@@ -1,5 +1,7 @@
 @component('mail::message')
-# Hello,
+# New Comment,
+
+A new comment has been posted by {{ $user->getRoleNames()->first() }}.
 
 {{$description}}
 

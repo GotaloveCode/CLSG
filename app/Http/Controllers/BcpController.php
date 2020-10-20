@@ -16,7 +16,7 @@ use App\Traits\SendMailNotification;
 
 class BcpController extends Controller
 {
-    use SendMailNotification,BcpAuthTrait;
+    use SendMailNotification, BcpAuthTrait;
 
     public function index()
     {
@@ -34,14 +34,14 @@ class BcpController extends Controller
     public function create()
     {
         $wsp = auth()->user()->wsps()->first();
-        if (!isset($wsp->eoi)){
+        if (!isset($wsp->eoi)) {
             return redirect(route("eois.create"));
         }
         $operation_costs = $wsp->eoi->operationcosts()->get();
         $operation_cost_fields = Cache::rememberForever('operationCosts', function () {
             return Operationcost::select('id', 'name')->get();
         });
-        return view('bcps.create')->with(compact( 'operation_cost_fields','operation_costs'));
+        return view('bcps.create')->with(compact('operation_cost_fields', 'operation_costs'));
     }
 
     public function store(BcpFormRequest $request)
@@ -52,10 +52,10 @@ class BcpController extends Controller
             return response()->json([
                 'message' => 'The given field was invalid',
                 'errors' => ['wsp_id' => ['A BCP already exists!']]
-            ],422);
+            ], 422);
         }
 
-        $bcp = Bcp::create(Arr::except($request->validated(), ['objectives','strategic_plans']) + [
+        $bcp = Bcp::create(Arr::except($request->validated(), ['objectives', 'strategic_plans']) + [
                 'wsp_id' => $wsp_id
             ]);
 
@@ -92,7 +92,7 @@ class BcpController extends Controller
         $progress = $bcp->progress();
         $eoi = $bcp->wsp->first()->eoi;
         $bcp = $bcp->load(['wsp', 'objectives', 'operationcosts', 'revenue_projections']);
-        return view('bcps.preview')->with(compact('bcp', 'progress','eoi'));
+        return view('bcps.show')->with(compact('bcp', 'progress', 'eoi'));
     }
 
     public function review(Bcp $bcp, Request $request)
@@ -101,8 +101,8 @@ class BcpController extends Controller
         $bcp->status = $request->status;
         $bcp->save();
 
-        SendMailNotification::postReview($request->status,'BCP Review');
-        $route = route('bcp.preview', $bcp->id);
+        SendMailNotification::postReview($request->status, $bcp->wsp_id, 'BCP Review');
+        $route = route('bcps.preview', $bcp->id);
 
         if ($request->status == 'WSTF Approved') {
             $route = route('bcps.commitment_letter', $bcp->id);
@@ -123,7 +123,7 @@ class BcpController extends Controller
             'user_id' => auth()->id()
         ]);
 
-        SendMailNotification::postComment($request->description,$bcp->status,'BCP Comment');
+        SendMailNotification::postComment($request->description, $bcp->status, $bcp->wsp_id, 'BCP Comment');
 
         return response()->json(['message' => 'Comment posted successfully']);
     }
@@ -134,12 +134,12 @@ class BcpController extends Controller
 
         $this->validate_bcp_approved($bcp);
         if (request()->input('download')) {
-           $pdf = PDF::loadView('preview.bcp', compact('bcp'));
-           return $pdf->download('commitment-letter.pdf');
+            $pdf = PDF::loadView('preview.bcp', compact('bcp'));
+            return $pdf->download('commitment-letter.pdf');
         }
         $eoi = $bcp->wsp()->first()->eois()->first();
         $bcp = $bcp->load(['wsp', 'wsp.postalcode', 'attachments']);
-        return view('wsps.commitment-letter-bcp')->with(['bcp' => $bcp,'eoi'=>$eoi]);
+        return view('wsps.commitment-letter-bcp')->with(['bcp' => $bcp, 'eoi' => $eoi]);
     }
 
     public function upload_commitment_letter(Bcp $bcp, Request $request)

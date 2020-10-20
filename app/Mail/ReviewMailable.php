@@ -7,19 +7,21 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class EoiReview extends Mailable
+class ReviewMailable extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $content;
     public $user;
     public $subject;
+
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param $content
+     * @param $subject
      */
-    public function __construct($content,$subject)
+    public function __construct($content, $subject)
     {
         $this->content = $content;
         $this->user = auth()->user();
@@ -34,6 +36,6 @@ class EoiReview extends Mailable
     public function build()
     {
         return $this->subject($this->subject)
-         ->markdown('emails.eois.review');
+            ->markdown('emails.review');
     }
 }

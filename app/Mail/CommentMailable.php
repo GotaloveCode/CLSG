@@ -7,19 +7,21 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class EoiComment extends Mailable
+class CommentMailable extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $description;
     public $user;
     public $subject;
+
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param $description
+     * @param $subject
      */
-    public function __construct($description,$subject)
+    public function __construct($description, $subject)
     {
         $this->description = $description;
         $this->user = auth()->user();
@@ -34,6 +36,6 @@ class EoiComment extends Mailable
     public function build()
     {
         return $this->subject($this->subject)
-        ->markdown('emails.eoi.comments');
+            ->markdown('emails.comments');
     }
 }
