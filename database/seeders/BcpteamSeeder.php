@@ -13,6 +13,6 @@ class BcpteamSeeder extends Seeder
      */
     public function run()
     {
-        Objective::factory()->count(10)->create();
+       // Objective::factory()->count(10)->create();
     }
 }

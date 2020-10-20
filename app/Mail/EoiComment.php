@@ -13,17 +13,17 @@ class EoiComment extends Mailable
 
     public $description;
     public $user;
-    public $wsp;
+    public $subject;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($description,$wsp)
+    public function __construct($description,$subject)
     {
         $this->description = $description;
         $this->user = auth()->user();
-        $this->wsp = $wsp;
+        $this->subject = $subject;
     }
 
     /**
@@ -33,7 +33,7 @@ class EoiComment extends Mailable
      */
     public function build()
     {
-        return $this->subject("Eoi Comment")
+        return $this->subject($this->subject)
         ->markdown('emails.eoi.comments');
     }
 }

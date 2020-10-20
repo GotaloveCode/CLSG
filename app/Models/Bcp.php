@@ -61,7 +61,13 @@ class Bcp extends Model
             ->withPivot('quantity', 'unit_rate', 'total')
             ->withTimestamps();
     }
-
+    /**
+     * Get the attachments for the Bcp.
+     */
+    public function attachments()
+    {
+        return $this->morphMany(Attachment::class, 'attachable');
+    }
     /**
      * Get the Revenue Projections for the Bcp.
      */
@@ -86,6 +92,29 @@ class Bcp extends Model
     public function wsp()
     {
         return $this->belongsTo(Wsp::class);
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function progress()
+    {
+        switch ($this->status) {
+            case 'WSTF Approved':
+                $progress = 100;
+                break;
+            case 'WASREB Approved':
+                $progress = 75;
+                break;
+            case 'Needs Approval':
+                $progress = 50;
+                break;
+            default:
+                $progress = 25;
+        }
+        return $progress;
     }
 
 }

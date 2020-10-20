@@ -11,27 +11,27 @@ use Illuminate\Support\Facades\Mail;
 trait SendMailNotification
 {
 
-    static public function postComment($comment,$status){
-       Mail::to(self::getSender($status))->send(new EoiComment($comment,self::getSender($status)));
+    static public function postComment($comment,$status,$subject){
+       Mail::to(self::getSender($status))->send(new EoiComment($comment,$subject));
     }
-    static public function postReview($status){
-        Mail::to(self::getSender($status))->send(new EoiReview($status,self::getSender($status)));
+    static public function postReview($status,$subject){
+        Mail::to(self::getSender($status))->send(new EoiReview($status,$subject));
     }
 
     static public function getSender($status)
     {
         switch ($status){
             case 'WSTF Approved':
-                $sender = User::role("wasreb")->first();
+                $sender = User::role(["wasreb","wsp"])->get();
                 break;
             case 'WASREB Approved':
-                $sender = User::role("wstf")->first();
+                $sender = User::role(["wstf","wsp"])->get();
                 break;
             case 'Needs Approval':
-                $sender = User::role("wasreb")->first();
+                $sender = User::role(["wasreb","wstf"])->get();
                 break;
             default:
-                $sender = User::role("wsp")->first();
+                $sender = User::role(["wsp","wstf","wasreb"])->get();
         }
         return $sender;
     }
