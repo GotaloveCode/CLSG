@@ -13,6 +13,7 @@ export default {
             show_comment_dialog: false,
         }
     },
+    
     methods: {
         review(action) {
             this.$swal({

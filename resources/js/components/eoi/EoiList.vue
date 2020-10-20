@@ -45,6 +45,7 @@
 </style>
 
 <script>
+
 import '@mdi/font/css/materialdesignicons.css';
 import FielDefs from "./FieldDefs";
 export default {

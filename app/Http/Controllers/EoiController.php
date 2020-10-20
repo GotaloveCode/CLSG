@@ -51,8 +51,8 @@ class EoiController extends Controller
 
     public function create()
     {
-        $wsp_id = auth()->user()->wsps()->first()->id;
-        if (!isset($wsp_id)) {
+        $wsp = auth()->user()->wsps()->first();
+        if (!isset($wsp->id)) {
             return false;
         }
         $services = Cache::rememberForever('services', function () {
@@ -68,12 +68,13 @@ class EoiController extends Controller
             return Operationcost::select('id', 'name')->get();
         });
 
-        $eoi = Eoi::where('wsp_id', $wsp_id)->first();
+        $eoi = Eoi::where('wsp_id', $wsp->id)->first();
 
         if ($eoi) $eoi = json_encode(new EoiCustomResource($eoi));
         else $eoi = json_encode([]);
+        $wsp_id = $wsp->id;
 
-        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts', 'eoi', 'wsp'));
+        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts', 'eoi', 'wsp_id'));
     }
 
     public function store(Request $request)
@@ -222,7 +223,8 @@ class EoiController extends Controller
             'description' => $request->description,
             'user_id' => auth()->id()
         ]);
-        SendMailNotification::postComment($request->description);
+        
+        SendMailNotification::postComment($request->description,$eoi->status);
 
         return response()->json(['message' => 'Comment posted successfully']);
     }

@@ -155,7 +155,7 @@ export default {
         },
         postData() {
             this.eoi.wsp = this.wsp;
-            axios.post('eois', this.eoi).then(response => {
+            axios.post('/eois', this.eoi).then(response => {
                 this.$toastr.s("Expression of interest created!Proceed to attach Expression Of Interest Documents");
                 location.href = "/eoi/" + response.data.id + "/services"
             }).catch(error => {
@@ -164,7 +164,7 @@ export default {
         },
         updateData(id) {
             this.eoi.wsp = this.wsp;
-            axios.patch(`eois/${id}`, this.eoi).then(response => {
+            axios.patch(`/eois/${id}`, this.eoi).then(response => {
                 this.$toastr.s("Expression of interest updated!Proceed to attach Expression Of Interest Documents");
                 location.href = "/eoi/" + response.data.id + "/services"
             }).catch(error => {

@@ -5,30 +5,34 @@ namespace App\Traits;
 use App\Mail\EoiComment;
 use App\Mail\EoiReview;
 use App\Models\Wsp;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 trait SendMailNotification
 {
 
     static public function postComment($comment,$status){
-        $sender='';
-        switch ($status){
-            case 'WSTF Approved':
-                $sender = 100;
-                break;
-            case 'WASREB Approved':
-                $sender = 75;
-                break;
-            case 'Needs Approval':
-                $sender = Wsp::first();
-                break;
-            default:
-                $sender = Wsp::first();
-        }
-        if ($status=='draft') $sender = Wsp::first();
-        Mail::to(Wsp::first())->send(new EoiComment($comment,Wsp::first()));
+       Mail::to(self::getSender($status))->send(new EoiComment($comment,self::getSender($status)));
     }
     static public function postReview($status){
-        Mail::to(Wsp::first())->send(new EoiReview($status,Wsp::first()));
+        Mail::to(self::getSender($status))->send(new EoiReview($status,self::getSender($status)));
+    }
+
+    static public function getSender($status)
+    {
+        switch ($status){
+            case 'WSTF Approved':
+                $sender = User::role("wasreb")->first();
+                break;
+            case 'WASREB Approved':
+                $sender = User::role("wstf")->first();
+                break;
+            case 'Needs Approval':
+                $sender = User::role("wasreb")->first();
+                break;
+            default:
+                $sender = User::role("wsp")->first();
+        }
+        return $sender;
     }
 }
