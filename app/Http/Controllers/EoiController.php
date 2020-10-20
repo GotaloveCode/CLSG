@@ -52,10 +52,12 @@ class EoiController extends Controller
 
     public function create()
     {
-        $wsp_id = auth()->user()->wsps()->first()->id;
-        if (!isset($wsp_id)) {
+        $wsp = auth()->user()->wsps()->first();
+
+        if (!isset($wsp)) {
             return false;
         }
+        $wsp = $wsp->id;
         $services = Cache::rememberForever('services', function () {
             return Service::select('id', 'name')->get();
         });
@@ -69,7 +71,7 @@ class EoiController extends Controller
             return Operationcost::select('id', 'name')->get();
         });
 
-        $eoi = Eoi::where('wsp_id', $wsp_id)->first();
+        $eoi = Eoi::where('wsp_id', $wsp)->first();
 
         if ($eoi) $eoi = json_encode(new EoiCustomResource($eoi));
         else $eoi = json_encode([]);

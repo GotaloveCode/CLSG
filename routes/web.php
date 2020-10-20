@@ -37,8 +37,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('eoi/attachments/{filename}', 'EoiAttachmentController@show')->name('eoi.attachments.show');
     Route::delete('eoi/attachments/{attachment}', 'EoiAttachmentController@destroy')->name('eoi.attachments.destroy');
-    Route::get('eoi/{eoi}/attachments', 'EoiAttachmentController@index')->name('eoi.attachments');
-    Route::post('eoi/{eoi}/attachments','EoiAttachmentController@store')->name('eoi.attachments.store');
+    Route::get('eois/{eoi}/attachments', 'EoiAttachmentController@index')->name('eoi.attachments');
+    Route::post('eois/{eoi}/attachments','EoiAttachmentController@store')->name('eoi.attachments.store');
 
     Route::get('eoi/{eoi}/review', 'EoiController@preview')->name('eoi.preview');
     Route::post('eoi/{eoi}/review','EoiController@review')->name('eoi.review');

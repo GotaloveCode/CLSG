@@ -22,7 +22,7 @@
             </ValidationProvider>
             <div class="row form-group">
                 <label class="control-label col-md-4">Total</label>
-                <vue-numeric v-model="total" readonly="true" class="form-control col-md-8"/>
+                <vue-numeric v-model="total" readonly class="form-control col-md-8"/>
             </div>
         </div>
         <div class="col-md-6">
@@ -46,7 +46,7 @@
             <ValidationProvider name="Breakdown" :rules="'min_value:'+total+'|max_value:'+total"
                                 v-slot="{ errors }"
                                 class="row form-group">
-                <input type="hidden" readonly="true" v-model="total_breakdown"/>
+                <vue-numeric type="hidden" readonly v-model="total_breakdown"/>
                 <span class="ml-2 text-danger"> {{ errors[0] }}</span>
             </ValidationProvider>
         </div>
