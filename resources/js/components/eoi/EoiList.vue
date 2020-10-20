@@ -3,7 +3,6 @@
       <v-app id="inspire">
           <v-card>
               <v-card-title>
-                  Nutrition
                   <v-spacer></v-spacer>
                   <v-text-field
                       v-model="search"

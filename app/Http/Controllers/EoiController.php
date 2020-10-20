@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Mail\EioReview;
 use App\Http\Requests\EoiCommentRequest;
 use App\Http\Requests\EoiRequest;
