@@ -8,7 +8,8 @@
         "vue-sweetalert2": "^3.0.8",
         "vue-tinymce-editor": "^1.6.2",
         "vue-toastr": "^2.1.2",
-        "vuetify": "^2.3.14"
+        "vuetify": "^2.3.14",
+        "vuex": "^3.5.1"
     },
     "devDependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.2.28",

@@ -48,7 +48,12 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::resource('users', 'UserController')->only('index');
-    Route::resource('bcps', 'BcpController')->only('create','store');
+    Route::resource('bcps', 'BcpController');
+    Route::get('bcp/{bcp}/review', 'BcpController@preview')->name('bcp.preview');
+    Route::post('bcp/{bcp}/review','BcpController@review')->name('bcp.review');
+    Route::post('bcp/{bcp}/comment', 'BcpController@comment')->name('bcp.comment');
+    Route::get('bcp/{bcp}/commitment_letter', 'BcpController@commitment_letter')->name('bcp.commitment_letter');
+    Route::post('bcp/{bcp}/commitment_letter', 'BcpController@upload_commitment_letter')->name('bcp.commitment_letter.store');
 
 //    Route::get('eoi/{eoi}/services', [App\Http\Controllers\EoiController::class, 'services'])->name('eoi.services');
 //    Route::post('eoi/{eoi}/services', [App\Http\Controllers\EoiController::class, 'update_services'])->name('eoi.services.update');

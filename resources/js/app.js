@@ -1,4 +1,5 @@
 import * as Vue from "vue";
+import store from "./store/store";
 import Vuetify from "vuetify";
 
 require('./bootstrap');
@@ -14,10 +15,12 @@ const ManageReview = () => import('./components/eoi/ManageReview' /* webpackChun
 const ReviewForm = () => import('./components/eoi/CommentForm' /* webpackChunkName: "js/components/eoi/review-form" */);
 const EoiList = () => import('./components/eoi/EoiList' /* webpackChunkName: "js/components/eoi/eoi-list" */);
 const BcpForm = () => import('./components/bcp/BcpForm' /* webpackChunkName: "js/components/bcp/bcp-form" */);
+const BcpList = () => import('./components/bcp/BcpList' /* webpackChunkName: "js/components/bcp/bcp-list" */);
 
 const app = new Vue({
     el: '#app',
     vuetify: new Vuetify(),
+    store,
     components: {
         EoiForm,
         AttachmentForm,
@@ -25,6 +28,7 @@ const app = new Vue({
         ManageReview,
         ReviewForm,
         EoiList,
-        BcpForm
+        BcpForm,
+        BcpList
     },
 });

@@ -1,5 +1,5 @@
 @component('mail::message')
-# Hello {{$wsp->name}}
+# Hello,
 
 The status has been changed by {{$user->name}} to: {{$content}}.
 
