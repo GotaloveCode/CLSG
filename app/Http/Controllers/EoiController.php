@@ -29,15 +29,16 @@ class EoiController extends Controller
 
     public function index()
     {
-        $eois = json_encode(EoiListResource::collection(Eoi::get()));
-
-//        return view('eoi.eoi_index', compact('eois'));
         if (!request()->ajax()) {
             return view('eoi.index');
         }
 
         $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at', 'status')
             ->with('wsp:id,name');
+
+        if(auth()->user()->hasRole('wsp')){
+            $eois = $eois->where('wsp_id', auth()->user()->wsps()->first()->id);
+        }
 
         return Datatables::of($eois)
             ->addColumn('action', function ($eoi) {

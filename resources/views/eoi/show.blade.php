@@ -117,9 +117,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        @can('comment-eoi')
-                            <comment-form submit-url="{{ route('eois.comment',$eoi->id) }}"/>
-                        @endcan
+                        <comment-form submit-url="{{ route('eois.comment',$eoi->id) }}"/>
                     </div>
                 </div>
             </div>

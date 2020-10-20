@@ -24,6 +24,9 @@ class BcpController extends Controller
             return view('bcps.index');
         }
         $bcp = Bcp::query()->with('wsp:id,name');
+        if(auth()->user()->hasRole('wsp')){
+            $bcp = $bcp->where('wsp_id', auth()->user()->wsps()->first()->id);
+        }
         return Datatables::of($bcp)
             ->addColumn('action', function ($bcp) {
                 return '<a href="' . route("bcps.show", $bcp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';

@@ -23,15 +23,13 @@ class RoleSeeder extends Seeder
         $admin = Role::firstOrCreate(['name' => 'Super Admin']);
 
         Permission::firstOrCreate(['name' => 'create-wsps']);
-        $create_users = Permission::firstOrCreate(['name' => 'create-users']);
+        Permission::firstOrCreate(['name' => 'create-users']);
         $create_eoi = Permission::firstOrCreate(['name' => 'create-eoi']);
         $create_bcp = Permission::firstOrCreate(['name' => 'create-bcp']);
         $create_erp = Permission::firstOrCreate(['name' => 'create-erp']);
         $list_eoi = Permission::firstOrCreate(['name' => 'list-eoi']);
         $review_eoi = Permission::firstOrCreate(['name' => 'review-eoi']);
         $review_erp = Permission::firstOrCreate(['name' => 'review-erp']);
-//        $comment_eoi = Permission::firstOrCreate(['name' => 'comment-eoi']);
-//        $comment_erp = Permission::firstOrCreate(['name' => 'comment-erp']);
         $list_erp = Permission::firstOrCreate(['name' => 'list-erp']);
 
         $wsp->syncPermissions([$create_eoi, $create_bcp, $create_erp]);

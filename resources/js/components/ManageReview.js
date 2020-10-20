@@ -13,12 +13,12 @@ export default {
             show_comment_dialog: false,
         }
     },
-    
+
     methods: {
         review(action) {
             this.$swal({
                 title: 'Are you sure?',
-                text: "Change the status for the Expression of interest to " + action,
+                text: "Change the status to " + action,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Yes'
