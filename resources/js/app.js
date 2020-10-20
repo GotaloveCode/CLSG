@@ -31,7 +31,7 @@ const app = new Vue({
         ReviewForm,
         EoiList,
         BcpForm,
-        BcpList
+        BcpList,
         ErpForm
     },
 });
