@@ -5,16 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Operationcost extends Model
+class Objective extends Model
 {
     use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id', 'name'
+        'description', 'bcp_id'
     ];
 
     /**
@@ -43,19 +44,11 @@ class Operationcost extends Model
     ];
 
     /**
-     * Get the Eois for the Operationcost.
+     * Get the Bcp for the Objective.
      */
-    public function eois()
+    public function bcp()
     {
-        return $this->belongsToMany(Eoi::class);
-    }
-
-    /**
-     * Get the Bcps for the Operationcost.
-     */
-    public function bcps()
-    {
-        return $this->belongsToMany(Bcp::class);
+        return $this->belongsTo(Bcp::class);
     }
 
 }

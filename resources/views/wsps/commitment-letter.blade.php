@@ -91,7 +91,7 @@
                             @if($eoi->status=='WSTF Approved')
                                 <button class="btn btn-success ml-2 mb-1"
                                         @click.prevent="review('WASREB Approved')"><i
-                                        class="fa fa-download"></i>
+                                        class="feather icon-download"></i>
                                     Download
                                 </button>
                             @endif
@@ -102,7 +102,7 @@
                             @foreach($eoi->attachments->where('document_type','Commitment Letter') as $attachment)
                                 <li>
                                     <a href="{{ route('eoi.attachments.show',['filename' =>$attachment->name, 'download' =>'true']) }}"
-                                       target="_blank">{{$attachment->name}} <i class="fa fa-download"></i></a></li>
+                                       target="_blank">{{$attachment->name}} <i class="feather icon-download"></i></a></li>
                             @endforeach
                         </ol>
                     </div>

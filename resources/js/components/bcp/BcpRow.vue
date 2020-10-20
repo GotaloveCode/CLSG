@@ -1,22 +1,22 @@
 <template>
     <tr>
-        <ValidationProvider tag="td" name="service[]" rules="required"
+        <ValidationProvider tag="td" name="Activity[]" rules="required"
                             v-slot="{ errors }">
-            <v-select label="name" placeholder="Select Service Type"
-                      v-model="service.service_id" :reduce="s => s.id" :options="services">
+            <v-select label="name" placeholder="Select Activity"
+                      v-model="objective.id" :reduce="s => s.id" :options="objectives">
             </v-select>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
-        <ValidationProvider tag="td" name="Name of Low income areas[]" rules="required"
+        <ValidationProvider tag="td" name="Expected Outcome[]" rules="required"
                             v-slot="{ errors }">
-            <input type="text" v-model="service.areas" class="form-control">
+            <input type="text" v-model="objective.areas" class="form-control">
 
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
 
         <ValidationProvider tag="td" name="Total No[]" rules="required|numeric"
                             v-slot="{ errors }">
-            <vue-numeric separator="," v-model="service.total" class="form-control"></vue-numeric>
+            <vue-numeric separator="," v-model="objective.total" class="form-control"></vue-numeric>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
         <td>
@@ -32,10 +32,10 @@
 
 <script>
 export default {
-    name: "ServiceRow",
+    name: "BcpRow",
     props: {
-        services: {required: true, type: Array},
-        service: {required: true, type: Object},
+        objectives: {required: true, type: Array},
+        objective: {required: true, type: Object},
     },
 }
 </script>

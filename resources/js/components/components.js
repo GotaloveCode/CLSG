@@ -8,6 +8,8 @@ import en from 'vee-validate/dist/locale/en.json';
 import VueToastr from "vue-toastr";
 import VueNumeric from 'vue-numeric';
 import VueSweetalert2 from 'vue-sweetalert2';
+import { Errors } from '../plugins/errors';
+
 
 extend("required", required);
 extend("email", email);
@@ -27,6 +29,7 @@ Vue.use(VueToastr, {
     /* OverWrite Plugin Options if you need */
 });
 Vue.use(VueNumeric);
+Vue.use(Errors);
 
 // const EoiForm = () => import('./eoi/EoiForm.vue' /* webpackChunkName: "js/components/eoi/eoi-form" */);
 // Vue.component('attachment-form', require('./eoi/AttachmentForm.vue').default);

@@ -32,11 +32,11 @@ class EoiController extends Controller
 
     public function index()
     {
-       $eois = json_encode(EoiListResource::collection(Eoi::get()));
+        $eois = json_encode(EoiListResource::collection(Eoi::get()));
 
-        return view('eoi.eoi_index',compact('eois'));
-        if(!request()->ajax()){
-           return view('eoi.index');
+        return view('eoi.eoi_index', compact('eois'));
+        if (!request()->ajax()) {
+            return view('eoi.index');
         }
 
         $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at', 'status')
@@ -51,9 +51,10 @@ class EoiController extends Controller
 
     public function create()
     {
-      if (!isset(auth()->user()->wsps()->first()->pivot->wsp_id)){
-          return false;
-      }
+        $wsp_id = auth()->user()->wsps()->first()->id;
+        if (!isset($wsp_id)) {
+            return false;
+        }
         $services = Cache::rememberForever('services', function () {
             return Service::select('id', 'name')->get();
         });
@@ -67,11 +68,12 @@ class EoiController extends Controller
             return Operationcost::select('id', 'name')->get();
         });
 
-        $wsp = auth()->user()->wsps()->first()->pivot->wsp_id;
-       if (Eoi::where('wsp_id',$wsp)->first()) $eoi = json_encode(new EoiCustomResource(Eoi::where('wsp_id',$wsp)->first()));
-       else $eoi = json_encode([]);
+        $eoi = Eoi::where('wsp_id', $wsp_id)->first();
 
-        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts','eoi','wsp'));
+        if ($eoi) $eoi = json_encode(new EoiCustomResource($eoi));
+        else $eoi = json_encode([]);
+
+        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts', 'eoi', 'wsp'));
     }
 
     public function store(Request $request)
@@ -122,9 +124,10 @@ class EoiController extends Controller
         if ($request->ajax()) {
             return response()->json($eoi);
         }
-        return redirect()->back()->with(['eoi' => $eoi]);
+        return back()->with(['eoi' => $eoi]);
     }
-    public function update(Request $request,Eoi $eoi)
+
+    public function update(Request $request, Eoi $eoi)
     {
         $eoi->update([
             'program_manager' => $request->input('program_manager'),
@@ -182,20 +185,7 @@ class EoiController extends Controller
 
     public function preview(Eoi $eoi)
     {
-        switch ($eoi->status) {
-            case 'WSTF Approved':
-                $progress = 100;
-                break;
-            case 'WASREB Approved':
-                $progress = 75;
-                break;
-            case 'Needs Approval':
-                $progress = 50;
-                break;
-            default:
-                $progress = 25;
-        }
-
+        $progress = $eoi->progress();
         $eoi = $eoi->load(['wsp', 'services', 'connections', 'estimatedcosts', 'operationcosts']);
         return view('eoi.preview')->with(compact('eoi', 'progress'));
     }

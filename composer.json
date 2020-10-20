@@ -11,6 +11,7 @@
         "php": "^7.3",
         "ext-mbstring": "*",
         "barryvdh/laravel-snappy": "^0.4.8",
+        "doctrine/dbal": "^2.11",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -20,7 +21,8 @@
         "maatwebsite/excel": "^3.1",
         "rap2hpoutre/laravel-log-viewer": "^1.7",
         "spatie/laravel-permission": "^3.17",
-        "yajra/laravel-datatables-oracle": "~9.0"
+        "yajra/laravel-datatables-oracle": "~9.0",
+        "ext-json": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",

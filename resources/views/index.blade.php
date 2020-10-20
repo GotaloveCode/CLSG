@@ -1044,7 +1044,7 @@
                                         <div class="project-info-icon">
                                             <h2>12</h2>
                                             <div class="project-info-sub-icon">
-                                                <span class="fa fa-user-o"></span>
+                                                <span class="feather icon-users"></span>
                                             </div>
                                         </div>
                                         <div class="project-info-text pt-1">
@@ -1188,7 +1188,7 @@
                                                 <div class="position-relative">
                                                     <input type="search" class="form-control" placeholder="Search project task, bug, users...">
                                                     <div class="form-control-position">
-                                                        <i class="fa fa-search text-size-base text-muted"></i>
+                                                        <i class="feather icon-search text-size-base text-muted"></i>
                                                     </div>
                                                 </div>
                                             </form>
