@@ -60,7 +60,7 @@ export default {
     },
     methods: {
         review(id) {
-            window.location.href = '/eoi/' + id + '/review';
+            window.location.href = '/eois/' + id;
         }
     }
 }

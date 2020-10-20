@@ -53,5 +53,5 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Wsp::class);
     }
-  
+
 }

@@ -26,11 +26,12 @@ class RoleSeeder extends Seeder
         $create_users = Permission::firstOrCreate(['name' => 'create-users']);
         $create_eoi = Permission::firstOrCreate(['name' => 'create-eoi']);
         $create_bcp = Permission::firstOrCreate(['name' => 'create-bcp']);
+        $create_erp = Permission::firstOrCreate(['name' => 'create-erp']);
         $list_eoi = Permission::firstOrCreate(['name' => 'list-eoi']);
         $review_eoi = Permission::firstOrCreate(['name' => 'review-eoi']);
         $comment_eoi = Permission::firstOrCreate(['name' => 'comment-eoi']);
 
-        $wsp->syncPermissions([$create_eoi, $comment_eoi,$create_bcp]);
+        $wsp->syncPermissions([$create_eoi, $comment_eoi, $create_bcp, $create_erp]);
         $wasreb->syncPermissions([$list_eoi, $review_eoi, $comment_eoi]);
         $wstf->syncPermissions([$list_eoi, $review_eoi, $comment_eoi,]);
 
@@ -60,7 +61,7 @@ class RoleSeeder extends Seeder
 
         $user = User::firstOrCreate([
             'email' => 'info@nairobiwater.test'],
-            [  'name' => 'Nairobi Water & Sewerage Company',
+            ['name' => 'Nairobi Water & Sewerage Company',
                 'password' => bcrypt('password')
             ]);
 

@@ -40,7 +40,7 @@ class EoiController extends Controller
 
         return Datatables::of($eois)
             ->addColumn('action', function ($eoi) {
-                return '<a href="' . route("eoi.preview", $eoi->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Review</a>';
+                return '<a href="' . route("eois.show", $eoi->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Review</a>';
             })
             ->make(true);
     }
@@ -180,11 +180,11 @@ class EoiController extends Controller
         return redirect()->back()->with(['eoi' => $eoi]);
     }
 
-    public function preview(Eoi $eoi)
+    public function show(Eoi $eoi)
     {
         $progress = $eoi->progress();
         $eoi = $eoi->load(['wsp', 'services', 'connections', 'estimatedcosts', 'operationcosts']);
-        return view('eoi.preview')->with(compact('eoi', 'progress'));
+        return view('eoi.show')->with(compact('eoi', 'progress'));
     }
 
     public function review(Eoi $eoi, EoiReviewRequest $request)
@@ -197,7 +197,7 @@ class EoiController extends Controller
 
 
         SendMailNotification::postReview($request->status);
-        $route = route('eoi.preview', $eoi->id);
+        $route = route('eois.show', $eoi->id);
 
         if ($request->status == 'WSTF Approved') {
             $route = route('eoi.commitment_letter', $eoi->id);

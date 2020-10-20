@@ -27,7 +27,7 @@ class BcpController extends Controller
     public function create()
     {
         $wsp = auth()->user()->wsps()->first();
-        $operation_costs = $wsp->eois()->first()->operationcosts()->get();
+        $operation_costs = $wsp->eoi->operationcosts()->get();
         $operation_cost_fields = Cache::rememberForever('operationCosts', function () {
             return Operationcost::select('id', 'name')->get();
         });

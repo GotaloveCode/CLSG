@@ -14,6 +14,7 @@ const Modal = () => import('./components/Modal.vue' /* webpackChunkName: "js/com
 const ManageReview = () => import('./components/eoi/ManageReview' /* webpackChunkName: "js/components/eoi/manage-review" */);
 const ReviewForm = () => import('./components/eoi/CommentForm' /* webpackChunkName: "js/components/eoi/review-form" */);
 const BcpForm = () => import('./components/bcp/BcpForm' /* webpackChunkName: "js/components/bcp/bcp-form" */);
+const ErpForm = () => import('./components/erp/ErpForm.vue' /* webpackChunkName: "js/components/erp/erp-form" */);
 
 
 const app = new Vue({
@@ -26,6 +27,7 @@ const app = new Vue({
         Modal,
         ManageReview,
         ReviewForm,
-        BcpForm
+        BcpForm,
+        ErpForm
     },
 });

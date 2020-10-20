@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bcp;
+use App\Models\Eoi;
+use App\Models\Erp;
+use App\Models\Wsp;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -30,12 +34,16 @@ class HomeController extends Controller
                 $eoi = $wsp->eois()->first();
                 $bcp = $wsp->bcps()->first();
                 return view('dashboard.wsp')->with(compact('wsp','eoi','bcp'));
-            case 'wstf':
-                return view('dashboard.wstf');
-            case 'wasreb':
-                return view('dashboard.wasreb');
+//            case 'wstf':
+//                return view('dashboard.wstf')->with(compact('wsp_count','eoi_count','bcp_count','erp_count'));
+//            case 'wasreb':
+//                return view('dashboard.wasreb');
             default:
-                return view('dashboard.admin');
+                $bcp_count = Bcp::count();
+                $eoi_count = Eoi::count();
+                $erp_count = Erp::count();
+                $wsp_count = Wsp::count();
+                return view('dashboard.general')->with(compact('wsp_count','eoi_count','bcp_count','erp_count'));
         }
     }
 }
