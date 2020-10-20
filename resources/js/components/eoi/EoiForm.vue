@@ -37,7 +37,7 @@
 
             <div class="form-group pull-right">
                 <button v-if="currentStep > 1" class="btn btn-primary" @click="previousStep"><i
-                    class="fa fa-chevron-left"></i> Previous ggg {{currentStep}} {{c_step}}
+                    class="fa fa-chevron-left"></i> Previous ggg {{currentStep}}
                 </button>
                 <button class="btn btn-success" v-if="currentStep ===5" type="submit">
                     Submit <i class="fa fa-send"></i>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
@@ -157,14 +158,9 @@ export default {
             })
         },
         previousStep() {
-           // console.log('back hitted '+this.currentStep )
-            if (this.currentStep > 1) {
-                 this.step--;
-                this.$store.dispatch(SET_CURRENT_STEP,2)
-                this.c_step--;
 
-                console.log('reducing')
-                //this.currentStep--;
+            if (this.currentStep > 1) {
+                this.$store.dispatch(SET_CURRENT_STEP,this.step--)
             }
         },
         onSubmit() {
@@ -175,9 +171,7 @@ export default {
                     this.postData();
                 return;
             }
-         this.c_step++;
             this.step++;
-          //  this.currentStep++;
             this.$store.dispatch(SET_CURRENT_STEP,this.step)
         },
         postData() {

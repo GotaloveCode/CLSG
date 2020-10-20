@@ -16,9 +16,7 @@ const getters = {
 
 const actions = {
     [SET_CURRENT_STEP](context,payload) {
-        console.log("Walla -> "+payload)
-
-        context.commit(SET_STEP,payload);
+       context.commit(SET_STEP,payload);
     },
 
 };
