@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Mail\EioReview;
 use App\Http\Requests\EoiCommentRequest;
-use App\Http\Requests\EoiRequest;
 use App\Http\Requests\EoiReviewRequest;
 use App\Models\Attachment;
 use App\Models\Connection;
@@ -18,13 +16,10 @@ use App\Traits\FilesTrait;
 use App\Traits\SendMailNotification;
 use App\Http\Resources\EoiCustomResource;
 use App\Http\Resources\EoiListResource;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
-use function PHPUnit\Framework\isEmpty;
 use PDF;
 
 class EoiController extends Controller
@@ -35,14 +30,14 @@ class EoiController extends Controller
     {
         $eois = json_encode(EoiListResource::collection(Eoi::get()));
 
-        return view('eoi.eoi_index', compact('eois'));
+//        return view('eoi.eoi_index', compact('eois'));
         if (!request()->ajax()) {
             return view('eoi.index');
         }
 
         $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at', 'status')
             ->with('wsp:id,name');
-//        ->ofStatus('published')
+
         return Datatables::of($eois)
             ->addColumn('action', function ($eoi) {
                 return '<a href="' . route("eoi.preview", $eoi->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Review</a>';
@@ -52,8 +47,8 @@ class EoiController extends Controller
 
     public function create()
     {
-        $wsp_id = auth()->user()->wsps()->first()->id;
-        if (!isset($wsp_id)) {
+        $wsp = auth()->user()->wsps()->first();
+        if (!isset($wsp->id)) {
             return false;
         }
         $services = Cache::rememberForever('services', function () {
@@ -69,12 +64,13 @@ class EoiController extends Controller
             return Operationcost::select('id', 'name')->get();
         });
 
-        $eoi = Eoi::where('wsp_id', $wsp_id)->first();
+        $eoi = Eoi::where('wsp_id', $wsp->id)->first();
 
         if ($eoi) $eoi = json_encode(new EoiCustomResource($eoi));
         else $eoi = json_encode([]);
+        $wsp_id = $wsp->id;
 
-        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts', 'eoi', 'wsp'));
+        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts', 'eoi', 'wsp_id'));
     }
 
     public function store(Request $request)
@@ -223,7 +219,8 @@ class EoiController extends Controller
             'description' => $request->description,
             'user_id' => auth()->id()
         ]);
-        SendMailNotification::postComment($request->description);
+
+        SendMailNotification::postComment($request->description, $eoi->status);
 
         return response()->json(['message' => 'Comment posted successfully']);
     }
@@ -271,50 +268,5 @@ class EoiController extends Controller
             return back()->withErrors("Expression of Interest must have been approved by Water Trust Fund");
         }
     }
-
-//    public function services(Eoi $eoi)
-//    {
-//        $eoi = $eoi->load('services');
-//        $services = Cache::rememberForever('services', function () {
-//            return Service::select('id', 'name')->get();
-//        });
-//        $connections = Cache::rememberForever('connections', function () {
-//            return Connection::select('id', 'name')->get();
-//        });
-//        $estimatedCosts = Cache::rememberForever('estimatedCosts', function () {
-//            return Estimatedcost::select('id', 'name')->get();
-//        });
-//        return view('eoi.create_service')->with(compact('services', 'connections', 'eoi', 'estimatedCosts'));
-//    }
-//
-//    public function update_services(EoiServiceRequest $request)
-//    {
-//        $connections = Cache::rememberForever('connections', function () {
-//            return Connection::select('id', 'name')->get();
-//        });
-//
-//        $estimatedCosts = Cache::rememberForever('estimatedCosts', function () {
-//            return Estimatedcost::select('id', 'name')->get();
-//        });
-//
-//        $services = collect($request->services);
-//        $eoi = Eoi::find($services->first()['eoi_id']);
-//        $service_ids = $eoi->services()->pluck('service_id');
-//        $services->each(function ($s) use ($service_ids, $eoi) {
-//            if ($service_ids->has($s['id'])) {
-//                $eoi->services()->updateExistingPivot($s['id'], [
-//                    'areas' => $s['areas'],
-//                    'total' => $s['total']
-//                ]);
-//            } else {
-//                $eoi->services()->attach($s['id'], [
-//                    'areas' => $s['areas'],
-//                    'total' => $s['total']
-//                ]);
-//            }
-//        });
-//
-//        return view('eoi.create_service')->with(compact('services', 'eoi', 'connections', 'estimatedCosts'));
-//    }
 
 }

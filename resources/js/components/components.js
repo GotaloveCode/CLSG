@@ -31,7 +31,3 @@ Vue.use(VueToastr, {
 Vue.use(VueNumeric);
 Vue.use(Errors);
 
-// const EoiForm = () => import('./eoi/EoiForm.vue' /* webpackChunkName: "js/components/eoi/eoi-form" */);
-// Vue.component('attachment-form', require('./eoi/AttachmentForm.vue').default);
-Vue.component('eoi-service-form', require('./eoi/EoiServiceForm.vue').default);
-Vue.component('manage-attachments', require('./eoi/ManageAttachments.vue').default);

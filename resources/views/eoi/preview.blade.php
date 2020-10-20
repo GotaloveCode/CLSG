@@ -59,7 +59,7 @@
                                                     Approve
                                                 </button>
                                             @endif
-                                            @if($eoi->status =='Pending')
+                                            @if($eoi->status =='Pending' || $eoi->status =='draft')
                                                 <button class="btn btn-danger mb-1"
                                                         @click.prevent="review('Needs Review')"><i
                                                         class="fa fa-pencil"></i>
