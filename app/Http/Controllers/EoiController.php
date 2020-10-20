@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EoiRequest;
 use App\Mail\EioReview;
-use App\Http\Requests\EoiCommentRequest;
+use App\Http\Requests\CommentRequest;
 use App\Http\Requests\EoiReviewRequest;
 use App\Models\Attachment;
 use App\Models\Connection;
@@ -36,7 +36,7 @@ class EoiController extends Controller
         $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at', 'status')
             ->with('wsp:id,name');
 
-        if(auth()->user()->hasRole('wsp')){
+        if (auth()->user()->hasRole('wsp')) {
             $eois = $eois->where('wsp_id', auth()->user()->wsps()->first()->id);
         }
 
@@ -197,8 +197,8 @@ class EoiController extends Controller
         $eoi->status = $request->status;
         $eoi->save();
 
-        SendMailNotification::postReview($request->status, $eoi->wsp_id, 'Eoi Review');
         $route = route('eoi.show', $eoi->id);
+        SendMailNotification::postReview($request->status, $eoi->wsp_id, $route, $eoi->wsp->name . ' Eoi Review');
 
         if ($request->status == 'WSTF Approved') {
             $route = route('eois.commitment_letter', $eoi->id);
@@ -210,7 +210,7 @@ class EoiController extends Controller
         ]);
     }
 
-    public function comment(Eoi $eoi, EoiCommentRequest $request)
+    public function comment(Eoi $eoi, CommentRequest $request)
     {
         $this->canAccessEoi($eoi);
 
@@ -219,7 +219,9 @@ class EoiController extends Controller
             'user_id' => auth()->id()
         ]);
 
-        SendMailNotification::postComment($request->description, $eoi->status, $eoi->wsp_id, 'Eoi Comment');
+        $route = route('bcps.show', $eoi->id);
+
+        SendMailNotification::postComment($request->description, $eoi->status, $eoi->wsp_id, $route, $eoi->wsp->name . 'Eoi Comment');
 
         return response()->json(['message' => 'Comment posted successfully']);
     }

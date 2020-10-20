@@ -12,14 +12,14 @@ use Illuminate\Support\Facades\Mail;
 trait SendMailNotification
 {
 
-    static public function postComment($comment, $status, $wsp_id, $subject)
+    static public function postComment($comment, $status, $wsp_id, $route, $subject)
     {
-        Mail::to(self::getRecipient($status, $wsp_id))->send(new CommentMailable($comment, $subject));
+        Mail::to(self::getRecipient($status, $wsp_id))->send(new CommentMailable($comment, $route, $subject));
     }
 
-    static public function postReview($status, $wsp_id, $subject)
+    static public function postReview($status, $wsp_id, $route, $subject)
     {
-        Mail::to(self::getRecipient($status, $wsp_id))->send(new ReviewMailable($status, $subject));
+        Mail::to(self::getRecipient($status, $wsp_id))->send(new ReviewMailable($status, $route, $subject));
     }
 
     static public function getRecipient($status, $wsp_id)

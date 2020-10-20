@@ -47,9 +47,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'bcps'],function (){
         Route::post('{bcp}/review','BcpController@review')->name('bcps.review');
         Route::post('{bcp}/comment', 'BcpController@comment')->name('bcps.comment');
-        Route::get('{bcp}/commitment_letter', 'BcpController@commitment_letter')->name('bcps.commitment_letter');
-        Route::post('{bcp}/commitment_letter', 'BcpController@upload_commitment_letter')->name('bcps.commitment_letter.store');
-
     });
 
     Route::resource('erps', 'ErpController')->only('index', 'create', 'store');

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BcpFormRequest;
-use App\Http\Requests\EoiCommentRequest;
+use App\Http\Requests\CommentRequest;
 use App\Models\Bcp;
 use App\Models\Operationcost;
 use App\Traits\BcpAuthTrait;
@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
-use App\Models\Attachment;
 use App\Traits\SendMailNotification;
 
 class BcpController extends Controller
@@ -23,10 +22,11 @@ class BcpController extends Controller
         if (!request()->ajax()) {
             return view('bcps.index');
         }
-        $bcp = Bcp::query()->with('wsp:id,name');
-        if(auth()->user()->hasRole('wsp')){
+        $bcp = Bcp::query()->with('wsp:id,name')->select('bcps.*');
+        if (auth()->user()->hasRole('wsp')) {
             $bcp = $bcp->where('wsp_id', auth()->user()->wsps()->first()->id);
         }
+
         return Datatables::of($bcp)
             ->addColumn('action', function ($bcp) {
                 return '<a href="' . route("bcps.show", $bcp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
@@ -104,8 +104,8 @@ class BcpController extends Controller
         $bcp->status = $request->status;
         $bcp->save();
 
-        SendMailNotification::postReview($request->status, $bcp->wsp_id, 'BCP Review');
         $route = route('bcps.preview', $bcp->id);
+        SendMailNotification::postReview($request->status, $bcp->wsp_id, $route, $bcp->wsp->name . ' BCP Review');
 
         if ($request->status == 'WSTF Approved') {
             $route = route('bcps.commitment_letter', $bcp->id);
@@ -117,7 +117,7 @@ class BcpController extends Controller
         ]);
     }
 
-    public function comment(Bcp $bcp, EoiCommentRequest $request)
+    public function comment(Bcp $bcp, CommentRequest $request)
     {
         $this->canAccessBcp($bcp);
 
@@ -126,54 +126,9 @@ class BcpController extends Controller
             'user_id' => auth()->id()
         ]);
 
-        SendMailNotification::postComment($request->description, $bcp->status, $bcp->wsp_id, 'BCP Comment');
+        $route = route('bcps.show', $bcp->id);
+        SendMailNotification::postComment($request->description, $bcp->status, $bcp->wsp_id, $route, $bcp->wsp->name . ' BCP Comment');
 
         return response()->json(['message' => 'Comment posted successfully']);
-    }
-
-
-    public function commitment_letter(Bcp $bcp)
-    {
-
-        $this->validate_bcp_approved($bcp);
-        if (request()->input('download')) {
-            $pdf = PDF::loadView('preview.bcp', compact('bcp'));
-            return $pdf->download('commitment-letter.pdf');
-        }
-        $eoi = $bcp->wsp()->first()->eois()->first();
-        $bcp = $bcp->load(['wsp', 'wsp.postalcode', 'attachments']);
-        return view('wsps.commitment-letter-bcp')->with(['bcp' => $bcp, 'eoi' => $eoi]);
-    }
-
-    public function upload_commitment_letter(Bcp $bcp, Request $request)
-    {
-        $this->validate_bcp_approved($bcp);
-        $request->validate(['attachment' => 'required|file|mimes:pdf,jpg,jpeg,png,docx,doc']);
-
-        $attachment = $bcp->attachments()->where('document_type', 'Commitment Letter')->first();
-
-        if ($attachment) {
-            Attachment::remove($attachment);
-        }
-
-        $fileName = $this->storeDocument($request->attachment, 'Commitment Letter');
-
-        $bcp->attachments()->create([
-            'name' => $fileName,
-            'display_name' => 'Commitment Letter',
-            'document_type' => 'Commitment Letter',
-        ]);
-
-        //todo: send notification to wft if wsp uploaded signed copy and vice-versa
-
-        return back()->with('success', 'Commitment letter uploaded successfully');
-    }
-
-
-    private function validate_bcp_approved(Bcp $bcp)
-    {
-        if ($bcp->status !== 'WSTF Approved') {
-            return back()->withErrors("Expression of Interest must have been approved by Water Trust Fund");
-        }
     }
 }

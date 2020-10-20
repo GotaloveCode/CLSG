@@ -14,16 +14,19 @@ class CommentMailable extends Mailable
     public $description;
     public $user;
     public $subject;
+    public $route;
 
     /**
      * Create a new message instance.
      *
      * @param $description
      * @param $subject
+     * @param $route
      */
-    public function __construct($description, $subject)
+    public function __construct($description, $subject, $route)
     {
         $this->description = $description;
+        $this->route = $route;
         $this->user = auth()->user();
         $this->subject = $subject;
     }

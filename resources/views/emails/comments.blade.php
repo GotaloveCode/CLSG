@@ -3,8 +3,18 @@
 
 A new comment has been posted by {{ $user->getRoleNames()->first() }}.
 
-{{$description}}
+{!! $description !!}
+
+@component('mail::button', ['url' => $route])
+    View
+@endcomponent
 
 Thanks,<br>
 {{ config('app.name') }}
 @endcomponent
+
+
+
+
+
+

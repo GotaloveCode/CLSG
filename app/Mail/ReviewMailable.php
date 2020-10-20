@@ -11,19 +11,22 @@ class ReviewMailable extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $content;
+    public $status;
     public $user;
     public $subject;
+    public $route;
 
     /**
      * Create a new message instance.
      *
-     * @param $content
+     * @param $status
      * @param $subject
+     * @param $route
      */
-    public function __construct($content, $subject)
+    public function __construct($status, $subject, $route)
     {
-        $this->content = $content;
+        $this->status = $status;
+        $this->route = $route;
         $this->user = auth()->user();
         $this->subject = $subject;
     }
