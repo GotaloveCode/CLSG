@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\ProgressTrait;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,7 +28,10 @@ class Bcp extends Model
      */
     protected $dates = ['created_at', 'updated_at'];
 
-
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 
     /**
      * Get the Objectives for the Bcp.
