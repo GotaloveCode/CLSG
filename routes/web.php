@@ -41,9 +41,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::resource('users', 'UserController')->only('index');
-    Route::resource('bcps', 'BcpController')->only('index', 'create', 'store');
+    Route::resource('bcps', 'BcpController')->only('index', 'create', 'store','show');
 
-    Route::get('bcp/{bcp}/review', 'BcpController@preview')->name('bcp.preview');
     Route::post('bcp/{bcp}/review','BcpController@review')->name('bcp.review');
     Route::post('bcp/{bcp}/comment', 'BcpController@comment')->name('bcp.comment');
     Route::get('bcp/{bcp}/commitment_letter', 'BcpController@commitment_letter')->name('bcp.commitment_letter');
