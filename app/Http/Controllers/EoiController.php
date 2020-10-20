@@ -30,14 +30,14 @@ class EoiController extends Controller
     {
         $eois = json_encode(EoiListResource::collection(Eoi::get()));
 
-        return view('eoi.eoi_index', compact('eois'));
+//        return view('eoi.eoi_index', compact('eois'));
         if (!request()->ajax()) {
             return view('eoi.index');
         }
 
         $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at', 'status')
             ->with('wsp:id,name');
-//        ->ofStatus('published')
+
         return Datatables::of($eois)
             ->addColumn('action', function ($eoi) {
                 return '<a href="' . route("eoi.preview", $eoi->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Review</a>';
@@ -220,7 +220,7 @@ class EoiController extends Controller
             'user_id' => auth()->id()
         ]);
 
-        SendMailNotification::postComment($request->description,$eoi->status);
+        SendMailNotification::postComment($request->description, $eoi->status);
 
         return response()->json(['message' => 'Comment posted successfully']);
     }
@@ -268,50 +268,5 @@ class EoiController extends Controller
             return back()->withErrors("Expression of Interest must have been approved by Water Trust Fund");
         }
     }
-
-//    public function services(Eoi $eoi)
-//    {
-//        $eoi = $eoi->load('services');
-//        $services = Cache::rememberForever('services', function () {
-//            return Service::select('id', 'name')->get();
-//        });
-//        $connections = Cache::rememberForever('connections', function () {
-//            return Connection::select('id', 'name')->get();
-//        });
-//        $estimatedCosts = Cache::rememberForever('estimatedCosts', function () {
-//            return Estimatedcost::select('id', 'name')->get();
-//        });
-//        return view('eoi.create_service')->with(compact('services', 'connections', 'eoi', 'estimatedCosts'));
-//    }
-//
-//    public function update_services(EoiServiceRequest $request)
-//    {
-//        $connections = Cache::rememberForever('connections', function () {
-//            return Connection::select('id', 'name')->get();
-//        });
-//
-//        $estimatedCosts = Cache::rememberForever('estimatedCosts', function () {
-//            return Estimatedcost::select('id', 'name')->get();
-//        });
-//
-//        $services = collect($request->services);
-//        $eoi = Eoi::find($services->first()['eoi_id']);
-//        $service_ids = $eoi->services()->pluck('service_id');
-//        $services->each(function ($s) use ($service_ids, $eoi) {
-//            if ($service_ids->has($s['id'])) {
-//                $eoi->services()->updateExistingPivot($s['id'], [
-//                    'areas' => $s['areas'],
-//                    'total' => $s['total']
-//                ]);
-//            } else {
-//                $eoi->services()->attach($s['id'], [
-//                    'areas' => $s['areas'],
-//                    'total' => $s['total']
-//                ]);
-//            }
-//        });
-//
-//        return view('eoi.create_service')->with(compact('services', 'eoi', 'connections', 'estimatedCosts'));
-//    }
 
 }
