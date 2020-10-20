@@ -30,19 +30,19 @@
                     </li>
                 </ul>
             </li>
-            <li class=" nav-item"><a href="#"><i class="feather icon-user"></i><span class="menu-title">Users</span></a>
-                <ul class="menu-content">
-                    <li><a class="menu-item" href="{{ route('users.index') }}">Users List</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item"><a href="#"><i class="feather icon-heart"></i><span class="menu-title">ERPs</span></a>
+            <li class="nav-item"><a href="#"><i class="feather icon-life-buoy"></i><span class="menu-title">ERPs</span></a>
                 <ul class="menu-content">
                     @can('create-erp')
                         <li><a class="menu-item" href="{{ route('erps.create') }}">Create ERP</a>
                         </li>
                     @endcan
                     <li><a class="menu-item" href="{{ route('erps.index') }}">ERP List</a>
+                    </li>
+                </ul>
+            </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-user"></i><span class="menu-title">Users</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="{{ route('users.index') }}">Users List</a>
                     </li>
                 </ul>
             </li>

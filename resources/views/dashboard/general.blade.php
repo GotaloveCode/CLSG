@@ -63,7 +63,7 @@
                                 <span>ERPs</span>
                             </div>
                             <div class="align-self-center">
-                                <i class="feather icon-help-circle primary font-large-2 float-right"></i>
+                                <i class="feather icon-life-buoy primary font-large-2 float-right"></i>
                             </div>
                         </div>
                     </div>

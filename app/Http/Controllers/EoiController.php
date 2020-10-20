@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EoiRequest;
 use App\Mail\EioReview;
 use App\Http\Requests\EoiCommentRequest;
 use App\Http\Requests\EoiReviewRequest;
@@ -73,7 +74,7 @@ class EoiController extends Controller
         return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts', 'eoi', 'wsp_id'));
     }
 
-    public function store(Request $request)
+    public function store(EoiRequest $request)
     {
         $eoi = Eoi::create([
             'program_manager' => $request->input('program_manager'),
@@ -124,7 +125,7 @@ class EoiController extends Controller
         return back()->with(['eoi' => $eoi]);
     }
 
-    public function update(Request $request, Eoi $eoi)
+    public function update(EoiRequest $request, Eoi $eoi)
     {
         $eoi->update([
             'program_manager' => $request->input('program_manager'),
@@ -211,9 +212,7 @@ class EoiController extends Controller
 
     public function comment(Eoi $eoi, EoiCommentRequest $request)
     {
-        if (!auth()->user()->can('comment-eoi')) {
-            $this->canAccessEoi($eoi);
-        }
+        $this->canAccessEoi($eoi);
 
         $eoi->comments()->create([
             'description' => $request->description,

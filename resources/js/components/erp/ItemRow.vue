@@ -7,13 +7,13 @@
         </ValidationProvider>
         <ValidationProvider tag="td" name="Potential Risks[]" rules="required"
                             v-slot="{ errors }">
-            <textarea v-model="item.risks" class="form-control"></textarea>
+            <textarea v-model="item.risks" class="form-control" placeholder=" eg. Vandalism by beneficiaries"></textarea>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
 
-        <ValidationProvider tag="td" name="Potential Mitigation Measures" rules="required|numeric"
+        <ValidationProvider tag="td" name="Potential Mitigation Measures" rules="required"
                             v-slot="{ errors }">
-            <textarea v-model="item.mitigation" class="form-control"></textarea>
+            <textarea v-model="item.mitigation" class="form-control" placeholder="eg. Partner with local administration to provide security"></textarea>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
         <ValidationProvider tag="td" name="Cost[]" rules="required|numeric"
@@ -21,9 +21,9 @@
             <vue-numeric separator="," v-model="item.cost" class="form-control"></vue-numeric>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
-        <ValidationProvider tag="td" name="Others[]" rules="required|numeric"
+        <ValidationProvider tag="td" name="Others[]" rules="required"
                             v-slot="{ errors }">
-            <input type="text" v-model="item.others" class="form-control"/>
+            <textarea v-model="item.other" class="form-control"></textarea>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
         <td>

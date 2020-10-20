@@ -19,7 +19,7 @@ class CreateErpItems extends Migration
             $table->text('risks');
             $table->text('mitigation');
             $table->string('cost');
-            $table->string('other');
+            $table->text('other');
             $table->foreign('erp_id')->references('id')->on('erps');
             $table->unsignedInteger('erp_id');
             $table->timestamps();

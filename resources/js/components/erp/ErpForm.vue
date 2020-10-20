@@ -53,16 +53,18 @@ export default {
         ItemRow
     },
     props: {
+        wsp_id: {required: true, type: String},
         submitUrl: {required: true, type: String},
         interventions: {required: true, type: Array},
     },
     data: () => ({
         error: '',
         erp: {
+            wsp_id: null,
             coordinator: '',
             items: [{
                 cost: 0,
-                others: '',
+                other: '',
                 mitigation: '',
                 risks: '',
                 emergency_intervention: ''
@@ -86,7 +88,7 @@ export default {
         addItem() {
             this.erp.items.push({
                 cost: 0,
-                others: '',
+                other: '',
                 mitigation: '',
                 risks: '',
                 emergency_intervention: ''
@@ -98,11 +100,12 @@ export default {
             }
         },
         initItems() {
+            this.erp.wsp_id = this.wsp_id;
             let items = []
             this.interventions.forEach(x => {
                 items.push({
                     cost: x.pivot.total,
-                    others: '',
+                    other: '',
                     mitigation: '',
                     risks: '',
                     emergency_intervention: x.name

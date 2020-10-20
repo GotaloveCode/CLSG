@@ -22,7 +22,7 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-body">
-                            <erp-form :interventions="{{ $interventions }}"></erp-form>
+                            <erp-form submit-url="{{ route('erps.store') }}" wsp_id="{{$wsp_id}}" :interventions="{{ $interventions }}"></erp-form>
                         </div>
                     </div>
                 </div>

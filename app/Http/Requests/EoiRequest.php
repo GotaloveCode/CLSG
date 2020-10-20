@@ -36,6 +36,7 @@ class EoiRequest extends FormRequest
             'estimated_costs' => 'required|array',
             'connections' => 'required|array',
             'services' => 'required|array',
+            'wsp_id' => 'required|numeric|in:' . auth()->user()->wsps()->first()->id,
         ];
     }
 }
