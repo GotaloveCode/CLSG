@@ -13,6 +13,6 @@ class BcpSeeder extends Seeder
      */
     public function run()
     {
-        Bcp::factory()->count(10)->create();
+       /// Bcp::factory()->count(10)->create();
     }
 }

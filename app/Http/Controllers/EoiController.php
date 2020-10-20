@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EoiRequest;
 use App\Mail\EioReview;
 use App\Http\Requests\EoiCommentRequest;
 use App\Http\Requests\EoiReviewRequest;
@@ -73,7 +74,7 @@ class EoiController extends Controller
         return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts', 'eoi', 'wsp_id'));
     }
 
-    public function store(Request $request)
+    public function store(EoiRequest $request)
     {
         $eoi = Eoi::create([
             'program_manager' => $request->input('program_manager'),
@@ -124,7 +125,7 @@ class EoiController extends Controller
         return back()->with(['eoi' => $eoi]);
     }
 
-    public function update(Request $request, Eoi $eoi)
+    public function update(EoiRequest $request, Eoi $eoi)
     {
         $eoi->update([
             'program_manager' => $request->input('program_manager'),
@@ -195,9 +196,8 @@ class EoiController extends Controller
         $eoi->status = $request->status;
         $eoi->save();
 
-
-        SendMailNotification::postReview($request->status);
-        $route = route('eois.show', $eoi->id);
+        SendMailNotification::postReview($request->status,'Eoi Review');
+        $route = route('eoi.show', $eoi->id);
 
         if ($request->status == 'WSTF Approved') {
             $route = route('eoi.commitment_letter', $eoi->id);
@@ -211,16 +211,14 @@ class EoiController extends Controller
 
     public function comment(Eoi $eoi, EoiCommentRequest $request)
     {
-        if (!auth()->user()->can('comment-eoi')) {
-            $this->canAccessEoi($eoi);
-        }
+        $this->canAccessEoi($eoi);
 
         $eoi->comments()->create([
             'description' => $request->description,
             'user_id' => auth()->id()
         ]);
 
-        SendMailNotification::postComment($request->description, $eoi->status);
+        SendMailNotification::postComment($request->description,$eoi->status,'Eoi Comment');
 
         return response()->json(['message' => 'Comment posted successfully']);
     }

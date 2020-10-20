@@ -21,3 +21,4 @@ yarn-error.log
 public/fonts/vendor
 public/images/vendor
 public/mix-manifest.json
+public/css/app.css
