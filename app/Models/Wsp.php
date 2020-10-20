@@ -54,18 +54,26 @@ class Wsp extends Model
     /**
      * Get the Eois for the Wsp.
      */
-    public function eois()
+    public function eoi()
     {
-        return $this->hasMany(Eoi::class);
+        return $this->hasOne(Eoi::class);
     }
 
 
     /**
-     * Get the Bcps for the Wsp.
+     * Get the Bcp for the Wsp.
      */
-    public function bcps()
+    public function bcp()
     {
-        return $this->hasMany(Bcp::class);
+        return $this->hasOne(Bcp::class);
+    }
+
+    /**
+     * Get the Erp for the Wsp.
+     */
+    public function erps()
+    {
+        return $this->hasOne(Erp::class);
     }
 
 

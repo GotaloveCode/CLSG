@@ -27,7 +27,7 @@ class CreateEoisTable extends Migration
             $table->string('proportion_served');
             $table->unsignedInteger('wsp_id')->nullable();
             $table->foreign('wsp_id')->references('id')->on('wsps');
-            $table->string('status')->default('draft');
+            $table->string('status')->default('Pending');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
 
