@@ -27,7 +27,7 @@
                                   :estimated-costs="{{ $estimatedCosts }}"
                                   :existing-eoi="{{ $eoi }}"
                                   :operation-costs="{{ $operationCosts }}"
-                                  :wsp="{{ $wsp }}"
+                                  :wsp="{{ $wsp_id }}"
                         ></eoi-form>
 
                     </div>

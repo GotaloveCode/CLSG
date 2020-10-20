@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Mail\EioReview;
 use App\Http\Requests\EoiCommentRequest;
-use App\Http\Requests\EoiRequest;
 use App\Http\Requests\EoiReviewRequest;
 use App\Models\Attachment;
 use App\Models\Connection;
@@ -18,13 +16,10 @@ use App\Traits\FilesTrait;
 use App\Traits\SendMailNotification;
 use App\Http\Resources\EoiCustomResource;
 use App\Http\Resources\EoiListResource;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
-use function PHPUnit\Framework\isEmpty;
 use PDF;
 
 class EoiController extends Controller
@@ -53,11 +48,9 @@ class EoiController extends Controller
     public function create()
     {
         $wsp = auth()->user()->wsps()->first();
-
-        if (!isset($wsp)) {
+        if (!isset($wsp->id)) {
             return false;
         }
-        $wsp = $wsp->id;
         $services = Cache::rememberForever('services', function () {
             return Service::select('id', 'name')->get();
         });
@@ -71,12 +64,13 @@ class EoiController extends Controller
             return Operationcost::select('id', 'name')->get();
         });
 
-        $eoi = Eoi::where('wsp_id', $wsp)->first();
+        $eoi = Eoi::where('wsp_id', $wsp->id)->first();
 
         if ($eoi) $eoi = json_encode(new EoiCustomResource($eoi));
         else $eoi = json_encode([]);
+        $wsp_id = $wsp->id;
 
-        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts', 'eoi', 'wsp'));
+        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts', 'eoi', 'wsp_id'));
     }
 
     public function store(Request $request)
@@ -225,7 +219,8 @@ class EoiController extends Controller
             'description' => $request->description,
             'user_id' => auth()->id()
         ]);
-        SendMailNotification::postComment($request->description);
+
+        SendMailNotification::postComment($request->description,$eoi->status);
 
         return response()->json(['message' => 'Comment posted successfully']);
     }
