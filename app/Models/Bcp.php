@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ProgressTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Bcp extends Model
 {
-    use HasFactory;
+    use HasFactory,ProgressTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -26,23 +27,7 @@ class Bcp extends Model
      */
     protected $dates = ['created_at', 'updated_at'];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        //
-    ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        //
-    ];
 
     /**
      * Get the Objectives for the Bcp.
@@ -97,24 +82,6 @@ class Bcp extends Model
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
-    }
-
-    public function progress()
-    {
-        switch ($this->status) {
-            case 'WSTF Approved':
-                $progress = 100;
-                break;
-            case 'WASREB Approved':
-                $progress = 75;
-                break;
-            case 'Needs Approval':
-                $progress = 50;
-                break;
-            default:
-                $progress = 25;
-        }
-        return $progress;
     }
 
 }

@@ -31,9 +31,10 @@ class HomeController extends Controller
         switch ($role) {
             case 'wsp':
                 $wsp = auth()->user()->wsps()->first();
-                $eoi = $wsp->eois()->first();
-                $bcp = $wsp->bcps()->first();
-                return view('dashboard.wsp')->with(compact('wsp','eoi','bcp'));
+                $eoi = $wsp->eoi;
+                $bcp = $wsp->bcp;
+                $erp = $wsp->erp;
+                return view('dashboard.wsp')->with(compact('wsp', 'eoi', 'bcp', 'erp'));
 //            case 'wstf':
 //                return view('dashboard.wstf')->with(compact('wsp_count','eoi_count','bcp_count','erp_count'));
 //            case 'wasreb':
@@ -43,7 +44,7 @@ class HomeController extends Controller
                 $eoi_count = Eoi::count();
                 $erp_count = Erp::count();
                 $wsp_count = Wsp::count();
-                return view('dashboard.general')->with(compact('wsp_count','eoi_count','bcp_count','erp_count'));
+                return view('dashboard.general')->with(compact('wsp_count', 'eoi_count', 'bcp_count', 'erp_count'));
         }
     }
 }

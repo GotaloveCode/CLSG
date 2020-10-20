@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <manage-review inline-template submit-url="{{ route('bcp.review',$bcp->id) }}">
+    <manage-review inline-template submit-url="{{ route('bcps.review',$bcp->id) }}">
         <div class="row">
             <div class="content-detached content-left">
                 <div class="content-body">
@@ -81,7 +81,7 @@
                                             @endif
                                             @if($bcp->status =='WSTF Approved')
                                                 <a class="btn btn-info mt-2"
-                                                   href="{{ route('bcp.commitment_letter',$bcp->id) }}"><i
+                                                   href="{{ route('bcps.commitment_letter',$bcp->id) }}"><i
                                                         class="feather icon-eye"></i>
                                                     View Commitment Letter
                                                 </a>
@@ -118,7 +118,7 @@
                             </ul>
                         </div>
                         @can('comment-bcp')
-                            <comment-form submit-url="{{ route('bcp.comment',$bcp->id) }}"/>
+                            <comment-form submit-url="{{ route('bcps.comment',$bcp->id) }}"/>
                         @endcan
                     </div>
                 </div>

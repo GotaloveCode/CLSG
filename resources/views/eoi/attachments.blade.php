@@ -29,7 +29,7 @@
                     <li>Audited Financial Statement for 2018/19</li>
                     <li>Approved Strategic plan</li>
                 </ul>
-                <manage-attachments inline-template delete_url="{{ route('eoi.attachments.destroy',0) }}">
+                <manage-attachments inline-template delete_url="{{ route('eois.attachments.destroy',0) }}">
                     <table class="table">
                         <thead>
                         <tr>
@@ -42,7 +42,7 @@
                         @foreach($eoi->attachments as $attachment)
                             <tr>
                                 <td><a target="_blank"
-                                       href="{{ route('eoi.attachments.show',$attachment->name) }}">{{ $attachment->display_name }}
+                                       href="{{ route('eois.attachments.show',$attachment->name) }}">{{ $attachment->display_name }}
                                         <i class="feather icon-file"></i></a></td>
                                 <td>{{ $attachment->document_type }}</td>
                                 <td>{{ $attachment->created_at->format('d-M-Y') }}</td>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <attachment-form submit-url="{{ route('eoi.attachments.store',$eoi->id) }}"/>
+                        <attachment-form submit-url="{{ route('eois.attachments.store',$eoi->id) }}"/>
                     </div>
                 </div>
             </div>

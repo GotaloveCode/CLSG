@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <manage-review inline-template submit-url="{{ route('eoi.review',$eoi->id) }}">
+    <manage-review inline-template submit-url="{{ route('eois.review',$eoi->id) }}">
         <div class="row">
             <div class="content-detached content-left">
                 <div class="content-body">
@@ -81,7 +81,7 @@
                                             @endif
                                             @if($eoi->status =='WSTF Approved')
                                                 <a class="btn btn-info mt-2"
-                                                   href="{{ route('eoi.commitment_letter',$eoi->id) }}"><i
+                                                   href="{{ route('eois.commitment_letter',$eoi->id) }}"><i
                                                         class="feather icon-eye"></i>
                                                     View Commitment Letter
                                                 </a>
@@ -118,7 +118,7 @@
                             </ul>
                         </div>
                         @can('comment-eoi')
-                            <comment-form submit-url="{{ route('eoi.comment',$eoi->id) }}"/>
+                            <comment-form submit-url="{{ route('eois.comment',$eoi->id) }}"/>
                         @endcan
                     </div>
                 </div>

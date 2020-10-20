@@ -22,7 +22,7 @@ class EoiReview extends Mailable
     public function __construct($content,$subject)
     {
         $this->content = $content;
-        $this->user = auth()->user();       
+        $this->user = auth()->user();
         $this->subject = $subject;
     }
 
@@ -34,6 +34,6 @@ class EoiReview extends Mailable
     public function build()
     {
         return $this->subject($this->subject)
-         ->markdown('emails.eoi.review');
+         ->markdown('emails.eois.review');
     }
 }

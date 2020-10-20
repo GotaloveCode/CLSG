@@ -200,7 +200,7 @@ class EoiController extends Controller
         $route = route('eoi.show', $eoi->id);
 
         if ($request->status == 'WSTF Approved') {
-            $route = route('eoi.commitment_letter', $eoi->id);
+            $route = route('eois.commitment_letter', $eoi->id);
         }
 
         return response()->json([

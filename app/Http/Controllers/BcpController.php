@@ -105,7 +105,7 @@ class BcpController extends Controller
         $route = route('bcp.preview', $bcp->id);
 
         if ($request->status == 'WSTF Approved') {
-            $route = route('bcp.commitment_letter', $bcp->id);
+            $route = route('bcps.commitment_letter', $bcp->id);
         }
 
         return response()->json([

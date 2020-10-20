@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\ProgressTrait;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Erp extends Model
 {
-    use HasFactory;
+    use HasFactory, ProgressTrait;
 
     protected $fillable = [
-        'period', 'wsp_id','coordinator'
+        'period', 'wsp_id', 'coordinator'
     ];
 
     protected function serializeDate(DateTimeInterface $date)
@@ -34,4 +35,5 @@ class Erp extends Model
     {
         return $this->hasMany(ErpItem::class);
     }
+
 }

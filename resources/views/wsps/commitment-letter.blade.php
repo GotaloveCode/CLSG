@@ -53,12 +53,12 @@
                         @if($eoi->status =='WSTF Approved')
                             @if($eoi->attachments->where('document_type','Commitment Letter')->count() == 0)
                                 <a class="btn btn-primary mb-1" target="_blank"
-                                   href="{{ route('eoi.commitment_letter',['eoi'=> $eoi->id,'download' => 'pdf']) }}"><i
+                                   href="{{ route('eois.commitment_letter',['eoi'=> $eoi->id,'download' => 'pdf']) }}"><i
                                         class="fa fa-download"></i>
                                     Download
                                 </a>
                             @endif
-                            <form action="{{ route('eoi.commitment_letter.store', $eoi->id) }}" method="post"
+                            <form action="{{ route('eois.commitment_letter.store', $eoi->id) }}" method="post"
                                   enctype="multipart/form-data" class="form">
                                 @csrf
                                 <div class="form-group">
@@ -101,7 +101,7 @@
                         <ol>
                             @foreach($eoi->attachments->where('document_type','Commitment Letter') as $attachment)
                                 <li>
-                                    <a href="{{ route('eoi.attachments.show',['filename' =>$attachment->name, 'download' =>'true']) }}"
+                                    <a href="{{ route('eois.attachments.show',['filename' =>$attachment->name, 'download' =>'true']) }}"
                                        target="_blank">{{$attachment->name}} <i class="feather icon-download"></i></a></li>
                             @endforeach
                         </ol>

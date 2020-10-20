@@ -71,7 +71,7 @@ class Wsp extends Model
     /**
      * Get the Erp for the Wsp.
      */
-    public function erps()
+    public function erp()
     {
         return $this->hasOne(Erp::class);
     }

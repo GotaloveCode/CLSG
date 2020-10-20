@@ -17,7 +17,7 @@ class EoiAttachmentController extends Controller
     {
         $eoi = $eoi->load('attachments');
         $progress = ceil($eoi->attachments->pluck('document_type')->unique()->count() / 5 * 100);
-        return view('eoi.attachments')->with(compact('eoi', 'progress'));
+        return view('eois.attachments')->with(compact('eoi', 'progress'));
     }
 
     public function store(Eoi $eoi, EoiAttachmentRequest $request)
@@ -34,7 +34,7 @@ class EoiAttachmentController extends Controller
             'document_type' => $request->document_type,
         ]);
 
-        return view('eoi.attachments')->with(compact('eoi'));
+        return view('eois.attachments')->with(compact('eoi'));
     }
 
     public function show($filename)

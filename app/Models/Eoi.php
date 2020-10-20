@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\ProgressTrait;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Eoi extends Model
 {
-    use HasFactory;
+    use HasFactory,ProgressTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -129,24 +130,6 @@ class Eoi extends Model
         collect(str_getcsv($terms, ' ', '"'))->filter()->each(function ($term) use ($query) {
             $query->where('wsps.name', 'like', $term . '%');
         });
-    }
-
-    public function progress()
-    {
-        switch ($this->status) {
-            case 'WSTF Approved':
-                $progress = 100;
-                break;
-            case 'WASREB Approved':
-                $progress = 75;
-                break;
-            case 'Needs Approval':
-                $progress = 50;
-                break;
-            default:
-                $progress = 25;
-        }
-        return $progress;
     }
 
 }
