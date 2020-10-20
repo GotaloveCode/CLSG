@@ -1,5 +1,8 @@
 @extends('layouts.dashboard')
-
+@push('css')
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
+@endpush
 @section('content')
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
@@ -16,24 +19,46 @@
             </div>
         </div>
     </div>
-    <div class="content-body"><!-- Content start -->
+    <div class="content-body">
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">{{ __('Bcp List') }}</h4>
-                        <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-                    </div>
-                    <div class="card-content collapse show">
-                        <bcp-list
-                            :bcp="{{$bcp}}"
-                        ></bcp-list>
-
+                    <div class="card-content">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table" id="bcps-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Wsp</th>
+                                        <th>Status</th>
+                                        <th>Created At</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Content end -->
     </div>
-
 @endsection
+@push('scripts')
+    <script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
+    <script defer>
+        $(function () {
+            $('#bcps-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{!! route('bcps.index') !!}',
+                columns: [
+                    {data: 'wsp.name', name: 'wsp.name'},
+                    {data: 'status', name: 'status'},
+                    {data: 'created_at', name: 'created_at'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                ]
+            });
+        });
+    </script>
+@endpush

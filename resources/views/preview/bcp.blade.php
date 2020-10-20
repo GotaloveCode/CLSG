@@ -1,36 +1,26 @@
 <div>
+    <h4 class="text-center">BUSINESS CONTINUITY PLAN</h4>
     <p>{{ $eoi->date ? $eoi->date->format('d/m/Y') : now()->format('d/m/Y') }}</p>
 
-    <p>
-        The Chief Executive Officer<br>
-        Water Sector Trust Fund<br>
-        Mara Road<br>
-        Nairobi
-    </p>
+    <p>A. <b>Executive Summary</b></p>
+    <p>{{$bcp->executive_summary}}</p>
 
-    <p>Att: Ms./Mr. {{$eoi->program_manager}},</p>
-    <p>This note is to request for funding under the Conditional Liquidity Support Grant (CLSG) in the amount
-        indicated below: </p>
+    <p>B. <b>Company Overview</b></p>
+    <p>{{$bcp->company_overview}}</p>
 
-    <p>A. <b>Summary Executive</b></p>
-       <p>{{$bcp->executive_summary}}</p>
-
-      <p>B. <b>Company Overview</b></p>
-       <p>{{$bcp->company_overview}}</p>
-
-       <p>C. <b>Financing</b></p>
-       <p>{{$bcp->financing}}</p>
+    <p>C. <b>Financing</b></p>
+    <p>{{$bcp->financing}}</p>
 
     <p>D. <b>Strategic Direction</b></p>
-       <p>{{$bcp->strategic_direction}}</p>
+    <p>{{$bcp->strategic_direction}}</p>
 
     <p>E. <b>Environment Analysis</b></p>
-       <p>{{$bcp->environment_analysis}}
+    <p>{{$bcp->environment_analysis}}
 
-       </p>F. <b>Rationale</b></p>
-       <p>{{$bcp->rationale}}</p>
+    </p>F. <b>Rationale</b></p>
+    <p>{{$bcp->rationale}}</p>
 
-    <p>G. <b>Specific Objectives</b> </p>
+    <p>G. <b>Specific Objectives</b></p>
     <table class="table table-bordered">
         <thead>
         <tr>

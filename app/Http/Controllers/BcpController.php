@@ -6,7 +6,7 @@ use App\Http\Requests\BcpFormRequest;
 use App\Http\Requests\EoiCommentRequest;
 use App\Models\Bcp;
 use App\Models\Operationcost;
-use App\Http\Resources\BcpListResource;
+use App\Traits\BcpAuthTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
@@ -16,19 +16,15 @@ use App\Traits\SendMailNotification;
 
 class BcpController extends Controller
 {
-    use SendMailNotification;
+    use SendMailNotification,BcpAuthTrait;
 
     public function index()
     {
-        $bcp = json_encode(BcpListResource::collection(Bcp::get()));
-
-        return view('bcps.index', compact('bcp'));
-
         if (!request()->ajax()) {
             return view('bcps.index');
         }
-
-        return Datatables::of(Bcp::query())
+        $bcp = Bcp::query()->with('wsp:id,name');
+        return Datatables::of($bcp)
             ->addColumn('action', function ($bcp) {
                 return '<a href="' . route("bcps.show", $bcp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
             })
@@ -90,23 +86,20 @@ class BcpController extends Controller
         }
         return back()->with('success', 'Business Continuity Plan submitted successfully');
     }
-    public function preview(Bcp $bcp)
+
+    public function show(Bcp $bcp)
     {
         $progress = $bcp->progress();
-        $eoi = $bcp->wsp->first()->eois()->first();
+        $eoi = $bcp->wsp->first()->eoi;
         $bcp = $bcp->load(['wsp', 'objectives', 'operationcosts', 'revenue_projections']);
         return view('bcps.preview')->with(compact('bcp', 'progress','eoi'));
     }
 
     public function review(Bcp $bcp, Request $request)
     {
-        if (!auth()->user()->can('review-bcp')) {
-            $this->canAccessBcp($bcp);
-        }
-
+        $this->canAccessBcp($bcp);
         $bcp->status = $request->status;
         $bcp->save();
-
 
         SendMailNotification::postReview($request->status,'BCP Review');
         $route = route('bcp.preview', $bcp->id);
@@ -123,9 +116,7 @@ class BcpController extends Controller
 
     public function comment(Bcp $bcp, EoiCommentRequest $request)
     {
-        if (!auth()->user()->can('comment-bcp')) {
-            $this->canAccessBcp($bcp);
-        }
+        $this->canAccessBcp($bcp);
 
         $bcp->comments()->create([
             'description' => $request->description,
