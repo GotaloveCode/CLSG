@@ -23,7 +23,7 @@ class CreateBcpsTable extends Migration
             $table->text('supply_chain');
             $table->text('communication_plan');
             $table->string('government_subsidy');
-            $table->unsignedInteger('wsp_id')->nullable();
+            $table->unsignedInteger('wsp_id');
             $table->foreign('wsp_id')->references('id')->on('wsps');
             $table->string('status')->default('Pending');
             $table->timestamps();

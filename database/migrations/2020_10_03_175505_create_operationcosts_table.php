@@ -16,8 +16,6 @@ class CreateOperationcostsTable extends Migration
         Schema::create('operationcosts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
         });
     }
 

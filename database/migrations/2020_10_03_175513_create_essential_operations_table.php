@@ -18,14 +18,13 @@ class CreateEssentialOperationsTable extends Migration
             $table->string('priority_level');
             $table->unsignedInteger('essentialfunction_id');
             $table->foreign('essentialfunction_id')->references('id')->on('essentialfunctions');
-            $table->integer('primary_staff');
+            $table->unsignedInteger('primary_staff');
             $table->foreign('primary_staff')->references('id')->on('staff');
-            $table->integer('backup_staff');
+            $table->unsignedInteger('backup_staff');
             $table->foreign('backup_staff')->references('id')->on('staff');
-            $table->unsignedInteger('bcp_id')->nullable();
+            $table->unsignedInteger('bcp_id');
             $table->foreign('bcp_id')->references('id')->on('bcps');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
 
         });
     }

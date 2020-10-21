@@ -17,12 +17,11 @@ class CreateEoiEstimatedcostTable extends Migration
             $table->increments('id');
             $table->string('unit');
             $table->string('total');
-            $table->unsignedInteger('eoi_id')->nullable();
+            $table->unsignedInteger('eoi_id');
             $table->foreign('eoi_id')->references('id')->on('eois');
-            $table->unsignedInteger('estimatedcost_id')->nullable();
+            $table->unsignedInteger('estimatedcost_id');
             $table->foreign('estimatedcost_id')->references('id')->on('estimatedcosts');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps()->nullable();
         });
     }
 

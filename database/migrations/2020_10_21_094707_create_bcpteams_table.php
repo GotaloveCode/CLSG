@@ -18,7 +18,7 @@ class CreateBcpteamsTable extends Migration
             $table->string('name');
             $table->string('unit');
             $table->string('role');
-            $table->unsignedInteger('bcp_id')->nullable();
+            $table->unsignedInteger('bcp_id');
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->timestamps();
         });

@@ -25,11 +25,10 @@ class CreateEoisTable extends Migration
             $table->text('water_service_areas');
             $table->integer('total_people_water_served');
             $table->string('proportion_served');
-            $table->unsignedInteger('wsp_id')->nullable();
+            $table->unsignedInteger('wsp_id');
             $table->foreign('wsp_id')->references('id')->on('wsps');
             $table->string('status')->default('Pending');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
 
         });
     }

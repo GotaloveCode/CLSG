@@ -18,7 +18,7 @@ class CreateEoiOperationcostTable extends Migration
             $table->string('quantity')->nullable();
             $table->string('unit_rate');
             $table->string('total');
-            $table->unsignedInteger('eoi_id')->nullable();
+            $table->unsignedInteger('eoi_id');
             $table->foreign('eoi_id')->references('id')->on('eois');
             $table->unsignedInteger('operationcost_id');
             $table->foreign('operationcost_id')->references('id')->on('operationcosts');

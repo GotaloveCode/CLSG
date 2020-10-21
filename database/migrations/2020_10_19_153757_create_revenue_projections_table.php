@@ -18,7 +18,7 @@ class CreateRevenueProjectionsTable extends Migration
             $table->string('amount');
             $table->string('month');
             $table->string('year')->default('2020');
-            $table->unsignedInteger('bcp_id')->nullable();
+            $table->unsignedInteger('bcp_id');
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->timestamps();
         });

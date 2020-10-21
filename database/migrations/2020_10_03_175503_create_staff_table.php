@@ -23,8 +23,7 @@ class CreateStaffTable extends Migration
             $table->string('type')->default('Essential');
             $table->unsignedInteger('wsp_id')->nullable();
             $table->foreign('wsp_id')->references('id')->on('wsps');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
 
         });
     }

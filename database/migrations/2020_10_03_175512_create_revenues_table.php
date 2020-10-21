@@ -18,10 +18,9 @@ class CreateRevenuesTable extends Migration
             $table->string('amount');
             $table->string('month');
             $table->string('year');
-            $table->unsignedInteger('wsp_id')->nullable();
+            $table->unsignedInteger('wsp_id');
             $table->foreign('wsp_id')->references('id')->on('wsps');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
 
         });
     }

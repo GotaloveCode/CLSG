@@ -20,7 +20,7 @@ class CreateBcpOperationcostTable extends Migration
             $table->string('total');
             $table->unsignedInteger('operationcost_id');
             $table->foreign('operationcost_id')->references('id')->on('operationcosts');
-            $table->unsignedInteger('bcp_id')->nullable();
+            $table->unsignedInteger('bcp_id');
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->timestamps();
         });
