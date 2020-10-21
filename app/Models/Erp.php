@@ -36,4 +36,9 @@ class Erp extends Model
         return $this->hasMany(ErpItem::class);
     }
 
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
 }

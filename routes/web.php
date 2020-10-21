@@ -49,9 +49,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{bcp}/comment', 'BcpController@comment')->name('bcps.comment');
     });
 
-    Route::resource('erps', 'ErpController')->only('index', 'create', 'store');
+    Route::resource('erps', 'ErpController')->only('index', 'create', 'store','show');
 
-
+    Route::group(['prefix' => 'erps'],function (){
+        Route::post('{erp}/review','ErpController@review')->name('erps.review');
+        Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
+    });
 });
 
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
