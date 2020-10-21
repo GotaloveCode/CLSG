@@ -6,11 +6,13 @@ use App\Http\Requests\ErpRequest;
 use App\Models\Erp;
 use App\Traits\ErpAuthTrait;
 use Illuminate\Http\Request;
+use App\Http\Requests\CommentRequest;
 use Yajra\DataTables\Facades\DataTables;
+use App\Traits\SendMailNotification;
 
 class ErpController extends Controller
 {
-    use ErpAuthTrait;
+    use ErpAuthTrait,SendMailNotification;
 
     public function index()
     {
@@ -23,7 +25,7 @@ class ErpController extends Controller
         }
         return Datatables::of($erps)
             ->addColumn('action', function ($erp) {
-                return '<a href="' . route("erps.index", $erp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Review</a>';
+                return '<a href="' . route("erps.show", $erp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Review</a>';
             })
             ->make(true);
     }
@@ -61,7 +63,10 @@ class ErpController extends Controller
 
     public function show(Erp $erp)
     {
-        $this->canAccessErp($erp);
+        $progress = $erp->progress();
+        $eoi = $erp->wsp->first()->eoi;
+        $erp = $erp->load(['wsp', 'erp_items']);
+        return view('erps.show')->with(compact('erp', 'progress', 'eoi'));
     }
 
 
@@ -71,4 +76,38 @@ class ErpController extends Controller
     }
 
 
+
+    public function review(Erp $erp, Request $request)
+    {
+        $this->canAccessErp($erp);
+        $erp->status = $request->status;
+        $erp->save();
+
+        $route = route('erps.show', $erp->id);
+        SendMailNotification::postReview($request->status, $erp->wsp_id, $route, $erp->wsp->name . ' ERP Review');
+
+        if ($request->status == 'WSTF Approved') {
+          //  $route = route('erps.commitment_letter', $erp->id);
+        }
+
+        return response()->json([
+            'message' => 'ERP status changed to ' . $request->status,
+            'route' => $route
+        ]);
+    }
+
+    public function comment(Erp $erp, CommentRequest $request)
+    {
+        $this->canAccessErp($erp);
+
+        $erp->comments()->create([
+            'description' => $request->description,
+            'user_id' => auth()->id()
+        ]);
+
+        $route = route('erps.show', $erp->id);
+        SendMailNotification::postComment($request->description, $erp->status, $erp->wsp_id, $route, $erp->wsp->name . ' ERP Comment');
+
+        return response()->json(['message' => 'Comment posted successfully']);
+    }
 }

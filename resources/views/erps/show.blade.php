@@ -3,13 +3,13 @@
 @section('content')
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title mb-0">{{ __('BCP Form Review') }}</h3>
+            <h3 class="content-header-title mb-0">{{ __('ERP Form Review') }}</h3>
             <div class="row breadcrumbs-top">
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url("/")}}">Home</a>
                         </li>
-                        <li class="breadcrumb-item active">{{ __('BCP Form Review') }}
+                        <li class="breadcrumb-item active">{{ __('ERP Form Review') }}
                         </li>
                     </ol>
                 </div>
@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <manage-review inline-template submit-url="{{ route('bcps.review',$bcp->id) }}">
+    <manage-review inline-template submit-url="{{ route('erps.review',$erp->id) }}">
         <div class="row">
             <div class="content-detached content-left">
                 <div class="content-body">
@@ -25,7 +25,7 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body">
-                                    @include('preview.bcp')
+                                    @include('preview.erp')
                                 </div>
                             </div>
                         </div>
@@ -36,12 +36,12 @@
                 <div class="sidebar">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">BCP Status</h4>
+                            <h4 class="card-title">ERP Status</h4>
                         </div>
                         <div class="card-content">
                             <div class="card-body">
                                 <div class="insights">
-                                    <p>{{$bcp->status}}<span class="float-right text-warning h3">{{$progress}}%</span>
+                                    <p>{{$erp->status}}<span class="float-right text-warning h3">{{$progress}}%</span>
                                     </p>
                                     <div class="progress progress-sm mt-1 mb-0">
                                         <div class="progress-bar bg-warning" role="progressbar"
@@ -50,16 +50,16 @@
                                     </div>
                                 </div>
                                 <div>
-                                    @can('review-bcp')
+                                    @can('review-erp')
                                         @if(auth()->user()->hasRole('wasreb'))
-                                            @if($bcp->status =='Needs Review')
+                                            @if($erp->status =='Needs Review')
                                                 <button class="btn btn-success ml-2 mb-1"
                                                         @click.prevent="review('WASREB Approved')"><i
                                                         class="feather icon-check"></i>
                                                     Approve
                                                 </button>
                                             @endif
-                                            @if($bcp->status =='Pending' || $bcp->status =='draft')
+                                            @if($erp->status =='Pending' || $erp->status =='draft')
                                                 <button class="btn btn-danger mb-1"
                                                         @click.prevent="review('Needs Review')"><i
                                                         class="fa fa-pencil"></i>
@@ -67,7 +67,7 @@
                                                 </button>
                                             @endif
                                         @elseif(auth()->user()->hasRole('wstf'))
-                                            @if($bcp->status =='WASREB Approved')
+                                            @if($erp->status =='WASREB Approved')
                                                 <button class="btn btn-success ml-2 mb-1"
                                                         @click.prevent="review('WSTF Approved')"><i
                                                         class="fa fa-check"></i>
@@ -79,7 +79,7 @@
                                                     Review
                                                 </button>
                                             @endif
-                                            @if($bcp->status =='WSTF Approved')
+                                            @if($erp->status =='WSTF Approved')
 
                                             @endif
                                         @endif
@@ -96,7 +96,7 @@
                         </div>
                         <div class="actionBox">
                             <ul class="commentList">
-                                @foreach($bcp->comments as $comment)
+                                @foreach($erp->comments as $comment)
                                     @php
                                         $user_role = auth()->user()->roles()->first()->name;
                                         $comment_role = $comment->user->roles()->first()->name
@@ -113,7 +113,8 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <comment-form submit-url="{{ route('bcps.comment',$bcp->id) }}"/>
+
+                        <comment-form submit-url="{{ route('erps.comment',$erp->id) }}"/>
                     </div>
                 </div>
             </div>

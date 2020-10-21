@@ -19,25 +19,15 @@
         </ul>
         <form @submit.prevent="handleSubmit(onSubmit)" class="col-md-12 mt-4">
             <div v-html="$error.handle(error)"/>
-            <ValidationObserver v-if="currentStep === 1">
-                <step-one :eoi="eoi"/>
-            </ValidationObserver>
-            <ValidationObserver v-else-if="currentStep === 2">
-                <step-two :eoi="eoi" :services="services"/>
-            </ValidationObserver>
-            <ValidationObserver v-else-if="currentStep === 3">
-                <step-three :eoi="eoi" :connections="connections"/>
-            </ValidationObserver>
-            <ValidationObserver v-else-if="currentStep === 4">
-                <step-four :eoi="eoi" :estimated-costs="estimatedCosts"/>
-            </ValidationObserver>
-            <ValidationObserver v-else-if="currentStep === 5">
-                <step-five :eoi="eoi" :operation-costs="operationCosts"/>
-            </ValidationObserver>
 
+            <ValidationObserver>
+                <keep-alive>
+                  <component :is="currentComponent" v-bind="currentProperties"></component>
+                </keep-alive>
+            </ValidationObserver>
             <div class="form-group pull-right">
-                <button v-if="currentStep > 1" class="btn btn-primary" @click="previousStep"><i
-                    class="fa fa-chevron-left"></i> Previous ggg {{currentStep}}
+                <button v-if="currentStep > 1" class="btn btn-primary" @click="previousStep" type="button"><i
+                    class="fa fa-chevron-left"></i> Previous
                 </button>
                 <button class="btn btn-success" v-if="currentStep ===5" type="submit">
                     Submit <i class="fa fa-send"></i>
@@ -57,8 +47,8 @@ import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import StepFour from "./StepFour";
 import StepFive from "./StepFive";
-import {SET_CURRENT_STEP} from "./../../store/eoi"
-import {mapGetters} from "vuex";
+import Vue from "vue";
+let vm = new Vue();
 export default {
     name: 'eoi-form',
     components: {
@@ -92,31 +82,35 @@ export default {
             estimated_costs: [{unit: 0, total: 0, estimatedcost_id: null}],
             operation_costs: [{quantity: 0, unit_rate: 0, total: 0, operationcost_id: null}],
         },
-        c_step:1,
-        step:1
+        currentStep:1,
+        currentComponent:'step-one'
     }),
     created() {
-
-      setTimeout(()=>{
-          console.log(this.currentStep)
-      },1000)
         if (this.existingEoi.id != undefined) {
             this.initEoi();
         }
     },
     watch:{
         currentStep(){
-            console.log('step -> '+ this.currentStep)
-            return this.currentStep;
+            if (this.currentStep ===1) return this.currentComponent = 'step-one';
+            if (this.currentStep ===2) return this.currentComponent = 'step-two';
+            if (this.currentStep ===3) return this.currentComponent = 'step-three';
+            if (this.currentStep ===4) return this.currentComponent = 'step-four';
+            if (this.currentStep ===5) return this.currentComponent = 'step-five';
+         }
+    },
+
+    computed:{
+        currentProperties(){
+            if (this.currentStep ===1) return {eoi:this.eoi};
+            if (this.currentStep ===2) return {eoi:this.eoi,services:this.services};
+            if (this.currentStep ===3) return {eoi:this.eoi,connections:this.connections};
+            if (this.currentStep ===4) return  {eoi:this.eoi,'estimated-costs':this.estimatedCosts};
+            if (this.currentStep ===5) return  {eoi:this.eoi,'operation-costs':this.operationCosts};
         }
     },
-    computed:{
-      ...mapGetters({
-          currentStep:"getStep"
-      })
-    },
-    methods: {
 
+    methods: {
         initEoi() {
             this.eoi.program_manager = this.existingEoi.program_manager;
             this.eoi.fixed_grant = this.existingEoi.fixed_grant;
@@ -160,8 +154,9 @@ export default {
         previousStep() {
 
             if (this.currentStep > 1) {
-                this.$store.dispatch(SET_CURRENT_STEP,this.step--)
+                this.currentStep--;
             }
+
         },
         onSubmit() {
             if (this.currentStep === 5) {
@@ -171,8 +166,8 @@ export default {
                     this.postData();
                 return;
             }
-            this.step++;
-            this.$store.dispatch(SET_CURRENT_STEP,this.step)
+            this.currentStep++;
+
         },
         postData() {
             this.eoi.wsp = this.wsp;
