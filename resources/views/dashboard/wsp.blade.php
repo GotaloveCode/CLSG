@@ -2,7 +2,8 @@
 
 @section('content')
     <div class="row">
-        <a href="{{ route('eois.show',$eoi->id) }}" class="col-xl-3 col-sm-6 col-12">
+        @php($eoi_route = $eoi ? route('eois.show',$eoi->id) : '#')
+        <a href="{{ $eoi_route }}" class="col-xl-3 col-sm-6 col-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
@@ -25,7 +26,8 @@
                 </div>
             </div>
         </a>
-        <a href="{{ route('eois.commitment_letter',$eoi->id) }}" class="col-xl-3 col-sm-6 col-12">
+        @php($commitment_route = $eoi ? route('eois.commitment_letter',$eoi->id) : '#')
+        <a href="{{ $commitment_route }}" class="col-xl-3 col-sm-6 col-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
@@ -57,7 +59,8 @@
                 </div>
             </div>
         </a>
-        <div class="col-xl-3 col-sm-6 col-12">
+        @php($bcp_route = $bcp ? route('bcps.show',$bcp->id) : '#')
+        <a href="{{ $bcp_route }}" class="col-xl-3 col-sm-6 col-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
@@ -79,8 +82,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
+        </a>
+        @php($erp_route = $erp ? route('bcps.show',$erp->id) : '#')
+        <a href="{{ $erp_route }}" class="col-xl-3 col-sm-6 col-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
@@ -102,6 +106,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
 @endsection
