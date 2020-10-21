@@ -47,8 +47,8 @@ import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import StepFour from "./StepFour";
 import StepFive from "./StepFive";
-import Vue from "vue";
-let vm = new Vue();
+// import Vue from "vue";
+// let vm = new Vue();
 export default {
     name: 'eoi-form',
     components: {

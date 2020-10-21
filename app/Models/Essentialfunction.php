@@ -17,37 +17,16 @@ class Essentialfunction extends Model
         'id', 'name'
     ];
 
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
+
     protected $dates = ['created_at', 'updated_at'];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        //
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        //
-    ];
 
     /**
      * Get the EssentialOperations for the Essentialfunction.
      */
     public function essentialOperations()
     {
-        return $this->hasMany(\App\EssentialOperation::class);
+        return $this->hasMany(EssentialOperation::class);
     }
 
 }

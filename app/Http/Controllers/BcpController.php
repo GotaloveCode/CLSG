@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BcpFormRequest;
 use App\Http\Requests\CommentRequest;
 use App\Models\Bcp;
+use App\Models\Essentialfunction;
 use App\Models\Operationcost;
+use App\Models\Staff;
 use App\Traits\BcpAuthTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -40,17 +42,17 @@ class BcpController extends Controller
         if (!isset($wsp->eoi)) {
             return redirect(route("eois.create"));
         }
+        $wsp_id = $wsp->id;
         $operation_costs = $wsp->eoi->operationcosts()->get();
-        $operation_cost_fields = Cache::rememberForever('operationCosts', function () {
-            return Operationcost::select('id', 'name')->get();
-        });
-        return view('bcps.create')->with(compact('operation_cost_fields', 'operation_costs'));
+        $backup_staff = $wsp->staff()->where('type', 'Backup')->selectRaw("CONCAT(firstname,' ',lastname) as name,id")->get();
+        $primary_staff = $wsp->staff()->where('type', 'Essential')->selectRaw("CONCAT(firstname,' ',lastname) as name,id")->get();
+        $essential_functions = Essentialfunction::select('id', 'name')->get();
+        return view('bcps.create')->with(compact('primary_staff', 'operation_costs', 'backup_staff', 'essential_functions', 'wsp_id'));
     }
 
     public function store(BcpFormRequest $request)
     {
-        $wsp_id = auth()->user()->wsps()->first()->id;
-        $bcp = Bcp::where('wsp_id', $wsp_id)->first();
+        $bcp = Bcp::where('wsp_id', $request->wsp_id)->first();
         if ($bcp) {
             return response()->json([
                 'message' => 'The given field was invalid',
@@ -58,21 +60,22 @@ class BcpController extends Controller
             ], 422);
         }
 
-        $bcp = Bcp::create(Arr::except($request->validated(), ['objectives', 'strategic_plans']) + [
-                'wsp_id' => $wsp_id
-            ]);
+        $bcp = Bcp::create(Arr::except($request->validated(), ['projected_revenues', 'essential_operations']));
 
-        foreach ($request->input('objectives') as $objective) {
-            $bcp->objectives()->create([
-                'description' => $objective['description']
+        foreach ($request->input('essential_operations') as $operation) {
+            $bcp->essentialOperations()->create([
+                'priority_level' => $operation['priority_level'],
+                'primary_staff' => $operation['primary_staff'],
+                'backup_staff' => $operation['backup_staff'],
+                'essentialfunction_id' => $operation['essentialfunction_id'],
             ]);
         }
 
-        foreach ($request->input('operation_costs') as $operation_cost) {
-            $bcp->operationcosts()->attach($operation_cost['operationcost_id'], [
-                'unit_rate' => $operation_cost['unit_rate'],
-                'quantity' => $operation_cost['quantity'],
-                'total' => $operation_cost['total'],
+        foreach ($request->input('bcp_teams') as $member) {
+            $bcp->bcpteams()->create([
+                'name' => $member['name'],
+                'unit' => $member['unit'],
+                'role' => $member['role']
             ]);
         }
 
@@ -94,7 +97,7 @@ class BcpController extends Controller
     {
         $progress = $bcp->progress();
         $eoi = $bcp->wsp->first()->eoi;
-        $bcp = $bcp->load(['wsp', 'objectives', 'operationcosts', 'revenue_projections']);
+        $bcp = $bcp->load(['wsp', 'revenue_projections','essentialOperations','comments','bcpteams']);
         return view('bcps.show')->with(compact('bcp', 'progress', 'eoi'));
     }
 

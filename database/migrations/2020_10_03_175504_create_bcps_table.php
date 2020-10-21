@@ -15,14 +15,18 @@ class CreateBcpsTable extends Migration
     {
         Schema::create('bcps', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('executive_summary');
+            $table->text('executive_summary');
             $table->text('introduction');
             $table->text('planning_assumptions');
+            $table->text('training');
+            $table->text('staff_health_protection');
+            $table->text('supply_chain');
+            $table->text('communication_plan');
+            $table->string('government_subsidy');
             $table->unsignedInteger('wsp_id')->nullable();
             $table->foreign('wsp_id')->references('id')->on('wsps');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
-
+            $table->string('status')->default('Pending');
+            $table->timestamps();
         });
     }
 

@@ -22,8 +22,11 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-body">
-                            <bcp-form :operation-costs="{{ $operation_costs }}"
-                                      :operation-cost-fields="{{ $operation_cost_fields }}"
+                            <bcp-form
+                                      :primary_staff="{{ $primary_staff }}"
+                                      :backup_staff="{{ $backup_staff }}"
+                                       wsp_id="{{$wsp_id}}"
+                                      :essential_functions="{{ $essential_functions }}"
                                       submit-url="{{ route('bcps.store') }}"></bcp-form>
                         </div>
                     </div>

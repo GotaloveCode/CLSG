@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-content collapse show">
+                    <div class="card-content">
                         <eoi-form
                                   :services="{{ $services }}"
                                   :connections="{{ $connections }}"

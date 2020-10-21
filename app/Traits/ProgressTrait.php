@@ -17,8 +17,11 @@ trait ProgressTrait
             case 'Needs Approval':
                 $progress = 50;
                 break;
-            default:
+            case 'Pending':
                 $progress = 25;
+                break;
+            default:
+                $progress = 0;
         }
         return $progress;
     }

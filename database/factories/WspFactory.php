@@ -21,7 +21,7 @@ class WspFactory extends Factory
      */
     public function definition()
     {
-        $name = $this->faker->name();
+        $name = $this->faker->company;
         return [
             'name' => $name,
             'acronym' => substr($name,0,3),

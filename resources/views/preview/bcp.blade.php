@@ -1,67 +1,48 @@
 <div>
     <h4 class="text-center">BUSINESS CONTINUITY PLAN</h4>
-    <p>{{ $eoi->date ? $eoi->date->format('d/m/Y') : now()->format('d/m/Y') }}</p>
+    <p>{{ $bcp->date ? $bcp->date->format('d/m/Y') : now()->format('d/m/Y') }}</p>
 
-    <p>A. <b>Executive Summary</b></p>
+    <h5>1. Executive Summary</h5>
     <p>{{$bcp->executive_summary}}</p>
 
-    <p>B. <b>Company Overview</b></p>
-    <p>{{$bcp->company_overview}}</p>
+    <h5>2.Introduction </h5>
+    <p>{{$bcp->introduction}}</p>
 
-    <p>C. <b>Financing</b></p>
-    <p>{{$bcp->financing}}</p>
+    <h5>3. Planning Assumptions</h5>
+    <p>{{$bcp->planning_assumptions}}</p>
 
-    <p>D. <b>Strategic Direction</b></p>
-    <p>{{$bcp->strategic_direction}}</p>
-
-    <p>E. <b>Environment Analysis</b></p>
-    <p>{{$bcp->environment_analysis}}
-
-    </p>F. <b>Rationale</b></p>
-    <p>{{$bcp->rationale}}</p>
-
-    <p>G. <b>Specific Objectives</b></p>
+    <h5>4. BCP Team</h5>
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>Description</th>
-
+            <th>Name</th>
+            <th>Unit</th>
+            <th>Role</th>
         </tr>
         </thead>
-        @foreach($bcp->objectives as $obj)
+        @foreach($bcp->bcpteams as $member)
             <tr>
-                <td>{{ $obj->description }}</td>
-
+                <td>{{ $member->name }}</td>
+                <td>{{ $member->unit }}</td>
+                <td>{{ $member->role }}</td>
             </tr>
         @endforeach
     </table>
-    <p>H. <b>Breakdown of O&M costs:</b></p>
+    <h5>5. Essential Operations</h5>
+    <p>{{$bcp->essential_operations}}</p>
 
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Type of Service/item</th>
-            <th>Qty</th>
-            <th>Unit Cost (KES)</th>
-            <th>Total Cost (KES)</th>
-        </tr>
-        </thead>
-        @foreach($bcp->operationcosts as $cost)
-            <tr>
-                <td>{{ $cost->name }}</td>
-                <td>{{ $cost->pivot->quantity }}</td>
-                <td>{{ number_format($cost->pivot->unit_rate) }}</td>
-                <td>{{ number_format($cost->pivot->total) }}</td>
-            </tr>
-        @endforeach
-        <tr>
-            <td colspan="1"><b>Total Costs</b></td>
-            <td></td>
-            <td></td>
-            <td><b>{{ number_format($bcp->operationcosts->sum('pivot.total')) }}</b></td>
-        </tr>
-    </table>
-    <p>I. <b>Revenue Projections:</b></p>
+    <h5>6. COVID-19 Emergency Response Plan for Vulnerable Customers</h5>
+    <p>{{$bcp->emergency_response_plan}}</p>
+
+    <h5>7. Staff Health Protection </h5>
+    <p>{{$bcp->staff_health_protection}}</p>
+
+    <h5>8. Supply Chains for Essential Products and Services</h5>
+    <h5>9.	Communication Plan</h5>
+    <p>{{$bcp->communication_plan}}</p>
+
+    <h5>10.	Annexes </h5>
+    <h6>Revenue Projections:</h6>
     <table class="table table-bordered">
         <thead>
         <tr>

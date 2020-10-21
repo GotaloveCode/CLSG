@@ -17,6 +17,8 @@ const ReviewForm = () => import('./components/CommentForm' /* webpackChunkName: 
 const BcpForm = () => import('./components/bcp/BcpForm' /* webpackChunkName: "js/components/bcp/bcp-form" */);
 // const BcpList = () => import('./components/bcp/BcpList' /* webpackChunkName: "js/components/bcp/bcp-list" */);
 const ErpForm = () => import('./components/erp/ErpForm.vue' /* webpackChunkName: "js/components/erp/erp-form" */);
+const StaffForm = () => import('./components/staff/Create.vue' /* webpackChunkName: "js/components/staff/create" */);
+const ManageStaff= () => import('./components/staff/ManageStaff' /* webpackChunkName: "js/components/staff/manage-staff" */);
 
 
 const app = new Vue({
@@ -29,9 +31,9 @@ const app = new Vue({
         Modal,
         ManageReview,
         ReviewForm,
-        // EoiList,
         BcpForm,
-        // BcpList,
-        ErpForm
+        ErpForm,
+        StaffForm,
+        ManageStaff
     },
 });

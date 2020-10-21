@@ -22,13 +22,27 @@ class StaffFactory extends Factory
     public function definition()
     {
         return [
-            'firstname' => $this->faker->word(),
-            'lastname' => $this->faker->word(),
-            'position' => $this->faker->word(),
+            'firstname' => $this->faker->firstName(),
+            'lastname' => $this->faker->lastName,
+            'position' => $this->faker->jobTitle,
             'skills' => $this->faker->realText(),
             'qualifications' => $this->faker->realText(),
             'wsp_id' => random_int(1, 10)
         ];
+    }
+
+    public function essential()
+    {
+        return $this->state([
+            'type' => 'Essential',
+        ]);
+    }
+
+    public function backup()
+    {
+        return $this->state([
+            'type' => 'Backup',
+        ]);
     }
 }
 

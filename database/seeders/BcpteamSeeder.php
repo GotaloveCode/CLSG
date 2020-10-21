@@ -1,7 +1,6 @@
 <?php
 namespace Database\Seeders;
 
-use App\Models\Objective;
 use Illuminate\Database\Seeder;
 
 class BcpteamSeeder extends Seeder

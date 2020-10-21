@@ -17,8 +17,8 @@ class Bcp extends Model
      * @var array
      */
     protected $fillable = [
-        'executive_summary', 'rationale', 'environment_analysis', 'company_overview', 'financing', 'strategic_direction',
-        'strategic_plans','wsp_id'
+        'executive_summary', 'introduction', 'planning_assumptions', 'training', 'staff_health_protection', 'supply_chain',
+        'emergency_response_plan','communication_plan','wsp_id'
     ];
 
     /**
@@ -33,23 +33,32 @@ class Bcp extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    /**
-     * Get the Objectives for the Bcp.
-     */
-    public function objectives()
-    {
-        return $this->hasMany(Objective::class);
-    }
+//    /**
+//     * Get the Objectives for the Bcp.
+//     */
+//    public function objectives()
+//    {
+//        return $this->hasMany(Objective::class);
+//    }
+
+//    /**
+//     * Get the Operationcosts for the Eoi.
+//     */
+//    public function operationcosts()
+//    {
+//        return $this->belongsToMany(Operationcost::class)
+//            ->withPivot('quantity', 'unit_rate', 'total')
+//            ->withTimestamps();
+//    }
 
     /**
-     * Get the Operationcosts for the Eoi.
+     * Get the Bcpteams for the Bcp.
      */
-    public function operationcosts()
+    public function bcpteams()
     {
-        return $this->belongsToMany(Operationcost::class)
-            ->withPivot('quantity', 'unit_rate', 'total')
-            ->withTimestamps();
+        return $this->hasMany(Bcpteam::class);
     }
+
     /**
      * Get the attachments for the Bcp.
      */
@@ -58,8 +67,8 @@ class Bcp extends Model
         return $this->morphMany(Attachment::class, 'attachable');
     }
     /**
-     * Get the Revenue Projections for the Bcp.
-     */
+//     * Get the Revenue Projections for the Bcp.
+//     */
     public function revenue_projections()
     {
         return $this->hasMany(RevenueProjection::class);
