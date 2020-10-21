@@ -21,7 +21,8 @@ class CreateEoiEstimatedcostTable extends Migration
             $table->foreign('eoi_id')->references('id')->on('eois');
             $table->unsignedInteger('estimatedcost_id');
             $table->foreign('estimatedcost_id')->references('id')->on('estimatedcosts');
-            $table->timestamps()->nullable();
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 
