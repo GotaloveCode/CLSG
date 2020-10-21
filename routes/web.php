@@ -23,14 +23,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::group(['prefix' => 'eois'],function (){
+    Route::group(['prefix' => 'eois'], function () {
         Route::get('export', 'WspController@import_view')->name('wsps.export');
         Route::post('import', 'WspController@import')->name('wsps.import');
     });
 
     Route::resource('eois', 'EoiController')->except('edit', 'destroy');
 
-    Route::group(['prefix' => 'eois'],function (){
+    Route::group(['prefix' => 'eois'], function () {
         Route::get('attachments/{filename}', 'EoiAttachmentController@show')->name('eois.attachments.show');
         Route::delete('attachments/{attachment}', 'EoiAttachmentController@destroy')->name('eois.attachments.destroy');
         Route::get('{eoi}/attachments', 'EoiAttachmentController@index')->name('eois.attachments');
@@ -42,19 +42,21 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::resource('users', 'UserController')->only('index');
-    Route::resource('bcps', 'BcpController')->only('index', 'create', 'store','show');
+    Route::resource('bcps', 'BcpController')->only('index', 'create', 'store', 'show');
 
-    Route::group(['prefix' => 'bcps'],function (){
-        Route::post('{bcp}/review','BcpController@review')->name('bcps.review');
+    Route::group(['prefix' => 'bcps'], function () {
+        Route::post('{bcp}/review', 'BcpController@review')->name('bcps.review');
         Route::post('{bcp}/comment', 'BcpController@comment')->name('bcps.comment');
     });
 
-    Route::resource('erps', 'ErpController')->only('index', 'create', 'store','show');
+    Route::resource('erps', 'ErpController')->only('index', 'create', 'store', 'show');
 
-    Route::group(['prefix' => 'erps'],function (){
-        Route::post('{erp}/review','ErpController@review')->name('erps.review');
+    Route::group(['prefix' => 'erps'], function () {
+        Route::post('{erp}/review', 'ErpController@review')->name('erps.review');
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
     });
+
+    Route::resource('staff', 'StaffController');
 });
 
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);

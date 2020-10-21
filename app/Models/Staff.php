@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +16,7 @@ class Staff extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'firstname', 'lastname', 'position', 'skills', 'qualifications', 'wsp_id'
+        'id', 'firstname', 'lastname', 'position', 'skills', 'qualifications', 'type', 'wsp_id'
     ];
 
     /**
@@ -25,30 +26,17 @@ class Staff extends Model
      */
     protected $dates = ['created_at', 'updated_at'];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        //
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        //
-    ];
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 
     /**
      * Get the Wsp for the Staff.
      */
     public function wsp()
     {
-        return $this->belongsTo(\App\Wsp::class);
+        return $this->belongsTo(Wsp::class);
     }
 
 }

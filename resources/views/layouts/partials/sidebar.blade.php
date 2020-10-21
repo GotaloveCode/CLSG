@@ -40,6 +40,16 @@
                     </li>
                 </ul>
             </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-users"></i><span class="menu-title">Staff</span></a>
+                <ul class="menu-content">
+                    @can('create-staff')
+                        <li><a class="menu-item" href="{{ route('staff.create') }}">Create Staff</a>
+                        </li>
+                    @endcan
+                    <li><a class="menu-item" href="{{ route('staff.index') }}">Staff List</a>
+                    </li>
+                </ul>
+            </li>
             <li class=" nav-item"><a href="#"><i class="feather icon-user"></i><span class="menu-title">Users</span></a>
                 <ul class="menu-content">
                     <li><a class="menu-item" href="{{ route('users.index') }}">Users List</a>

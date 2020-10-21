@@ -20,6 +20,7 @@ class CreateStaffTable extends Migration
             $table->string('position');
             $table->text('skills');
             $table->text('qualifications');
+            $table->string('type')->default('Essential');
             $table->unsignedInteger('wsp_id')->nullable();
             $table->foreign('wsp_id')->references('id')->on('wsps');
             $table->timestamp('created_at')->nullable();
