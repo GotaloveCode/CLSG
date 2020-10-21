@@ -24,8 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(EstimatedcostSeeder::class);
         $this->call(ConnectionSeeder::class);
         $this->call(ServiceSeeder::class);
-        $this->call(EssentialsupplySeeder::class);
-        $this->call(ContractorSeeder::class);
         $this->call(RevenueSeeder::class);
         $this->call(EssentialOperationSeeder::class);
         $this->call(BcpteamSeeder::class);

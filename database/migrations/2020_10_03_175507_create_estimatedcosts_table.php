@@ -16,6 +16,7 @@ class CreateEstimatedcostsTable extends Migration
         Schema::create('estimatedcosts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->timestamps();
         });
     }
 
