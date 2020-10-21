@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="row">
+        @if(isset($eoi))
         <a href="{{ route('eois.show',$eoi->id) }}" class="col-xl-3 col-sm-6 col-12">
             <div class="card">
                 <div class="card-content">
@@ -57,6 +58,7 @@
                 </div>
             </div>
         </a>
+        @endif
         <div class="col-xl-3 col-sm-6 col-12">
             <div class="card">
                 <div class="card-content">

@@ -80,7 +80,7 @@
                                                 </button>
                                             @endif
                                             @if($bcp->status =='WSTF Approved')
-                                                
+
                                             @endif
                                         @endif
 
