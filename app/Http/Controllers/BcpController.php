@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BcpFormRequest;
 use App\Http\Requests\CommentRequest;
+use App\Http\Resources\BcpResource;
 use App\Models\Bcp;
 use App\Models\Essentialfunction;
 use App\Models\Operationcost;
@@ -42,12 +43,16 @@ class BcpController extends Controller
         if (!isset($wsp->eoi) || $wsp->eoi->status !== "WSTF Approved") {
             return redirect(route("eois.create"))->withErrors('Expression of Interest first must be submitted to and approved by WSTF');
         }
-        $wsp_id = $wsp->id;
+
         $operation_costs = $wsp->eoi->operationcosts()->get();
-        $backup_staff = $wsp->staff()->where('type', 'Backup')->selectRaw("CONCAT(firstname,' ',lastname) as name,id")->get();
-        $primary_staff = $wsp->staff()->where('type', 'Essential')->selectRaw("CONCAT(firstname,' ',lastname) as name,id")->get();
+        $staff = $wsp->staff()->selectRaw("CONCAT(firstname,' ',lastname) as name,id,type")->get();
         $essential_functions = Essentialfunction::select('id', 'name')->get();
-        return view('bcps.create')->with(compact('primary_staff', 'operation_costs', 'backup_staff', 'essential_functions', 'wsp_id'));
+        $bcp_load = $wsp->bcp;
+
+        if ($bcp_load) $bcp_load = json_encode(new BcpResource($bcp_load));
+        else $bcp_load;
+
+        return view('bcps.create')->with(compact('staff', 'operation_costs', 'essential_functions', 'bcp_load'));
     }
 
     public function store(BcpFormRequest $request)
@@ -60,8 +65,45 @@ class BcpController extends Controller
             ], 422);
         }
 
-        $bcp = Bcp::create(Arr::except($request->validated(), ['projected_revenues', 'essential_operations']));
+        $bcp = Bcp::create($request->validated());
 
+        $this->createBcpRelations($bcp, $request);
+
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Business Continuity Plan submitted successfully']);
+        }
+        return back()->with('success', 'Business Continuity Plan submitted successfully');
+    }
+
+    public function update(BcpFormRequest $request, Bcp $bcp)
+    {
+        $bcp->update([
+            'executive_summary' => $request->input('executive_summary'),
+            'introduction' => $request->input('introduction'),
+            'planning_assumptions' => $request->input('planning_assumptions'),
+            'training' => $request->input('training'),
+            'staff_health_protection' => $request->input('staff_health_protection'),
+            'supply_chain' => $request->input('supply_chain'),
+            'emergency_response_plan' => $request->input('emergency_response_plan'),
+            'communication_plan' => $request->input('communication_plan'),
+            'government_subsidy' => $request->input('government_subsidy'),
+            'wsp_id' => $request->input('wsp_id')
+        ]);
+
+        $bcp->essentialOperations()->delete();
+        $bcp->bcpteams()->delete();
+        $bcp->revenue_projections()->delete();
+
+        $this->createBcpRelations($bcp, $request);
+
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Business Continuity Plan updated successfully']);
+        }
+        return back()->with('success', 'Business Continuity Plan updated successfully');
+    }
+
+    private function createBcpRelations(Bcp $bcp, Request $request)
+    {
         foreach ($request->input('essential_operations') as $operation) {
             $bcp->essentialOperations()->create([
                 'priority_level' => $operation['priority_level'],
@@ -86,18 +128,13 @@ class BcpController extends Controller
                 'year' => now()->year,
             ]);
         }
-
-        if ($request->ajax()) {
-            return response()->json(['message' => 'Business Continuity Plan submitted successfully']);
-        }
-        return back()->with('success', 'Business Continuity Plan submitted successfully');
     }
 
     public function show(Bcp $bcp)
     {
         $progress = $bcp->progress();
         $eoi = $bcp->wsp->first()->eoi;
-        $bcp = $bcp->load(['wsp', 'revenue_projections','essentialOperations','comments','bcpteams']);
+        $bcp = $bcp->load(['wsp', 'revenue_projections', 'essentialOperations', 'comments', 'bcpteams']);
         return view('bcps.show')->with(compact('bcp', 'progress', 'eoi'));
     }
 

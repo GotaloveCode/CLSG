@@ -1,5 +1,7 @@
 @extends('layouts.dashboard')
-
+@push('css')
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/comment.css') }}">
+@endpush
 @section('content')
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
@@ -34,6 +36,43 @@
             </div>
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
+                    <div>
+                        @can('review-erp')
+                            @if(auth()->user()->hasRole('wasreb'))
+                                @if($erp->status =='Needs Review')
+                                    <button class="btn btn-success ml-2 mb-1"
+                                            @click.prevent="review('WASREB Approved')"><i
+                                            class="feather icon-check"></i>
+                                        Approve
+                                    </button>
+                                @endif
+                                @if($erp->status =='Pending' || $erp->status =='draft')
+                                    <button class="btn btn-danger mb-1"
+                                            @click.prevent="review('Needs Review')"><i
+                                            class="fa fa-pencil"></i>
+                                        Review
+                                    </button>
+                                @endif
+                            @elseif(auth()->user()->hasRole('wstf'))
+                                @if($erp->status =='WASREB Approved')
+                                    <button class="btn btn-success ml-2 mb-1"
+                                            @click.prevent="review('WSTF Approved')"><i
+                                            class="fa fa-check"></i>
+                                        Approve
+                                    </button>
+                                    <button class="btn btn-danger mb-1"
+                                            @click.prevent="review('Needs Review')"><i
+                                            class="fa fa-pencil"></i>
+                                        Review
+                                    </button>
+                                @endif
+                                @if($erp->status =='WSTF Approved')
+
+                                @endif
+                            @endif
+
+                        @endcan
+                    </div>
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">ERP Status</h4>
@@ -49,72 +88,42 @@
                                              aria-valuenow="{{$progress}}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </div>
-                                <div>
-                                    @can('review-erp')
-                                        @if(auth()->user()->hasRole('wasreb'))
-                                            @if($erp->status =='Needs Review')
-                                                <button class="btn btn-success ml-2 mb-1"
-                                                        @click.prevent="review('WASREB Approved')"><i
-                                                        class="feather icon-check"></i>
-                                                    Approve
-                                                </button>
-                                            @endif
-                                            @if($erp->status =='Pending' || $erp->status =='draft')
-                                                <button class="btn btn-danger mb-1"
-                                                        @click.prevent="review('Needs Review')"><i
-                                                        class="fa fa-pencil"></i>
-                                                    Review
-                                                </button>
-                                            @endif
-                                        @elseif(auth()->user()->hasRole('wstf'))
-                                            @if($erp->status =='WASREB Approved')
-                                                <button class="btn btn-success ml-2 mb-1"
-                                                        @click.prevent="review('WSTF Approved')"><i
-                                                        class="fa fa-check"></i>
-                                                    Approve
-                                                </button>
-                                                <button class="btn btn-danger mb-1"
-                                                        @click.prevent="review('Needs Review')"><i
-                                                        class="fa fa-pencil"></i>
-                                                    Review
-                                                </button>
-                                            @endif
-                                            @if($erp->status =='WSTF Approved')
-
-                                            @endif
-                                        @endif
-
-                                    @endcan
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="detailBox">
-                        <div class="titleBox">
-                            <label>Comment Box</label>
-                            <button type="button" class="close" aria-hidden="true">&times;</button>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Comment Box</h4>
+                            <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                    <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="actionBox">
-                            <ul class="commentList">
-                                @foreach($erp->comments as $comment)
-                                    @php
-                                        $user_role = auth()->user()->roles()->first()->name;
-                                        $comment_role = $comment->user->roles()->first()->name
-                                    @endphp
-                                    <li>
-                                        <div
-                                            class="profileBox @if($comment_role != $user_role) text-success @else text-info @endif">{{ strtoupper($comment_role) }}</div>
-                                        <div class="commentText">
-                                            <p class="">{!! $comment->description !!}</p>
-                                            <span
-                                                class="date sub-text">{{ $comment->created_at->diffForHumans() }}</span>
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <ul class="commentList">
+                                    @foreach($erp->comments as $comment)
+                                        @php
+                                            $user_role = auth()->user()->roles()->first()->name;
+                                            $comment_role = $comment->user->roles()->first()->name
+                                        @endphp
+                                        <li>
+                                            <div
+                                                class="profileBox @if($comment_role != $user_role) text-success @else text-info @endif">{{ strtoupper($comment_role) }}</div>
+                                            <div class="commentText">
+                                                <p class="">{!! $comment->description !!}</p>
+                                                <span
+                                                    class="date sub-text">{{ $comment->created_at->diffForHumans() }}</span>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                                <comment-form submit-url="{{ route('erps.comment',$erp->id) }}"/>
+                            </div>
                         </div>
-
-                        <comment-form submit-url="{{ route('erps.comment',$erp->id) }}"/>
                     </div>
                 </div>
             </div>
@@ -122,51 +131,3 @@
     </manage-review>
 
 @endsection
-@push('css')
-    <style>
-        .detailBox {
-            border: 1px solid #bbb;
-        }
-
-        .titleBox {
-            background-color: #fdfdfd;
-            padding: 10px;
-        }
-
-        .titleBox label {
-            color: #444;
-            margin: 0;
-            display: inline-block;
-        }
-
-        .actionBox .form-group * {
-            width: 100%;
-        }
-
-        .commentList {
-            padding: 0;
-            list-style: none;
-            max-height: 600px;
-            overflow: auto;
-        }
-
-        .commentList li {
-            margin: 10px 0 0;
-            border-bottom: 1px solid #9fa2a5;
-        }
-
-        .commentText p {
-            margin: 0;
-        }
-
-        .sub-text {
-            color: #aaa;
-            font-size: 11px;
-        }
-
-        .actionBox {
-            border-top: 1px dotted #bbb;
-            padding: 10px;
-        }
-    </style>
-@endpush

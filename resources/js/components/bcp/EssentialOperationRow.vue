@@ -44,10 +44,17 @@
 export default {
     name: "EssentialOperationRow",
     props: {
-        primary_staff: {required: true, type: Array},
-        backup_staff: {required: true, type: Array},
+        staff: {required: true, type: Array},
         essential_functions: {required: true, type: Array},
         operation: {required: true, type: Object},
+    },
+    computed: {
+        primary_staff() {
+            return this.staff.filter(x => x.type === 'Essential');
+        },
+        backup_staff() {
+            return this.staff.filter(x => x.type === 'Backup');
+        },
     }
 }
 </script>

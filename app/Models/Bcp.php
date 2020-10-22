@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bcp extends Model
 {
-    use HasFactory,ProgressTrait;
+    use HasFactory, ProgressTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +18,7 @@ class Bcp extends Model
      */
     protected $fillable = [
         'executive_summary', 'introduction', 'planning_assumptions', 'training', 'staff_health_protection', 'supply_chain',
-        'emergency_response_plan','communication_plan','wsp_id'
+        'emergency_response_plan', 'government_subsidy', 'communication_plan', 'wsp_id'
     ];
 
     /**
@@ -32,24 +32,6 @@ class Bcp extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
-
-//    /**
-//     * Get the Objectives for the Bcp.
-//     */
-//    public function objectives()
-//    {
-//        return $this->hasMany(Objective::class);
-//    }
-
-//    /**
-//     * Get the Operationcosts for the Eoi.
-//     */
-//    public function operationcosts()
-//    {
-//        return $this->belongsToMany(Operationcost::class)
-//            ->withPivot('quantity', 'unit_rate', 'total')
-//            ->withTimestamps();
-//    }
 
     /**
      * Get the Bcpteams for the Bcp.
@@ -66,9 +48,10 @@ class Bcp extends Model
     {
         return $this->morphMany(Attachment::class, 'attachable');
     }
+
     /**
-//     * Get the Revenue Projections for the Bcp.
-//     */
+     * //     * Get the Revenue Projections for the Bcp.
+     * //     */
     public function revenue_projections()
     {
         return $this->hasMany(RevenueProjection::class);

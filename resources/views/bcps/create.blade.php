@@ -22,12 +22,20 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-body">
-                            <bcp-form
-                                      :primary_staff="{{ $primary_staff }}"
-                                      :backup_staff="{{ $backup_staff }}"
-                                       wsp_id="{{$wsp_id}}"
-                                      :essential_functions="{{ $essential_functions }}"
-                                      submit-url="{{ route('bcps.store') }}"></bcp-form>
+                            @isset($bcp)
+                                <bcp-form
+                                    :staff="{{ $staff }}"
+                                    wsp_id="{{$wsp->id}}"
+                                    :existing-bcp="{{ $bcp_load }}"
+                                    :essential_functions="{{ $essential_functions }}"
+                                    submit-url="{{ route('bcps.update',$bcp->id) }}"></bcp-form>
+                            @else
+                                <bcp-form
+                                    :staff="{{ $staff }}"
+                                    wsp_id="{{$wsp_id}}"
+                                    :essential_functions="{{ $essential_functions }}"
+                                    submit-url="{{ route('bcps.store') }}"></bcp-form>
+                            @endisset
                         </div>
                     </div>
                 </div>

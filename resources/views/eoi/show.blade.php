@@ -1,5 +1,7 @@
 @extends('layouts.dashboard')
-
+@push('css')
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/comment.css') }}">
+@endpush
 @section('content')
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
@@ -208,27 +210,4 @@
     </manage-review>
 
 @endsection
-@push('css')
-    <style>
-        .commentList {
-            padding: 0;
-            list-style: none;
-            max-height: 600px;
-            overflow: auto;
-        }
 
-        .commentList li {
-            margin: 10px 0 0;
-            border-bottom: 1px solid #9fa2a5;
-        }
-
-        .commentText p {
-            margin: 0;
-        }
-
-        .sub-text {
-            color: #aaa;
-            font-size: 11px;
-        }
-    </style>
-@endpush

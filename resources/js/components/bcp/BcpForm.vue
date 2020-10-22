@@ -95,6 +95,7 @@
                             v-for="(d, index) in bcp.bcp_teams"
                             @add="addMember"
                             @remove="removeMember(index)"
+                            :staff="staff"
                             :team="d"
                             v-bind:key="index"
                             :index="index"/>
@@ -116,8 +117,7 @@
                             @add="addEssential"
                             @remove="removeEssential(index)"
                             :essential_functions="essential_functions"
-                            :primary_staff="primary_staff"
-                            :backup_staff="backup_staff"
+                            :staff="staff"
                             :operation="d"
                             v-bind:key="index"
                             :index="index"/>
@@ -165,10 +165,10 @@ export default {
     },
     props: {
         submitUrl: {required: true, type: String},
-        primary_staff: {required: true, type: Array},
-        backup_staff: {required: true, type: Array},
+        staff: {required: true, type: Array},
         essential_functions: {required: true, type: Array},
         wsp_id: {type: String},
+        existingBcp: {required: true, type: Object}
     },
     data: () => ({
         error: '',
@@ -199,15 +199,56 @@ export default {
     }),
     mounted() {
         this.setWspId();
+        if (this.existingBcp) {
+            this.initBcp();
+        }
     },
     methods: {
         setWspId() {
             this.bcp.wsp_id = this.wsp_id;
         },
+        initBcp() {
+            this.bcp.government_subsidy = this.existingBcp.government_subsidy;
+            this.bcp.executive_summary = this.existingBcp.executive_summary;
+            this.bcp.introduction = this.existingBcp.introduction;
+            this.bcp.planning_assumptions = this.existingBcp.planning_assumptions;
+            this.bcp.training = this.existingBcp.training;
+            this.bcp.staff_health_protection = this.existingBcp.staff_health_protection;
+            this.bcp.emergency_response_plan = this.existingBcp.emergency_response_plan;
+            this.bcp.communication_plan = this.existingBcp.communication_plan;
+            this.bcp.supply_chain = this.existingBcp.supply_chain;
+            this.bcp.bcp_teams = [];
+            this.existingBcp.bcp_teams.forEach(s => {
+                this.bcp.bcp_teams.push({name: s.name, role: s.role, unit: s.unit});
+            });
+            this.bcp.essential_operations = [];
+            this.existingBcp.essential_operations.forEach(s => {
+                this.bcp.essential_operations.push({
+                    priority_level: s.priority_level,
+                    essentialfunction_id: s.essentialfunction_id,
+                    primary_staff: s.primary_staff,
+                    backup_staff: s.backup_staff
+                });
+            });
+            this.bcp.projected_revenues = [];
+            this.existingBcp.projected_revenues.forEach(s => {
+                this.bcp.projected_revenues.push({month: s.month, year: s.year, amount: s.amount});
+            });
+        },
         onSubmit() {
             this.error = '';
+            this.existingBcp ? this.updateData() : this.postData();
+        },
+        postData() {
             axios.post(this.submitUrl, this.bcp).then(response => {
                 this.$toastr.s(response.data.message);
+            }).catch(error => {
+                this.error = error.response;
+            });
+        },
+        updateData(){
+            axios.put(this.submitUrl, this.bcp).then(() => {
+                this.$toastr.s("BCP updated successfully!");
             }).catch(error => {
                 this.error = error.response;
             });

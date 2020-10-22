@@ -16,15 +16,20 @@ class BcpResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'excecutive_summary' => $this->excecutive_summary,
+            'executive_summary' => $this->executive_summary,
             'introduction' => $this->introduction,
             'planning_assumptions' => $this->planning_assumptions,
-            'wsp_id' => $this->wsp_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'objectives' => new ObjectiveCollection($this->whenLoaded('objectives')),
-            'essential_operations' => new EssentialOperationCollection($this->whenLoaded('essential_operations')),
-            'wsp' => new WspResource($this->whenLoaded('wsp'))
+            'training' => $this->training,
+            'staff_health_protection' => $this->staff_health_protection,
+            'supply_chain' => $this->supply_chain,
+            'emergency_response_plan' => $this->emergency_response_plan,
+            'communication_plan' => $this->communication_plan,
+            'government_subsidy' => $this->government_subsidy,
+            'projected_revenues' => $this->revenue_projections,
+            'bcp_teams'=> $this->bcpteams,
+            'essential_operations' => $this->essentialOperations,
+            'wsp_id' => $this->wsp_id
         ];
+
     }
 }

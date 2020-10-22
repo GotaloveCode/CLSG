@@ -19,10 +19,11 @@ class CreateBcpsTable extends Migration
             $table->text('introduction');
             $table->text('planning_assumptions');
             $table->text('training');
+            $table->text('emergency_response_plan');
             $table->text('staff_health_protection');
             $table->text('supply_chain');
             $table->text('communication_plan');
-            $table->string('government_subsidy');
+            $table->string('government_subsidy')->nullable();
             $table->unsignedInteger('wsp_id');
             $table->foreign('wsp_id')->references('id')->on('wsps');
             $table->string('status')->default('Pending');

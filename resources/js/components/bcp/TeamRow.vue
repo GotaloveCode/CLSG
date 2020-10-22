@@ -2,9 +2,14 @@
     <tr>
         <ValidationProvider tag="td" name="Name[]" rules="required"
                             v-slot="{ errors }">
-            <input type="text" placeholder="full name" v-model="team.name" class="form-control">
+            <v-select label="name" placeholder="full name" v-model="team.name"
+                      data-toggle="tooltip" :reduce="c =>c.name"
+                      title="Add primary staff first for them to appear here"
+                      :options="staff"></v-select>
+            <span class="text-danger">{{ errors[0] }}</span>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
+
         <ValidationProvider tag="td" name="Role[]" rules="required"
                             v-slot="{ errors }">
             <input type="text" placeholder="eg. designated BCP coordinator" v-model="team.role" class="form-control">
@@ -32,6 +37,7 @@ export default {
     name: "TeamRow",
     props: {
         team: {required: true, type: Object},
+        staff: {required: true, type: Array},
     }
 }
 </script>
