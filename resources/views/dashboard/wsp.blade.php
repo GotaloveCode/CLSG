@@ -154,13 +154,12 @@
                                             </li>
                                         @endif
                                         @if($bcp)
-                                            <li><a href="#0" data-date="{{ $bcp->updated_at->format('d/m/Y') }}">Create ERP</a></li>
+                                            <li><a href="#0" data-date="{{ $bcp->updated_at->format('d/m/Y') }}">{{ $bcp->updated_at->format('d M') }}</a></li>
                                         @endif
                                         {{--                                        <li><a href="#0" data-date="20/12/2012">Create BCP</a></li>--}}
                                         {{--                                        <li><a href="#0" data-date="20/03/2013">Sign of CLSGA</a></li>--}}
                                         {{--                                        <li><a href="#0" data-date="20/06/2013">Submit Monthly Reports</a></li>--}}
                                         {{--                                        <li><a href="#0" data-date="20/09/2013">Funds Disbursed</a></li>--}}
-                                        {{--                                        <li><a href="#0" data-date="20/01/2014">Funds Disbursed</a></li>--}}
                                     </ol>
 
                                     <span class="filling-line" aria-hidden="true"></span>
