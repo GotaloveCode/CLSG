@@ -39,8 +39,8 @@ class BcpController extends Controller
     public function create()
     {
         $wsp = auth()->user()->wsps()->first();
-        if (!isset($wsp->eoi)) {
-            return redirect(route("eois.create"));
+        if (!isset($wsp->eoi) || $wsp->eoi->status !== "WSTF Approved") {
+            return redirect(route("eois.create"))->withErrors('Expression of Interest first must be submitted to and approved by WSTF');
         }
         $wsp_id = $wsp->id;
         $operation_costs = $wsp->eoi->operationcosts()->get();

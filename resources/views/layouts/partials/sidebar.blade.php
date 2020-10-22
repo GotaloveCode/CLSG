@@ -15,10 +15,11 @@
             <li class="nav-item"><a href="#"><i class="feather icon-edit"></i><span class="menu-title">EOIs</span></a>
                 <ul class="menu-content">
                     @can('create-eoi')
-                        <li><a class="menu-item" href="{{ route('eois.create') }}">Create EOI</a>
-                        </li>
-                        @if(!empty($eoi))
+                        @if($eoi)
                             <li><a class="menu-item" href="{{ route('eois.show',$eoi->id) }}">View EOI</a>
+                            </li>
+                        @else
+                            <li><a class="menu-item" href="{{ route('eois.create') }}">Create EOI</a>
                             </li>
                         @endif
                     @endcan
@@ -31,10 +32,11 @@
             <li class="nav-item"><a href="#"><i class="feather icon-briefcase"></i><span class="menu-title">BCPs</span></a>
                 <ul class="menu-content">
                     @can('create-bcp')
-                        <li><a class="menu-item" href="{{ route('bcps.create') }}">Create BCP</a>
-                        </li>
                         @if($bcp)
                             <li><a class="menu-item" href="{{ route('bcps.show',$bcp->id) }}">View BCP</a>
+                            </li>
+                        @else
+                            <li><a class="menu-item" href="{{ route('bcps.create') }}">Create BCP</a>
                             </li>
                         @endif
                     @endcan
@@ -47,10 +49,11 @@
             <li class="nav-item"><a href="#"><i class="feather icon-life-buoy"></i><span class="menu-title">ERPs</span></a>
                 <ul class="menu-content">
                     @can('create-erp')
-                        <li><a class="menu-item" href="{{ route('erps.create') }}">Create ERP</a>
-                        </li>
                         @if($erp)
                             <li><a class="menu-item" href="{{ route('erps.show',$erp->id) }}">View ERP</a>
+                            </li>
+                        @else
+                            <li><a class="menu-item" href="{{ route('erps.create') }}">Create ERP</a>
                             </li>
                         @endif
                     @endcan

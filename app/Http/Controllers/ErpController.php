@@ -34,8 +34,8 @@ class ErpController extends Controller
     public function create()
     {
         $wsp = auth()->user()->wsps()->first();
-        if (!$wsp->eoi) {
-            abort('403', 'Create Expression of Interest first');
+        if (!isset($wsp->eoi) || $wsp->eoi->status !== "WSTF Approved") {
+            return redirect(route("eois.create"))->withErrors('Expression of Interest first must be submitted to and approved by WSTF');
         }
         $interventions = $wsp->eoi->estimatedcosts;
         $wsp_id = $wsp->id;
