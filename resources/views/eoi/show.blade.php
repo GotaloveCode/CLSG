@@ -82,10 +82,66 @@
             </div>
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
-                    <div class="mb-2">
-                        <a class="btn btn-info" href="{{ route('eois.create') }}"><i class="feather icon-edit"></i> Edit</a>
-                        <a class="btn btn-primary" href="{{ route('eois.attachments' ,$eoi->id) }}"><i
-                                class="feather icon-file"></i> Edit Attachments</a>
+                    @can('create-eoi')
+                        @if($eoi->status=='Pending' || $eoi->status =='Needs Review')
+                            <div class="mb-2">
+                                <a class="btn btn-info" href="{{ route('eois.create') }}"><i
+                                        class="feather icon-edit"></i>
+                                    Edit</a>
+                                <a class="btn btn-primary" href="{{ route('eois.attachments' ,$eoi->id) }}"><i
+                                        class="feather icon-file"></i> Edit Attachments</a>
+                            </div>
+                        @endif
+                        @if($eoi->status =='WSTF Approved')
+                            <div class="mb-2">
+                                <a class="btn btn-info mt-2"
+                                   href="{{ route('eois.commitment_letter',$eoi->id) }}"><i
+                                        class="feather icon-eye"></i>
+                                    View Commitment Letter
+                                </a>
+                            </div>
+                        @endif
+                    @endcan
+                    <div>
+                        @can('review-eoi')
+                            @if(auth()->user()->hasRole('wasreb'))
+                                @if($eoi->status=='Pending' || $eoi->status =='Needs Review')
+                                    <button class="btn btn-success ml-2 mb-1"
+                                            @click.prevent="review('WASREB Approved')"><i
+                                            class="feather icon-check"></i>
+                                        Approve
+                                    </button>
+                                @endif
+                                @if($eoi->status =='Pending' || $eoi->status =='draft')
+                                    <button class="btn btn-danger mb-1"
+                                            @click.prevent="review('Needs Review')"><i
+                                            class="fa fa-pencil"></i>
+                                        Review
+                                    </button>
+                                @endif
+                            @elseif(auth()->user()->hasRole('wstf'))
+                                @if($eoi->status =='WASREB Approved')
+                                    <button class="btn btn-success ml-2 mb-1"
+                                            @click.prevent="review('WSTF Approved')"><i
+                                            class="fa fa-check"></i>
+                                        Approve
+                                    </button>
+                                    <button class="btn btn-danger mb-1"
+                                            @click.prevent="review('Needs Review')"><i
+                                            class="fa fa-pencil"></i>
+                                        Review
+                                    </button>
+                                @endif
+                                @if($eoi->status =='WSTF Approved')
+                                    <a class="btn btn-info mt-2"
+                                       href="{{ route('eois.commitment_letter',$eoi->id) }}"><i
+                                            class="feather icon-eye"></i>
+                                        View Commitment Letter
+                                    </a>
+                                @endif
+                            @endif
+
+                        @endcan
                     </div>
                     <div class="card">
                         <div class="card-header">
@@ -108,47 +164,6 @@
                                              style="width: {{$progress}}%"
                                              aria-valuenow="{{$progress}}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                </div>
-                                <div>
-                                    @can('review-eoi')
-                                        @if(auth()->user()->hasRole('wasreb'))
-                                            @if($eoi->status=='Pending' || $eoi->status =='Needs Review')
-                                                <button class="btn btn-success ml-2 mb-1"
-                                                        @click.prevent="review('WASREB Approved')"><i
-                                                        class="feather icon-check"></i>
-                                                    Approve
-                                                </button>
-                                            @endif
-                                            @if($eoi->status =='Pending' || $eoi->status =='draft')
-                                                <button class="btn btn-danger mb-1"
-                                                        @click.prevent="review('Needs Review')"><i
-                                                        class="fa fa-pencil"></i>
-                                                    Review
-                                                </button>
-                                            @endif
-                                        @elseif(auth()->user()->hasRole('wstf'))
-                                            @if($eoi->status =='WASREB Approved')
-                                                <button class="btn btn-success ml-2 mb-1"
-                                                        @click.prevent="review('WSTF Approved')"><i
-                                                        class="fa fa-check"></i>
-                                                    Approve
-                                                </button>
-                                                <button class="btn btn-danger mb-1"
-                                                        @click.prevent="review('Needs Review')"><i
-                                                        class="fa fa-pencil"></i>
-                                                    Review
-                                                </button>
-                                            @endif
-                                            @if($eoi->status =='WSTF Approved')
-                                                <a class="btn btn-info mt-2"
-                                                   href="{{ route('eois.commitment_letter',$eoi->id) }}"><i
-                                                        class="feather icon-eye"></i>
-                                                    View Commitment Letter
-                                                </a>
-                                            @endif
-                                        @endif
-
-                                    @endcan
                                 </div>
                             </div>
                         </div>

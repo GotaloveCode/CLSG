@@ -23,7 +23,7 @@ class ReviewMailable extends Mailable
      * @param $subject
      * @param $route
      */
-    public function __construct($status, $subject, $route)
+    public function __construct($status, $route, $subject)
     {
         $this->status = $status;
         $this->route = $route;

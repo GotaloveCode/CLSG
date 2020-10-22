@@ -49,9 +49,8 @@ class EoiController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('create-eoi')) {
-            abort('403', "You don't have permissions to create EOI");
-        }
+        $wsp = auth()->user()->wsps()->first();
+
         $services = Cache::rememberForever('services', function () {
             return Service::select('id', 'name')->get();
         });
@@ -65,7 +64,12 @@ class EoiController extends Controller
             return Operationcost::select('id', 'name')->get();
         });
 
-        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts'));
+        $eoi_load = $wsp->eoi;
+
+        if ($eoi_load) $eoi_load = json_encode(new EoiCustomResource($eoi_load));
+        else $eoi_load;
+
+        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts','eoi_load'));
     }
 
     public function store(EoiRequest $request)
@@ -191,7 +195,7 @@ class EoiController extends Controller
         $eoi->status = $request->status;
         $eoi->save();
 
-        $route = route('eoi.show', $eoi->id);
+        $route = route('eois.show', $eoi->id);
         SendMailNotification::postReview($request->status, $eoi->wsp_id, $route, $eoi->wsp->name . ' Eoi Review');
 
         if ($request->status == 'WSTF Approved') {
@@ -213,7 +217,7 @@ class EoiController extends Controller
             'user_id' => auth()->id()
         ]);
 
-        $route = route('bcps.show', $eoi->id);
+        $route = route('eois.show', $eoi->id);
 
         SendMailNotification::postComment($request->description, $eoi->status, $eoi->wsp_id, $route, $eoi->wsp->name . 'Eoi Comment');
 
