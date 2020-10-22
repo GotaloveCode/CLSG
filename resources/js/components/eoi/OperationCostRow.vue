@@ -7,11 +7,6 @@
             </v-select>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
-        <ValidationProvider tag="td" name="Quantity[]" rules="numeric"
-                            v-slot="{ errors }">
-            <input type="text" v-model="operation.quantity" class="form-control">
-            <span class="text-danger">{{ errors[0] }}</span>
-        </ValidationProvider>
 
         <ValidationProvider tag="td" name="Unit Rate[]" rules="required|numeric"
                             v-slot="{ errors }">

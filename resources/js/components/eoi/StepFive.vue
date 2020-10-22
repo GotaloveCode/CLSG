@@ -5,7 +5,6 @@
             <thead>
             <tr>
                 <th>Type of Service/item</th>
-                <th>Qty</th>
                 <th>Unit Cost (KES)</th>
                 <th>Total Cost (KES)</th>
                 <th></th>
@@ -22,15 +21,14 @@
             <tr>
                 <th>Total costs</th>
                 <td></td>
-                <td></td>
                 <ValidationProvider tag="th" name="Total" :rules="'required|numeric|max_value:'+eoi.operation_costs_total"
                                     v-slot="{ errors }">
-                    <vue-numeric separator="," v-model="total" readonly="true" class="form-control"></vue-numeric>
+                    <vue-numeric separator="," v-model="total" disabled="true" class="form-control"></vue-numeric>
                     <span class="text-danger">{{ errors[0] }}</span>
                 </ValidationProvider>
             </tr>
             <tr v-if="total>eoi.operation_costs_total">
-                <td class="text-danger" colspan="5">The total Operation Cost should not exceed Operation & Maintenance Costs total
+                <td class="text-danger" colspan="4">The total Operation Cost should not exceed Operation & Maintenance Costs total
                 </td>
             </tr>
         </table>

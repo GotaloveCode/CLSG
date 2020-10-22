@@ -13,9 +13,15 @@
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
 
+        <ValidationProvider tag="td" name="Quantity[]" rules="required|numeric"
+                            v-slot="{ errors }">
+            <vue-numeric separator="," :precision="2" v-model="cost.quantity" class="form-control"></vue-numeric>
+            <span class="text-danger">{{ errors[0] }}</span>
+        </ValidationProvider>
+
         <ValidationProvider tag="td" name="Total[]" rules="required|numeric"
                             v-slot="{ errors }">
-            <vue-numeric separator="," v-model="cost.total" class="form-control"></vue-numeric>
+            <vue-numeric separator="," v-model="total" class="form-control"></vue-numeric>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
         <td>
@@ -35,6 +41,17 @@ export default {
     props: {
         costs: {required: true, type: Array},
         cost: {required: true, type: Object},
+    },
+    computed: {
+        total: {
+            get: function () {
+                this.cost.total = this.cost.quantity * this.cost.unit;
+                return this.cost.total;
+            },
+            set: function (n) {
+                return n;
+            }
+        }
     }
 }
 </script>

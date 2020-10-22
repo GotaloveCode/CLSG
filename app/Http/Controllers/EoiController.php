@@ -49,9 +49,8 @@ class EoiController extends Controller
 
     public function create()
     {
-        $wsp = auth()->user()->wsps()->first();
-        if (!isset($wsp->id)) {
-            return false;
+        if (!auth()->user()->can('create-eoi')) {
+            abort('403', "You don't have permissions to create EOI");
         }
         $services = Cache::rememberForever('services', function () {
             return Service::select('id', 'name')->get();
@@ -66,13 +65,7 @@ class EoiController extends Controller
             return Operationcost::select('id', 'name')->get();
         });
 
-        $eoi = Eoi::where('wsp_id', $wsp->id)->first();
-
-        if ($eoi) $eoi = json_encode(new EoiCustomResource($eoi));
-        else $eoi = json_encode([]);
-        $wsp_id = $wsp->id;
-
-        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts', 'eoi', 'wsp_id'));
+        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts'));
     }
 
     public function store(EoiRequest $request)
@@ -88,7 +81,8 @@ class EoiController extends Controller
             'proportion_served' => $request->input('proportion_served'),
             'date' => now(),
             'months' => 3,
-            'wsp_id' => $request->input('wsp')
+            'wsp_id' => $request->input('wsp'),
+            'status' => 'Pending'
         ]);
 
         foreach ($request->input('services') as $service) {

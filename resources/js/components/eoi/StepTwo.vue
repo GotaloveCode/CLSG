@@ -5,7 +5,7 @@
             <thead>
             <tr>
                 <th>Type of service / items</th>
-                <th>Name of Low income area and number of facilities required</th>
+                <th>Name of Low income area</th>
                 <th>Total No. required</th>
             </tr>
             </thead>

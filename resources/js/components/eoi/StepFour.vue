@@ -6,6 +6,7 @@
             <tr>
                 <th>Estimated costs</th>
                 <th>Unit Cost (KES)</th>
+                <th>Quantity</th>
                 <th>Total cost (KES)</th>
             </tr>
             </thead>
@@ -18,12 +19,11 @@
                 v-bind:key="index"
                 :index="index"></tr>
             <tr>
-                <th>Total costs</th>
-                <td></td>
+                <th colspan="3">Total costs</th>
                 <ValidationProvider tag="td" name="Total"
                                     :rules="'required|numeric|max_value:'+eoi.emergency_intervention_total"
                                     v-slot="{ errors }">
-                    <vue-numeric separator="," v-model="total" readonly class="form-control"></vue-numeric>
+                    <vue-numeric separator="," v-model="total" disabled="true" class="form-control"></vue-numeric>
                     <span class="text-danger">{{ errors[0] }}</span>
                 </ValidationProvider>
             </tr>

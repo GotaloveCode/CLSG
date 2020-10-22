@@ -21,14 +21,28 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-content">
+{{--                        @php--}}
+{{--                            dump("hapa");--}}
+{{--                                dd($eoi);--}}
+{{--                        @endphp--}}
+                        @isset($eoi)
                         <eoi-form
                                   :services="{{ $services }}"
                                   :connections="{{ $connections }}"
                                   :estimated-costs="{{ $estimatedCosts }}"
                                   :existing-eoi="{{ $eoi }}"
                                   :operation-costs="{{ $operationCosts }}"
-                                  :wsp="{{ $wsp_id }}"
+                                  :wsp="{{ $wsp->id }}"
                         ></eoi-form>
+                            @else
+                            <eoi-form
+                                :services="{{ $services }}"
+                                :connections="{{ $connections }}"
+                                :estimated-costs="{{ $estimatedCosts }}"
+                                :operation-costs="{{ $operationCosts }}"
+                                :wsp="{{ $wsp->id }}"
+                            ></eoi-form>
+                        @endisset
 
                     </div>
                 </div>

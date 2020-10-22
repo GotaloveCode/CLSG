@@ -32,8 +32,8 @@
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
-@stack('css')
-<!-- END: Custom CSS-->
+    @stack('css')
+    <!-- END: Custom CSS-->
     <script>
     window.url ="{{url('/')}}";
     </script>

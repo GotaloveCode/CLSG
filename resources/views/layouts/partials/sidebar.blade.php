@@ -17,9 +17,15 @@
                     @can('create-eoi')
                         <li><a class="menu-item" href="{{ route('eois.create') }}">Create EOI</a>
                         </li>
+                        @if(!empty($eoi))
+                            <li><a class="menu-item" href="{{ route('eois.show',$eoi->id) }}">View EOI</a>
+                            </li>
+                        @endif
                     @endcan
-                    <li><a class="menu-item" href="{{ route('eois.index') }}">EOI List</a>
-                    </li>
+                    @can('list-eoi')
+                        <li><a class="menu-item" href="{{ route('eois.index') }}">EOI List</a>
+                        </li>
+                    @endcan
                 </ul>
             </li>
             <li class="nav-item"><a href="#"><i class="feather icon-briefcase"></i><span class="menu-title">BCPs</span></a>
@@ -27,9 +33,15 @@
                     @can('create-bcp')
                         <li><a class="menu-item" href="{{ route('bcps.create') }}">Create BCP</a>
                         </li>
+                        @if($bcp)
+                            <li><a class="menu-item" href="{{ route('bcps.show',$bcp->id) }}">View BCP</a>
+                            </li>
+                        @endif
                     @endcan
-                    <li><a class="menu-item" href="{{ route('bcps.index') }}">BCP List</a>
-                    </li>
+                    @can('list-bcp')
+                        <li><a class="menu-item" href="{{ route('bcps.index') }}">BCP List</a>
+                        </li>
+                    @endcan
                 </ul>
             </li>
             <li class="nav-item"><a href="#"><i class="feather icon-life-buoy"></i><span class="menu-title">ERPs</span></a>
@@ -37,9 +49,15 @@
                     @can('create-erp')
                         <li><a class="menu-item" href="{{ route('erps.create') }}">Create ERP</a>
                         </li>
+                        @if($erp)
+                            <li><a class="menu-item" href="{{ route('erps.show',$erp->id) }}">View ERP</a>
+                            </li>
+                        @endif
                     @endcan
-                    <li><a class="menu-item" href="{{ route('erps.index') }}">ERP List</a>
-                    </li>
+                    @can('list-erp')
+                        <li><a class="menu-item" href="{{ route('erps.index') }}">ERP List</a>
+                        </li>
+                    @endcan
                 </ul>
             </li>
             <li class=" nav-item"><a href="#"><i class="feather icon-users"></i><span

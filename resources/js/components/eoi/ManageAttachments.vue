@@ -1,7 +1,3 @@
-<template>
-
-</template>
-
 <script>
 export default {
     name: "ManageAttachments",
@@ -35,4 +31,3 @@ export default {
     }
 }
 </script>
-

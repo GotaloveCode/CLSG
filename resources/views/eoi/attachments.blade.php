@@ -21,7 +21,7 @@
             <div class="card-body">
                 <p>The following documents are attached to support this request:</p>
                 <ul>
-                    <li>Documents accrediting the [Name of WSP] registration under the Company Act</li>
+                    <li>Documents accrediting the {{ $wsp->name }} registration under the Company Act</li>
                     <li>Copy of licence with WASREB.</li>
                     <li>Map of the area to be served identifying the low income areas targeted by the project, as
                         per the LIA mapping by WASREB.
@@ -47,9 +47,11 @@
                                 <td>{{ $attachment->document_type }}</td>
                                 <td>{{ $attachment->created_at->format('d-M-Y') }}</td>
                                 <th>
-                                    <button class="btn btn-sm btn-danger"
-                                            @click="deleteAttachment({{ json_encode($attachment) }})"><i
-                                            class="feather icon-trash"></i></button>
+                                    @if($eoi->status == "Pending" || $eoi->status == "Needs Review")
+                                        <button class="btn btn-sm btn-danger"
+                                                @click="deleteAttachment({{ json_encode($attachment) }})"><i
+                                                class="feather icon-trash"></i></button>
+                                    @endif
                                 </th>
                             </tr>
                         @endforeach
@@ -60,15 +62,14 @@
                          aria-valuenow="{{$progress}}" aria-valuemin="0" aria-valuemax="100">{{$progress}}%
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <attachment-form submit-url="{{ route('eois.attachments.store',$eoi->id) }}"/>
+                @if($eoi->status == "Pending" || $eoi->status == "Needs Review")
+                    <div class="row">
+                        <div class="col-md-12">
+                            <attachment-form submit-url="{{ route('eois.attachments.store',$eoi->id) }}"/>
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </div>
 @endsection
-
-
-

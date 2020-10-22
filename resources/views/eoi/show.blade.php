@@ -24,8 +24,56 @@
                     <section class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body">
-                                    @include('preview.eoi')
+                                <div class="card-header">
+                                    <h4 class="card-title">EOI Form</h4>
+                                    <a class="heading-elements-toggle"><i
+                                            class="fa fa-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                            <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        @include('preview.eoi')
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">EOI Attachments</h4>
+                                    <a class="heading-elements-toggle"><i
+                                            class="fa fa-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                            <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Document Name</th>
+                                                <th>Document Type</th>
+                                                <th>Created at</th>
+                                            </tr>
+                                            </thead>
+                                            @foreach($eoi->attachments as $attachment)
+                                                <tr>
+                                                    <td><a target="_blank"
+                                                           href="{{ route('eois.attachments.show',$attachment->name) }}">{{ $attachment->display_name }}
+                                                            <i class="feather icon-file"></i></a></td>
+                                                    <td>{{ $attachment->document_type }}</td>
+                                                    <td>{{ $attachment->created_at->format('d-M-Y') }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -34,9 +82,21 @@
             </div>
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
+                    <div class="mb-2">
+                        <a class="btn btn-info" href="{{ route('eois.create') }}"><i class="feather icon-edit"></i> Edit</a>
+                        <a class="btn btn-primary" href="{{ route('eois.attachments' ,$eoi->id) }}"><i
+                                class="feather icon-file"></i> Edit Attachments</a>
+                    </div>
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">EOI Status</h4>
+                            <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                    <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="card-content">
                             <div class="card-body">
@@ -93,31 +153,39 @@
                             </div>
                         </div>
                     </div>
-                    <div class="detailBox">
-                        <div class="titleBox">
-                            <label>Comment Box</label>
-                            <button type="button" class="close" aria-hidden="true">&times;</button>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Comment Box</h4>
+                            <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                    <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="actionBox">
-                            <ul class="commentList">
-                                @foreach($eoi->comments as $comment)
-                                    @php
-                                        $user_role = auth()->user()->roles()->first()->name;
-                                        $comment_role = $comment->user->roles()->first()->name
-                                    @endphp
-                                    <li>
-                                        <div
-                                            class="profileBox @if($comment_role != $user_role) text-success @else text-info @endif">{{ strtoupper($comment_role) }}</div>
-                                        <div class="commentText">
-                                            <p class="">{!! $comment->description !!}</p>
-                                            <span
-                                                class="date sub-text">{{ $comment->created_at->diffForHumans() }}</span>
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <ul class="commentList">
+                                    @foreach($eoi->comments as $comment)
+                                        @php
+                                            $user_role = auth()->user()->roles()->first()->name;
+                                            $comment_role = $comment->user->roles()->first()->name
+                                        @endphp
+                                        <li>
+                                            <div
+                                                class="profileBox @if($comment_role != $user_role) text-success @else text-info @endif">{{ strtoupper($comment_role) }}</div>
+                                            <div class="commentText">
+                                                <p class="">{!! $comment->description !!}</p>
+                                                <span
+                                                    class="date sub-text">{{ $comment->created_at->diffForHumans() }}</span>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                                <comment-form submit-url="{{ route('eois.comment',$eoi->id) }}"/>
+                            </div>
                         </div>
-                        <comment-form submit-url="{{ route('eois.comment',$eoi->id) }}"/>
                     </div>
                 </div>
             </div>
@@ -127,25 +195,6 @@
 @endsection
 @push('css')
     <style>
-        .detailBox {
-            border: 1px solid #bbb;
-        }
-
-        .titleBox {
-            background-color: #fdfdfd;
-            padding: 10px;
-        }
-
-        .titleBox label {
-            color: #444;
-            margin: 0;
-            display: inline-block;
-        }
-
-        .actionBox .form-group * {
-            width: 100%;
-        }
-
         .commentList {
             padding: 0;
             list-style: none;
@@ -165,11 +214,6 @@
         .sub-text {
             color: #aaa;
             font-size: 11px;
-        }
-
-        .actionBox {
-            border-top: 1px dotted #bbb;
-            padding: 10px;
         }
     </style>
 @endpush

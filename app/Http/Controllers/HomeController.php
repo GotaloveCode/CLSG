@@ -30,11 +30,7 @@ class HomeController extends Controller
         $role = auth()->user()->getRoleNames()->first();
         switch ($role) {
             case 'wsp':
-                $wsp = auth()->user()->wsps()->first();
-                $eoi = $wsp->eoi;
-                $bcp = $wsp->bcp;
-                $erp = $wsp->erp;
-                return view('dashboard.wsp')->with(compact('wsp', 'eoi', 'bcp', 'erp'));
+                return view('dashboard.wsp');
 //            case 'wstf':
 //                return view('dashboard.wstf')->with(compact('wsp_count','eoi_count','bcp_count','erp_count'));
 //            case 'wasreb':

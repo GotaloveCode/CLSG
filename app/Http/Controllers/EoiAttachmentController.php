@@ -17,13 +17,17 @@ class EoiAttachmentController extends Controller
     {
         $eoi = $eoi->load('attachments');
         $progress = ceil($eoi->attachments->pluck('document_type')->unique()->count() / 5 * 100);
-        return view('eois.attachments')->with(compact('eoi', 'progress'));
+        return view('eoi.attachments')->with(compact('eoi', 'progress'));
     }
 
     public function store(Eoi $eoi, EoiAttachmentRequest $request)
     {
         if (!$eoi->wsp->users()->pluck('user_id')->contains(auth()->id())) {
             abort('403', 'You do not have the permissions to perform this action');
+        }
+
+        if($eoi->status != "Pending" || $eoi->status != "Needs Review"){
+            abort('403', 'You may only attach documents while the Expression of Interest needs review or is Pending');
         }
 
         $fileName = $this->storeDocument($request->attachment, $request->display_name);
@@ -34,7 +38,12 @@ class EoiAttachmentController extends Controller
             'document_type' => $request->document_type,
         ]);
 
-        return view('eois.attachments')->with(compact('eoi'));
+        if ($eoi->attachments->pluck('document_type')->unique()->count() == 5){
+            $eoi->status = "Pending";
+            $eoi->save();
+        }
+
+        return back();
     }
 
     public function show($filename)

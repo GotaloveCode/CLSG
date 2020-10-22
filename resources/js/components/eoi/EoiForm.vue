@@ -86,7 +86,7 @@ export default {
         currentComponent:'step-one'
     }),
     created() {
-        if (this.existingEoi.id != undefined) {
+        if (this.existingEoi) {
             this.initEoi();
         }
     },
@@ -152,22 +152,19 @@ export default {
             })
         },
         previousStep() {
-
             if (this.currentStep > 1) {
                 this.currentStep--;
             }
-
         },
         onSubmit() {
             if (this.currentStep === 5) {
-                if (this.existingEoi.id != undefined) {
+                if (this.existingEoi) {
                     this.updateData(this.existingEoi.id);
                 } else
                     this.postData();
                 return;
             }
             this.currentStep++;
-
         },
         postData() {
             this.eoi.wsp = this.wsp;
