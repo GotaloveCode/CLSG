@@ -148,13 +148,18 @@
                                                    data-date="{{$att->updated_at->format('d/m/Y')}}">{{ $att->updated_at->format('d M') }}</a>
                                             </li>
                                         @endif
-                                        @if($wsp->staff()->first())
+                                        @php
+                                            $staff = $wsp->staff()->first();
+                                        @endphp
+                                        @if($staff)
                                             <li><a href="#0"
-                                                   data-date="{{$wsp->staff()->first()->created_at->format('d/m/Y')}}">{{$wsp->staff()->first()->created_at->format('d M')}}</a>
+                                                   data-date="{{$staff->created_at->format('d/m/Y')}}">{{$staff->created_at->format('d M')}}</a>
                                             </li>
                                         @endif
                                         @if($bcp)
-                                            <li><a href="#0" data-date="{{ $bcp->updated_at->format('d/m/Y') }}">{{ $bcp->updated_at->format('d M') }}</a></li>
+                                            <li><a href="#0"
+                                                   data-date="{{ $bcp->updated_at->format('d/m/Y') }}">{{ $bcp->updated_at->format('d M') }}</a>
+                                            </li>
                                         @endif
                                         {{--                                        <li><a href="#0" data-date="20/12/2012">Create BCP</a></li>--}}
                                         {{--                                        <li><a href="#0" data-date="20/03/2013">Sign of CLSGA</a></li>--}}
@@ -203,11 +208,12 @@
                                         </p>
                                     </li>
                                 @endif
-                                @if($wsp->staff()->first())
-                                    <li data-date="{{$wsp->staff()->first()->created_at->format('d M')}}">
+
+                                @if($staff)
+                                    <li data-date="{{$staff->created_at->format('d M')}}">
                                         <h2>Add Staff</h2>
                                         <h3 class="text-muted mb-1">
-                                            <em>{{$wsp->staff()->first()->created_at->format('M d, Y')}}</em></h3>
+                                            <em>{{$staff->created_at->format('M d, Y')}}</em></h3>
                                         <p class="lead">
                                             Add staff members in preparation to create BCP.
                                         </p>

@@ -57,6 +57,9 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::resource('staff', 'StaffController');
+
+    Route::resource('notifications', 'NotificationController')->only('index', 'update', 'store');
+
 });
 
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);

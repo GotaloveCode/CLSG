@@ -27,6 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+
         $role = auth()->user()->getRoleNames()->first();
         switch ($role) {
             case 'wsp':

@@ -2,6 +2,7 @@
     "dependencies": {
         "@pipe-dream/laravel-file-factory": "^1.1.0-c",
         "import": "0.0.6",
+        "moment": "^2.29.1",
         "vee-validate": "^3.4.2",
         "vue-numeric": "^2.3.0",
         "vue-select": "^3.10.8",

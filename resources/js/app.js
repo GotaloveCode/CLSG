@@ -19,8 +19,8 @@ const BcpForm = () => import('./components/bcp/BcpForm' /* webpackChunkName: "js
 // const BcpList = () => import('./components/bcp/BcpList' /* webpackChunkName: "js/components/bcp/bcp-list" */);
 const ErpForm = () => import('./components/erp/ErpForm' /* webpackChunkName: "js/components/erp/erp-form" */);
 const StaffForm = () => import('./components/staff/Create' /* webpackChunkName: "js/components/staff/create" */);
-const ManageStaff= () => import('./components/staff/ManageStaff' /* webpackChunkName: "js/components/staff/manage-staff" */);
-
+const ManageStaff = () => import('./components/staff/ManageStaff' /* webpackChunkName: "js/components/staff/manage-staff" */);
+const NotificationComponent = () => import('./components/NotificationComponent' /* webpackChunkName: "js/components/notification-component" */);
 
 const app = new Vue({
     el: '#app',
@@ -36,6 +36,7 @@ const app = new Vue({
         ErpForm,
         StaffForm,
         ManageStaff,
-        ManageAttachments
+        ManageAttachments,
+        NotificationComponent
     },
 });

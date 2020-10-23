@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EoiRequest;
-use App\Mail\EioReview;
 use App\Http\Requests\CommentRequest;
 use App\Http\Requests\EoiReviewRequest;
 use App\Models\Attachment;
@@ -12,13 +11,15 @@ use App\Models\Eoi;
 use App\Models\Estimatedcost;
 use App\Models\Operationcost;
 use App\Models\Service;
+use App\Notifications\CommitmentUploadNotification;
 use App\Traits\EoiAuthTrait;
 use App\Traits\FilesTrait;
 use App\Traits\SendMailNotification;
 use App\Http\Resources\EoiCustomResource;
-use App\Http\Resources\EoiListResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Notification;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 use PDF;
@@ -69,7 +70,7 @@ class EoiController extends Controller
         if ($eoi_load) $eoi_load = json_encode(new EoiCustomResource($eoi_load));
         else $eoi_load;
 
-        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts','eoi_load'));
+        return view('eoi.create')->with(compact('services', 'connections', 'estimatedCosts', 'operationCosts', 'eoi_load'));
     }
 
     public function store(EoiRequest $request)
@@ -255,7 +256,16 @@ class EoiController extends Controller
             'document_type' => 'Commitment Letter',
         ]);
 
-        //todo: send notification to wft if wsp uploaded signed copy and vice-versa
+        $users = $eoi->wsp->users;
+        $wasreb = Role::findByName('wasreb')->users;
+        $wasreb->each(function ($u) use (&$users) {
+            $users->push($u);
+        });
+        $uploader = auth()->user()->hasRole('wsp') ? $eoi->wsp->name : "WASREB";
+
+        $users->each(function ($user) use ($eoi, $uploader) {
+            $user->notify(new CommitmentUploadNotification($eoi->wsp, $uploader));
+        });
 
         return back()->with('success', 'Commitment letter uploaded successfully');
     }

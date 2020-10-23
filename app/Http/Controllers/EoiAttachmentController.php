@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EoiAttachmentRequest;
 use App\Models\Attachment;
 use App\Models\Eoi;
+use App\Notifications\EoiSubmittedNotification;
 use App\Traits\FilesTrait;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
+use Spatie\Permission\Models\Role;
 
 class EoiAttachmentController extends Controller
 {
@@ -41,6 +43,16 @@ class EoiAttachmentController extends Controller
         if ($eoi->attachments->pluck('document_type')->unique()->count() == 5){
             $eoi->status = "Pending";
             $eoi->save();
+
+            $users = $eoi->wsp->users;
+            $wasreb = Role::findByName('wasreb')->users;
+            $wasreb->each(function ($u) use (&$users) {
+                $users->push($u);
+            });
+
+            $users->each(function ($user) use($eoi) {
+                $user->notify(new EoiSubmittedNotification($eoi));
+            });
         }
 
         return back();
