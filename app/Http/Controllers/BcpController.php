@@ -31,8 +31,11 @@ class BcpController extends Controller
 
         return Datatables::of($bcp)
             ->addColumn('action', function ($bcp) {
-                return '<a href="' . route("bcps.show", $bcp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
+                $button = '<a href="' . route("bcps.show", $bcp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
+                $button .= '<a href="' . route("bcps.edit", $bcp->id) . '" class="btn btn-sm btn-primary" style="margin-left: 10px"><i class="fa fa-pencil"></i>Edit</a>';
+                return $button ;
             })
+
             ->make(true);
     }
 
@@ -44,14 +47,18 @@ class BcpController extends Controller
         }
         $wsp_id = $wsp->id;
         $operation_costs = $wsp->eoi->operationcosts()->get();
-        $backup_staff = $wsp->staff()->where('type', 'Backup')->selectRaw("CONCAT(firstname,' ',lastname) as name,id")->get();
-        $primary_staff = $wsp->staff()->where('type', 'Essential')->selectRaw("CONCAT(firstname,' ',lastname) as name,id")->get();
+//        $backup_staff = $wsp->staff()->where('type', 'Backup')->selectRaw("CONCAT(firstname,' ',lastname) as name,id")->get();
+//        $primary_staff = $wsp->staff()->where('type', 'Essential')->selectRaw("CONCAT(firstname,' ',lastname) as name,id")->get();
+        $backup_staff = Staff::where('type', 'Backup')->selectRaw("CONCAT(firstname,' ',lastname) as name,id")->get();
+        $primary_staff = Staff::where('type', 'Essential')->selectRaw("CONCAT(firstname,' ',lastname) as name,id")->get();
+
         $essential_functions = Essentialfunction::select('id', 'name')->get();
         return view('bcps.create')->with(compact('primary_staff', 'operation_costs', 'backup_staff', 'essential_functions', 'wsp_id'));
     }
 
     public function store(BcpFormRequest $request)
     {
+
         $bcp = Bcp::where('wsp_id', $request->wsp_id)->first();
         if ($bcp) {
             return response()->json([
@@ -60,8 +67,7 @@ class BcpController extends Controller
             ], 422);
         }
 
-        $bcp = Bcp::create(Arr::except($request->validated(), ['projected_revenues', 'essential_operations']));
-
+        $bcp = Bcp::create($request->all());
         foreach ($request->input('essential_operations') as $operation) {
             $bcp->essentialOperations()->create([
                 'priority_level' => $operation['priority_level'],
@@ -94,6 +100,14 @@ class BcpController extends Controller
     }
 
     public function show(Bcp $bcp)
+    {
+
+        $bcp = $bcp->load(['wsp', 'revenue_projections','essentialOperations','bcpteams']);
+        dd($bcp);
+        return view('bcps.show')->with(compact('bcp', 'progress', 'eoi'));
+    }
+
+    public function edit(Bcp $bcp)
     {
         $progress = $bcp->progress();
         $eoi = $bcp->wsp->first()->eoi;

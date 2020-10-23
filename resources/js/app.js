@@ -1,10 +1,10 @@
 import * as Vue from "vue";
 import store from "./store/store";
-import Vuetify from "vuetify";
+
 
 require('./bootstrap');
 window.Vue = require('vue');
-Vue.use(Vuetify);
+window.eventBus = new Vue();
 
 import "./components/components";
 
@@ -19,11 +19,11 @@ const BcpForm = () => import('./components/bcp/BcpForm' /* webpackChunkName: "js
 const ErpForm = () => import('./components/erp/ErpForm.vue' /* webpackChunkName: "js/components/erp/erp-form" */);
 const StaffForm = () => import('./components/staff/Create.vue' /* webpackChunkName: "js/components/staff/create" */);
 const ManageStaff= () => import('./components/staff/ManageStaff' /* webpackChunkName: "js/components/staff/manage-staff" */);
+const ChecklistForm = () => import('./components/checklist/ChecklistForm' /* webpackChunkName: "js/components/checklist/checklist-form" */);
 
 
 const app = new Vue({
     el: '#app',
-    vuetify: new Vuetify(),
     store,
     components: {
         EoiForm,
@@ -34,6 +34,7 @@ const app = new Vue({
         BcpForm,
         ErpForm,
         StaffForm,
-        ManageStaff
+        ManageStaff,
+        ChecklistForm
     },
 });

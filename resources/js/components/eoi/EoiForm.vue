@@ -156,9 +156,10 @@ export default {
             if (this.currentStep > 1) {
                 this.currentStep--;
             }
-
+           console.log("prev btn ---> "+this.currentStep)
         },
         onSubmit() {
+            console.log("here---")
             if (this.currentStep === 5) {
                 if (this.existingEoi.id != undefined) {
                     this.updateData(this.existingEoi.id);
@@ -167,7 +168,7 @@ export default {
                 return;
             }
             this.currentStep++;
-
+            console.log("next btn ---> "+this.currentStep)
         },
         postData() {
             this.eoi.wsp = this.wsp;

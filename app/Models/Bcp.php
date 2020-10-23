@@ -18,7 +18,7 @@ class Bcp extends Model
      */
     protected $fillable = [
         'executive_summary', 'introduction', 'planning_assumptions', 'training', 'staff_health_protection', 'supply_chain',
-        'emergency_response_plan','communication_plan','wsp_id'
+        'emergency_response_plan','communication_plan','wsp_id','government_subsidy'
     ];
 
     /**

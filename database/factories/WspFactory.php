@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Wsp;
+use App\Models\PostalCode;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class WspFactory extends Factory
@@ -28,7 +29,7 @@ class WspFactory extends Factory
             'email' => $this->faker->safeEmail(),
             'postal_address' => $this->faker->word(),
             'physical_address' => $this->faker->word(),
-            'postal_code_id' => random_int(0, 200)
+            'postal_code_id' => PostalCode::get()->random()->id
         ];
     }
 }

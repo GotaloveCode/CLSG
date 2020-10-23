@@ -42,7 +42,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::resource('users', 'UserController')->only('index');
-    Route::resource('bcps', 'BcpController')->only('index', 'create', 'store', 'show');
+    Route::resource('bcps', 'BcpController')->only('index', 'create', 'store', 'show','edit');
 
     Route::group(['prefix' => 'bcps'], function () {
         Route::post('{bcp}/review', 'BcpController@review')->name('bcps.review');
@@ -54,6 +54,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'erps'], function () {
         Route::post('{erp}/review', 'ErpController@review')->name('erps.review');
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
+    });
+
+    Route::group(['prefix' => 'reports'],function (){
+       Route::get("/monthly-revenue","ReportsController@index");
+       Route::get("/checklist","ReportsController@checklist");
+       Route::post("/checklist","ReportsController@saveChecklist");
+       Route::post("/get-checklist","ReportsController@getChecklist");
     });
 
     Route::resource('staff', 'StaffController');
