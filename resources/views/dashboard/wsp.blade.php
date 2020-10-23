@@ -195,7 +195,7 @@
                                         <p class="text-muted"> Status - {{ $eoi->status }}</p>
                                     </li>
                                 @endif
-                                @if($att)
+                                @isset($att)
                                     <li data-date="{{ $eoi->updated_at->format('d/m/Y') }}">
                                         <h2>Sign Commitment Letter</h2>
                                         <h3 class="text-muted mb-1">
@@ -207,7 +207,7 @@
                                             and upload
                                         </p>
                                     </li>
-                                @endif
+                                @endisset
 
                                 @if($staff)
                                     <li data-date="{{$staff->created_at->format('d M')}}">
