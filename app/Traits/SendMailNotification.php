@@ -3,28 +3,35 @@
 
 namespace App\Traits;
 
-use App\Mail\CommentMailable;
-use App\Mail\ReviewMailable;
 use App\Models\Wsp;
 use App\Models\User;
-use Illuminate\Support\Facades\Mail;
+use App\Notifications\CommentNotification;
+use App\Notifications\ReviewNotification;
 
 trait SendMailNotification
 {
 
     static public function postComment($comment, $status, $wsp_id, $route, $subject)
     {
-        Mail::to(self::getRecipient($status, $wsp_id))->send(new CommentMailable($comment, $route, $subject));
+        $wsp = Wsp::find($wsp_id);
+        $users = self::getRecipient($status, $wsp);
+        $users->each(function ($user) use ($wsp, $route, $subject, $comment) {
+            $user->notify(new CommentNotification($wsp, $route, $subject, $comment));
+        });
     }
 
     static public function postReview($status, $wsp_id, $route, $subject)
     {
-        Mail::to(self::getRecipient($status, $wsp_id))->send(new ReviewMailable($status, $route, $subject));
+        $body = "The status has been changed by " . auth()->user()->getRoleNames()->first() . " to: " . $status;
+        $wsp = Wsp::find($wsp_id);
+        $users = self::getRecipient($status, $wsp);
+        $users->each(function ($user) use ($wsp, $route, $subject, $body) {
+            $user->notify(new ReviewNotification($wsp, $route, $subject, $body));
+        });
     }
 
-    static public function getRecipient($status, $wsp_id)
+    static public function getRecipient($status, $wsp)
     {
-        $wsp = Wsp::find($wsp_id);
         switch ($status) {
             case 'WSTF Approved':
                 $sender = User::role(["wasreb"])->get();

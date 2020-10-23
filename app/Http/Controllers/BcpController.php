@@ -145,6 +145,9 @@ class BcpController extends Controller
         $bcp->save();
 
         $route = route('bcps.preview', $bcp->id);
+
+
+
         SendMailNotification::postReview($request->status, $bcp->wsp_id, $route, $bcp->wsp->name . ' BCP Review');
 
         if ($request->status == 'WSTF Approved') {
