@@ -80,6 +80,12 @@
                     </li>
                 </ul>
             </li>
+            <li class=" nav-item"><a href="#"><i class="feather icon-bar-chart"></i><span class="menu-title">Reports</span></a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="{{ url('/reports/monthly-revenue') }}">BCP Monthly Reporting</a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </div>
 </div>

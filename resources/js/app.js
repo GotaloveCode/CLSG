@@ -1,10 +1,10 @@
 import * as Vue from "vue";
 import store from "./store/store";
-import Vuetify from "vuetify";
+
 
 require('./bootstrap');
 window.Vue = require('vue');
-Vue.use(Vuetify);
+window.eventBus = new Vue();
 
 import "./components/components";
 
@@ -17,14 +17,15 @@ const ManageReview = () => import('./components/ManageReview' /* webpackChunkNam
 const ReviewForm = () => import('./components/CommentForm' /* webpackChunkName: "js/components/eoi/review-form" */);
 const BcpForm = () => import('./components/bcp/BcpForm' /* webpackChunkName: "js/components/bcp/bcp-form" */);
 // const BcpList = () => import('./components/bcp/BcpList' /* webpackChunkName: "js/components/bcp/bcp-list" */);
-const ErpForm = () => import('./components/erp/ErpForm' /* webpackChunkName: "js/components/erp/erp-form" */);
-const StaffForm = () => import('./components/staff/Create' /* webpackChunkName: "js/components/staff/create" */);
-const ManageStaff = () => import('./components/staff/ManageStaff' /* webpackChunkName: "js/components/staff/manage-staff" */);
 const NotificationComponent = () => import('./components/NotificationComponent' /* webpackChunkName: "js/components/notification-component" */);
+const ErpForm = () => import('./components/erp/ErpForm.vue' /* webpackChunkName: "js/components/erp/erp-form" */);
+const StaffForm = () => import('./components/staff/Create.vue' /* webpackChunkName: "js/components/staff/create" */);
+const ManageStaff= () => import('./components/staff/ManageStaff' /* webpackChunkName: "js/components/staff/manage-staff" */);
+const ChecklistForm = () => import('./components/checklist/ChecklistForm' /* webpackChunkName: "js/components/checklist/checklist-form" */);
+
 
 const app = new Vue({
     el: '#app',
-    vuetify: new Vuetify(),
     store,
     components: {
         EoiForm,
@@ -36,6 +37,7 @@ const app = new Vue({
         ErpForm,
         StaffForm,
         ManageStaff,
+        ChecklistForm,
         ManageAttachments,
         NotificationComponent
     },

@@ -32,7 +32,9 @@ class BcpController extends Controller
 
         return Datatables::of($bcp)
             ->addColumn('action', function ($bcp) {
-                return '<a href="' . route("bcps.show", $bcp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
+                $button = '<a href="' . route("bcps.show", $bcp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
+                $button .= '<a href="' . route("bcps.edit", $bcp->id) . '" class="btn btn-sm btn-primary" style="margin-left: 10px"><i class="fa fa-pencil"></i>Edit</a>';
+                return $button ;
             })
             ->make(true);
     }
@@ -145,9 +147,6 @@ class BcpController extends Controller
         $bcp->save();
 
         $route = route('bcps.preview', $bcp->id);
-
-
-
         SendMailNotification::postReview($request->status, $bcp->wsp_id, $route, $bcp->wsp->name . ' BCP Review');
 
         if ($request->status == 'WSTF Approved') {

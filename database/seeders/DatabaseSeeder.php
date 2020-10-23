@@ -27,5 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RevenueSeeder::class);
         $this->call(EssentialOperationSeeder::class);
         $this->call(BcpteamSeeder::class);
+        $this->call(ChecklistSeeder::class);
     }
 }

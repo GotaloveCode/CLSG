@@ -50,8 +50,8 @@ class Bcp extends Model
     }
 
     /**
-     * //     * Get the Revenue Projections for the Bcp.
-     * //     */
+     * Get the Revenue Projections for the Bcp.
+     */
     public function revenue_projections()
     {
         return $this->hasMany(RevenueProjection::class);

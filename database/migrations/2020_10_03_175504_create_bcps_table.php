@@ -21,6 +21,7 @@ class CreateBcpsTable extends Migration
             $table->text('training');
             $table->text('emergency_response_plan');
             $table->text('staff_health_protection');
+            $table->text('emergency_response_plan');
             $table->text('supply_chain');
             $table->text('communication_plan');
             $table->string('government_subsidy')->nullable();
