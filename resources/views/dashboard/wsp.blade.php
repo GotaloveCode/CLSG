@@ -143,11 +143,11 @@
                                             <li><a href="#0" data-date="{{ $eoi->updated_at->format('d/m/Y') }}"
                                                    class="selected">{{ $eoi->updated_at->format('d M') }}</a></li>
                                         @endif
-                                        @if($att)
+                                        @isset($att)
                                             <li><a href="#0"
                                                    data-date="{{$att->updated_at->format('d/m/Y')}}">{{ $att->updated_at->format('d M') }}</a>
                                             </li>
-                                        @endif
+                                        @endisset
                                         @php
                                             $staff = $wsp->staff()->first();
                                         @endphp
