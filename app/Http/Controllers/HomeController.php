@@ -10,21 +10,13 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
+
     public function index()
     {
 
@@ -32,10 +24,6 @@ class HomeController extends Controller
         switch ($role) {
             case 'wsp':
                 return view('dashboard.wsp');
-//            case 'wstf':
-//                return view('dashboard.wstf')->with(compact('wsp_count','eoi_count','bcp_count','erp_count'));
-//            case 'wasreb':
-//                return view('dashboard.wasreb');
             default:
                 $bcp_count = Bcp::count();
                 $eoi_count = Eoi::count();
