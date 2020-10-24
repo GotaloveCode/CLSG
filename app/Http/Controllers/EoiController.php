@@ -113,9 +113,7 @@ class EoiController extends Controller
 
         foreach ($request->input('operation_costs') as $operation_cost) {
             $eoi->operationcosts()->attach($operation_cost['operationcost_id'], [
-                'unit_rate' => $operation_cost['unit_rate'],
-                'quantity' => $operation_cost['quantity'],
-                'total' => $operation_cost['total'],
+                'cost' => $operation_cost['cost']
             ]);
         }
 
@@ -169,9 +167,7 @@ class EoiController extends Controller
 
         foreach ($request->input('operation_costs') as $operation_cost) {
             $eoi->operationcosts()->attach($operation_cost['operationcost_id'], [
-                'unit_rate' => $operation_cost['unit_rate'],
-                'quantity' => $operation_cost['quantity'],
-                'total' => $operation_cost['total'],
+                'cost' => $operation_cost['cost']
             ]);
         }
 

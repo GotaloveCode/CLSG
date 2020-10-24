@@ -96,7 +96,7 @@ class Eoi extends Model
     public function operationcosts()
     {
         return $this->belongsToMany(Operationcost::class)
-            ->withPivot('quantity', 'unit_rate', 'total')
+            ->withPivot('cost')
             ->withTimestamps();
     }
 

@@ -5,8 +5,7 @@
             <thead>
             <tr>
                 <th>Type of Service/item</th>
-                <th>Unit Cost (KES)</th>
-                <th>Total Cost (KES)</th>
+                <th>Cost (KES)</th>
                 <th></th>
             </tr>
             </thead>
@@ -20,7 +19,6 @@
                 :index="index"/>
             <tr>
                 <th>Total costs</th>
-                <td></td>
                 <ValidationProvider tag="th" name="Total" :rules="'required|numeric|max_value:'+eoi.operation_costs_total"
                                     v-slot="{ errors }">
                     <vue-numeric separator="," v-model="total" disabled="true" class="form-control"></vue-numeric>
@@ -28,7 +26,7 @@
                 </ValidationProvider>
             </tr>
             <tr v-if="total>eoi.operation_costs_total">
-                <td class="text-danger" colspan="4">The total Operation Cost should not exceed Operation & Maintenance Costs total
+                <td class="text-danger" colspan="3">The total Operation Cost should not exceed Operation & Maintenance Costs total
                 </td>
             </tr>
         </table>
@@ -49,7 +47,7 @@ export default {
     },
     methods: {
         addCost() {
-            this.eoi.operation_costs.push({quantity: null, unit_rate: null, total: "", operationcost_id: null});
+            this.eoi.operation_costs.push({cost: null, operationcost_id: null});
         },
         removeCost(index) {
             if (this.eoi.operation_costs.length > 1) {
@@ -60,7 +58,7 @@ export default {
     computed: {
         total: {
             get: function () {
-                return this.eoi.operation_costs.reduce((a, b) => ({total: a.total + b.total})).total;
+                return this.eoi.operation_costs.reduce((a, b) => ({cost: a.cost + b.cost})).cost;
             },
             set: function (n) {
                 return n;

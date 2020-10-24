@@ -77,7 +77,7 @@ export default {
             services: [{areas: "", total: 0, service_id: null}],
             connections: [{areas: '', total: 0, connection_id: null}],
             estimated_costs: [{unit: 0, total: 0, estimatedcost_id: null}],
-            operation_costs: [{quantity: 0, unit_rate: 0, total: 0, operationcost_id: null}],
+            operation_costs: [{cost: 0, operationcost_id: null}],
         },
         currentStep: 1,
         currentComponent: 'step-one'
@@ -141,9 +141,7 @@ export default {
             })
             this.existingEoi.operationCosts.forEach(s => {
                 this.eoi.operation_costs.push({
-                    quantity: s.pivot.quantity,
-                    unit_rate: s.pivot.unit_rate,
-                    total: s.pivot.total,
+                    cost: s.pivot.cost,
                     operationcost_id: s.pivot.operationcost_id
                 });
             })

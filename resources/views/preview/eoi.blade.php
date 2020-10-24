@@ -76,8 +76,8 @@
         <thead>
         <tr>
             <th>Type of service / items</th>
-            <th>Name of Low income area and number of facilities required</th>
-            <th>Total No. required</th>
+            <th>Name of Low income area </th>
+            <th>No. of facilities required</th>
         </tr>
         </thead>
         @foreach($eoi->services as $service)
@@ -121,25 +121,19 @@
         <tr>
             <th>S/N</th>
             <th>Type of Service/item</th>
-            <th>Qty</th>
-            <th>Unit Rate in Kshs.</th>
-            <th>Total Cost in Kshs.</th>
+            <th>Cost in Kshs.</th>
         </tr>
         </thead>
         @foreach($eoi->operationcosts as $cost)
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $cost->name }}</td>
-                <td>{{ $cost->quantity }}</td>
-                <td>{{ number_format($cost->pivot->unit_rate) }}</td>
-                <td>{{ number_format($cost->pivot->total) }}</td>
+                <td>{{ number_format($cost->pivot->cost) }}</td>
             </tr>
         @endforeach
         <tr>
             <td colspan="2"><b>Total Costs</b></td>
-            <td></td>
-            <td></td>
-            <td><b>{{ number_format($eoi->operationcosts->sum('pivot.total')) }}</b></td>
+            <td><b>{{ number_format($eoi->operationcosts->sum('pivot.cost')) }}</b></td>
         </tr>
     </table>
 </div>
