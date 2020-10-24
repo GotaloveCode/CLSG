@@ -7,7 +7,7 @@
 <p>We refer to your application for WSTF-managed Conditional Liquidity Support Grant (CLSG) to provide
     short-term COVID-19 emergency interventions and funding for operation and maintenance costs for service
     delivery.
-    I am pleased to advise you that WSTF has approved funding of KES [Amount of TA funding] for your
+    I am pleased to advise you that WSTF has approved funding of KES {{ number_format($eoi->fixed_grant + $eoi->variable_grant)}} for your
     project. </p>
 <p>The aforementioned amount is provided to be spent in the following categories up to the amounts indicated
     below:</p>
