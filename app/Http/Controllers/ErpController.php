@@ -86,10 +86,6 @@ class ErpController extends Controller
         $route = route('erps.show', $erp->id);
         SendMailNotification::postReview($request->status, $erp->wsp_id, $route, $erp->wsp->name . ' ERP Review');
 
-        if ($request->status == 'WSTF Approved') {
-          //  $route = route('erps.commitment_letter', $erp->id);
-        }
-
         return response()->json([
             'message' => 'ERP status changed to ' . $request->status,
             'route' => $route

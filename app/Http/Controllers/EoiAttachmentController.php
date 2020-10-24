@@ -28,7 +28,8 @@ class EoiAttachmentController extends Controller
             abort('403', 'You do not have the permissions to perform this action');
         }
 
-        if($eoi->status != "Pending" || $eoi->status != "Needs Review"){
+        $statuses = collect('Pending','Needs Review');
+        if($statuses->has($eoi->status)){
             abort('403', 'You may only attach documents while the Expression of Interest needs review or is Pending');
         }
 

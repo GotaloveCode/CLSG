@@ -29,12 +29,11 @@ class BcpController extends Controller
         if (auth()->user()->hasRole('wsp')) {
             $bcp = $bcp->where('wsp_id', auth()->user()->wsps()->first()->id);
         }
+        if(auth()->user()->ca)
 
         return Datatables::of($bcp)
             ->addColumn('action', function ($bcp) {
-                $button = '<a href="' . route("bcps.show", $bcp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
-                $button .= '<a href="' . route("bcps.edit", $bcp->id) . '" class="btn btn-sm btn-primary" style="margin-left: 10px"><i class="fa fa-pencil"></i>Edit</a>';
-                return $button ;
+                return '<a href="' . route("bcps.show", $bcp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
             })
             ->make(true);
     }
