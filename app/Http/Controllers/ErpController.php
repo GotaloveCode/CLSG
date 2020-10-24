@@ -20,9 +20,7 @@ class ErpController extends Controller
             return view('erps.index');
         }
         $erps = Erp::query()->with('wsp:id,name');
-        if(auth()->user()->hasRole('wsp')){
-            $erps = $erps->where('wsp_id', auth()->user()->wsps()->first()->id);
-        }
+
         return Datatables::of($erps)
             ->addColumn('action', function ($erp) {
                 return '<a href="' . route("erps.show", $erp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Review</a>';

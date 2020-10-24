@@ -37,10 +37,6 @@ class EoiController extends Controller
         $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at', 'status')
             ->with('wsp:id,name');
 
-        if (auth()->user()->hasRole('wsp')) {
-            $eois = $eois->where('wsp_id', auth()->user()->wsps()->first()->id);
-        }
-
         return Datatables::of($eois)
             ->addColumn('action', function ($eoi) {
                 return '<a href="' . route("eois.show", $eoi->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Review</a>';
