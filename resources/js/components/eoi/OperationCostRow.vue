@@ -8,14 +8,9 @@
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
 
-        <ValidationProvider tag="td" name="Unit Rate[]" rules="required|numeric"
+        <ValidationProvider tag="td" name="Cost[]" rules="required|numeric"
                             v-slot="{ errors }">
-            <vue-numeric separator="," :precision="2" v-model="operation.unit_rate" class="form-control"></vue-numeric>
-            <span class="text-danger">{{ errors[0] }}</span>
-        </ValidationProvider>
-        <ValidationProvider tag="td" name="Total[]" rules="required|numeric"
-                            v-slot="{ errors }">
-            <vue-numeric separator="," v-model="operation.total" class="form-control"></vue-numeric>
+            <vue-numeric separator="," :precision="2" v-model="operation.cost" class="form-control"></vue-numeric>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
         <td>
