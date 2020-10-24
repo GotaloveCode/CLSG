@@ -56,6 +56,16 @@ export default {
         wsp_id: {required: true, type: String},
         submitUrl: {required: true, type: String},
         interventions: {required: true, type: Array},
+        existingErp: {required: false, type: Object}
+    },
+    mounted() {
+        if (this.interventions.length) {
+            this.initItems();
+        }
+        this.setWspId();
+        if (this.existingErp) {
+            this.initErp();
+        }
     },
     data: () => ({
         error: '',
@@ -71,16 +81,37 @@ export default {
             }],
         }
     }),
-    created() {
-        if (this.interventions.length) {
-            this.initItems();
-        }
-    },
     methods: {
+        setWspId() {
+            this.erp.wsp_id = this.wsp_id;
+        },
+        initErp() {
+            this.erp.coordinator = this.existingErp.coordinator;
+            this.erp.items = [];
+            this.existingErp.erp_items.forEach(s => {
+                this.erp.items.push({
+                    cost: s.cost,
+                    other: s.other,
+                    mitigation: s.mitigation,
+                    risks: s.risks,
+                    emergency_intervention: s.emergency_intervention
+                });
+            });
+        },
         onSubmit() {
             this.error = '';
+            this.existingErp ? this.updateData() : this.postData();
+        },
+        postData() {
             axios.post(this.submitUrl, this.erp).then(response => {
                 this.$toastr.s(response.data.message);
+            }).catch(error => {
+                this.error = error.response;
+            });
+        },
+        updateData(){
+            axios.put(this.submitUrl, this.erp).then(() => {
+                this.$toastr.s("ERP updated successfully!");
             }).catch(error => {
                 this.error = error.response;
             });

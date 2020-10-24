@@ -41,4 +41,12 @@ class Erp extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+    /**
+     * Get the attachments for the Eoi.
+     */
+    public function attachments()
+    {
+        return $this->morphMany(Attachment::class, 'attachable');
+    }
+
 }

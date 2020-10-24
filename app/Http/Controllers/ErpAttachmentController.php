@@ -2,39 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\BcpAttachmentRequest;
+use App\Http\Requests\ErpAttachmentRequest;
 use App\Models\Attachment;
-use App\Models\Bcp;
+use App\Models\Erp;
 use App\Models\User;
 use App\Notifications\AttachmentNotification;
 use App\Traits\FilesTrait;
+use Illuminate\Http\Request;
 
-class BcpAttachmentController extends Controller
+class ErpAttachmentController extends Controller
 {
     use FilesTrait;
 
-    public function index(Bcp $bcp)
+    public function index(Erp $erp)
     {
-        $bcp = $bcp->load('attachments');
-        $progress = ceil($bcp->attachments->pluck('document_type')->unique()->count() / 2 * 100);
+        $erp = $erp->load('attachments');
+        $progress = ceil($erp->attachments->pluck('document_type')->unique()->count() / 2 * 100);
         $progress = $progress > 100 ? 100 : $progress;
-        return view('bcps.attachments')->with(compact('bcp', 'progress'));
+        return view('erps.attachments')->with(compact('erp', 'progress'));
     }
 
-    public function store(Bcp $bcp, BcpAttachmentRequest $request)
+    public function store(Erp $erp, ErpAttachmentRequest $request)
     {
-        $wsp = $bcp->wsp;
+        $wsp = $erp->wsp;
         if (!$wsp->users()->pluck('user_id')->contains(auth()->id())) {
             abort('403', 'You do not have the permissions to perform this action');
         }
 
-        if ($bcp->status == 'WSTF Approved') {
-            abort('403', 'You may only attach documents while the BCP has not been approved by WSTF');
+        if ($erp->status == 'WSTF Approved') {
+            abort('403', 'You may only attach documents while the ERP has not been approved by WSTF');
         }
 
         $fileName = $this->storeDocument($request->attachment, $request->display_name);
 
-        $attachment = $bcp->attachments()->create([
+        $attachment = $erp->attachments()->create([
             'name' => $fileName,
             'display_name' => $request->display_name,
             'document_type' => $request->document_type,
@@ -42,8 +43,8 @@ class BcpAttachmentController extends Controller
 
         $users = User::role(["wasreb", "wstf"])->get();
 
-        $users->each(function ($user) use ($attachment, $wsp, $bcp) {
-            $user->notify(new AttachmentNotification($attachment, $wsp, route('bcps.attachments', $bcp->id)));
+        $users->each(function ($user) use ($attachment, $wsp, $erp) {
+            $user->notify(new AttachmentNotification($attachment, $wsp, route('erps.attachments', $erp->id)));
         });
 
         return back();
@@ -51,7 +52,7 @@ class BcpAttachmentController extends Controller
 
     public function show($filename)
     {
-        return $this->showFile(storage_path('app/Bcp/' . $filename));
+        return $this->showFile(storage_path('app/Erp/' . $filename));
     }
 
     public function destroy(Attachment $attachment)
@@ -59,7 +60,6 @@ class BcpAttachmentController extends Controller
         if(! $attachment->attachable->wsp->users()->pluck('id')->contains(auth()->id) && $attachment->attachable->status == 'WSTF Approved'){
             abort(403,"You do not have the permissions to delete this attachment or related document already approved by WSTF");
         }
-        return $this->deleteAttachment($attachment, 'app/Bcp/');
+        return $this->deleteAttachment($attachment, 'app/Erp/');
     }
 }
-

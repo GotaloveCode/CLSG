@@ -168,7 +168,7 @@ export default {
         staff: {required: true, type: Array},
         essential_functions: {required: true, type: Array},
         wsp_id: {type: String},
-        existingBcp: {required: true, type: Object}
+        existingBcp: {required: false, type: Object}
     },
     data: () => ({
         error: '',

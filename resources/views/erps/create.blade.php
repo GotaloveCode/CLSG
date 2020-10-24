@@ -22,7 +22,14 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-body">
-                            <erp-form submit-url="{{ route('erps.store') }}" wsp_id="{{$wsp_id}}" :interventions="{{ $interventions }}"></erp-form>
+                            @isset($erp)
+                                <erp-form :existing-erp="{{$erp_load}}" submit-url="{{ route('erps.update',$erp->id) }}"
+                                          wsp_id="{{$wsp->id}}"
+                                          :interventions="{{ $interventions }}"></erp-form>
+                            @else
+                                <erp-form submit-url="{{ route('erps.store') }}" wsp_id="{{$wsp->id}}"
+                                          :interventions="{{ $interventions }}"></erp-form>
+                            @endisset
                         </div>
                     </div>
                 </div>

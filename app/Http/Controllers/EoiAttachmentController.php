@@ -67,6 +67,9 @@ class EoiAttachmentController extends Controller
 
     public function destroy(Attachment $attachment)
     {
+        if(! $attachment->attachable->wsp->users()->pluck('id')->contains(auth()->id) && $attachment->attachable->status == 'WSTF Approved'){
+            abort(403,"You do not have the permissions to delete this attachment or related document already approved by WSTF");
+        }
         return $this->deleteAttachment($attachment,'app/Eoi/');
     }
 }

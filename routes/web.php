@@ -42,7 +42,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::resource('users', 'UserController')->only('index');
-    Route::resource('bcps', 'BcpController')->only('index', 'create', 'store', 'show','edit');
+    Route::resource('bcps', 'BcpController')->except('edit', 'destroy');
 
     Route::group(['prefix' => 'bcps'], function () {
         Route::get('attachments/{filename}', 'BcpAttachmentController@show')->name('bcps.attachments.show');
@@ -53,18 +53,22 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{bcp}/comment', 'BcpController@comment')->name('bcps.comment');
     });
 
-    Route::resource('erps', 'ErpController')->only('index', 'create', 'store', 'show');
+    Route::resource('erps', 'ErpController')->except('edit', 'destroy');
 
     Route::group(['prefix' => 'erps'], function () {
+        Route::get('attachments/{filename}', 'ErpAttachmentController@show')->name('erps.attachments.show');
+        Route::delete('attachments/{attachment}', 'ErpAttachmentController@destroy')->name('erps.attachments.destroy');
+        Route::get('{bcp}/attachments', 'ErpAttachmentController@index')->name('erps.attachments');
+        Route::post('{bcp}/attachments', 'ErpAttachmentController@store')->name('erps.attachments.store');
         Route::post('{erp}/review', 'ErpController@review')->name('erps.review');
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
     });
 
-    Route::group(['prefix' => 'reports'],function (){
-       Route::get("/monthly-revenue","ReportsController@index");
-       Route::get("/checklist","ReportsController@checklist");
-       Route::post("/checklist","ReportsController@saveChecklist");
-       Route::post("/get-checklist","ReportsController@getChecklist");
+    Route::group(['prefix' => 'reports'], function () {
+        Route::get("/monthly-revenue", "ReportsController@index");
+        Route::get("/checklist", "ReportsController@checklist");
+        Route::post("/checklist", "ReportsController@saveChecklist");
+        Route::post("/get-checklist", "ReportsController@getChecklist");
     });
 
     Route::resource('staff', 'StaffController');
