@@ -17,16 +17,18 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(WspSeeder::class);
         $this->call(EssentialfunctionSeeder::class);
-        $this->call(StaffSeeder::class);
-        $this->call(BcpSeeder::class);
         $this->call(OperationcostSeeder::class);
-        $this->call(EoiSeeder::class);
         $this->call(EstimatedcostSeeder::class);
         $this->call(ConnectionSeeder::class);
         $this->call(ServiceSeeder::class);
-        $this->call(RevenueSeeder::class);
-        $this->call(EssentialOperationSeeder::class);
-        $this->call(BcpteamSeeder::class);
         $this->call(ChecklistSeeder::class);
+
+//        $this->call(StaffSeeder::class);
+//        $this->call(BcpSeeder::class);
+//        $this->call(EoiSeeder::class);
+//        $this->call(RevenueSeeder::class);
+//        $this->call(EssentialOperationSeeder::class);
+//        $this->call(BcpteamSeeder::class);
+
     }
 }
