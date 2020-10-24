@@ -1,7 +1,7 @@
 <template>
     <ValidationObserver v-slot="{ handleSubmit }">
         <div v-html="$error.handle(error)"/>
-        <form @submit.prevent="handleSubmit(onSubmit)" class="col-md-12 mt-4">
+        <form @submit.prevent="handleSubmit(onSubmit)" class="col-md-12">
             <table class="table">
                 <thead>
                 <tr>
@@ -48,20 +48,14 @@ export default {
     name: "AttachmentForm",
     props: {
         submitUrl: {required: true, type: String},
+        documents: {required: true, type: Array},
     },
     data: () => ({
         error: '',
         document: {
             document_type: null,
             display_name: ''
-        },
-        documents: [
-            'Company Registration Document',
-            'Copy of licence with WASREB',
-            'Audited Financial Statement for 2018/19',
-            'Approved Strategic plan',
-            'Map of the area to be served'
-        ],
+        }
     }),
     methods: {
         onSubmit() {

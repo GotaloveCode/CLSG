@@ -237,7 +237,7 @@ class EoiController extends Controller
         $attachment = $eoi->attachments()->where('document_type', 'Commitment Letter')->first();
 
         if ($attachment) {
-            Attachment::remove($attachment);
+            Attachment::remove($attachment,'app/Eoi/');
         }
 
         $fileName = $this->storeDocument($request->attachment, 'Commitment Letter');
