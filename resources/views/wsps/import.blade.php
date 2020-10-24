@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('content')
     <div class="container">
@@ -32,7 +32,7 @@
                 <div class="card card-default">
                     <div class="card-header">
                         <h4 class="card-title pull-left">
-                            Import System Users
+                            Import WSPS
                         </h4>
                     </div>
                     <div class="card-body">
@@ -63,12 +63,15 @@
                                 <tr>
                                     <td>Postal Code (Required)</td>
                                 </tr>
+                                <tr>
+                                    <td>Managing Director (Required)</td>
+                                </tr>
                                 </tbody>
                             </table>
                             <div class="alert alert-info">
                                 <div>
                                     If you are not sure how this is done, download the template <a
-                                        class="btn btn-outline-info btn-sm"
+                                        class="btn btn-primary btn-sm"
                                         href="{{route('wsps.export',['export-csv'=>'export'])}}">
                                         Download Template
                                     </a>

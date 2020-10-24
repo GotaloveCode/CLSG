@@ -80,12 +80,21 @@
                     </li>
                 </ul>
             </li>
-            <li class=" nav-item"><a href="#"><i class="feather icon-bar-chart"></i><span class="menu-title">Reports</span></a>
+            <li class=" nav-item"><a href="#"><i class="feather icon-bar-chart"></i><span
+                        class="menu-title">Reports</span></a>
                 <ul class="menu-content">
                     <li><a class="menu-item" href="{{ url('/reports/monthly-revenue') }}">BCP Monthly Reporting</a>
                     </li>
                 </ul>
             </li>
+            @can('create-wsps')
+                <li class=" nav-item"><a href="#"><i class="feather icon-compass"></i><span class="menu-title">Wsps</span></a>
+                    <ul class="menu-content">
+                        <li><a class="menu-item" href="{{ route('wsps.export') }}">Import Wsps</a>
+                        </li>
+                    </ul>
+                </li>
+            @endcan
         </ul>
     </div>
 </div>

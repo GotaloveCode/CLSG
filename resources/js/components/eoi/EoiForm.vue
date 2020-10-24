@@ -21,9 +21,7 @@
             <div v-html="$error.handle(error)"/>
 
             <ValidationObserver>
-                <keep-alive>
-                  <component :is="currentComponent" v-bind="currentProperties"></component>
-                </keep-alive>
+                <component :is="currentComponent" v-bind="currentProperties"></component>
             </ValidationObserver>
             <div class="form-group pull-right">
                 <button v-if="currentStep > 1" class="btn btn-primary" @click="previousStep" type="button"><i
@@ -81,31 +79,31 @@ export default {
             estimated_costs: [{unit: 0, total: 0, estimatedcost_id: null}],
             operation_costs: [{quantity: 0, unit_rate: 0, total: 0, operationcost_id: null}],
         },
-        currentStep:1,
-        currentComponent:'step-one'
+        currentStep: 1,
+        currentComponent: 'step-one'
     }),
     created() {
         if (this.existingEoi) {
             this.initEoi();
         }
     },
-    watch:{
-        currentStep(){
-            if (this.currentStep ===1) return this.currentComponent = 'step-one';
-            if (this.currentStep ===2) return this.currentComponent = 'step-two';
-            if (this.currentStep ===3) return this.currentComponent = 'step-three';
-            if (this.currentStep ===4) return this.currentComponent = 'step-four';
-            if (this.currentStep ===5) return this.currentComponent = 'step-five';
-         }
+    watch: {
+        currentStep() {
+            if (this.currentStep === 1) return this.currentComponent = 'step-one';
+            if (this.currentStep === 2) return this.currentComponent = 'step-two';
+            if (this.currentStep === 3) return this.currentComponent = 'step-three';
+            if (this.currentStep === 4) return this.currentComponent = 'step-four';
+            if (this.currentStep === 5) return this.currentComponent = 'step-five';
+        }
     },
 
-    computed:{
-        currentProperties(){
-            if (this.currentStep ===1) return {eoi:this.eoi};
-            if (this.currentStep ===2) return {eoi:this.eoi,services:this.services};
-            if (this.currentStep ===3) return {eoi:this.eoi,connections:this.connections};
-            if (this.currentStep ===4) return  {eoi:this.eoi,'estimated-costs':this.estimatedCosts};
-            if (this.currentStep ===5) return  {eoi:this.eoi,'operation-costs':this.operationCosts};
+    computed: {
+        currentProperties() {
+            if (this.currentStep === 1) return {eoi: this.eoi};
+            if (this.currentStep === 2) return {eoi: this.eoi, services: this.services};
+            if (this.currentStep === 3) return {eoi: this.eoi, connections: this.connections};
+            if (this.currentStep === 4) return {eoi: this.eoi, 'estimated-costs': this.estimatedCosts};
+            if (this.currentStep === 5) return {eoi: this.eoi, 'operation-costs': this.operationCosts};
         }
     },
 

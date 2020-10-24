@@ -7,13 +7,13 @@
                 <input v-model="eoi.program_manager" type="text" class="form-control col-md-8">
                 <span class="ml-2 text-danger"> {{ errors[0] }}</span>
             </ValidationProvider>
-            <ValidationProvider name="Fixed Grant" rules="required|numeric" v-slot="{ errors }"
+            <ValidationProvider name="Fixed Grant" rules="required|numeric|min_value:1" v-slot="{ errors }"
                                 class="row form-group">
                 <label class="control-label col-md-4">Fixed Grant</label>
                 <vue-numeric separator="," v-model="eoi.fixed_grant" class="form-control col-md-8"></vue-numeric>
                 <span class="ml-2 text-danger"> {{ errors[0] }}</span>
             </ValidationProvider>
-            <ValidationProvider name="Variable Grant" rules="required|numeric" v-slot="{ errors }"
+            <ValidationProvider name="Variable Grant" rules="required|numeric|min_value:1" v-slot="{ errors }"
                                 class="row form-group">
                 <label class="control-label col-md-4">Estimated Variable
                     Grant</label>
@@ -27,7 +27,7 @@
         </div>
         <div class="col-md-6">
             <p>Total Funding will be used as indicated:</p>
-            <ValidationProvider name="COVID-19 emergency interventions" rules="required" v-slot="{ errors }"
+            <ValidationProvider name="COVID-19 emergency interventions" rules="required|numeric|min_value:1" v-slot="{ errors }"
                                 class="row form-group">
                 <label class="control-label col-md-6">1. Short-term
                     COVID-19 emergency interventions</label>
@@ -35,7 +35,7 @@
                              class="form-control col-md-6"></vue-numeric>
                 <span class="ml-2 text-danger"> {{ errors[0] }}</span>
             </ValidationProvider>
-            <ValidationProvider name="Operation & Maintenanance Costs" rules="required" v-slot="{ errors }"
+            <ValidationProvider name="Operation & Maintenanance Costs" rules="required|numeric|min_value:1" v-slot="{ errors }"
                                 class="row form-group">
                 <label class="control-label col-md-6">2. Operation & Maintenance
                     Costs</label>
@@ -103,10 +103,7 @@ export default {
     computed: {
         total: {
             get: function () {
-                if (this.eoi.fixed_grant && this.eoi.variable_grant) {
-                    return parseFloat(this.eoi.fixed_grant) + parseFloat(this.eoi.variable_grant);
-                }
-                return 0;
+                return this.eoi.fixed_grant + this.eoi.variable_grant;
             },
             set: function (n) {
                 return n;
@@ -114,10 +111,7 @@ export default {
         },
         total_breakdown: {
             get: function () {
-                if (this.eoi.emergency_intervention_total && this.eoi.operation_costs_total) {
-                    return parseFloat(this.eoi.emergency_intervention_total) + parseFloat(this.eoi.operation_costs_total);
-                }
-                return 0;
+                return this.eoi.emergency_intervention_total + this.eoi.operation_costs_total;
             },
             set: function (n) {
                 return n;
