@@ -21,7 +21,7 @@
             <tr>
                 <th colspan="3">Total costs</th>
                 <ValidationProvider tag="td" name="Total"
-                                    :rules="'required|numeric|max_value:'+eoi.emergency_intervention_total"
+                                    :rules="'required|numeric|min_value:'+eoi.emergency_intervention_total+'|max_value:'+eoi.emergency_intervention_total"
                                     v-slot="{ errors }">
                     <vue-numeric separator="," v-model="total" disabled="true" class="form-control"></vue-numeric>
                     <span class="text-danger">{{ errors[0] }}</span>
@@ -50,7 +50,7 @@ export default {
     },
     methods: {
         addCost() {
-            this.eoi.estimated_costs.push({unit: "", total: "", estimatedcost_id: null});
+            this.eoi.estimated_costs.push({unit: 0, cost: 0, quantity: 0, total: 0, estimatedcost_id: null});
         },
         removeCost(index) {
             if (this.eoi.estimated_costs.length > 1) {

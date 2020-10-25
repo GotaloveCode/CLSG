@@ -18,7 +18,6 @@ use App\Traits\SendMailNotification;
 use App\Http\Resources\EoiCustomResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Notification;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -86,41 +85,19 @@ class EoiController extends Controller
             'status' => 'Pending'
         ]);
 
-        foreach ($request->input('services') as $service) {
-            $eoi->services()->attach($service['service_id'], [
-                'areas' => $service['areas'],
-                'total' => $service['total'],
-            ]);
-        }
-
-        foreach ($request->input('connections') as $connection) {
-            $eoi->connections()->attach($connection['connection_id'], [
-                'areas' => $connection['areas'],
-                'total' => $connection['total'],
-            ]);
-        }
-
-        foreach ($request->input('estimated_costs') as $estimated_cost) {
-            $eoi->estimatedcosts()->attach($estimated_cost['estimatedcost_id'], [
-                'unit' => $estimated_cost['unit'],
-                'total' => $estimated_cost['total'],
-            ]);
-        }
-
-        foreach ($request->input('operation_costs') as $operation_cost) {
-            $eoi->operationcosts()->attach($operation_cost['operationcost_id'], [
-                'cost' => $operation_cost['cost']
-            ]);
-        }
-
-        if ($request->ajax()) {
-            return response()->json($eoi);
-        }
-        return back()->with(['eoi' => $eoi]);
+        return $this->creatEoiRelations($eoi, $request);
     }
 
     public function update(EoiRequest $request, Eoi $eoi)
     {
+        $statuses = collect("Pending","Needs Review");
+
+        if(!$statuses->has($eoi->status)){
+            return response()->json([
+                'message' => 'The EOI status is not Pending or Needs Review',
+                'errors' => ['wsp_id' => ['The EOI status is not Pending or Needs Review!']]
+            ], 403);
+        }
         $eoi->update([
             'program_manager' => $request->input('program_manager'),
             'fixed_grant' => $request->input('fixed_grant'),
@@ -140,37 +117,7 @@ class EoiController extends Controller
         $eoi->estimatedcosts()->detach();
         $eoi->operationcosts()->detach();
 
-        foreach ($request->input('services') as $service) {
-            $eoi->services()->attach($service['service_id'], [
-                'areas' => $service['areas'],
-                'total' => $service['total'],
-            ]);
-        }
-
-        foreach ($request->input('connections') as $connection) {
-            $eoi->connections()->attach($connection['connection_id'], [
-                'areas' => $connection['areas'],
-                'total' => $connection['total'],
-            ]);
-        }
-
-        foreach ($request->input('estimated_costs') as $estimated_cost) {
-            $eoi->estimatedcosts()->attach($estimated_cost['estimatedcost_id'], [
-                'unit' => $estimated_cost['unit'],
-                'total' => $estimated_cost['total'],
-            ]);
-        }
-
-        foreach ($request->input('operation_costs') as $operation_cost) {
-            $eoi->operationcosts()->attach($operation_cost['operationcost_id'], [
-                'cost' => $operation_cost['cost']
-            ]);
-        }
-
-        if ($request->ajax()) {
-            return response()->json($eoi);
-        }
-        return redirect()->back()->with(['eoi' => $eoi]);
+        return $this->creatEoiRelations($eoi, $request);
     }
 
     public function show(Eoi $eoi)
@@ -237,7 +184,7 @@ class EoiController extends Controller
         $attachment = $eoi->attachments()->where('document_type', 'Commitment Letter')->first();
 
         if ($attachment) {
-            Attachment::remove($attachment,'app/Eoi/');
+            Attachment::remove($attachment, 'app/Eoi/');
         }
 
         $fileName = $this->storeDocument($request->attachment, 'Commitment Letter');
@@ -268,6 +215,43 @@ class EoiController extends Controller
         if ($eoi->status !== 'WSTF Approved') {
             return back()->withErrors("Expression of Interest must have been approved by Water Trust Fund");
         }
+    }
+
+    private function creatEoiRelations($eoi, EoiRequest $request)
+    {
+        foreach ($request->input('services') as $service) {
+            $eoi->services()->attach($service['service_id'], [
+                'areas' => $service['areas'],
+                'total' => $service['total'],
+            ]);
+        }
+
+        foreach ($request->input('connections') as $connection) {
+            $eoi->connections()->attach($connection['connection_id'], [
+                'areas' => $connection['areas'],
+                'total' => $connection['total'],
+            ]);
+        }
+
+        foreach ($request->input('estimated_costs') as $estimated_cost) {
+            $eoi->estimatedcosts()->attach($estimated_cost['estimatedcost_id'], [
+                'unit' => $estimated_cost['unit'],
+                'quantity' => $estimated_cost['quantity'],
+                'total' => $estimated_cost['total'],
+            ]);
+        }
+
+        foreach ($request->input('operation_costs') as $operation_cost) {
+            $eoi->operationcosts()->attach($operation_cost['operationcost_id'], [
+                'cost' => $operation_cost['cost']
+            ]);
+        }
+
+        if ($request->ajax()) {
+            return response()->json($eoi);
+        }
+
+        return back()->with(['eoi' => $eoi]);
     }
 
 }

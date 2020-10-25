@@ -19,14 +19,16 @@
                 :index="index"/>
             <tr>
                 <th>Total costs</th>
-                <ValidationProvider tag="th" name="Total" :rules="'required|numeric|max_value:'+eoi.operation_costs_total"
+                <ValidationProvider tag="th" name="Total"
+                                    :rules="'required|numeric|min_value:'+eoi.operation_costs_total+'|max_value:'+eoi.operation_costs_total"
                                     v-slot="{ errors }">
                     <vue-numeric separator="," v-model="total" disabled="true" class="form-control"></vue-numeric>
                     <span class="text-danger">{{ errors[0] }}</span>
                 </ValidationProvider>
             </tr>
             <tr v-if="total>eoi.operation_costs_total">
-                <td class="text-danger" colspan="3">The total Operation Cost should not exceed Operation & Maintenance Costs total
+                <td class="text-danger" colspan="3">The total Operation Cost should not exceed Operation & Maintenance
+                    Costs total
                 </td>
             </tr>
         </table>
