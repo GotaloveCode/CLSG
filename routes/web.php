@@ -61,6 +61,11 @@ Route::group(['middleware' => ['auth']], function () {
        Route::get("/checklist","ReportsController@checklist");
        Route::post("/checklist","ReportsController@saveChecklist");
        Route::post("/get-checklist","ReportsController@getChecklist");
+       Route::get("/monthly-verification","ReportsController@monthlyVerification");
+       Route::get("/verification","ReportsController@verification");
+       Route::get("/score","ReportsController@score");
+       Route::post("/get-verification","ReportsController@getVerification");
+       Route::post("/verification","ReportsController@saveVerification");
     });
 
     Route::resource('staff', 'StaffController');
