@@ -32,7 +32,7 @@
                             @else
                                 <bcp-form
                                     :staff="{{ $staff }}"
-                                    wsp_id="{{$wsp_id}}"
+                                    wsp_id="{{$wsp->id}}"
                                     :essential_functions="{{ $essential_functions }}"
                                     submit-url="{{ route('bcps.store') }}"></bcp-form>
                             @endisset
