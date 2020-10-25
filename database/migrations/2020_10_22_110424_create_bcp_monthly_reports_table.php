@@ -15,8 +15,13 @@ class CreateBcpMonthlyReportsTable extends Migration
     {
         Schema::create('bcp_monthly_reports', function (Blueprint $table) {
             $table->id();
-            $table->string("month")->nullable();
-            $table->year("year")->nullable();
+            $table->integer("month");
+            $table->year("year");
+            $table->string("revenue");
+            $table->string("operations_costs");
+            $table->string("clsg_total");
+            $table->text("challenges")->nullable();
+            $table->text("expected_activities");
             $table->text("essential");
             $table->text("customer");
             $table->text("staff");

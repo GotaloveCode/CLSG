@@ -24,6 +24,11 @@ class BcpMonthlyReportRequest extends FormRequest
     public function rules()
     {
         return [
+            'revenue' => 'required|numeric',
+            'operations_costs' => 'required|numeric',
+            'clsg_total' => 'required|numeric',
+            'challenges' => 'required',
+            'expected_activities' => 'required',
             'essential' => 'required',
             'customer' => 'required',
             'staff' => 'required',

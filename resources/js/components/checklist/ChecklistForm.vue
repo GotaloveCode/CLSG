@@ -10,11 +10,30 @@
         <div v-if="!show && !show_date_form">
             <form @submit.prevent="postData()">
                 <div class="row">
-                    <div class="col-md-12">
-                        <h4 class="text-uppercase text-center">1. Essential Operations </h4>
+                    <h4 class="text-uppercase col-md-12 text-center">A. GENERAL </h4>
+                    <div class="col-md-4 form-group">
+                        <label>Revenues collected this month (KES)</label>
+                        <vue-numeric separator="," v-model="revenue" class="form-control" required></vue-numeric>
                     </div>
-                </div>
-                <div class="row">
+                    <div class="col-md-4 form-group">
+                        <label>O&M costs this month (KES)</label>
+                        <vue-numeric separator="," v-model="operations_costs" class="form-control" required></vue-numeric>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label>Total CLSG amount disbursed to date (KES)</label>
+                        <vue-numeric separator="," v-model="clsg_total" class="form-control" required></vue-numeric>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Challenges (if any) encountered during the reporting period and mitigation
+                            measures</label>
+                        <text-area class="form-control" v-model="challenges"></text-area>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Expected activities for the next month (specifying any planned procurement or
+                            contracting)</label>
+                        <text-area class="form-control" required v-model="expected_activities"></text-area>
+                    </div>
+                    <h4 class="text-uppercase col-md-12 text-center">1. Essential Operations </h4>
                     <div class="col-md-6" v-for="essn in essentials" style="margin-top: -10px">
                         <div class="card">
                             <div class="card-header">
@@ -230,7 +249,7 @@ export default {
     },
     data() {
         return {
-            error:'',
+            error: '',
             form: {
                 essential: [],
                 customer: [],
@@ -241,6 +260,11 @@ export default {
                 staff_comment: [],
                 communication_comment: [],
             },
+            revenue: null,
+            operations_operations_costs: null,
+            clsg_total:null,
+            challenges: '',
+            expected_activities: '',
             essential_data: [],
             customer_data: [],
             staff_data: [],
@@ -271,12 +295,17 @@ export default {
             if (!this.validateEssentials()) return this.$toastr.e("All Essential Operations Checklist fields are required!");
             let data = {
                 bcp_id: this.bcp_id,
+                challenges: this.challenges,
+                expected_activities: this.expected_activities,
+                revenue: this.revenue,
+                operations_costs:this.operations_costs,
+                clsg_total: this.clsg_total,
                 essential: this.essential_data,
                 customer: this.customer_data,
                 staff: this.staff_data,
                 communication: this.communication_data,
                 month: this.month,
-                year: this.year
+                year: this.year,
             };
             this.error = '';
             this.loading = true;

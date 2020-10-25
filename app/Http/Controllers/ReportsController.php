@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\BcpMonthlyReportRequest;
 use App\Http\Requests\MonthlyVerificationRequest;
 use App\Models\BcpChecklist;
 use App\Models\BcpMonthlyReport;
@@ -24,7 +25,7 @@ class ReportsController extends Controller
 
     public function monthlyVerification()
     {
-        $wsps = Wsp::select('id','name')->get();
+        $wsps = Wsp::select('id', 'name')->get();
         return view("verification.index")->with(compact('wsps'));
     }
 
@@ -38,23 +39,23 @@ class ReportsController extends Controller
         return response()->json(MonthlyVerification::all());
     }
 
-    public function saveChecklist(Request $request)
+    public function saveChecklist(BcpMonthlyReportRequest $request)
     {
         $bcp = auth()->user()->wsps()->first()->bcp;
 
-        if($bcp->id != $request->input("bcp_id")){
+        if ($bcp->id != $request->input("bcp_id")) {
             return response()->json([
                 'message' => 'The given field was invalid',
                 'errors' => ['bcp_id' => ['The BCP does not belong to the WSP!']]
             ], 422);
         }
 
-        $bcp = BcpMonthlyReport::where('month',$request->input("month"))
+        $bcp = BcpMonthlyReport::where('month', $request->input("month"))
             ->where('year', $request->input("year"))
             ->where('bcp_id', $request->input("bcp_id"))
             ->first();
 
-        if($bcp){
+        if ($bcp) {
             return response()->json([
                 'message' => 'The given field was invalid',
                 'errors' => ['month' => ['A BCP Monthly report already exists for this month!']]
@@ -62,6 +63,11 @@ class ReportsController extends Controller
         }
 
         $bcp = BcpMonthlyReport::create([
+            'revenue' => $request->input("revenue"),
+            'operations_costs' => $request->input("operations_costs"),
+            'clsg_total' => $request->input("this.clsg_total"),
+            'challenges' => $request->input("challenges"),
+            'expected_activities' => $request->input("expected_activities"),
             'essential' => json_encode($request->input("essential")),
             'customer' => json_encode($request->input("customer")),
             'staff' => json_encode($request->input("staff")),
@@ -75,12 +81,12 @@ class ReportsController extends Controller
 
     public function saveVerification(MonthlyVerificationRequest $request)
     {
-        $verification = MonthlyVerificationReport::where('month',$request->input("month"))
+        $verification = MonthlyVerificationReport::where('month', $request->input("month"))
             ->where('year', $request->input("year"))
             ->where('wsp_id', $request->input("wsp_id"))
             ->first();
 
-        if($verification){
+        if ($verification) {
             return response()->json([
                 'message' => 'The given field was invalid',
                 'errors' => ['month' => ['A Monthly Performance Verification Report for this WSP already exists for this period!']]

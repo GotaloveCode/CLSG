@@ -1,12 +1,32 @@
 <template>
     <div>
+<!--        TODO: Add linkage to below section A ViewCheckList-->
         <form>
             <div class="row">
-                <div class="col-md-12">
-                    <h4 class="text-uppercase text-center">1. Essential Operations</h4>
+                <h4 class="text-uppercase col-md-12 text-center">A. GENERAL </h4>
+                <div class="col-md-4 form-group">
+                    <label>Revenues collected this month (KES)</label>
+                    <vue-numeric separator="," v-model="revenue" class="form-control" required></vue-numeric>
                 </div>
-            </div>
-            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label>O&M costs this month (KES)</label>
+                    <vue-numeric separator="," v-model="operations_costs" class="form-control" required></vue-numeric>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label>Total CLSG amount disbursed to date (KES)</label>
+                    <vue-numeric separator="," v-model="clsg_total" class="form-control" required></vue-numeric>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>Challenges (if any) encountered during the reporting period and mitigation
+                        measures</label>
+                    <text-area class="form-control" v-model="challenges"></text-area>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>Expected activities for the next month (specifying any planned procurement or
+                        contracting)</label>
+                    <text-area class="form-control" required v-model="expected_activities"></text-area>
+                </div>
+                <h4 class="col-md-12 text-uppercase text-center">1. Essential Operations</h4>
                 <div class="col-md-6" v-for="essn in checklist.essential" style="margin-top: -10px">
                     <div class="card">
                         <div class="card-header">
@@ -201,22 +221,22 @@ export default {
     },
     methods:{
         getEssentialName(id){
-            if (this.essentials.length !=undefined){
+            if (this.essentials.length){
                 return this.essentials.find(c => c.id ==id).name;
             }
         },
         getCustomerName(id){
-            if (this.customers.length !=undefined){
+            if (this.customers.length){
                 return this.customers.find(c => c.id ==id).name;
             }
         },
         getStaffName(id){
-            if (this.staff.length !=undefined){
+            if (this.staff.length){
                 return this.staff.find(c => c.id ==id).name;
             }
         },
         getCommunicationName(id){
-            if (this.communication.length !=undefined){
+            if (this.communication.length){
                 return this.communication.find(c => c.id ==id).name;
             }
         },
