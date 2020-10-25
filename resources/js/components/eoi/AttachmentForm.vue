@@ -27,9 +27,10 @@
                     <ValidationProvider tag="td" name="Attachment" v-slot="{ validate, errors }"
                                         rules="required|ext:jpg,png,pdf,doc,docx,xls,xlsx,csv">
                         <input type="file" ref="the_document" @change="validate" class="form-control">
-                        <span class="text-danger">{{ errors[0] }}</span>
+                        <div class="text-danger">{{ errors[0] }}</div>
                     </ValidationProvider>
                 </tr>
+                <tr><td colspan="2"></td><td><progress max="100" :value.prop="uploadPercentage"></progress></td></tr>
             </table>
             <button class="btn btn-warning" v-if="loading" type="submit">
                 Sending <i class="feather icon-spin spinner"></i>
@@ -56,13 +57,14 @@ export default {
     data: () => ({
         error: '',
         loading: false,
+        uploadPercentage:0,
         document: {
             document_type: null,
             display_name: ''
         }
     }),
     methods: {
-        onSubmit() {
+        onSubmit: function () {
             const myData = new FormData();
             let the_document = this.$refs.the_document.files[0];
             myData.append('attachment', the_document);
@@ -70,7 +72,10 @@ export default {
             myData.append('document_type', this.document.document_type);
             this.loading = true;
             axios.post(this.submitUrl, myData, {
-                headers: {'content-type': 'multipart/form-data'}
+                headers: {'content-type': 'multipart/form-data'},
+                onUploadProgress: function (progressEvent) {
+                    this.uploadPercentage = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100))
+                }.bind(this)
             }).then(() => {
                 this.$toastr.s('Document uploaded', 'Saved');
                 location.reload();
