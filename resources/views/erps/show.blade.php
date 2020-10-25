@@ -91,14 +91,12 @@
                     <div>
                         @can('review-erp')
                             @if(auth()->user()->hasRole('wasreb'))
-                                @if($erp->status =='Pending' || $erp->status =='Needs Review')
+                                @if($erp->status =='Pending')
                                     <button class="btn btn-success ml-2 mb-1"
                                             @click.prevent="review('WASREB Approved')"><i
                                             class="feather icon-check"></i>
                                         Approve
                                     </button>
-                                @endif
-                                @if($erp->status =='Pending')
                                     <button class="btn btn-danger mb-1"
                                             @click.prevent="review('Needs Review')"><i
                                             class="fa fa-pencil"></i>
