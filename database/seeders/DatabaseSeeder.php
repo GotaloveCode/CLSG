@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ConnectionSeeder::class);
         $this->call(ServiceSeeder::class);
         $this->call(ChecklistSeeder::class);
+        $this->call(MonthlyVerificationSeeder::class);
 
 //        $this->call(StaffSeeder::class);
 //        $this->call(BcpSeeder::class);

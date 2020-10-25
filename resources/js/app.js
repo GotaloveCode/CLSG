@@ -20,6 +20,7 @@ const ErpForm = () => import('./components/erp/ErpForm.vue' /* webpackChunkName:
 const StaffForm = () => import('./components/staff/Create.vue' /* webpackChunkName: "js/components/staff/create" */);
 const ManageStaff= () => import('./components/staff/ManageStaff' /* webpackChunkName: "js/components/staff/manage-staff" */);
 const ChecklistForm = () => import('./components/checklist/ChecklistForm' /* webpackChunkName: "js/components/checklist/checklist-form" */);
+const VerificationForm = () => import('./components/verification/VerificationForm' /* webpackChunkName: "js/components/verification/verification-form" */);
 
 
 const app = new Vue({
@@ -37,6 +38,7 @@ const app = new Vue({
         ManageStaff,
         ChecklistForm,
         ManageAttachments,
-        NotificationComponent
+        NotificationComponent,
+        VerificationForm
     },
 });

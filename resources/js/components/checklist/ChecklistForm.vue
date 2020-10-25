@@ -62,7 +62,7 @@
                   <div class="col-md-6" v-for="cus in customers" style="margin-top: -10px">
                       <div class="card">
                           <div class="card-header">
-                              <p><i class="fa fa-angle-double-right" aria-hidden="true"></i> {{cus.name}} {{cus.id}}</p>
+                              <p><i class="fa fa-angle-double-right" aria-hidden="true"></i> {{cus.name}}</p>
                           </div>
                           <div class="card-content collapse show">
                               <div class="card-body" style="padding-top: 0">

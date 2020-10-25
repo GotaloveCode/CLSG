@@ -64,11 +64,16 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
     });
 
-    Route::group(['prefix' => 'reports'], function () {
-        Route::get("/monthly-revenue", "ReportsController@index");
-        Route::get("/checklist", "ReportsController@checklist");
-        Route::post("/checklist", "ReportsController@saveChecklist");
-        Route::post("/get-checklist", "ReportsController@getChecklist");
+    Route::group(['prefix' => 'reports'],function (){
+       Route::get("/monthly-revenue","ReportsController@index");
+       Route::get("/checklist","ReportsController@checklist");
+       Route::post("/checklist","ReportsController@saveChecklist");
+       Route::post("/get-checklist","ReportsController@getChecklist");
+       Route::get("/monthly-verification","ReportsController@monthlyVerification");
+       Route::get("/verification","ReportsController@verification");
+       Route::get("/score","ReportsController@score");
+       Route::post("/get-verification","ReportsController@getVerification");
+       Route::post("/verification","ReportsController@saveVerification");
     });
 
     Route::resource('staff', 'StaffController');

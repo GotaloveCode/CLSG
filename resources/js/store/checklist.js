@@ -60,7 +60,6 @@ const actions = {
     [SET_CHECKLISTS](context,payload) {
         axios.post("/reports/get-checklist",payload)
             .then(res => {
-                console.log(res.data)
                 context.commit(SET_CHECKLIST,res.data);
                 context.commit(SET_MONTH,payload.month);
                 context.commit(SET_YEAR,payload.year);
