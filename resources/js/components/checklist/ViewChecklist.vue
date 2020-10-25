@@ -36,7 +36,7 @@
                             </fieldset>
                               </div>
                                 <div style="margin-left: 15%;">
-                                   <textarea  cols="30" rows="2" class="form-control" v-model="essn.comment" placeholder="Your comment here"></textarea>
+                                   <textarea disabled="true"  cols="30" rows="2" class="form-control" v-model="essn.comment" placeholder="Your comment here"></textarea>
                                 </div>
 
                             </span>
@@ -81,7 +81,7 @@
                             </fieldset>
                                 </div>
                                  <div style="margin-left: 15%;">
-                                   <textarea cols="30" rows="2" class="form-control" v-model="cus.comment"  placeholder="Your comment here"></textarea>
+                                   <textarea disabled="true" cols="30" rows="2" class="form-control" v-model="cus.comment"  placeholder="Your comment here"></textarea>
                                 </div>
                             </span>
                             </div>
@@ -125,7 +125,7 @@
                             </fieldset>
                                 </div>
                                   <div style="margin-left: 15%;">
-                                   <textarea cols="30" rows="2" class="form-control" v-model="stf.comment" placeholder="Your comment here"></textarea>
+                                   <textarea disabled="true" cols="30" rows="2" class="form-control" v-model="stf.comment" placeholder="Your comment here"></textarea>
                                 </div>
                             </span>
                             </div>
@@ -170,7 +170,7 @@
                             </fieldset>
                              </div>
                                  <div style="margin-left: 15%;">
-                                 <textarea cols="30" rows="2" class="form-control" v-model="comm.comment" placeholder="Your comment here"></textarea>
+                                 <textarea disabled="true" cols="30" rows="2" class="form-control" v-model="comm.comment" placeholder="Your comment here"></textarea>
                                </div>
                             </span>
                             </div>

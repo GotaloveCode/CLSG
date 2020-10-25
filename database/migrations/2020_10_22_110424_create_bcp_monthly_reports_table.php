@@ -21,7 +21,8 @@ class CreateBcpMonthlyReportsTable extends Migration
             $table->text("customer");
             $table->text("staff");
             $table->text("communication");
-            $table->integer("bcp_checklist_id")->nullable();
+            $table->foreign('bcp_id')->references('id')->on('bcps');
+            $table->unsignedInteger('bcp_id');
             $table->timestamps();
         });
     }

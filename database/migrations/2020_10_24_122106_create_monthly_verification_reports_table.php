@@ -17,12 +17,12 @@ class CreateMonthlyVerificationReportsTable extends Migration
             $table->id();
             $table->string("month")->nullable();
             $table->string("year")->nullable();
-            $table->string("wsp");
-            $table->string("verification_period");
-            $table->string("verification_team");
+            $table->text("verification_team");
             $table->text("recommendations");
             $table->text("performance_score_details");
             $table->text("clsg_details");
+            $table->foreign('wsp_id')->references('id')->on('wsps');
+            $table->unsignedInteger('wsp_id');
             $table->timestamps();
         });
     }

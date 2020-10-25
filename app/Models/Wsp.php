@@ -95,17 +95,17 @@ class Wsp extends Model
     }
 
 
-    /**
-     * Get the Essentialsupplies for the Wsp.
-     */
-    public function essentialsupplies()
-    {
-        return $this->belongsToMany(Essentialsupply::class);
-    }
-
     public function postalcode()
     {
         return $this->belongsTo(PostalCode::class,'postal_code_id');
+    }
+
+    /**
+     * Get the Monthly Verification Reports for the Wsp.
+     */
+    public function monthlyReports()
+    {
+        return $this->hasMany(MonthlyVerificationReport::class);
     }
 
 }

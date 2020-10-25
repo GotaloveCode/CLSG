@@ -83,9 +83,17 @@
             <li class=" nav-item"><a href="#"><i class="feather icon-bar-chart"></i><span
                         class="menu-title">Reports</span></a>
                 <ul class="menu-content">
+                    @role('wasreb')
                     <li><a class="menu-item" href="{{ url('/reports/monthly-verification') }}">Monthly Verification</a>
                     </li>
-                    <li><a class="menu-item" href="{{ url('/reports/monthly-revenue') }}">BCP Monthly Reporting</a>
+                    @endrole
+                    @can('create-bcp')
+                        @if($bcp)
+                            <li><a class="menu-item" href="{{ url('/reports/monthly-revenue') }}">BCP Monthly Reporting</a>
+                            </li>
+                        @endif
+                    @endcan
+                    <li><a class="menu-item" data-title="Monthly Verification List" href="{{ url('/reports/monthly-verification') }}">Monthly Verification List</a>
                     </li>
                 </ul>
             </li>

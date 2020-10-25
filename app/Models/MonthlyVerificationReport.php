@@ -9,4 +9,9 @@ class MonthlyVerificationReport extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function wsp()
+    {
+        return $this->belongsTo(Wsp::class);
+    }
 }
