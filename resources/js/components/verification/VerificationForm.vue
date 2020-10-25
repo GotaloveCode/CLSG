@@ -1,6 +1,7 @@
 <template>
     <div class="row">
         <div class="col-md-12">
+            <div v-html="$error.handle(error)"/>
             <template v-if="show_date_form && !show">
                 <date-form></date-form>
             </template>
@@ -96,8 +97,10 @@
                     </div>
 
                     <div class="form-group text-center">
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane" aria-hidden="true">
-                            Submit</i>
+                        <button class="btn btn-warning" v-if="loading" type="button">Sending ... <i
+                            class="feather icon-loader"></i></button>
+                        <button type="submit" class="btn btn-primary">
+                            Submit <i class="feather icon-send"></i>
                         </button>
                     </div>
                 </form>
@@ -118,6 +121,7 @@ export default {
     },
     data() {
         return {
+            error:'',
             form: {
                 wsp_id: null,
                 verification_period: '',
@@ -133,7 +137,8 @@ export default {
             scores_data: [],
             determination_data: [],
             show: false,
-            show_date_form: true
+            show_date_form: true,
+            loading: false,
         }
     },
     created() {
@@ -157,7 +162,7 @@ export default {
             if (scores === 'negative_value') return this.$toastr.e("Negative values are not allowed!");
             if (scores === "greater_value") return this.$toastr.e("Score cannot be greater than total score!");
             if (!scores) return this.$toastr.e("All Performance Score fields are required!");
-
+            this.error = '';
             let data = {
                 performance_score_details: this.scores_data,
                 clsg_details: this.determination_data,
@@ -168,12 +173,14 @@ export default {
                 month: this.month,
                 year: this.year
             };
-
-            axios.post("/reports/verification", data)
-                .then(res => {
-                    this.show_date_form = true;
-                    this.show = false;
-                })
+            this.loading = true;
+            axios.post("/reports/verification", data).then(() => {
+                this.show_date_form = true;
+                this.show = false;
+                this.loading = false;
+            }).catch(error => {
+                this.error = error.response;
+            });
 
         },
         validateScores() {

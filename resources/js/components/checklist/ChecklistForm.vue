@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div v-html="$error.handle(error)"/>
         <template v-if="show_date_form && !show">
             <date-form></date-form>
         </template>
@@ -206,8 +207,10 @@
                     </div>
                 </div>
                 <div class="form-group text-center">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane" aria-hidden="true">
-                        Submit</i>
+                    <button class="btn btn-warning" v-if="loading" type="button">Sending ... <i
+                        class="feather icon-loader"></i></button>
+                    <button type="submit" v-else class="btn btn-primary">
+                        Submit <i class="feather icon-send"></i>
                     </button>
                 </div>
             </form>
@@ -227,6 +230,7 @@ export default {
     },
     data() {
         return {
+            error:'',
             form: {
                 essential: [],
                 customer: [],
@@ -241,6 +245,7 @@ export default {
             customer_data: [],
             staff_data: [],
             communication_data: [],
+            loading: false,
             show: false,
             show_date_form: true
         }
@@ -264,7 +269,6 @@ export default {
             if (!this.validateStaff()) return this.$toastr.e("All Staff Health Protection Checklist fields are required!");
             if (!this.validateCustomers()) return this.$toastr.e("All Vulnerable Customers Checklist fields are required!");
             if (!this.validateEssentials()) return this.$toastr.e("All Essential Operations Checklist fields are required!");
-
             let data = {
                 bcp_id: this.bcp_id,
                 essential: this.essential_data,
@@ -274,11 +278,15 @@ export default {
                 month: this.month,
                 year: this.year
             };
-            axios.post("/reports/checklist", data)
-                .then(res => {
-                    this.show_date_form = true;
-                    this.show = false;
-                })
+            this.error = '';
+            this.loading = true;
+            axios.post("/reports/checklist", data).then(() => {
+                this.show_date_form = true;
+                this.show = false;
+                this.loading = false;
+            }).catch(error => {
+                this.error = error.response;
+            });
 
         },
         validateCommunication() {
