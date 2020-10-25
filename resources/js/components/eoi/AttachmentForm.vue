@@ -55,7 +55,7 @@ export default {
     },
     data: () => ({
         error: '',
-        loading:false,
+        loading: false,
         document: {
             document_type: null,
             display_name: ''
@@ -69,7 +69,9 @@ export default {
             myData.append('display_name', this.document.display_name);
             myData.append('document_type', this.document.document_type);
             this.loading = true;
-            axios.post(this.submitUrl, myData, {headers: {'content-type': 'multipart/form-data'}}).then(() => {
+            axios.post(this.submitUrl, myData, {
+                headers: {'content-type': 'multipart/form-data'}
+            }).then(() => {
                 this.$toastr.s('Document uploaded', 'Saved');
                 location.reload();
                 this.loading = false;
