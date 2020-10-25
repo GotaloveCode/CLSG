@@ -31,8 +31,11 @@
                     </ValidationProvider>
                 </tr>
             </table>
-            <button class="btn btn-primary" type="submit">
-                Submit
+            <button class="btn btn-warning" v-if="loading" type="submit">
+                Sending <i class="feather icon-spin spinner"></i>
+            </button>
+            <button class="btn btn-primary" v-else type="submit">
+                Submit <i class="feather icon-send"></i>
             </button>
         </form>
     </ValidationObserver>
@@ -52,6 +55,7 @@ export default {
     },
     data: () => ({
         error: '',
+        loading:false,
         document: {
             document_type: null,
             display_name: ''
@@ -64,11 +68,13 @@ export default {
             myData.append('attachment', the_document);
             myData.append('display_name', this.document.display_name);
             myData.append('document_type', this.document.document_type);
-
+            this.loading = true;
             axios.post(this.submitUrl, myData, {headers: {'content-type': 'multipart/form-data'}}).then(() => {
                 this.$toastr.s('Document uploaded', 'Saved');
                 location.reload();
+                this.loading = false;
             }).catch(error => {
+                this.loading = false;
                 if (error.response) {
                     this.error = error.response;
                 }
