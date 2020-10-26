@@ -57,15 +57,23 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::group(['prefix' => 'reports'],function (){
+        //checklists
        Route::get("/monthly-revenue","ReportsController@index");
        Route::get("/checklist","ReportsController@checklist");
        Route::post("/checklist","ReportsController@saveChecklist");
        Route::post("/get-checklist","ReportsController@getChecklist");
+       //verifications
        Route::get("/monthly-verification","ReportsController@monthlyVerification");
        Route::get("/verification","ReportsController@verification");
        Route::get("/score","ReportsController@score");
        Route::post("/get-verification","ReportsController@getVerification");
        Route::post("/verification","ReportsController@saveVerification");
+
+       //report formats
+        Route::get("/monthly-report-format","ReportsController@monthlyReportFormat");
+        Route::get("/report-format","ReportsController@reportFormat");
+        Route::post("/get-format","ReportsController@getFormat");
+        Route::post("/report-format","ReportsController@saveFormat");
     });
 
     Route::resource('staff', 'StaffController');

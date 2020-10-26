@@ -21,6 +21,7 @@ const StaffForm = () => import('./components/staff/Create.vue' /* webpackChunkNa
 const ManageStaff= () => import('./components/staff/ManageStaff' /* webpackChunkName: "js/components/staff/manage-staff" */);
 const ChecklistForm = () => import('./components/checklist/ChecklistForm' /* webpackChunkName: "js/components/checklist/checklist-form" */);
 const VerificationForm = () => import('./components/verification/VerificationForm' /* webpackChunkName: "js/components/verification/verification-form" */);
+const FormatForm = () => import('./components/reportFormat/FormatForm' /* webpackChunkName: "js/components/reportFormat/format-form" */);
 
 
 const app = new Vue({
@@ -39,6 +40,7 @@ const app = new Vue({
         ChecklistForm,
         ManageAttachments,
         NotificationComponent,
-        VerificationForm
+        VerificationForm,
+        FormatForm
     },
 });

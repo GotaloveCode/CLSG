@@ -253,7 +253,6 @@ export default {
                     }
                 }
             })
-            console.log(this.determination_data)
             return true;
         },
 
