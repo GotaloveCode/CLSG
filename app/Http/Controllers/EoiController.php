@@ -109,7 +109,8 @@ class EoiController extends Controller
             'proportion_served' => $request->input('proportion_served'),
             'date' => now(),
             'months' => 3,
-            'wsp_id' => $request->input('wsp')
+            'wsp_id' => $request->input('wsp'),
+            'status' => 'Pending'
         ]);
 
         $eoi->services()->detach();

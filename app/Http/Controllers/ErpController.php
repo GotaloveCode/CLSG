@@ -69,7 +69,7 @@ class ErpController extends Controller
         if($erp->status == "WSTF Approved"){
             abort(403,'You cannot update ERP after WSTF has approved it');
         }
-        $erp->update($request->validated());
+        $erp->update($request->validated() + ['status' => 'Pending']);
         $erp->erp_items()->delete();
         $this->createErpRelations($erp,$request);
         if ($request->ajax()) {

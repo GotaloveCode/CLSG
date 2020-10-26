@@ -84,7 +84,8 @@ class BcpController extends Controller
             'emergency_response_plan' => $request->input('emergency_response_plan'),
             'communication_plan' => $request->input('communication_plan'),
             'government_subsidy' => $request->input('government_subsidy'),
-            'wsp_id' => $request->input('wsp_id')
+            'wsp_id' => $request->input('wsp_id'),
+            'status' => 'Pending'
         ]);
 
         $bcp->essentialOperations()->delete();
