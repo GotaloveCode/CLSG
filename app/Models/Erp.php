@@ -12,7 +12,7 @@ class Erp extends Model
     use HasFactory, ProgressTrait;
 
     protected $fillable = [
-        'period', 'wsp_id', 'coordinator'
+        'period', 'wsp_id', 'coordinator', 'status'
     ];
 
     protected function serializeDate(DateTimeInterface $date)
