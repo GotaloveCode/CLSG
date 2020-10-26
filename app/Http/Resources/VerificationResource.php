@@ -16,8 +16,10 @@ class VerificationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'wsp' => $this->wsp,
-            'verification_period' => $this->verification_period,
+            'wsp' => $this->wsp->name,
+            'wsp_id' => $this->wsp_id,
+            'month' => $this->month,
+            'year' => $this->year,
             'verification_team' => $this->verification_team,
             'recommendations' => $this->recommendations,
             'performance_score_details' => json_decode($this->performance_score_details),

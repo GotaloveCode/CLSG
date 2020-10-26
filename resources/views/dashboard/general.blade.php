@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-xl-3 col-sm-6 col-12">
+        <a href="{{ route('wsps.index') }}" class="col-xl-3 col-sm-6 col-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
@@ -18,8 +18,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
+        </a>
+        <a href="{{ route('eois.index') }}" class="col-xl-3 col-sm-6 col-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
@@ -35,8 +35,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
+        </a>
+        <a href="{{ route('bcps.index') }}" class="col-xl-3 col-sm-6 col-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
@@ -52,8 +52,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
+        </a>
+        <a href="{{ route('erps.index') }}" class="col-xl-3 col-sm-6 col-12">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
@@ -69,6 +69,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
 @endsection

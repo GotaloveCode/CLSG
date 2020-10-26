@@ -26,15 +26,10 @@ class BcpController extends Controller
             return view('bcps.index');
         }
         $bcp = Bcp::query()->with('wsp:id,name')->select('bcps.*');
-        if (auth()->user()->hasRole('wsp')) {
-            $bcp = $bcp->where('wsp_id', auth()->user()->wsps()->first()->id);
-        }
 
         return Datatables::of($bcp)
             ->addColumn('action', function ($bcp) {
-                $button = '<a href="' . route("bcps.show", $bcp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
-                $button .= '<a href="' . route("bcps.edit", $bcp->id) . '" class="btn btn-sm btn-primary" style="margin-left: 10px"><i class="fa fa-pencil"></i>Edit</a>';
-                return $button ;
+                return '<a href="' . route("bcps.show", $bcp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
             })
             ->make(true);
     }
@@ -146,12 +141,8 @@ class BcpController extends Controller
         $bcp->status = $request->status;
         $bcp->save();
 
-        $route = route('bcps.preview', $bcp->id);
+        $route = route('bcps.show', $bcp->id);
         SendMailNotification::postReview($request->status, $bcp->wsp_id, $route, $bcp->wsp->name . ' BCP Review');
-
-        if ($request->status == 'WSTF Approved') {
-            $route = route('bcps.commitment_letter', $bcp->id);
-        }
 
         return response()->json([
             'message' => 'Bcp status changed to ' . $request->status,

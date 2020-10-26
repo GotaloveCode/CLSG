@@ -4,13 +4,13 @@
            data-toggle="dropdown">
             <i class="feather icon-bell"></i>
             <span
-                class="badge badge-pill badge-danger badge-up" v-text="notifications.length"></span>
+                class="badge badge-pill badge-danger badge-up" v-text="count"></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
             <li class="dropdown-menu-header">
                 <h6 class="dropdown-header m-0"><span
                     class="grey darken-2">Notifications</span><span
-                    class="notification-tag badge badge-danger float-right m-0">{{ notifications.length }} New</span>
+                    class="notification-tag badge badge-danger float-right m-0">{{ count }} New</span>
                 </h6>
             </li>
             <li class="scrollable-container media-list" v-for="(notification,i) in notifications" :key="i">
@@ -34,7 +34,7 @@
             </li>
             <li class="dropdown-menu-footer">
                 <a class="dropdown-item text-muted text-center"
-                   href="#" @click.prevent="markAllAsRead()">Mark all as Read all</a>
+                   href="/notifications">Read all</a>
             </li>
         </ul>
     </li>
@@ -47,6 +47,7 @@ export default {
     data() {
         return {
             notifications: [],
+            count:0,
         }
     },
     mounted(){
@@ -63,15 +64,10 @@ export default {
             const i = this.notifications.map(item => item.id).indexOf(data.id);
             this.notifications.splice(i, 1);
         },
-        markAllAsRead(){
-            axios.post('/notifications').then(() => {
-                this.$toastr.s("All notification marked as read", "Success");
-            });
-            this.notifications = [];
-        },
         fetchNotifications() {
-            axios.get('/notifications').then(response => {
-                this.notifications = response.data;
+            axios.get('/notifications?limit=5').then(response => {
+                this.notifications = response.data.notifications;
+                this.count = response.data.count;
             });
         }
     }

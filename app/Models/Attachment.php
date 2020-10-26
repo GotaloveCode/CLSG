@@ -21,11 +21,13 @@ class Attachment extends Model
      *  Delete file and remove upload entry
      *
      * @param Attachment $attachment
+     * @param $path_prefix
+     * @throws \Exception
      */
-    public static function remove(Attachment $attachment)
+    public static function remove(Attachment $attachment, $path_prefix)
     {
         $filename = $attachment->name;
-        $path = storage_path('app/Eoi/' . $filename);
+        $path = storage_path($path_prefix . $filename);
 
         if (File::exists($path)) {
             File::delete($path);

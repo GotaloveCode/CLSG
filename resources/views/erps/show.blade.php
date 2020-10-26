@@ -30,23 +30,73 @@
                                     @include('preview.erp')
                                 </div>
                             </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">ERP Attachments</h4>
+                                    <a class="heading-elements-toggle"><i
+                                            class="fa fa-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                            <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Document Name</th>
+                                                <th>Document Type</th>
+                                                <th>Created at</th>
+                                            </tr>
+                                            </thead>
+                                            @forelse($erp->attachments as $attachment)
+                                                <tr>
+                                                    <td><a target="_blank"
+                                                           href="{{ route('erps.attachments.show',$attachment->name) }}">{{ $attachment->display_name }}
+                                                            <i class="feather icon-file"></i></a></td>
+                                                    <td>{{ $attachment->document_type }}</td>
+                                                    <td>{{ $attachment->created_at->format('d-M-Y') }}</td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="3">Upload signed ERP and board resolution or board meeting minutes approving the plan </td>
+                                                </tr>
+                                            @endforelse
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </section>
                 </div>
             </div>
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
+                    @can('create-erp')
+                        @if($erp->status=='Pending' || $erp->status =='Needs Review')
+                            <div class="mb-2">
+                                <a class="btn btn-info" href="{{ route('erps.create') }}"><i
+                                        class="feather icon-edit"></i>
+                                    Edit</a>
+                            </div>
+                        @endif
+                        @if($erp->status !=='WSTF Approved')
+                            <a class="btn btn-primary" href="{{ route('erps.attachments' ,$erp->id) }}"><i
+                                    class="feather icon-file"></i> Edit Attachments</a>
+                        @endif
+                    @endcan
                     <div>
                         @can('review-erp')
                             @if(auth()->user()->hasRole('wasreb'))
-                                @if($erp->status =='Needs Review')
+                                @if($erp->status =='Pending')
                                     <button class="btn btn-success ml-2 mb-1"
                                             @click.prevent="review('WASREB Approved')"><i
                                             class="feather icon-check"></i>
                                         Approve
                                     </button>
-                                @endif
-                                @if($erp->status =='Pending' || $erp->status =='draft')
                                     <button class="btn btn-danger mb-1"
                                             @click.prevent="review('Needs Review')"><i
                                             class="fa fa-pencil"></i>
@@ -54,7 +104,7 @@
                                     </button>
                                 @endif
                             @elseif(auth()->user()->hasRole('wstf'))
-                                @if($erp->status =='WASREB Approved')
+                                @if($erp->status =='WASREB Approved' && $erp->attachments->count() > 0)
                                     <button class="btn btn-success ml-2 mb-1"
                                             @click.prevent="review('WSTF Approved')"><i
                                             class="fa fa-check"></i>
@@ -66,11 +116,7 @@
                                         Review
                                     </button>
                                 @endif
-                                @if($erp->status =='WSTF Approved')
-
-                                @endif
                             @endif
-
                         @endcan
                     </div>
                     <div class="card">

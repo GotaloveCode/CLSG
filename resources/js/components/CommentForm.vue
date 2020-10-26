@@ -8,7 +8,7 @@
                 <span class="ml-2 text-danger"> {{ errors[0] }}</span>
             </ValidationProvider>
             <button class="btn btn-warning" v-if="loading" type="submit">
-                Sending <i class="feather icon-spin spinner"></i>
+                Sending <i class="feather icon-loader"></i>
             </button>
             <button class="btn btn-info" v-else type="submit">
                 Save <i class="feather icon-check-circle"></i>

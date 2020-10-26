@@ -19,6 +19,7 @@ class EoiAttachmentController extends Controller
     {
         $eoi = $eoi->load('attachments');
         $progress = ceil($eoi->attachments->pluck('document_type')->unique()->count() / 5 * 100);
+        $progress = $progress > 100 ? 100 : $progress;
         return view('eoi.attachments')->with(compact('eoi', 'progress'));
     }
 
@@ -28,7 +29,8 @@ class EoiAttachmentController extends Controller
             abort('403', 'You do not have the permissions to perform this action');
         }
 
-        if($eoi->status != "Pending" || $eoi->status != "Needs Review"){
+        $statuses = collect('Pending','Needs Review');
+        if($statuses->has($eoi->status)){
             abort('403', 'You may only attach documents while the Expression of Interest needs review or is Pending');
         }
 
@@ -60,34 +62,14 @@ class EoiAttachmentController extends Controller
 
     public function show($filename)
     {
-        $path = storage_path('app/Eoi/' . $filename);
-
-        if (!File::exists($path)) {
-            abort(404);
-        }
-
-        if (request()->has('download')) {
-            return Response::download($path);
-        }
-
-        $file = File::get($path);
-        $type = File::mimeType($path);
-
-        $response = Response::make($file, 200);
-        $response->header("Content-Type", $type);
-
-
-        return $response;
+        return $this->showFile(storage_path('app/Eoi/' . $filename));
     }
 
     public function destroy(Attachment $attachment)
     {
-        Attachment::remove($attachment);
-
-        if (request()->ajax()) {
-            return response()->json(['message' => "Attachment deleted successfully!"]);
+        if(! $attachment->attachable->wsp->users()->pluck('user_id')->contains(auth()->id()) && $attachment->attachable->status == 'WSTF Approved'){
+            abort(403,"You do not have the permissions to delete this attachment or related document already approved by WSTF");
         }
-
-        return back()->with(['message' => "Attachment deleted successfully!"]);
+        return $this->deleteAttachment($attachment,'app/Eoi/');
     }
 }

@@ -2,26 +2,31 @@
 
 namespace App\Notifications;
 
-use App\Models\Eoi;
+use App\Models\Attachment;
+use App\Models\Wsp;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class EoiSubmittedNotification extends Notification
+class AttachmentNotification extends Notification
 {
     use Queueable;
 
-    public $eoi;
+    public $attachment, $url, $wsp;
 
     /**
      * Create a new notification instance.
      *
-     * @param Eoi $eoi
+     * @param Attachment $attachment
+     * @param Wsp $wsp
+     * @param $url
      */
-    public function __construct(Eoi $eoi)
+    public function __construct(Attachment $attachment,Wsp $wsp, $url)
     {
-        $this->eoi = $eoi;
+        $this->wsp = $wsp;
+        $this->attachment = $attachment;
+        $this->url = $url;
     }
 
     /**
@@ -32,7 +37,7 @@ class EoiSubmittedNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database','mail'];
+        return ['database', 'mail'];
     }
 
     /**
@@ -44,9 +49,9 @@ class EoiSubmittedNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Expression of Interest Submitted')
-            ->line('The Expression of interest by ' . $this->eoi->wsp->name)
-            ->action('Review', route('eois.show', $this->eoi->id))
+            ->subject($this->attachment->document_type . ' Uploaded')
+            ->line($this->attachment->document_type .' has been uploaded by ' . $this->wsp->name)
+            ->action('View', url($this->url))
             ->line(config('app.name'));
     }
 
@@ -59,10 +64,9 @@ class EoiSubmittedNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'wsp' => $this->eoi->wsp->name,
             'url' => $this->url,
-            'title' => 'Expression of Interest Submitted',
-            'details' => 'An Expression of interest has been submitted by ' . $this->wsp->name
+            'title' => $this->attachment->document_type . ' Uploaded',
+            'details' => $this->attachment->document_type . ' has been uploaded by ' . $this->wsp->name
         ];
     }
 }

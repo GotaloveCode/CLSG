@@ -68,7 +68,7 @@ class CommentNotification extends Notification
         return [
             'url' => $this->url,
             'title' => $this->subject,
-            'details' => $this->comment
+            'details' => strip_tags($this->comment)
         ];
     }
 }

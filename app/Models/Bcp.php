@@ -80,4 +80,12 @@ class Bcp extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+
+    /**
+     * Get the BcpMonthlyReports for the Bcp.
+     */
+    public function bcpMonthlyReports()
+    {
+        return $this->hasMany(BcpMonthlyReport::class);
+    }
 }

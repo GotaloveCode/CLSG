@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Eoi extends Model
 {
-    use HasFactory,ProgressTrait;
+    use HasFactory, ProgressTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -86,7 +86,7 @@ class Eoi extends Model
     public function estimatedcosts()
     {
         return $this->belongsToMany(Estimatedcost::class)
-            ->withPivot('unit', 'total')
+            ->withPivot('unit', 'quantity', 'total')
             ->withTimestamps();
     }
 
@@ -96,7 +96,7 @@ class Eoi extends Model
     public function operationcosts()
     {
         return $this->belongsToMany(Operationcost::class)
-            ->withPivot('quantity', 'unit_rate', 'total')
+            ->withPivot('cost')
             ->withTimestamps();
     }
 
@@ -115,7 +115,7 @@ class Eoi extends Model
 
     public function list()
     {
-        return $this->select('id','fixed_grant','variable_grant','emergency_intervention_total','operation_costs_total','wsp_id','wsps.name')
+        return $this->select('id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name')
             ->with('wsp:id,name');
     }
 

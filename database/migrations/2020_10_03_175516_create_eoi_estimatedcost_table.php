@@ -15,7 +15,8 @@ class CreateEoiEstimatedcostTable extends Migration
     {
         Schema::create('eoi_estimatedcost', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('unit');
+            $table->integer('unit');
+            $table->integer('quantity');
             $table->string('total');
             $table->unsignedInteger('eoi_id');
             $table->foreign('eoi_id')->references('id')->on('eois');

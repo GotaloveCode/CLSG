@@ -3,13 +3,13 @@
 @section('content')
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title mb-0">{{ __('Expression Of Interest Form Attachments') }}</h3>
+            <h3 class="content-header-title mb-0">{{ __('Business Continuity Plan Attachments') }}</h3>
             <div class="row breadcrumbs-top">
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url("/")}}">Home</a>
                         </li>
-                        <li class="breadcrumb-item active">{{ __('Expression Of Interest Form Attachments') }}
+                        <li class="breadcrumb-item active">{{ __('Business Continuity Plan Attachments') }}
                         </li>
                     </ol>
                 </div>
@@ -21,15 +21,10 @@
             <div class="card-body">
                 <p>The following documents are attached to support this request:</p>
                 <ul>
-                    <li>Documents accrediting the {{ $wsp->name }} registration under the Company Act</li>
-                    <li>Copy of licence with WASREB.</li>
-                    <li>Map of the area to be served identifying the low income areas targeted by the project, as
-                        per the LIA mapping by WASREB.
-                    </li>
-                    <li>Audited Financial Statement for 2018/19</li>
-                    <li>Approved Strategic plan</li>
+                    <li>Signed Copy of BCP document </li>
+                    <li>Copy of board resolution or minutes of board meeting approving the plan</li>
                 </ul>
-                <manage-attachments inline-template delete_url="{{ route('eois.attachments.destroy',0) }}">
+                <manage-attachments inline-template delete_url="{{ route('bcps.attachments.destroy',0) }}">
                     <table class="table">
                         <thead>
                         <tr>
@@ -39,15 +34,15 @@
                             <th></th>
                         </tr>
                         </thead>
-                        @foreach($eoi->attachments as $attachment)
+                        @foreach($bcp->attachments as $attachment)
                             <tr>
                                 <td><a target="_blank"
-                                       href="{{ route('eois.attachments.show',$attachment->name) }}">{{ $attachment->display_name }}
+                                       href="{{ route('bcps.attachments.show',$attachment->name) }}">{{ $attachment->display_name }}
                                         <i class="feather icon-file"></i></a></td>
                                 <td>{{ $attachment->document_type }}</td>
                                 <td>{{ $attachment->created_at->format('d-M-Y') }}</td>
                                 <th>
-                                    @if($eoi->status == "Pending" || $eoi->status == "Needs Review")
+                                    @if($bcp->status != "WSTF Approved")
                                         <button class="btn btn-sm btn-danger"
                                                 @click="deleteAttachment({{ json_encode($attachment) }})"><i
                                                 class="feather icon-trash"></i></button>
@@ -62,11 +57,10 @@
                          aria-valuenow="{{$progress}}" aria-valuemin="0" aria-valuemax="100">{{$progress}}%
                     </div>
                 </div>
-                @if($eoi->status == "Pending" || $eoi->status == "Needs Review")
+                @if($bcp->status != "WSTF Approved")
                     <div class="row">
-                            <attachment-form
-                                :documents="['Company Registration Document','Copy of licence with WASREB','Audited Financial Statement for 2018/19','Approved Strategic plan','Map of the area to be served']"
-                                submit-url="{{ route('eois.attachments.store',$eoi->id) }}"/>
+                        <div class="col-md-12">
+                            <attachment-form :documents="['Signed BCP Document','Board Resolution','Board Meeting Minutes']" submit-url="{{ route('bcps.attachments.store',$bcp->id) }}"/>
                         </div>
                     </div>
                 @endif

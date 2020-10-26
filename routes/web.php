@@ -42,16 +42,24 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::resource('users', 'UserController')->only('index');
-    Route::resource('bcps', 'BcpController')->only('index', 'create', 'store', 'show','edit');
+    Route::resource('bcps', 'BcpController')->except('edit', 'destroy');
 
     Route::group(['prefix' => 'bcps'], function () {
+        Route::get('attachments/{filename}', 'BcpAttachmentController@show')->name('bcps.attachments.show');
+        Route::delete('attachments/{attachment}', 'BcpAttachmentController@destroy')->name('bcps.attachments.destroy');
+        Route::get('{bcp}/attachments', 'BcpAttachmentController@index')->name('bcps.attachments');
+        Route::post('{bcp}/attachments', 'BcpAttachmentController@store')->name('bcps.attachments.store');
         Route::post('{bcp}/review', 'BcpController@review')->name('bcps.review');
         Route::post('{bcp}/comment', 'BcpController@comment')->name('bcps.comment');
     });
 
-    Route::resource('erps', 'ErpController')->only('index', 'create', 'store', 'show');
+    Route::resource('erps', 'ErpController')->except('edit', 'destroy');
 
     Route::group(['prefix' => 'erps'], function () {
+        Route::get('attachments/{filename}', 'ErpAttachmentController@show')->name('erps.attachments.show');
+        Route::delete('attachments/{attachment}', 'ErpAttachmentController@destroy')->name('erps.attachments.destroy');
+        Route::get('{bcp}/attachments', 'ErpAttachmentController@index')->name('erps.attachments');
+        Route::post('{bcp}/attachments', 'ErpAttachmentController@store')->name('erps.attachments.store');
         Route::post('{erp}/review', 'ErpController@review')->name('erps.review');
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
     });
@@ -63,11 +71,13 @@ Route::group(['middleware' => ['auth']], function () {
        Route::post("/checklist","ReportsController@saveChecklist");
        Route::post("/get-checklist","ReportsController@getChecklist");
        //verifications
-       Route::get("/monthly-verification","ReportsController@monthlyVerification");
+       Route::get("/monthly-verification","ReportsController@monthlyVerification")->name("reports.monthly-verification");
        Route::get("/verification","ReportsController@verification");
        Route::get("/score","ReportsController@score");
        Route::post("/get-verification","ReportsController@getVerification");
        Route::post("/verification","ReportsController@saveVerification");
+       Route::get("/verification-list","ReportsController@verificationIndex")->name("verification.list");
+       Route::get("/verification-show/{id}","ReportsController@showVerification")->name("verification.show");
 
        //report formats
         Route::get("/monthly-report-format","ReportsController@monthlyReportFormat");

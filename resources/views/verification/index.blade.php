@@ -3,13 +3,13 @@
 @section('content')
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title mb-0">{{ __('Verification Form') }}</h3>
+            <h3 class="content-header-title mb-0">{{ __('Monthly Performance Verification Report') }}</h3>
             <div class="row breadcrumbs-top">
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                        <li class="breadcrumb-item"><a href="{{url("/")}}">Home</a>
                        </li>
-                       <li class="breadcrumb-item active">{{ __('Verification Form') }}
+                       <li class="breadcrumb-item active">{{ __('Monthly Performance Verification Report') }}
                       </li>
                     </ol>
                 </div>
@@ -21,9 +21,10 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-content">
-                        <verification-form
-                        ></verification-form>
-
+                        <div class="card-body">
+                            <verification-form :wsps="{{$wsps}}"
+                            ></verification-form>
+                        </div>
                     </div>
                 </div>
             </div>

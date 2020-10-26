@@ -1,5 +1,5 @@
 <div>
-    <h4 class="text-center">BUSINESS CONTINUITY PLAN</h4>
+    <h4 class="text-center">EMERGENCY RESPONSE PLAN</h4>
     <p>{{ $eoi->date ? $eoi->date->format('d/m/Y') : now()->format('d/m/Y') }}</p>
 
     <p>A. <b>Coordinator</b></p>

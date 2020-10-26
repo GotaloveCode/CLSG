@@ -120,16 +120,32 @@
 
 <script>
 import {mapGetters} from "vuex";
+import {SET_PERIOD_DATA} from "./../../store/verification";
 
 export default {
-    computed: {
-        ...mapGetters({
-            scores: "getScores",
-            determinations: "getDeterminations",
-            verification: "getVerification"
-        })
+    props:{
+        verification:{type:Object},
+        checklist_items:{type:Array}
     },
+    data(){
+      return {
+          scores:{},
+          determinations:{},
+      }
+    },
+    created(){
+     this.setUp();
+    },
+
     methods: {
+        setUp(){
+            this.scores = this.checklist_items.filter(s => s.type ==="Performance Score");
+            this.determinations = this.checklist_items.filter(d => d.type ==="Determination");
+            this.$store.dispatch(SET_PERIOD_DATA,this.verification)
+                .then( () => {
+                    eventBus.$emit("view_verification");
+                });
+        },
         getScoreName(id) {
             if (this.scores.length) {
                 return this.scores.find(c => c.id == id).name;
@@ -142,7 +158,7 @@ export default {
         },
 
         goBack() {
-            window.location.href = "/reports/monthly-verification";
+            window.location.href = "/reports/verification-list";
         }
     }
 }

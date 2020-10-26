@@ -10,4 +10,9 @@ class BcpMonthlyReport extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function bcp()
+    {
+        return $this->belongsTo(Bcp::class);
+    }
 }
