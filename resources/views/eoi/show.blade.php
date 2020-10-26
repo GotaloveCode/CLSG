@@ -107,7 +107,7 @@
                     <div>
                         @can('review-eoi')
                             @if(auth()->user()->hasRole('wasreb'))
-                                @if($eoi->status=='Pending')
+                                @if($eoi->status=='Pending'  || $eoi->status =='Needs Review')
                                     <button class="btn btn-success ml-2 mb-1"
                                             @click.prevent="review('WASREB Approved')"><i
                                             class="feather icon-check"></i>
@@ -120,7 +120,7 @@
                                     </button>
                                 @endif
                             @elseif(auth()->user()->hasRole('wstf'))
-                                @if($eoi->status =='WASREB Approved')
+                                @if($eoi->status =='WASREB Approved' || $eoi->status =='Needs Review')
                                     <button class="btn btn-success ml-2 mb-1"
                                             @click.prevent="review('WSTF Approved')"><i
                                             class="fa fa-check"></i>
