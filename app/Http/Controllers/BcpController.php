@@ -66,6 +66,8 @@ class BcpController extends Controller
 
         $this->createBcpRelations($bcp, $request);
 
+        SendMailNotification::postReview($bcp->status, $bcp->wsp_id, route('bcps.show', $bcp->id), $bcp->wsp->name . ' BCP Created');
+
         if ($request->ajax()) {
             return response()->json(['message' => 'Business Continuity Plan submitted successfully']);
         }
@@ -93,6 +95,8 @@ class BcpController extends Controller
         $bcp->revenue_projections()->delete();
 
         $this->createBcpRelations($bcp, $request);
+
+        SendMailNotification::postReview($bcp->status, $bcp->wsp_id, route('bcps.show', $bcp->id), $bcp->wsp->name . ' BCP Updated');
 
         if ($request->ajax()) {
             return response()->json(['message' => 'Business Continuity Plan updated successfully']);

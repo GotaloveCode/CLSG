@@ -85,6 +85,8 @@ class EoiController extends Controller
             'status' => 'Pending'
         ]);
 
+        SendMailNotification::postReview($eoi->status, $eoi->wsp_id, route('eois.show', $eoi->id), $eoi->wsp->name . ' EOI created');
+
         return $this->creatEoiRelations($eoi, $request);
     }
 
@@ -117,6 +119,8 @@ class EoiController extends Controller
         $eoi->connections()->detach();
         $eoi->estimatedcosts()->detach();
         $eoi->operationcosts()->detach();
+
+        SendMailNotification::postReview($eoi->status, $eoi->wsp_id, route('eois.show', $eoi->id), $eoi->wsp->name . ' EOI Updated');
 
         return $this->creatEoiRelations($eoi, $request);
     }

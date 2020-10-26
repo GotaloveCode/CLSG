@@ -48,6 +48,8 @@ class ErpController extends Controller
     {
         $erp = Erp::create($request->only(['wsp_id', 'coordinator']));
         $this->createErpRelations($erp,$request);
+        SendMailNotification::postReview($erp->status, $erp->wsp_id, route('erps.show', $erp->id), $erp->wsp->name . ' ERP Created');
+
         if ($request->ajax()) {
             return response()->json(['message' => 'ERP created successfully']);
         }
@@ -72,6 +74,7 @@ class ErpController extends Controller
         $erp->update($request->validated() + ['status' => 'Pending']);
         $erp->erp_items()->delete();
         $this->createErpRelations($erp,$request);
+        SendMailNotification::postReview($erp->status, $erp->wsp_id, route('erps.show', $erp->id), $erp->wsp->name . ' ERP Updated');
         if ($request->ajax()) {
             return response()->json(['message' => 'Emergency Response Plan updated successfully']);
         }
