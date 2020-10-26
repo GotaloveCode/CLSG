@@ -9,12 +9,10 @@ use App\Models\BcpChecklist;
 use App\Models\BcpMonthlyReport;
 use App\Models\MonthlyVerification;
 use App\Models\MonthlyVerificationReport;
-use App\Models\ReportingFormart;
 use App\Models\Wsp;
 use Illuminate\Http\Request;
 use App\Http\Resources\BcpChecklistResource;
 use App\Http\Resources\VerificationResource;
-use App\Http\Resources\ReportingFormatResource;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -47,11 +45,7 @@ class ReportsController extends Controller
             ->make(true);
 
     }
-
-    public function monthlyReportFormat(){
-    return view("verification.index");
-
-    }
+  
 
     public function showVerification($id)
     {
@@ -69,11 +63,7 @@ class ReportsController extends Controller
     {
         return response()->json(MonthlyVerification::all());
     }
-    public function reportFormat()
-    {
-    return response()->json(ReportingFormart::all());
-    }
-
+    
     public function saveChecklist(BcpMonthlyReportRequest $request)
     {
         $bcp = auth()->user()->wsps()->first()->bcp;
@@ -137,26 +127,7 @@ class ReportsController extends Controller
             'year' => $request->input("year"),
         ]);
         return response()->json($verification);
-    }
-    public function saveFormat(Request $request)
-    {
-       $format = MonthlyReportingFormat::create([
-            'wsp'=>$request->input("wsp"),
-            'reporting_period'=>$request->input("reporting_period"),
-            'bcp_status_implementation'=> $request->input("bcp_status_implementation"),
-            'covid_status_implementation'=> $request->input("covid_status_implementation"),
-            'revenues_collected'=> $request->input("revenues_collected"),
-            'o_m_costs'=>$request->input("o_m_costs"),
-            'resolution_status'=>$request->input("resolution_status"),
-            'challenges'=>$request->input("challenges"),
-            'expected_activities_next_month'=>$request->input("expected_activities_next_month"),
-            'achievement_details'=> json_encode($request->input("achievement_details")),
-            'list_of_evidence_details'=> json_encode($request->input("list_of_evidence_details")),
-            'month' =>   $request->input("month"),
-            'year' =>   $request->input("year"),
-        ]);
-       return response()->json($format);
-    }
+    }    
 
     public function getChecklist(Request $request)
     {
@@ -173,11 +144,5 @@ class ReportsController extends Controller
         else $verification = [];
         return response()->json($verification);
     }
-    public function getFormat(Request $request)
-    {
-        $format = MonthlyVerificationReport::where("month",$request->get("month"))->where("year",$request->get("year"))->first();
-       if ($format) $format = new ReportingFormatResource($format);
-       else $format = [];
-        return response()->json($format);
-    }
+
 }
