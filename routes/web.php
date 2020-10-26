@@ -78,12 +78,7 @@ Route::group(['middleware' => ['auth']], function () {
        Route::post("/verification","ReportsController@saveVerification");
        Route::get("/verification-list","ReportsController@verificationIndex")->name("verification.list");
        Route::get("/verification-show/{id}","ReportsController@showVerification")->name("verification.show");
-
-       //report formats
-        Route::get("/monthly-report-format","ReportsController@monthlyReportFormat");
-        Route::get("/report-format","ReportsController@reportFormat");
-        Route::post("/get-format","ReportsController@getFormat");
-        Route::post("/report-format","ReportsController@saveFormat");
+;
     });
 
     Route::resource('staff', 'StaffController');
