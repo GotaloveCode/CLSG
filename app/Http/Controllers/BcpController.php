@@ -74,6 +74,12 @@ class BcpController extends Controller
 
     public function update(BcpFormRequest $request, Bcp $bcp)
     {
+        if($bcp->status == "WSTF Approved"){
+            return response()->json([
+                'message' => 'The BCP has already been approved by WSFT no further changes can be made',
+                'errors' => ['wsp_id' => ['The BCP has already been approved by WSFT no further changes can be made!']]
+            ], 403);
+        }
         $bcp->update([
             'executive_summary' => $request->input('executive_summary'),
             'introduction' => $request->input('introduction'),
