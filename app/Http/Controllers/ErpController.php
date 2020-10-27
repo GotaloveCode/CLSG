@@ -74,8 +74,12 @@ class ErpController extends Controller
     public function update(ErpRequest $request, Erp $erp)
     {
         if($erp->status == "WSTF Approved"){
-            abort(403,'You cannot update ERP after WSTF has approved it');
+            return response()->json([
+                'message' => 'The ERP has already been approved by WSFT no further changes can be made',
+                'errors' => ['wsp_id' => ['The ERP has already been approved by WSFT no further changes can be made!']]
+            ], 422);
         }
+
         $erp->update($request->validated() + ['status' => 'Pending']);
         $erp->erp_items()->delete();
         $this->createErpRelations($erp,$request);

@@ -78,7 +78,7 @@ class BcpController extends Controller
             return response()->json([
                 'message' => 'The BCP has already been approved by WSFT no further changes can be made',
                 'errors' => ['wsp_id' => ['The BCP has already been approved by WSFT no further changes can be made!']]
-            ], 403);
+            ], 422);
         }
         $bcp->update([
             'executive_summary' => $request->input('executive_summary'),

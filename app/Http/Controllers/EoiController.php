@@ -98,8 +98,16 @@ class EoiController extends Controller
             return response()->json([
                 'message' => 'The EOI status is not Pending or Needs Review',
                 'errors' => ['wsp_id' => ['The EOI status is not Pending or Needs Review!']]
-            ], 403);
+            ], 422);
         }
+
+        if($eoi->status == "WSTF Approved"){
+            return response()->json([
+                'message' => 'The EOI has already been approved by WSFT no further changes can be made',
+                'errors' => ['wsp_id' => ['The EOI has already been approved by WSFT no further changes can be made!']]
+            ], 422);
+        }
+
         $eoi->update([
             'program_manager' => $request->input('program_manager'),
             'fixed_grant' => $request->input('fixed_grant'),
