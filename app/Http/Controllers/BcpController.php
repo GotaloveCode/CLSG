@@ -67,7 +67,7 @@ class BcpController extends Controller
         $this->createBcpRelations($bcp, $request);
 
         if ($request->ajax()) {
-            return response()->json(['message' => 'Business Continuity Plan submitted successfully']);
+            return response()->json(['message' => 'Business Continuity Plan submitted successfully','bcp'=>$bcp]);
         }
         return back()->with('success', 'Business Continuity Plan submitted successfully');
     }

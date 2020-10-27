@@ -248,6 +248,7 @@ export default {
         postData() {
             axios.post(this.submitUrl, this.bcp).then(response => {
                 this.$toastr.s(response.data.message);
+                window.location.href = `/bcps/${response.data.bcp.id}/attachments`
             }).catch(error => {
                 this.error = error.response;
             });
