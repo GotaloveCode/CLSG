@@ -21,7 +21,7 @@
             <div class="card-body">
                 <p>The following documents are attached to support this request:</p>
                 <ul>
-                    <li>Signed Copy of BCP document </li>
+                    <li>Signed Copy of ERP document </li>
                     <li>Copy of board resolution or minutes of board meeting approving the plan</li>
                 </ul>
                 <manage-attachments inline-template delete_url="{{ route('erps.attachments.destroy',0) }}">
