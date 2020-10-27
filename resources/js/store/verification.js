@@ -1,7 +1,6 @@
 // action types
 export const SET_SCORES = "setScores";
 export const SET_VERIFICATIONS = "setVerifications";
-export const SET_PERIOD_DATA = "setPeriodData";
 
 
 // mutation types
@@ -59,13 +58,7 @@ const actions = {
                 context.commit(SET_YEAR,payload.year);
                 context.commit(SET_WSP,payload.wsp);
             })
-    },
-    [SET_PERIOD_DATA](context,payload) {
-                context.commit(SET_VERIFICATION,payload );
-                context.commit(SET_MONTH,payload.month);
-                context.commit(SET_YEAR,payload.year);
-                context.commit(SET_WSP,payload.wsp_id);
-    },
+    }
 
 };
 

@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BcpMonthlyReport extends Model
+class MonthlyReportingFormat extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    protected $appends = ["checklist_month"];
+    protected $appends = ["format_month"];
 
-    public function bcp()
+    public function wsp()
     {
-        return $this->belongsTo(Bcp::class);
+        return $this->belongsTo(Wsp::class);
     }
-  
-    public function getChecklistMonthAttribute()
+
+    public function getFormatMonthAttribute()
     {
         return \DateTime::createFromFormat("!m",$this->month)->format("F");
     }

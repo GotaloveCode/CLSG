@@ -46,9 +46,6 @@ import {SET_VERIFICATIONS, SET_SCORES} from "./../../store/verification";
 import {mapGetters} from "vuex";
 
 export default {
-    props: {
-        wsps: {required: true, type: Array}
-    },
     data() {
         return {
             month: '',

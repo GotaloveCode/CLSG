@@ -87,13 +87,14 @@
                     <li><a class="menu-item" data-title="Monthly Verification List" href="{{ route('verification.list')}}">Monthly Verification List</a>
                     </li>
                     @endrole
-                    @can('create-bcp')
-                        @if($bcp)
-                            <li><a class="menu-item" href="{{ url('/reports/monthly-revenue') }}">BCP Monthly Reporting</a>
-                            </li>
-                        @endif
-                    @endcan
+                    {{--                    @can('create-bcp')--}}
+                    {{--                        @if($bcp)--}}
+                    <li><a class="menu-item" href="{{ url('/reports/checklist-list') }}">BCP Monthly Reporting</a>
+                    </li>
+                    {{--                        @endif--}}
+                    {{--                    @endcan--}}
                     <li><a class="menu-item" data-title="Monthly Verification List" href="{{ route('verification.list')}}">Monthly Verification List</a>
+                    <li><a class="menu-item" data-title="Monthly Reporting Format List" href="{{ route('report-format.list')}}">Report Formats List</a>
                     </li>
                 </ul>
             </li>

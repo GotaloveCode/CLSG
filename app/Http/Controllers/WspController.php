@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\WspsImport;
 use App\Models\Eoi;
+use App\Models\Wsp;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -14,6 +15,10 @@ use Maatwebsite\Excel\Validators\ValidationException;
 
 class WspController extends Controller
 {
+    public function index()
+    {
+        return response()->json(Wsp::select("id","name")->get());
+    }
     public function import_view(Request $request)
     {
         if ($request->get('export-csv') == 'export') {

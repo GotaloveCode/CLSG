@@ -2,7 +2,6 @@
 export const SET_ESSENTIALS = "setEssentials";
 export const SET_CHECKLISTS = "setChecklists";
 
-
 // mutation types
 export const SET_ESSENTIAL = "setEssential";
 export const SET_CUSTOMER = "setCustomer";
@@ -64,8 +63,7 @@ const actions = {
                 context.commit(SET_MONTH,payload.month);
                 context.commit(SET_YEAR,payload.year);
             })
-    },
-
+    }
 };
 
 const mutations = {

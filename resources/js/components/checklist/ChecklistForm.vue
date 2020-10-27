@@ -26,12 +26,13 @@
                     <div class="col-md-6 form-group">
                         <label>Challenges (if any) encountered during the reporting period and mitigation
                             measures</label>
-                        <text-area class="form-control" v-model="challenges"></text-area>
+
+                        <textarea class="form-control" v-model="challenges"></textarea>
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Expected activities for the next month (specifying any planned procurement or
                             contracting)</label>
-                        <text-area class="form-control" required v-model="expected_activities"></text-area>
+                        <textarea class="form-control" required v-model="expected_activities"></textarea>
                     </div>
                     <h4 class="text-uppercase col-md-12 text-center">1. Essential Operations </h4>
                     <div class="col-md-6" v-for="essn in essentials" style="margin-top: -10px">
@@ -260,9 +261,9 @@ export default {
                 staff_comment: [],
                 communication_comment: [],
             },
-            revenue: null,
-            operations_operations_costs: null,
-            clsg_total:null,
+            revenue: 0,
+            operations_costs: 0,
+            clsg_total:0,
             challenges: '',
             expected_activities: '',
             essential_data: [],
@@ -276,6 +277,7 @@ export default {
     },
     created() {
         this.listen();
+        console.log('bcp ->>'+this.bcp_id)
     },
     computed: {
         ...mapGetters({

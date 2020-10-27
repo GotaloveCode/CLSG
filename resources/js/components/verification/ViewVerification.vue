@@ -12,17 +12,17 @@
                         <div class="form-group">
                             <label style="margin-left: 10px">Wsp</label>
                             <input type="text" class="form-control" v-model="verification.wsp" required
-                                   style="margin-left: 10px;width: 94%" disabled>
+                                   style="margin-left: 10px;width: 94%">
                         </div>
                         <div class="form-group">
                             <label style="margin-left: 10px">Recommendations</label>
-                            <textarea cols="20" rows="2" v-model="verification.recommendations" class="form-control"  style="margin-left: 10px;width: 94%" disabled></textarea>
+                            <textarea cols="20" rows="2" v-model="verification.recommendations" class="form-control"  style="margin-left: 10px;width: 94%"></textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Verification team</label>
-                            <textarea cols="20" rows="2" v-model="verification.verification_team" class="form-control"  style="width: 94%" disabled></textarea>
+                            <textarea cols="20" rows="2" v-model="verification.verification_team" class="form-control"  style="width: 94%"></textarea>
                         </div>
 
                     </div>
@@ -52,13 +52,13 @@
 
                                 <span style="display: flex">
                                    <div>
-                                     <input type="number" class="form-control" v-model="score.score_value" disabled>
+                                     <input type="number" class="form-control" v-model="score.score_value">
                                    </div>
                                    <div>
                                      <p>out of</p>
                                    </div>
                                    <div>
-                                     <input type="number" class="form-control" v-model="score.score_out" disabled>
+                                     <input type="number" class="form-control" v-model="score.score_out">
                                    </div>
                                 </span>
                             </div>
@@ -66,7 +66,7 @@
                                  <div style="margin-left: 4%;">
                                    <div class="form-group" style="margin-top: 10px">
                                        <textarea cols="30" rows="2" class="form-control" v-model="score.comment"
-                                                 placeholder="Your comment here" disabled></textarea>
+                                                 placeholder="Your comment here"></textarea>
                                    </div>
                                 </div>
                             </span>
@@ -94,12 +94,12 @@
                                 <div>
                             <div class="form-group" style="margin-top: 7%">
                                 <input type="number" class="form-control" step="0.001" v-model="dt.amount"
-                                       placeholder="Amount" disabled>
+                                       placeholder="Amount">
                             </div>
                                 </div>
                                   <div style="margin-left: 5%;">
                                    <textarea cols="30" rows="2" class="form-control" v-model="dt.comment"
-                                             placeholder="Your comment here" disabled></textarea>
+                                             placeholder="Your comment here"></textarea>
                                 </div>
                             </span>
                             </div>
