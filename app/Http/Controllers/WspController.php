@@ -17,8 +17,9 @@ class WspController extends Controller
 {
     public function index()
     {
-        return response()->json(Wsp::select("id","name")->get());
+        return response()->json(Wsp::select("id", "name")->get());
     }
+
     public function import_view(Request $request)
     {
         if ($request->get('export-csv') == 'export') {
@@ -37,7 +38,7 @@ class WspController extends Controller
         return $this->importer($request, new WspsImport());
     }
 
-    private function importer(Request $request,$importable)
+    private function importer(Request $request, $importable)
     {
         if (!$request->hasFile('file')) {
             return redirect()->back()
@@ -79,20 +80,20 @@ class WspController extends Controller
         } catch (Exception $e) {
             Log::error("Exception: " . $e);
             $errors = '';
-            if ($e instanceOf \Illuminate\Validation\ValidationException) {
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
                 foreach ($e->errors() as $key => $value) {
                     $errors .= $value[0];
                 }
             } else {
                 $errors = $e->getMessage();
             }
-            Log::error(get_class($importable). " import exception: " . $errors);
+            Log::error(get_class($importable) . " import exception: " . $errors);
             return redirect()->back()
                 ->with('alerts', [
                     ['type' => 'danger', 'message' => "Sorry error occurred : " . $errors]
                 ]);
         } catch (\Throwable $e) {
-            Log::error(get_class($importable). " import error: " . $e->getMessage(), ["error" => $e]);
+            Log::error(get_class($importable) . " import error: " . $e->getMessage(), ["error" => $e]);
             return redirect()->back()
                 ->with('alerts', [
                     ['type' => 'danger', 'message' => "Check your file. Sorry an error occurred." . $e->getMessage()]

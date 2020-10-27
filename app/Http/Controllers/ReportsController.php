@@ -32,10 +32,12 @@ class ReportsController extends Controller
         $wsps = Wsp::select('id', 'name')->get();
         return view("verification.index")->with(compact('wsps'));
     }
+
     public function monthlyChecklist()
     {
         return view("checklists.index");
     }
+
     public function verificationIndex()
     {
         if (!request()->ajax()) {
@@ -51,6 +53,7 @@ class ReportsController extends Controller
             ->make(true);
 
     }
+
     public function checklistIndex()
     {
         if (!request()->ajax()) {
@@ -66,6 +69,7 @@ class ReportsController extends Controller
             ->make(true);
 
     }
+
     public function formatIndex()
     {
         if (!request()->ajax()) {
@@ -81,29 +85,31 @@ class ReportsController extends Controller
 
     }
 
-    public function monthlyReportFormat(){
+    public function monthlyReportFormat()
+    {
         return view("formats.index");
 
     }
 
     public function showVerification($id)
     {
-        $verify = json_encode(new VerificationResource(MonthlyVerificationReport    ::find($id)));
+        $verify = json_encode(new VerificationResource(MonthlyVerificationReport::find($id)));
         $checklist_items = json_encode(MonthlyVerification::all());
-        return view("verification.show",compact("verify","checklist_items"));
+        return view("verification.show", compact("verify", "checklist_items"));
     }
 
     public function showChecklist($id)
     {
         $checklist = json_encode(new BcpChecklistResource(BcpMonthlyReport::find($id)));
         $checklist_items = json_encode(BcpChecklist::all());
-        return view("checklists.show",compact("checklist","checklist_items"));
+        return view("checklists.show", compact("checklist", "checklist_items"));
     }
+
     public function showFormat($id)
     {
         $format = json_encode(new ReportingFormatResource(MonthlyReportingFormat::find($id)));
         $items = json_encode(ReportingFormart::all());
-        return view("formats.show",compact("format","items"));
+        return view("formats.show", compact("format", "items"));
     }
 
     public function checklist()
@@ -115,6 +121,7 @@ class ReportsController extends Controller
     {
         return response()->json(MonthlyVerification::all());
     }
+
     public function reportFormat()
     {
         return response()->json(ReportingFormart::all());
@@ -184,21 +191,22 @@ class ReportsController extends Controller
         ]);
         return response()->json($verification);
     }
+
     public function saveFormat(Request $request)
     {
         $format = MonthlyReportingFormat::create([
-            'wsp_id'=>$request->input("wsp_id"),
-            'bcp_status_implementation'=> $request->input("bcp_status_implementation"),
-            'covid_status_implementation'=> $request->input("covid_status_implementation"),
-            'revenues_collected'=> $request->input("revenues_collected"),
-            'o_m_costs'=>$request->input("o_m_costs"),
-            'amount_disbursed'=>$request->input("amount_disbursed"),
-            'resolution_status'=>$request->input("resolution_status"),
-            'challenges'=>$request->input("challenges"),
-            'expected_activities_next_month'=>$request->input("expected_activities_next_month"),
-            'scores_details'=> json_encode($request->input("scores")),
-            'month' =>   $request->input("month"),
-            'year' =>   $request->input("year"),
+            'wsp_id' => $request->input("wsp_id"),
+            'bcp_status_implementation' => $request->input("bcp_status_implementation"),
+            'covid_status_implementation' => $request->input("covid_status_implementation"),
+            'revenues_collected' => $request->input("revenues_collected"),
+            'o_m_costs' => $request->input("o_m_costs"),
+            'amount_disbursed' => $request->input("amount_disbursed"),
+            'resolution_status' => $request->input("resolution_status"),
+            'challenges' => $request->input("challenges"),
+            'expected_activities_next_month' => $request->input("expected_activities_next_month"),
+            'scores_details' => json_encode($request->input("scores")),
+            'month' => $request->input("month"),
+            'year' => $request->input("year"),
         ]);
         return response()->json($format);
     }
@@ -214,14 +222,15 @@ class ReportsController extends Controller
 
     public function getVerification(Request $request)
     {
-        $verification = MonthlyVerificationReport::where("month", $request->get("month"))->where("year", $request->get("year"))->where("wsp_id",$request->input("wsp"))->first();
+        $verification = MonthlyVerificationReport::where("month", $request->get("month"))->where("year", $request->get("year"))->where("wsp_id", $request->input("wsp"))->first();
         if ($verification) $verification = new VerificationResource($verification);
         else $verification = [];
         return response()->json($verification);
     }
+
     public function getFormat(Request $request)
     {
-        $format = MonthlyReportingFormat::where("month",$request->get("month"))->where("year",$request->get("year"))->where('wsp_id',$request->get("wsp"))->first();
+        $format = MonthlyReportingFormat::where("month", $request->get("month"))->where("year", $request->get("year"))->where('wsp_id', $request->get("wsp"))->first();
         if ($format) $format = new ReportingFormatResource($format);
         else $format = [];
         return response()->json($format);
