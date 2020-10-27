@@ -129,6 +129,10 @@ class EoiController extends Controller
     {
         $progress = $eoi->progress();
         $eoi = $eoi->load(['wsp', 'services', 'connections', 'estimatedcosts', 'operationcosts']);
+        if(\request()->has('print')){
+            $pdf = PDF::loadView('eoi.print', $eoi);
+            return $pdf->inline();
+        }
         return view('eoi.show')->with(compact('eoi', 'progress'));
     }
 

@@ -36,7 +36,7 @@ class BcpFormRequest extends FormRequest
             'projected_revenues.*.month' => 'required|numeric|between:1,12',
             'projected_revenues.*.year' => 'required|numeric|min:2020',
             'projected_revenues.*.amount' => 'required|numeric|min:1',
-            'essential_operations.*.priority_level' => 'required|numeric',
+            'essential_operations.*.priority_level' => 'required|max:191',
             'essential_operations.*.backup_staff' => 'required|numeric',
             'essential_operations.*.primary_staff' => 'required|numeric',
             'essential_operations.*.essentialfunction_id' => 'required|numeric',

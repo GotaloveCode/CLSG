@@ -7,14 +7,12 @@ use App\Http\Requests\CommentRequest;
 use App\Http\Resources\BcpResource;
 use App\Models\Bcp;
 use App\Models\Essentialfunction;
-use App\Models\Operationcost;
-use App\Models\Staff;
 use App\Traits\BcpAuthTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 use App\Traits\SendMailNotification;
+use PDF;
+
 
 class BcpController extends Controller
 {
@@ -136,7 +134,13 @@ class BcpController extends Controller
     {
         $progress = $bcp->progress();
         $eoi = $bcp->wsp->first()->eoi;
-        $bcp = $bcp->load(['wsp', 'revenue_projections', 'essentialOperations', 'comments', 'bcpteams']);
+        $bcp = $bcp->load(['wsp', 'revenue_projections', 'essentialOperations','essentialOperations.essentialfunction','essentialOperations.primaryStaff', 'comments','comments.user', 'bcpteams']);
+
+        if(\request()->has('print')){
+            $pdf = PDF::loadView('bcps.print', $bcp);
+            return $pdf->download();
+        }
+
         return view('bcps.show')->with(compact('bcp', 'progress', 'eoi'));
     }
 

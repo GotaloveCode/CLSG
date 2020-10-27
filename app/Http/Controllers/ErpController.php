@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
 use Yajra\DataTables\Facades\DataTables;
 use App\Traits\SendMailNotification;
+use PDF;
 
 class ErpController extends Controller
 {
@@ -62,6 +63,10 @@ class ErpController extends Controller
         $progress = $erp->progress();
         $eoi = $erp->wsp->first()->eoi;
         $erp = $erp->load(['wsp', 'erp_items', 'attachments']);
+        if(\request()->has('print')){
+            $pdf = PDF::loadView('erps.print', $erp);
+            return $pdf->inline();
+        }
         return view('erps.show')->with(compact('erp', 'progress', 'eoi'));
     }
 

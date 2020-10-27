@@ -29,7 +29,24 @@
         @endforeach
     </table>
     <h5>5. Essential Operations</h5>
-    <p>{{$bcp->essential_operations}}</p>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Priority</th>
+            <th>Essential Function</th>
+            <th>Primary</th>
+            <th>Back Up</th>
+        </tr>
+        </thead>
+        @foreach($bcp->essentialOperations as $op)
+            <tr>
+                <td>{{ $op->priority_level }}</td>
+                <td>{{ $op->essentialfunction->name }}</td>
+                <td>{{ $op->primaryStaff->firstname }} {{ $op->primaryStaff->lastname }}</td>
+                <td>{{ $op->backupStaff->firstname }} {{ $op->backupStaff->lastname }}</td>
+            </tr>
+        @endforeach
+    </table>
 
     <h5>6. COVID-19 Emergency Response Plan for Vulnerable Customers</h5>
     <p>{{$bcp->emergency_response_plan}}</p>
@@ -38,10 +55,11 @@
     <p>{{$bcp->staff_health_protection}}</p>
 
     <h5>8. Supply Chains for Essential Products and Services</h5>
-    <h5>9.	Communication Plan</h5>
+    <p>{{$bcp->supply_chain}}</p>
+    <h5>9. Communication Plan</h5>
     <p>{{$bcp->communication_plan}}</p>
 
-    <h5>10.	Annexes </h5>
+    <h5>10. Annexes </h5>
     <h6>Revenue Projections:</h6>
     <table class="table table-bordered">
         <thead>
@@ -64,4 +82,7 @@
             <td><b>{{ number_format($bcp->revenue_projections->sum('amount')) }}</b></td>
         </tr>
     </table>
+    <h6>Government Subsidy</h6>
+    <p>KES {{ number_format($bcp->government_subsidy) }}</p>
 </div>
+

@@ -60,4 +60,16 @@ class EssentialOperation extends Model
         return $this->belongsTo(Essentialfunction::class);
     }
 
+    public function primaryStaff()
+    {
+        return $this->belongsTo(Staff::class,'primary_staff');
+    }
+
+    public function backupStaff()
+    {
+        return $this->belongsTo(Staff::class,'backup_staff');
+    }
+
+
+
 }
