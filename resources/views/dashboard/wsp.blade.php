@@ -93,7 +93,7 @@
             </div>
         </a>
         @php
-            $erp_route = $erp ? route('bcps.show',$erp->id) : '#';
+            $erp_route = $erp ? route('erps.show',$erp->id) : '#';
         @endphp
         <a href="{{ $erp_route }}" class="col-xl-3 col-sm-6 col-12">
             <div class="card">
