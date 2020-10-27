@@ -100,7 +100,7 @@
                                     <button class="btn btn-danger mb-1"
                                             @click.prevent="review('Needs Review')"><i
                                             class="fa fa-pencil"></i>
-                                        Review
+                                        Needs Review
                                     </button>
                                 @endif
                             @elseif(auth()->user()->hasRole('wstf'))
