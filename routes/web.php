@@ -58,8 +58,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'erps'], function () {
         Route::get('attachments/{filename}', 'ErpAttachmentController@show')->name('erps.attachments.show');
         Route::delete('attachments/{attachment}', 'ErpAttachmentController@destroy')->name('erps.attachments.destroy');
-        Route::get('{bcp}/attachments', 'ErpAttachmentController@index')->name('erps.attachments');
-        Route::post('{bcp}/attachments', 'ErpAttachmentController@store')->name('erps.attachments.store');
+        Route::get('{erp}/attachments', 'ErpAttachmentController@index')->name('erps.attachments');
+        Route::post('{erp}/attachments', 'ErpAttachmentController@store')->name('erps.attachments.store');
         Route::post('{erp}/review', 'ErpController@review')->name('erps.review');
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
     });
