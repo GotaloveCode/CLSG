@@ -24,6 +24,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'wsps'], function () {
+        Route::get('list', 'WspController@index')->name('wsps.list');
         Route::get('export', 'WspController@import_view')->name('wsps.export');
         Route::post('import', 'WspController@import')->name('wsps.import');
     });
@@ -66,19 +67,30 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'reports'],function (){
         //checklists
-       Route::get("/monthly-revenue","ReportsController@index");
-       Route::get("/checklist","ReportsController@checklist");
-       Route::post("/checklist","ReportsController@saveChecklist");
-       Route::post("/get-checklist","ReportsController@getChecklist");
-       //verifications
-       Route::get("/monthly-verification","ReportsController@monthlyVerification")->name("reports.monthly-verification");
-       Route::get("/verification","ReportsController@verification");
-       Route::get("/score","ReportsController@score");
-       Route::post("/get-verification","ReportsController@getVerification");
-       Route::post("/verification","ReportsController@saveVerification");
-       Route::get("/verification-list","ReportsController@verificationIndex")->name("verification.list");
-       Route::get("/verification-show/{id}","ReportsController@showVerification")->name("verification.show");
-;
+        Route::get("/monthly-revenue","ReportsController@index");
+        Route::get("/checklist","ReportsController@checklist");
+        Route::post("/checklist","ReportsController@saveChecklist");
+        Route::post("/get-checklist","ReportsController@getChecklist");
+        Route::get("/checklist-list","ReportsController@checklistIndex")->name("checklist.list");
+        Route::get("/checklist-show/{id}","ReportsController@showChecklist")->name("checklist.show");
+        Route::get("/monthly-checklist","ReportsController@monthlyChecklist")->name("checklist.monthly-checklist");
+
+        //verifications
+        Route::get("/monthly-verification","ReportsController@monthlyVerification")->name("reports.monthly-verification");
+        Route::get("/verification","ReportsController@verification");
+        Route::get("/score","ReportsController@score");
+        Route::post("/get-verification","ReportsController@getVerification");
+        Route::post("/verification","ReportsController@saveVerification");
+        Route::get("/verification-list","ReportsController@verificationIndex")->name("verification.list");
+        Route::get("/verification-show/{id}","ReportsController@showVerification")->name("verification.show");
+
+        //report formats
+        Route::get("/monthly-report-format","ReportsController@monthlyReportFormat")->name("reports.monthly-report-format");
+        Route::get("/report-format","ReportsController@reportFormat");
+        Route::get("/report-format-list","ReportsController@formatIndex")->name("report-format.list");
+        Route::get("/report-format/{id}","ReportsController@showFormat")->name("report-format.show");
+        Route::post("/get-format","ReportsController@getFormat");
+        Route::post("/report-format","ReportsController@saveFormat");
     });
 
     Route::resource('staff', 'StaffController');

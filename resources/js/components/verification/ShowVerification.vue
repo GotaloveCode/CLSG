@@ -119,8 +119,6 @@
 
 
 <script>
-import {mapGetters} from "vuex";
-import {SET_PERIOD_DATA} from "./../../store/verification";
 
 export default {
     props:{
@@ -141,10 +139,6 @@ export default {
         setUp(){
             this.scores = this.checklist_items.filter(s => s.type ==="Performance Score");
             this.determinations = this.checklist_items.filter(d => d.type ==="Determination");
-            this.$store.dispatch(SET_PERIOD_DATA,this.verification)
-                .then( () => {
-                    eventBus.$emit("view_verification");
-                });
         },
         getScoreName(id) {
             if (this.scores.length) {

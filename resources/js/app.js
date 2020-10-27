@@ -22,7 +22,9 @@ const ManageStaff= () => import('./components/staff/ManageStaff' /* webpackChunk
 const ChecklistForm = () => import('./components/checklist/ChecklistForm' /* webpackChunkName: "js/components/checklist/checklist-form" */);
 const VerificationForm = () => import('./components/verification/VerificationForm' /* webpackChunkName: "js/components/verification/verification-form" */);
 const ShowVerification = () => import('./components/verification/ShowVerification' /* webpackChunkName: "js/components/verification/show-verification" */);
-
+const ShowChecklist = () => import('./components/checklist/ShowChecklist' /* webpackChunkName: "js/components/checklist/show-checklist" */);
+const FormatForm = () => import('./components/reportFormat/FormatForm' /* webpackChunkName: "js/components/reportFormat/format-form" */);
+const ShowFormat = () => import('./components/reportFormat/ShowFormat' /* webpackChunkName: "js/components/reportFormat/show-format" */);
 
 const app = new Vue({
     el: '#app',
@@ -41,6 +43,9 @@ const app = new Vue({
         ManageAttachments,
         NotificationComponent,
         VerificationForm,
-        ShowVerification
+        ShowVerification,
+        ShowChecklist,
+        FormatForm,
+        ShowFormat
     },
 });

@@ -9,10 +9,13 @@ use App\Models\BcpChecklist;
 use App\Models\BcpMonthlyReport;
 use App\Models\MonthlyVerification;
 use App\Models\MonthlyVerificationReport;
+use App\Models\ReportingFormart;
+use App\Models\MonthlyReportingFormat;
 use App\Models\Wsp;
 use Illuminate\Http\Request;
 use App\Http\Resources\BcpChecklistResource;
 use App\Http\Resources\VerificationResource;
+use App\Http\Resources\ReportingFormatResource;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -29,9 +32,12 @@ class ReportsController extends Controller
         $wsps = Wsp::select('id', 'name')->get();
         return view("verification.index")->with(compact('wsps'));
     }
+    public function monthlyChecklist()
+    {
+        return view("checklists.index");
+    }
     public function verificationIndex()
     {
-
         if (!request()->ajax()) {
             return view('verification.list');
         }
@@ -45,13 +51,59 @@ class ReportsController extends Controller
             ->make(true);
 
     }
-  
+    public function checklistIndex()
+    {
+        if (!request()->ajax()) {
+            return view('checklists.list');
+        }
+        $checklist = BcpChecklistResource::collection(BcpMonthlyReport::get());
+
+        return Datatables::of($checklist)
+            ->addColumn('action', function ($checklist) {
+                //  dd($checklist);
+                return '<a href="' . route("checklist.show", $checklist['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
+            })
+            ->make(true);
+
+    }
+    public function formatIndex()
+    {
+        if (!request()->ajax()) {
+            return view('formats.list');
+        }
+        $format = ReportingFormatResource::collection(MonthlyReportingFormat::get());
+
+        return Datatables::of($format)
+            ->addColumn('action', function ($format) {
+                return '<a href="' . route("report-format.show", $format['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
+            })
+            ->make(true);
+
+    }
+
+    public function monthlyReportFormat(){
+        return view("formats.index");
+
+    }
 
     public function showVerification($id)
     {
-        $verify = json_encode(new VerificationResource(MonthlyVerificationReport::find($id)));
+        $verify = json_encode(new VerificationResource(MonthlyVerificationReport    ::find($id)));
         $checklist_items = json_encode(MonthlyVerification::all());
         return view("verification.show",compact("verify","checklist_items"));
+    }
+
+    public function showChecklist($id)
+    {
+        $checklist = json_encode(new BcpChecklistResource(BcpMonthlyReport::find($id)));
+        $checklist_items = json_encode(BcpChecklist::all());
+        return view("checklists.show",compact("checklist","checklist_items"));
+    }
+    public function showFormat($id)
+    {
+        $format = json_encode(new ReportingFormatResource(MonthlyReportingFormat::find($id)));
+        $items = json_encode(ReportingFormart::all());
+        return view("formats.show",compact("format","items"));
     }
 
     public function checklist()
@@ -63,7 +115,11 @@ class ReportsController extends Controller
     {
         return response()->json(MonthlyVerification::all());
     }
-    
+    public function reportFormat()
+    {
+        return response()->json(ReportingFormart::all());
+    }
+
     public function saveChecklist(BcpMonthlyReportRequest $request)
     {
         $bcp = auth()->user()->wsps()->first()->bcp;
@@ -90,7 +146,7 @@ class ReportsController extends Controller
         $bcp = BcpMonthlyReport::create([
             'revenue' => $request->input("revenue"),
             'operations_costs' => $request->input("operations_costs"),
-            'clsg_total' => $request->input("this.clsg_total"),
+            'clsg_total' => $request->input("clsg_total"),
             'challenges' => $request->input("challenges"),
             'expected_activities' => $request->input("expected_activities"),
             'essential' => json_encode($request->input("essential")),
@@ -127,14 +183,33 @@ class ReportsController extends Controller
             'year' => $request->input("year"),
         ]);
         return response()->json($verification);
-    }    
+    }
+    public function saveFormat(Request $request)
+    {
+        $format = MonthlyReportingFormat::create([
+            'wsp_id'=>$request->input("wsp_id"),
+            'bcp_status_implementation'=> $request->input("bcp_status_implementation"),
+            'covid_status_implementation'=> $request->input("covid_status_implementation"),
+            'revenues_collected'=> $request->input("revenues_collected"),
+            'o_m_costs'=>$request->input("o_m_costs"),
+            'amount_disbursed'=>$request->input("amount_disbursed"),
+            'resolution_status'=>$request->input("resolution_status"),
+            'challenges'=>$request->input("challenges"),
+            'expected_activities_next_month'=>$request->input("expected_activities_next_month"),
+            'scores_details'=> json_encode($request->input("scores")),
+            'month' =>   $request->input("month"),
+            'year' =>   $request->input("year"),
+        ]);
+        return response()->json($format);
+    }
 
     public function getChecklist(Request $request)
     {
-        $bcp = BcpMonthlyReport::where("month", $request->get("month"))->where("year", $request->get("year"))->first();
-        if ($bcp) $bcp = new BcpChecklistResource($bcp);
-        else $bcp = [];
-        return response()->json($bcp);
+
+        $checklist = BcpMonthlyReport::where("month", $request->get("month"))->where("year", $request->get("year"))->first();
+        if ($checklist) $checklist = new BcpChecklistResource($checklist);
+        else $checklist = [];
+        return response()->json($checklist);
     }
 
     public function getVerification(Request $request)
@@ -144,5 +219,11 @@ class ReportsController extends Controller
         else $verification = [];
         return response()->json($verification);
     }
-
+    public function getFormat(Request $request)
+    {
+        $format = MonthlyReportingFormat::where("month",$request->get("month"))->where("year",$request->get("year"))->where('wsp_id',$request->get("wsp"))->first();
+        if ($format) $format = new ReportingFormatResource($format);
+        else $format = [];
+        return response()->json($format);
+    }
 }

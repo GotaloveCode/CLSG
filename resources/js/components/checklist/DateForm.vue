@@ -41,13 +41,16 @@ import {SET_ESSENTIALS, SET_CHECKLISTS} from "../../store/checklist";
 import {mapGetters} from "vuex";
 
 export default {
+
     data() {
         return {
             month: '',
-            year: ''
+            year: '',
+            bcp:''
         }
     },
     created() {
+
         this.$store.dispatch(SET_ESSENTIALS);
     },
     computed: {

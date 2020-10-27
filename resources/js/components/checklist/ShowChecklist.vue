@@ -1,6 +1,6 @@
 <template>
     <div>
-<!--        TODO: Add linkage to below section A ViewCheckList-->
+        <!--        TODO: Add linkage to below section A ViewCheckList-->
         <form>
             <div class="row">
                 <h4 class="text-uppercase col-md-12 text-center">A. GENERAL </h4>
@@ -208,18 +208,31 @@
 
 
 <script>
-import {mapGetters} from "vuex";
+import {SET_CHECKLIST_DATA} from "./../../store/checklist"
 export default {
-       computed:{
-        ...mapGetters({
-            essentials:"getEssentials",
-            customers:"getCustomers",
-            staff:"getStaffs",
-            communication:"getCommunications",
-            checklist:"getChecklist"
-        })
+    props:{
+        checklist:{type:Object},
+        checklist_items:{type:Array}
     },
+    data(){
+      return {
+          essentials:{},
+          customers:{},
+          staff:{},
+          communication:{}
+      }
+    },
+    created(){
+      this.setUp();
+    },
+
     methods:{
+        setUp(){
+            this.essentials = this.checklist_items.filter(s => s.type ==="Essential Operations");
+            this.customers = this.checklist_items.filter(d => d.type ==="Vulnerable Customers");
+            this.staff = this.checklist_items.filter(d => d.type ==="Staff Health Protection");
+            this.communication = this.checklist_items.filter(d => d.type ==="Communication");
+        },
         getEssentialName(id){
             if (this.essentials.length){
                 return this.essentials.find(c => c.id ==id).name;
@@ -241,7 +254,7 @@ export default {
             }
         },
         goBack(){
-            window.location.href = "/reports/monthly-revenue";
+            window.location.href = "/reports/checklist-list";
         }
 
     }
