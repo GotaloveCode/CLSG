@@ -19,6 +19,15 @@
     <div class="justify-content-center">
         <div class="card">
             <div class="card-body">
+                @if($progress == 100 && $eoi->status == "Pending")
+                    <div class="alert alert-success alert-dismissible mb-2" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <strong>Well done!</strong> You have successfully submit your <a
+                            href="{{ route('eois.show',$eoi->id) }}" class="alert-link">EOI</a> for review.
+                    </div>
+                @endif
                 <p>The following documents are attached to support this request:</p>
                 <ul>
                     <li>Documents accrediting the {{ $wsp->name }} registration under the Company Act</li>
@@ -62,15 +71,16 @@
                          aria-valuenow="{{$progress}}" aria-valuemin="0" aria-valuemax="100">{{$progress}}%
                     </div>
                 </div>
+
                 @if($eoi->status == "Pending" || $eoi->status == "Needs Review")
                     <div class="row">
-                            <attachment-form
-                                :documents="['Company Registration Document','Copy of licence with WASREB','Audited Financial Statement for 2018/19','Approved Strategic plan','Map of the area to be served']"
-                                submit-url="{{ route('eois.attachments.store',$eoi->id) }}"/>
-                        </div>
+                        <attachment-form
+                            :documents="['Company Registration Document','Copy of licence with WASREB','Audited Financial Statement for 2018/19','Approved Strategic plan','Map of the area to be served']"
+                            submit-url="{{ route('eois.attachments.store',$eoi->id) }}"/>
                     </div>
-                @endif
             </div>
+            @endif
         </div>
+    </div>
     </div>
 @endsection

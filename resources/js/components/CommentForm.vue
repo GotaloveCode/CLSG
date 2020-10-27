@@ -1,6 +1,6 @@
 <template>
     <ValidationObserver v-slot="{ handleSubmit }">
-        <div v-html="$error(error)"></div>
+        <div v-html="$error.handle(error)"></div>
         <form @submit.prevent="handleSubmit(onSubmit)" class="col-md-12 mt-1">
             <ValidationProvider name="Comment" rules="required" v-slot="{ errors }"
                                 class="row form-group">
