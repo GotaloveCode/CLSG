@@ -25,7 +25,11 @@
             <tr>
                 <td>{{ $item->emergency_intervention }}</td>
                 <td>{{ $item->risks }}</td>
-                <td>{{ $item->mitigation }}</td>
+                <td>
+                    @foreach($item->mitigation as $mitigation)
+                    <div>{{ $mitigation }}</div>
+                    @endforeach
+                </td>
                 <td>{{ number_format($item->cost) }}</td>
                 <td>{{ $item->other }}</td>
             </tr>

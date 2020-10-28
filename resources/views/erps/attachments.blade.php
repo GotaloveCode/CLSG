@@ -19,6 +19,14 @@
     <div class="justify-content-center">
         <div class="card">
             <div class="card-body">
+                @if($progress < 100 && $erp->status !== "WSTF Approved")
+                    <div class="alert alert-success alert-dismissible mb-2" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <strong>Almost there!</strong> ERP will be considered binding upon attachment and review of the documents indicated below by WASREB!
+                    </div>
+                @endif
                 <p>The following documents are attached to support this request:</p>
                 <ul>
                     <li>Signed Copy of ERP document </li>

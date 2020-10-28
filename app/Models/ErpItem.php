@@ -13,6 +13,8 @@ class ErpItem extends Model
         'emergency_intervention', 'risks', 'mitigation', 'cost', 'other', 'erp_id'
     ];
 
+    protected $casts = ['mitigation' => 'array'];
+
     /**
      * Get the Wsp for the Bcp.
      */
