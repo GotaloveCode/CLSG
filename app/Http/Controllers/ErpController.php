@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ErpRequest;
 use App\Http\Resources\ErpResource;
 use App\Models\Erp;
+use App\Models\Operationcost;
 use App\Traits\ErpAuthTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 use App\Traits\SendMailNotification;
 use PDF;
@@ -38,17 +40,22 @@ class ErpController extends Controller
             return redirect(route("eois.create"))->withErrors('Expression of Interest first must be submitted to and approved by WSTF');
         }
         $interventions = $wsp->eoi->estimatedcosts;
+        $eoiOperations = $wsp->eoi->operationCosts;
+
         $erp_load = $wsp->erp;
+        $operationCosts = Cache::rememberForever('operationCosts', function () {
+            return Operationcost::select('id', 'name')->get();
+        });
 
         if ($erp_load) $erp_load = json_encode(new ErpResource($erp_load));
 
-        return view('erps.create')->with(compact('interventions', 'erp_load'));
+        return view('erps.create')->with(compact('interventions','eoiOperations', 'erp_load', 'operationCosts'));
     }
 
     public function store(ErpRequest $request)
     {
         $erp = Erp::create($request->only(['wsp_id', 'coordinator']));
-        $this->createErpRelations($erp,$request);
+        $this->createErpRelations($erp, $request);
         SendMailNotification::postReview($erp->status, $erp->wsp_id, route('erps.show', $erp->id), $erp->wsp->name . ' ERP Created');
 
         if ($request->ajax()) {
@@ -63,7 +70,7 @@ class ErpController extends Controller
         $progress = $erp->progress();
         $eoi = $erp->wsp->first()->eoi;
         $erp = $erp->load(['wsp', 'erp_items', 'attachments']);
-        if(\request()->has('print')){
+        if (\request()->has('print')) {
             $pdf = PDF::loadView('erps.print', $erp);
             return $pdf->inline();
         }
@@ -73,7 +80,7 @@ class ErpController extends Controller
 
     public function update(ErpRequest $request, Erp $erp)
     {
-        if($erp->status == "WSTF Approved"){
+        if ($erp->status == "WSTF Approved") {
             return response()->json([
                 'message' => 'The ERP has already been approved by WSFT no further changes can be made',
                 'errors' => ['wsp_id' => ['The ERP has already been approved by WSFT no further changes can be made!']]
@@ -82,7 +89,7 @@ class ErpController extends Controller
 
         $erp->update($request->validated() + ['status' => 'Pending']);
         $erp->erp_items()->delete();
-        $this->createErpRelations($erp,$request);
+        $this->createErpRelations($erp, $request);
         SendMailNotification::postReview($erp->status, $erp->wsp_id, route('erps.show', $erp->id), $erp->wsp->name . ' ERP Updated');
         if ($request->ajax()) {
             return response()->json(['message' => 'Emergency Response Plan updated successfully']);

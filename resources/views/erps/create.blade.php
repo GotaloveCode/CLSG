@@ -25,9 +25,13 @@
                             @isset($erp)
                                 <erp-form :existing-erp="{{$erp_load}}" submit-url="{{ route('erps.update',$erp->id) }}"
                                           wsp_id="{{$wsp->id}}"
+                                          :eoi-operations="{{ $eoiOperations }}"
+                                          :operation-costs="{{ $operationCosts }}"
                                           :interventions="{{ $interventions }}"></erp-form>
                             @else
                                 <erp-form submit-url="{{ route('erps.store') }}" wsp_id="{{$wsp->id}}"
+                                          :eoi-operations="{{ $eoiOperations }}"
+                                          :operation-costs="{{ $operationCosts }}"
                                           :interventions="{{ $interventions }}"></erp-form>
                             @endisset
                         </div>

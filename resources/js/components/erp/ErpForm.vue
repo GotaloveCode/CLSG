@@ -15,6 +15,7 @@
                     <input v-model="erp.coordinator" type="text" class="form-control"/>
                     <span class="ml-2 text-danger"> {{ errors[0] }}</span>
                 </ValidationProvider>
+                <h5 class="col-md-12">Breakdown of short-term COVID-19 related emergency interventions</h5>
                 <table class="table">
                     <thead>
                     <tr>
@@ -40,6 +41,24 @@
                         v-bind:key="index"
                         :index="index"></tr>
                 </table>
+                <h5 class="col-md-12">Breakdown of O&M estimated costs:</h5>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Type of Service/item</th>
+                        <th>Cost (KES)</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tr is="operation-cost-row"
+                        v-for="(d, index) in erp.operation_costs"
+                        @add="addCost"
+                        @remove="removeCost(index)"
+                        :operations="operationCosts"
+                        :operation="d"
+                        v-bind:key="index"
+                        :index="index"/>
+                </table>
             </div>
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">
@@ -52,19 +71,24 @@
 
 <script>
 import ItemRow from "./ItemRow";
+import OperationCostRow from "../eoi/OperationCostRow";
 
 export default {
     name: "ErpForm",
     components: {
-        ItemRow
+        ItemRow,
+        OperationCostRow
     },
     props: {
         wsp_id: {required: true, type: String},
         submitUrl: {required: true, type: String},
         interventions: {required: true, type: Array},
-        existingErp: {required: false, type: Object}
+        existingErp: {required: false, type: Object},
+        operationCosts: {required: true, type: Array},
+        eoiOperations: {required: false, type: Array},
     },
     mounted() {
+        this.initOperations();
         if (this.interventions.length) {
             this.initItems();
         }
@@ -85,6 +109,7 @@ export default {
                 risks: '',
                 emergency_intervention: ''
             }],
+            operation_costs: [{cost: null, operationcost_id: null}],
         }
     }),
     methods: {
@@ -104,6 +129,7 @@ export default {
                 });
             });
         },
+
         onSubmit() {
             this.error = '';
             this.existingErp ? this.updateData() : this.postData();
@@ -115,7 +141,7 @@ export default {
                 this.error = error.response;
             });
         },
-        updateData(){
+        updateData() {
             axios.put(this.submitUrl, this.erp).then(() => {
                 this.$toastr.s("ERP updated successfully!");
             }).catch(error => {
@@ -136,6 +162,17 @@ export default {
                 this.erp.items.splice(index, 1);
             }
         },
+        initOperations() {
+            let items = []
+            this.erp.operation_costs = [];
+            this.eoiOperations.forEach(x => {
+                items.push({
+                    cost: x.pivot.cost,
+                    operationcost_id: x.pivot.operationcost_id,
+                });
+            });
+            this.erp.operation_costs = items;
+        },
         initItems() {
             this.erp.wsp_id = this.wsp_id;
             let items = []
@@ -149,6 +186,14 @@ export default {
                 });
             });
             this.erp.items = items;
+        },
+        addCost() {
+            this.erp.operation_costs.push({cost: null, operationcost_id: null});
+        },
+        removeCost(index) {
+            if (this.erp.operation_costs.length > 1) {
+                this.erp.operation_costs.splice(index, 1);
+            }
         }
     }
 }
