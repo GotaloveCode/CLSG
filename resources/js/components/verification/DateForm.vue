@@ -46,6 +46,9 @@ import {SET_VERIFICATIONS, SET_SCORES} from "./../../store/verification";
 import {mapGetters} from "vuex";
 
 export default {
+    props: {
+        wsps: {required: true, type: Array}
+    },
     data() {
         return {
             month: '',
@@ -61,6 +64,7 @@ export default {
     },
     methods: {
         fetchData() {
+            if (!this.wsp_id) return this.$toastr.e("Wsp field is required.");
             this.$store.dispatch(SET_VERIFICATIONS, {month: this.month, year: this.year,wsp:this.wsp_id})
                 .then(res => {
                     setTimeout(() => {

@@ -82,9 +82,15 @@
                                         v-slot="{ errors }"
                                         class="col-md-6 form-group">
                         <label>Government Subsidy</label>
-                        <vue-numeric separator="," v-model="bcp.government_subsidy" class="form-control"
-                                     data-toggle="tooltip"
-                                     title="Any existing monthly government subsidy WSP is receiving"></vue-numeric>
+                        <br>
+                        <div class="d-inline-block custom-control custom-radio mr-1">
+                            <input type="radio" class="custom-control-input" name="government_subsidy" id="yes" value="1" v-model="bcp.government_subsidy" checked>
+                            <label class="custom-control-label" for="yes">Yes</label>
+                        </div>
+                        <div class="d-inline-block custom-control custom-radio mr-1">
+                            <input type="radio" class="custom-control-input" name="government_subsidy" id="no"  value="0" v-model="bcp.government_subsidy">
+                            <label class="custom-control-label" for="no">No</label>
+                        </div>
                         <span class="text-danger"> {{ errors[0] }}</span>
                     </ValidationProvider>
                     <h5 class="col-md-12">BCP Team</h5>
@@ -180,7 +186,7 @@ export default {
         error: '',
         bcp: {
             wsp_id: null,
-            government_subsidy: 0,
+            government_subsidy: 1,
             executive_summary: '',
             introduction: '',
             planning_assumptions: '',
@@ -248,6 +254,7 @@ export default {
         postData() {
             axios.post(this.submitUrl, this.bcp).then(response => {
                 this.$toastr.s(response.data.message);
+                window.location.href = `/bcps/${response.data.bcp.id}/attachments`
             }).catch(error => {
                 this.error = error.response;
             });
