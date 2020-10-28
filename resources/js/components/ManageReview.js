@@ -1,9 +1,11 @@
 import CommentForm from "./CommentForm";
+import MgmForm from "./bcp/MgmForm";
 
 export default {
     name: "ManageReview",
     components: {
-        CommentForm
+        CommentForm,
+        MgmForm
     },
     props: {
         submitUrl: {required: true, type: String},

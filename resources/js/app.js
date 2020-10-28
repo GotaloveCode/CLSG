@@ -15,6 +15,7 @@ const Modal = () => import('./components/Modal.vue' /* webpackChunkName: "js/com
 const ManageReview = () => import('./components/ManageReview' /* webpackChunkName: "js/components/manage-review" */);
 const ReviewForm = () => import('./components/CommentForm' /* webpackChunkName: "js/components/eoi/review-form" */);
 const BcpForm = () => import('./components/bcp/BcpForm' /* webpackChunkName: "js/components/bcp/bcp-form" */);
+const MgmForm = () => import('./components/bcp/MgmForm' /* webpackChunkName: "js/components/bcp/mgm-form" */);
 const NotificationComponent = () => import('./components/NotificationComponent' /* webpackChunkName: "js/components/notification-component" */);
 const ErpForm = () => import('./components/erp/ErpForm.vue' /* webpackChunkName: "js/components/erp/erp-form" */);
 const StaffForm = () => import('./components/staff/Create.vue' /* webpackChunkName: "js/components/staff/create" */);
@@ -26,6 +27,7 @@ const ShowChecklist = () => import('./components/checklist/ShowChecklist' /* web
 const FormatForm = () => import('./components/reportFormat/FormatForm' /* webpackChunkName: "js/components/reportFormat/format-form" */);
 const ShowFormat = () => import('./components/reportFormat/ShowFormat' /* webpackChunkName: "js/components/reportFormat/show-format" */);
 
+
 const app = new Vue({
     el: '#app',
     store,
@@ -36,6 +38,7 @@ const app = new Vue({
         ManageReview,
         ReviewForm,
         BcpForm,
+        MgmForm,
         ErpForm,
         StaffForm,
         ManageStaff,
