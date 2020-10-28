@@ -38,6 +38,9 @@
                         @add="addItem"
                         @remove="removeItem(index)"
                         :item="d"
+                        :services="services"
+                        :risks="risks"
+                        :mitigation="mitigation"
                         v-bind:key="index"
                         :index="index"></tr>
                 </table>
@@ -86,6 +89,9 @@ export default {
         existingErp: {required: false, type: Object},
         operationCosts: {required: true, type: Array},
         eoiOperations: {required: false, type: Array},
+        services: {required: true, type: Array},
+        risks: {required: true, type: Array},
+        mitigation: {required: true, type: Array},
     },
     mounted() {
         this.initOperations();
@@ -125,7 +131,16 @@ export default {
                     other: s.other,
                     mitigation: s.mitigation,
                     risks: s.risks,
-                    emergency_intervention: s.emergency_intervention
+                    emergency_intervention: s.emergency_intervention,
+                    other_risk:'',
+                    other_mitigation:'',
+                });
+            });
+            this.erp.operation_costs = [];
+            this.existingErp.operation_costs.forEach(x => {
+                this.erp.operation_costs.push({
+                    cost: x.pivot.cost,
+                    operationcost_id: x.pivot.operationcost_id,
                 });
             });
         },
@@ -154,7 +169,9 @@ export default {
                 other: '',
                 mitigation: '',
                 risks: '',
-                emergency_intervention: ''
+                emergency_intervention: '',
+                other_risk:'',
+                other_mitigation:'',
             });
         },
         removeItem(index) {
@@ -182,7 +199,9 @@ export default {
                     other: '',
                     mitigation: '',
                     risks: '',
-                    emergency_intervention: x.name
+                    emergency_intervention: x.name,
+                    other_risk:'',
+                    other_mitigation:'',
                 });
             });
             this.erp.items = items;

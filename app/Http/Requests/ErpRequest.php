@@ -29,7 +29,7 @@ class ErpRequest extends FormRequest
             'items.*.other' => 'required',
             'items.*.emergency_intervention' => 'required|max:191',
             'items.*.risks' => 'required',
-            'items.*.mitigation' => 'required',
+            'items.*.mitigation.*' => 'required',
             'items.*.cost' => 'required|numeric',
         ];
     }

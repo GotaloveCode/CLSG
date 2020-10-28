@@ -19,6 +19,7 @@ class ErpResource extends JsonResource
             'period' => $this->period,
             'coordinator'=> $this->coordinator,
             'erp_items' => $this->erp_items,
+            'operation_costs' => $this->operationCosts,
             'wsp_id' => $this->wsp_id
         ];
 

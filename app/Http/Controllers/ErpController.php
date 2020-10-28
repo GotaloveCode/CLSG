@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ErpRequest;
 use App\Http\Resources\ErpResource;
 use App\Models\Erp;
+use App\Models\Mitigation;
 use App\Models\Operationcost;
+use App\Models\Risk;
+use App\Models\Service;
 use App\Traits\ErpAuthTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
@@ -46,10 +49,25 @@ class ErpController extends Controller
         $operationCosts = Cache::rememberForever('operationCosts', function () {
             return Operationcost::select('id', 'name')->get();
         });
+        $services = Cache::rememberForever('services', function () {
+            return Service::select('id', 'name')->get();
+        });
+
+        $risks = Cache::rememberForever('risks', function () {
+            return Risk::pluck('name');
+        });
+
+        $mitigation = Cache::rememberForever('mitigation', function () {
+            return Mitigation::pluck('name');
+        });
+
+        $services = $services->pluck('name');
 
         if ($erp_load) $erp_load = json_encode(new ErpResource($erp_load));
 
-        return view('erps.create')->with(compact('interventions','eoiOperations', 'erp_load', 'operationCosts'));
+
+
+        return view('erps.create')->with(compact('interventions', 'risks', 'mitigation', 'services', 'eoiOperations', 'erp_load', 'operationCosts'));
     }
 
     public function store(ErpRequest $request)
@@ -89,6 +107,7 @@ class ErpController extends Controller
 
         $erp->update($request->validated() + ['status' => 'Pending']);
         $erp->erp_items()->delete();
+        $erp->operationcosts()->detach();
         $this->createErpRelations($erp, $request);
         SendMailNotification::postReview($erp->status, $erp->wsp_id, route('erps.show', $erp->id), $erp->wsp->name . ' ERP Updated');
         if ($request->ajax()) {
@@ -100,12 +119,28 @@ class ErpController extends Controller
     private function createErpRelations(Erp $erp, Request $request)
     {
         foreach ($request->input('items') as $item) {
+            $risk = $item['risks'];
+            if($risk == 'Other'){
+                $risk = $item['other_risk'];
+            }
+            $mitigiation = [];
+            foreach ($item['mitigation'] as $m){
+                $m == 'Other' ? $m = $item['other_mitigation'] : $m;
+                $mitigiation[] = $m;
+            }
+
             $erp->erp_items()->create([
                 'emergency_intervention' => $item['emergency_intervention'],
-                'risks' => $item['risks'],
-                'mitigation' => $item['mitigation'],
+                'risks' => $risk,
+                'mitigation' => $mitigiation,
                 'cost' => $item['cost'],
                 'other' => $item['other'],
+            ]);
+        }
+
+        foreach ($request->input('operation_costs') as $operation_cost) {
+            $erp->operationcosts()->attach($operation_cost['operationcost_id'], [
+                'cost' => $operation_cost['cost']
             ]);
         }
     }
