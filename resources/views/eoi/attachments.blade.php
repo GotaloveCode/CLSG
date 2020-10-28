@@ -27,6 +27,17 @@
                         <strong>Well done!</strong> You have successfully submit your <a
                             href="{{ route('eois.show',$eoi->id) }}" class="alert-link">EOI</a> for review.
                     </div>
+                    <div class="bs-callout-primary mb-2 callout-transparent callout-bordered">
+                        <div class="media align-items-stretch">
+                            <div class="d-flex align-items-center bg-primary position-relative callout-arrow-left p-2">
+                                <i class="fa fa-send-o fa-lg white font-medium-5"></i>
+                            </div>
+                            <div class="media-body p-1">
+                                <strong>Congratulations on EOI Submission!</strong>
+                                <p>Please proceed to <a href="{{ route('staff.create') }}"> create staff members</a> to be used in populating BCP. For BCP you need BCP Coordinator, Alternate BCP Coordinator, Primary and Backup Staff members as well</p>
+                            </div>
+                        </div>
+                    </div>
                 @endif
                 <p>The following documents are attached to support this request:</p>
                 <ul>

@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'bcps'], function () {
         Route::get('attachments/{filename}', 'BcpAttachmentController@show')->name('bcps.attachments.show');
         Route::delete('attachments/{attachment}', 'BcpAttachmentController@destroy')->name('bcps.attachments.destroy');
+        Route::post('{bcp}/mgm', 'BcpController@mgm')->name('bcps.mgm');
         Route::get('{bcp}/attachments', 'BcpAttachmentController@index')->name('bcps.attachments');
         Route::post('{bcp}/attachments', 'BcpAttachmentController@store')->name('bcps.attachments.store');
         Route::post('{bcp}/review', 'BcpController@review')->name('bcps.review');

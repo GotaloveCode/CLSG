@@ -1,6 +1,12 @@
 <template>
     <ValidationObserver v-slot="{ handleSubmit }">
         <div v-html="$error.handle(error)"/>
+        <div class="alert alert-info alert-dismissible mb-2" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            The ERP is a component of the BCP. Make sure you fill in the BCP first.
+        </div>
         <form class="form" @submit.prevent="handleSubmit(onSubmit)">
             <div class="form-body row">
                 <ValidationProvider name="ERP Coordinator" rules="required" v-slot="{ errors }"

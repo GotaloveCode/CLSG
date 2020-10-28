@@ -49,6 +49,46 @@
                             </div>
                             <div class="card">
                                 <div class="card-header">
+                                    <h4 class="card-title">Business Continuity Plan Monthly Grant Multiplier</h4>
+                                    <a class="heading-elements-toggle"><i
+                                            class="fa fa-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                            <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-content collapse show">
+                                    <div class="card-body">
+                                        @role('wasreb')
+                                        @if($bcp->status !== "WSTF Approved")
+                                            <mgm-form class="mb-2" submit-url="{{ route('bcps.mgm', $bcp->id) }}"></mgm-form>
+                                        @endif
+                                        @endrole
+                                        @if($bcp->mgms->count() > 0)
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Month</th>
+                                                    <th>Year</th>
+                                                    <th>Monthly Grant Multiplier</th>
+                                                </tr>
+                                                </thead>
+                                                @foreach($bcp->mgms as $mgm)
+                                                    <tr>
+                                                        <td>{{ getMonthName($mgm->month) }}</td>
+                                                        <td>{{ $mgm->year }}</td>
+                                                        <td>{{ $mgm->amount }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </table>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
                                     <h4 class="card-title">BCP Attachments</h4>
                                     <a class="heading-elements-toggle"><i
                                             class="fa fa-ellipsis-v font-medium-3"></i></a>

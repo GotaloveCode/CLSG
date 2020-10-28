@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BcpFormRequest;
 use App\Http\Requests\CommentRequest;
+use App\Http\Requests\MgmRequest;
 use App\Http\Resources\BcpResource;
 use App\Models\Bcp;
 use App\Models\Essentialfunction;
@@ -74,7 +75,7 @@ class BcpController extends Controller
 
     public function update(BcpFormRequest $request, Bcp $bcp)
     {
-        if($bcp->status == "WSTF Approved"){
+        if ($bcp->status == "WSTF Approved") {
             return response()->json([
                 'message' => 'The BCP has already been approved by WSFT no further changes can be made',
                 'errors' => ['wsp_id' => ['The BCP has already been approved by WSFT no further changes can be made!']]
@@ -96,7 +97,6 @@ class BcpController extends Controller
 
         $bcp->essentialOperations()->delete();
         $bcp->bcpteams()->delete();
-        $bcp->revenue_projections()->delete();
 
         $this->createBcpRelations($bcp, $request);
 
@@ -106,6 +106,25 @@ class BcpController extends Controller
             return response()->json(['message' => 'Business Continuity Plan updated successfully']);
         }
         return back()->with('success', 'Business Continuity Plan updated successfully');
+    }
+
+    public function mgm(MgmRequest $request, Bcp $bcp)
+    {
+        foreach ($request->input('mgms') as $mgm){
+            $bcp->mgms()->updateOrCreate([
+                'month' => $mgm['month'],
+                'year' => $mgm['year']
+            ], [
+                'amount' => $mgm['amount']
+            ]);
+        }
+
+        //#todo: add notification
+
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Monthly Grant Multiplier updated successfully']);
+        }
+        return back()->with('success', 'Monthly Grant Multiplier updated successfully');
     }
 
     private function createBcpRelations(Bcp $bcp, Request $request)
@@ -128,10 +147,11 @@ class BcpController extends Controller
         }
 
         foreach ($request->input('projected_revenues') as $revenue) {
-            $bcp->revenue_projections()->create([
-                'amount' => $revenue['amount'],
+            $bcp->revenue_projections()->updateOrCreate([
                 'month' => $revenue['month'],
                 'year' => now()->year,
+            ], [
+                'amount' => $revenue['amount']
             ]);
         }
     }
@@ -140,9 +160,9 @@ class BcpController extends Controller
     {
         $progress = $bcp->progress();
         $eoi = $bcp->wsp->first()->eoi;
-        $bcp = $bcp->load(['wsp', 'revenue_projections', 'essentialOperations','essentialOperations.essentialfunction','essentialOperations.primaryStaff', 'comments','comments.user', 'bcpteams']);
+        $bcp = $bcp->load(['wsp', 'revenue_projections', 'essentialOperations', 'essentialOperations.essentialfunction', 'essentialOperations.primaryStaff', 'comments', 'comments.user', 'bcpteams']);
 
-        if(\request()->has('print')){
+        if (\request()->has('print')) {
             $pdf = PDF::loadView('bcps.print', $bcp);
             return $pdf->download();
         }

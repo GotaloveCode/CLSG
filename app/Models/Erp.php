@@ -49,4 +49,14 @@ class Erp extends Model
         return $this->morphMany(Attachment::class, 'attachable');
     }
 
+    /**
+     * Get the Operationcosts for the Eoi.
+     */
+    public function operationcosts()
+    {
+        return $this->belongsToMany(Operationcost::class)
+            ->withPivot('cost')
+            ->withTimestamps();
+    }
+
 }
