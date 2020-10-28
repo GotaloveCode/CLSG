@@ -93,7 +93,6 @@
                     </li>
                     {{--                        @endif--}}
                     {{--                    @endcan--}}
-                    <li><a class="menu-item" data-title="Monthly Verification List" href="{{ route('verification.list')}}">Monthly Verification List</a>
                     <li><a class="menu-item" data-title="Monthly Reporting Format List" href="{{ route('report-format.list')}}">Report Formats List</a>
                     </li>
                 </ul>
