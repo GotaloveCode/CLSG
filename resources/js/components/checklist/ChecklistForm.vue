@@ -376,7 +376,7 @@ export default {
         },
         validateEssentials() {
             this.essential_data = [];
-            if (this.form.essential.length < 11) {
+            if (this.form.essential.length < 7) {
                 return false;
             }
             this.form.essential.forEach((e, v) => {

@@ -205,25 +205,36 @@ class ReportsController extends Controller
 
     public function getChecklist(Request $request)
     {
-
-        $checklist = BcpMonthlyReport::where("month", $request->get("month"))->where("year", $request->get("year"))->first();
-        if ($checklist) $checklist = new BcpChecklistResource($checklist);
-        else $checklist = [];
+        $checklist = [];
+        $bcp = BcpMonthlyReport::where("year", $request->get("year"))->where('bcp_id',auth()->user()->wsps()->first()->bcp->id)->first();
+        if ($bcp){
+            if (($request->get("month") - $bcp->month) < 3 ){
+                $checklist = new BcpChecklistResource($bcp);
+            }
+        }
         return response()->json($checklist);
     }
 
     public function getVerification(Request $request)
     {
-        $verification = MonthlyVerificationReport::where("month", $request->get("month"))->where("year", $request->get("year"))->where("wsp_id",$request->input("wsp"))->first();
-        if ($verification) $verification = new VerificationResource($verification);
-        else $verification = [];
-        return response()->json($verification);
+        $verification = [];
+        $wsp = MonthlyVerificationReport::where("year", $request->get("year"))->where("wsp_id",$request->get("wsp"))->first();
+         if ($wsp){
+            if (($request->get("month") - $wsp->month) < 3){
+                $verification = new VerificationResource($wsp);
+            }
+        }
+       return response()->json($verification);
     }
     public function getFormat(Request $request)
     {
-        $format = MonthlyReportingFormat::where("month",$request->get("month"))->where("year",$request->get("year"))->where('wsp_id',$request->get("wsp"))->first();
-        if ($format) $format = new ReportingFormatResource($format);
-        else $format = [];
-        return response()->json($format);
+        $format = [];
+        $report = MonthlyReportingFormat::where("year",$request->get("year"))->where('wsp_id',$request->get("wsp"))->first();
+           if ($report){
+            if (($request->get("month") - $report->month) < 3){
+              $format = new ReportingFormatResource($report);
+            }
+        }
+      return response()->json($format);
     }
 }
