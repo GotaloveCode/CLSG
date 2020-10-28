@@ -11,7 +11,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label style="margin-left: 10px">Wsp</label>
-                            <input type="text" class="form-control" v-model="verification.wsp" required
+                               <input type="text" class="form-control" v-model="verification.wsp" required
                                    style="margin-left: 10px;width: 94%">
                         </div>
                         <div class="form-group">

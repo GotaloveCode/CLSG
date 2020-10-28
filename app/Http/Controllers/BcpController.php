@@ -68,7 +68,7 @@ class BcpController extends Controller
         SendMailNotification::postReview($bcp->status, $bcp->wsp_id, route('bcps.show', $bcp->id), $bcp->wsp->name . ' BCP Created');
 
         if ($request->ajax()) {
-            return response()->json(['message' => 'Business Continuity Plan submitted successfully']);
+            return response()->json(['message' => 'Business Continuity Plan submitted successfully','bcp'=>$bcp]);
         }
         return back()->with('success', 'Business Continuity Plan submitted successfully');
     }
