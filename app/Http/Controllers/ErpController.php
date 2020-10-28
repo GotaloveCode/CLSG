@@ -77,9 +77,9 @@ class ErpController extends Controller
         SendMailNotification::postReview($erp->status, $erp->wsp_id, route('erps.show', $erp->id), $erp->wsp->name . ' ERP Created');
 
         if ($request->ajax()) {
-            return response()->json(['message' => 'ERP created successfully']);
+            return response()->json($erp);
         }
-        return back()->with(['eoi' => $erp]);
+        return back()->with(['erp' => $erp]);
     }
 
 
@@ -111,9 +111,9 @@ class ErpController extends Controller
         $this->createErpRelations($erp, $request);
         SendMailNotification::postReview($erp->status, $erp->wsp_id, route('erps.show', $erp->id), $erp->wsp->name . ' ERP Updated');
         if ($request->ajax()) {
-            return response()->json(['message' => 'Emergency Response Plan updated successfully']);
+            return response()->json($erp);
         }
-        return back()->with('success', 'Emergency Response Plan updated successfully');
+        return back()->with(['erp' => $erp]);
     }
 
     private function createErpRelations(Erp $erp, Request $request)

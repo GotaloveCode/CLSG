@@ -151,7 +151,8 @@ export default {
         },
         postData() {
             axios.post(this.submitUrl, this.erp).then(response => {
-                this.$toastr.s(response.data.message);
+                this.$toastr.s("ERP created successfully!");
+                location.href = "/erps/" + response.data.id + "/attachments"
             }).catch(error => {
                 this.error = error.response;
             });
@@ -159,6 +160,7 @@ export default {
         updateData() {
             axios.put(this.submitUrl, this.erp).then(() => {
                 this.$toastr.s("ERP updated successfully!");
+                location.href = "/erps/" + response.data.id + "/attachments"
             }).catch(error => {
                 this.error = error.response;
             });
