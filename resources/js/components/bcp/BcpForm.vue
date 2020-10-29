@@ -72,6 +72,7 @@
                                   title="In this section, outline a communications plan and mechanisms to provide relevant information to internal and external stakeholders during the pandemic. If a plan already exists, simply refer to it"></textarea>
                         <span class="text-danger"> {{ errors[0] }}</span>
                     </ValidationProvider>
+
                     <ValidationProvider name="Government Subsidy" rules="required"
                                         v-slot="{ errors }"
                                         class="col-md-6 form-group">
@@ -87,6 +88,18 @@
                         </div>
                         <span class="text-danger"> {{ errors[0] }}</span>
                     </ValidationProvider>
+
+                    <ValidationProvider name="Government Subsidy Amount" v-if="bcp.government_subsidy==1"
+                                        v-slot="{ errors }"
+                                        class="col-md-6 form-group">
+                        <label>Government Subsidy Amount</label>
+                        <vue-numeric  separator="," v-model="bcp.government_subsidy_amount" class="form-control"
+                                  data-toggle="tooltip"
+                                  title="Government Subsidy Amount"></vue-numeric>
+                        <span class="text-danger"> {{ errors[0] }}</span>
+                    </ValidationProvider>
+
+
                     <h5 class="col-md-12">BCP Team</h5>
                     <table class="table">
                         <thead>
@@ -181,6 +194,7 @@ export default {
         bcp: {
             wsp_id: null,
             government_subsidy: 1,
+            government_subsidy_amount: 0,
             executive_summary: '',
             introduction: '',
             planning_assumptions: '',
@@ -203,6 +217,11 @@ export default {
             projected_revenues: [{month: 10, year: 2020, amount: 0}]
         }
     }),
+    watch:{
+      'bcp.government_subsidy'(){
+          return this.bcp.government_subsidy;
+      }
+    },
     mounted() {
         this.setWspId();
         if (this.existingBcp) {
@@ -215,6 +234,7 @@ export default {
         },
         initBcp() {
             this.bcp.government_subsidy = this.existingBcp.government_subsidy;
+            this.bcp.government_subsidy_amount = this.existingBcp.government_subsidy_amount;
             this.bcp.executive_summary = this.existingBcp.executive_summary;
             this.bcp.introduction = this.existingBcp.introduction;
             this.bcp.planning_assumptions = this.existingBcp.planning_assumptions;
@@ -223,6 +243,7 @@ export default {
             this.bcp.emergency_response_plan = this.existingBcp.emergency_response_plan;
             this.bcp.communication_plan = this.existingBcp.communication_plan;
             this.bcp.supply_chain = this.existingBcp.supply_chain;
+
             this.bcp.bcp_teams = [];
             this.existingBcp.bcp_teams.forEach(s => {
                 this.bcp.bcp_teams.push({name: s.name, role: s.role, unit: s.unit});

@@ -18,6 +18,7 @@ class BcpResource extends JsonResource
             'id' => $this->id,
             'executive_summary' => $this->executive_summary,
             'introduction' => $this->introduction,
+            'government_subsidy_amount' => $this->government_subsidy_amount,
             'planning_assumptions' => $this->planning_assumptions,
             'training' => $this->training,
             'staff_health_protection' => $this->staff_health_protection,
