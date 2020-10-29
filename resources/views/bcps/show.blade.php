@@ -43,11 +43,21 @@
                                 </div>
                                 <div class="card-content collapse show">
                                     <div class="card-body">
+                                        @role('wasreb')
+                                        @if($bcp->status !== "WSTF Approved")
+                                            <div class="alert alert-success alert-dismissible mb-2" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                                <strong>Note: </strong> <a href="#mgm">Set the Monthly Grant Multiplier</a> to be applied to the BCP before approving this BCP!
+                                            </div>
+                                        @endif
+                                        @endrole
                                         @include('preview.bcp')
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
+                            <div class="card" id="mgm">
                                 <div class="card-header">
                                     <h4 class="card-title">Business Continuity Plan Monthly Grant Multiplier</h4>
                                     <a class="heading-elements-toggle"><i
