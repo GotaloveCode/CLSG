@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(PostalCodeSeeder::class);
         $this->call(RoleSeeder::class);
-        $this->call(WspSeeder::class);
         $this->call(EssentialfunctionSeeder::class);
         $this->call(OperationcostSeeder::class);
         $this->call(EstimatedcostSeeder::class);
@@ -23,7 +22,10 @@ class DatabaseSeeder extends Seeder
         $this->call(ServiceSeeder::class);
         $this->call(ChecklistSeeder::class);
         $this->call(MonthlyVerificationSeeder::class);
-       
+        $this->call(MitigationSeeder::class);
+        $this->call(RiskSeeder::class);
+
+//        $this->call(WspSeeder::class);
 //        $this->call(StaffSeeder::class);
 //        $this->call(BcpSeeder::class);
 //        $this->call(EoiSeeder::class);

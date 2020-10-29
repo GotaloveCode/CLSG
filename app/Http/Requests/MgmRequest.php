@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MonthlyVerificationRequest extends FormRequest
+class MgmRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,9 @@ class MonthlyVerificationRequest extends FormRequest
     public function rules()
     {
         return [
-            'performance_score_details' => 'required',
-            'clsg_details' => 'required',
-            'recommendations' => 'required',
-            'verification_team' => 'required'
+            'mgms.*.amount' => 'required|numeric',
+            'mgms.*.month' => 'required|numeric',
+            'mgms.*.year' => 'required|numeric',
         ];
     }
 }

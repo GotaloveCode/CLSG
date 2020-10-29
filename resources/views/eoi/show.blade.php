@@ -32,6 +32,10 @@
                                             class="fa fa-ellipsis-v font-medium-3"></i></a>
                                     <div class="heading-elements">
                                         <ul class="list-inline mb-0">
+                                            <li>
+                                                <a href="{{ route('eois.show',['eoi' => $eoi->id,'print' => 'pdf']) }}"><i
+                                                        class="feather icon-printer"></i></a>
+                                            </li>
                                             <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
                                             <li><a data-action="close"><i class="feather icon-x"></i></a></li>
                                         </ul>
@@ -55,7 +59,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="card-content">
+                                <div class="card-content collapse show">
                                     <div class="card-body">
                                         <table class="table">
                                             <thead>
@@ -129,7 +133,7 @@
                                     <button class="btn btn-danger mb-1"
                                             @click.prevent="review('Needs Review')"><i
                                             class="fa fa-pencil"></i>
-                                        Review
+                                        Needs Review
                                     </button>
                                 @endif
                             @endif
@@ -153,7 +157,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="card-content">
+                        <div class="card-content collapse show">
                             <div class="card-body">
                                 <div class="insights">
                                     <p>{{$eoi->status}}<span class="float-right text-warning h3">{{$progress}}%</span>
@@ -178,7 +182,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="card-content">
+                        <div class="card-content collapse show">
                             <div class="card-body">
                                 <ul class="commentList">
                                     @foreach($eoi->comments as $comment)

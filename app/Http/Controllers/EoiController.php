@@ -85,6 +85,8 @@ class EoiController extends Controller
             'status' => 'Pending'
         ]);
 
+        SendMailNotification::postReview($eoi->status, $eoi->wsp_id, route('eois.show', $eoi->id), $eoi->wsp->name . ' EOI created');
+
         return $this->creatEoiRelations($eoi, $request);
     }
 
@@ -96,8 +98,16 @@ class EoiController extends Controller
             return response()->json([
                 'message' => 'The EOI status is not Pending or Needs Review',
                 'errors' => ['wsp_id' => ['The EOI status is not Pending or Needs Review!']]
-            ], 403);
+            ], 422);
         }
+
+        if($eoi->status == "WSTF Approved"){
+            return response()->json([
+                'message' => 'The EOI has already been approved by WSFT no further changes can be made',
+                'errors' => ['wsp_id' => ['The EOI has already been approved by WSFT no further changes can be made!']]
+            ], 422);
+        }
+
         $eoi->update([
             'program_manager' => $request->input('program_manager'),
             'fixed_grant' => $request->input('fixed_grant'),
@@ -109,13 +119,16 @@ class EoiController extends Controller
             'proportion_served' => $request->input('proportion_served'),
             'date' => now(),
             'months' => 3,
-            'wsp_id' => $request->input('wsp')
+            'wsp_id' => $request->input('wsp'),
+            'status' => 'Pending'
         ]);
 
         $eoi->services()->detach();
         $eoi->connections()->detach();
         $eoi->estimatedcosts()->detach();
         $eoi->operationcosts()->detach();
+
+        SendMailNotification::postReview($eoi->status, $eoi->wsp_id, route('eois.show', $eoi->id), $eoi->wsp->name . ' EOI Updated');
 
         return $this->creatEoiRelations($eoi, $request);
     }
@@ -124,6 +137,10 @@ class EoiController extends Controller
     {
         $progress = $eoi->progress();
         $eoi = $eoi->load(['wsp', 'services', 'connections', 'estimatedcosts', 'operationcosts']);
+        if(\request()->has('print')){
+            $pdf = PDF::loadView('eoi.print', $eoi);
+            return $pdf->inline();
+        }
         return view('eoi.show')->with(compact('eoi', 'progress'));
     }
 

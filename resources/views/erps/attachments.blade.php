@@ -3,13 +3,13 @@
 @section('content')
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title mb-0">{{ __('Expression Of Interest Form Attachments') }}</h3>
+            <h3 class="content-header-title mb-0">{{ __('Emergency Response Plan Attachments') }}</h3>
             <div class="row breadcrumbs-top">
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url("/")}}">Home</a>
                         </li>
-                        <li class="breadcrumb-item active">{{ __('Expression Of Interest Form Attachments') }}
+                        <li class="breadcrumb-item active">{{ __('Emergency Response Plan Attachments') }}
                         </li>
                     </ol>
                 </div>
@@ -19,37 +19,20 @@
     <div class="justify-content-center">
         <div class="card">
             <div class="card-body">
-                @if($progress == 100 && $eoi->status == "Pending")
+                @if($progress < 100 && $erp->status !== "WSTF Approved")
                     <div class="alert alert-success alert-dismissible mb-2" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
-                        <strong>Well done!</strong> You have successfully submit your <a
-                            href="{{ route('eois.show',$eoi->id) }}" class="alert-link">EOI</a> for review.
-                    </div>
-                    <div class="bs-callout-primary mb-2 callout-transparent callout-bordered">
-                        <div class="media align-items-stretch">
-                            <div class="d-flex align-items-center bg-primary position-relative callout-arrow-left p-2">
-                                <i class="fa fa-send-o fa-lg white font-medium-5"></i>
-                            </div>
-                            <div class="media-body p-1">
-                                <strong>Congratulations on EOI Submission!</strong>
-                                <p>Please proceed to <a href="{{ route('staff.create') }}"> create staff members</a> to be used in populating BCP. For BCP you need BCP Coordinator, Alternate BCP Coordinator, Primary and Backup Staff members as well</p>
-                            </div>
-                        </div>
+                        <strong>Almost there!</strong> ERP will be considered binding upon attachment and review of the documents indicated below by WASREB!
                     </div>
                 @endif
                 <p>The following documents are attached to support this request:</p>
                 <ul>
-                    <li>Documents accrediting the {{ $wsp->name }} registration under the Company Act</li>
-                    <li>Copy of licence with WASREB.</li>
-                    <li>Map of the area to be served identifying the low income areas targeted by the project, as
-                        per the LIA mapping by WASREB.
-                    </li>
-                    <li>Audited Financial Statement for 2018/19</li>
-                    <li>Approved Strategic plan</li>
+                    <li>Signed Copy of ERP document </li>
+                    <li>Copy of board resolution or minutes of board meeting approving the plan</li>
                 </ul>
-                <manage-attachments inline-template delete_url="{{ route('eois.attachments.destroy',0) }}">
+                <manage-attachments inline-template delete_url="{{ route('erps.attachments.destroy',0) }}">
                     <table class="table">
                         <thead>
                         <tr>
@@ -59,15 +42,15 @@
                             <th></th>
                         </tr>
                         </thead>
-                        @foreach($eoi->attachments as $attachment)
+                        @foreach($erp->attachments as $attachment)
                             <tr>
                                 <td><a target="_blank"
-                                       href="{{ route('eois.attachments.show',$attachment->name) }}">{{ $attachment->display_name }}
+                                       href="{{ route('erps.attachments.show',$attachment->name) }}">{{ $attachment->display_name }}
                                         <i class="feather icon-file"></i></a></td>
                                 <td>{{ $attachment->document_type }}</td>
                                 <td>{{ $attachment->created_at->format('d-M-Y') }}</td>
                                 <th>
-                                    @if($eoi->status == "Pending" || $eoi->status == "Needs Review")
+                                    @if($erp->status != "WSTF Approved")
                                         <button class="btn btn-sm btn-danger"
                                                 @click="deleteAttachment({{ json_encode($attachment) }})"><i
                                                 class="feather icon-trash"></i></button>
@@ -82,16 +65,14 @@
                          aria-valuenow="{{$progress}}" aria-valuemin="0" aria-valuemax="100">{{$progress}}%
                     </div>
                 </div>
-
-                @if($eoi->status == "Pending" || $eoi->status == "Needs Review")
+                @if($erp->status != "WSTF Approved")
                     <div class="row">
-                        <attachment-form
-                            :documents="['Company Registration Document','Copy of licence with WASREB','Audited Financial Statement for 2018/19','Approved Strategic plan','Map of the area to be served']"
-                            submit-url="{{ route('eois.attachments.store',$eoi->id) }}"/>
+                        <div class="col-md-12">
+                            <attachment-form :documents="['Signed ERP Document','Board Resolution on ERP','Board Meeting Minutes on ERP']" submit-url="{{ route('erps.attachments.store',$erp->id) }}"/>
+                        </div>
                     </div>
+                @endif
             </div>
-            @endif
         </div>
-    </div>
     </div>
 @endsection

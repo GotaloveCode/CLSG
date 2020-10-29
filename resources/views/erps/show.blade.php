@@ -26,8 +26,25 @@
                     <section class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body">
-                                    @include('preview.erp')
+                                <div class="card-header">
+                                    <h4 class="card-title">Emergency Reponse Plan</h4>
+                                    <a class="heading-elements-toggle"><i
+                                            class="fa fa-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li>
+                                                <a href="{{ route('erps.show',['erp' => $erp->id,'print' => 'pdf']) }}"><i
+                                                        class="feather icon-printer"></i></a>
+                                            </li>
+                                            <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                            <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-content collapse show">
+                                    <div class="card-body">
+                                        @include('preview.erp')
+                                    </div>
                                 </div>
                             </div>
                             <div class="card">
@@ -62,7 +79,9 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="3">Upload signed ERP and board resolution or board meeting minutes approving the plan </td>
+                                                    <td colspan="3">Upload signed ERP and board resolution or board
+                                                        meeting minutes approving the plan
+                                                    </td>
                                                 </tr>
                                             @endforelse
                                         </table>
@@ -100,7 +119,7 @@
                                     <button class="btn btn-danger mb-1"
                                             @click.prevent="review('Needs Review')"><i
                                             class="fa fa-pencil"></i>
-                                        Review
+                                        Needs Review
                                     </button>
                                 @endif
                             @elseif(auth()->user()->hasRole('wstf'))

@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'bcps'], function () {
         Route::get('attachments/{filename}', 'BcpAttachmentController@show')->name('bcps.attachments.show');
         Route::delete('attachments/{attachment}', 'BcpAttachmentController@destroy')->name('bcps.attachments.destroy');
+        Route::post('{bcp}/mgm', 'BcpController@mgm')->name('bcps.mgm');
         Route::get('{bcp}/attachments', 'BcpAttachmentController@index')->name('bcps.attachments');
         Route::post('{bcp}/attachments', 'BcpAttachmentController@store')->name('bcps.attachments.store');
         Route::post('{bcp}/review', 'BcpController@review')->name('bcps.review');
@@ -59,8 +60,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'erps'], function () {
         Route::get('attachments/{filename}', 'ErpAttachmentController@show')->name('erps.attachments.show');
         Route::delete('attachments/{attachment}', 'ErpAttachmentController@destroy')->name('erps.attachments.destroy');
-        Route::get('{bcp}/attachments', 'ErpAttachmentController@index')->name('erps.attachments');
-        Route::post('{bcp}/attachments', 'ErpAttachmentController@store')->name('erps.attachments.store');
+        Route::get('{erp}/attachments', 'ErpAttachmentController@index')->name('erps.attachments');
+        Route::post('{erp}/attachments', 'ErpAttachmentController@store')->name('erps.attachments.store');
         Route::post('{erp}/review', 'ErpController@review')->name('erps.review');
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
     });
@@ -70,7 +71,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get("/monthly-revenue","ReportsController@index");
         Route::get("/checklist","ReportsController@checklist");
         Route::post("/checklist","ReportsController@saveChecklist");
-        Route::post("/get-checklist","ReportsController@getChecklist");
         Route::get("/checklist-list","ReportsController@checklistIndex")->name("checklist.list");
         Route::get("/checklist-show/{id}","ReportsController@showChecklist")->name("checklist.show");
         Route::get("/monthly-checklist","ReportsController@monthlyChecklist")->name("checklist.monthly-checklist");
@@ -79,7 +79,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get("/monthly-verification","ReportsController@monthlyVerification")->name("reports.monthly-verification");
         Route::get("/verification","ReportsController@verification");
         Route::get("/score","ReportsController@score");
-        Route::post("/get-verification","ReportsController@getVerification");
         Route::post("/verification","ReportsController@saveVerification");
         Route::get("/verification-list","ReportsController@verificationIndex")->name("verification.list");
         Route::get("/verification-show/{id}","ReportsController@showVerification")->name("verification.show");
@@ -89,7 +88,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get("/report-format","ReportsController@reportFormat");
         Route::get("/report-format-list","ReportsController@formatIndex")->name("report-format.list");
         Route::get("/report-format/{id}","ReportsController@showFormat")->name("report-format.show");
-        Route::post("/get-format","ReportsController@getFormat");
         Route::post("/report-format","ReportsController@saveFormat");
     });
 

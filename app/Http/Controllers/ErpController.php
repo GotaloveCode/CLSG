@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ErpRequest;
 use App\Http\Resources\ErpResource;
 use App\Models\Erp;
+use App\Models\Mitigation;
+use App\Models\Operationcost;
+use App\Models\Risk;
+use App\Models\Service;
 use App\Traits\ErpAuthTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 use App\Traits\SendMailNotification;
+use PDF;
 
 class ErpController extends Controller
 {
@@ -37,21 +43,43 @@ class ErpController extends Controller
             return redirect(route("eois.create"))->withErrors('Expression of Interest first must be submitted to and approved by WSTF');
         }
         $interventions = $wsp->eoi->estimatedcosts;
+        $eoiOperations = $wsp->eoi->operationCosts;
+
         $erp_load = $wsp->erp;
+        $operationCosts = Cache::rememberForever('operationCosts', function () {
+            return Operationcost::select('id', 'name')->get();
+        });
+        $services = Cache::rememberForever('services', function () {
+            return Service::select('id', 'name')->get();
+        });
+
+        $risks = Cache::rememberForever('risks', function () {
+            return Risk::pluck('name');
+        });
+
+        $mitigation = Cache::rememberForever('mitigation', function () {
+            return Mitigation::pluck('name');
+        });
+
+        $services = $services->pluck('name');
 
         if ($erp_load) $erp_load = json_encode(new ErpResource($erp_load));
 
-        return view('erps.create')->with(compact('interventions', 'erp_load'));
+
+
+        return view('erps.create')->with(compact('interventions', 'risks', 'mitigation', 'services', 'eoiOperations', 'erp_load', 'operationCosts'));
     }
 
     public function store(ErpRequest $request)
     {
         $erp = Erp::create($request->only(['wsp_id', 'coordinator']));
-        $this->createErpRelations($erp,$request);
+        $this->createErpRelations($erp, $request);
+        SendMailNotification::postReview($erp->status, $erp->wsp_id, route('erps.show', $erp->id), $erp->wsp->name . ' ERP Created');
+
         if ($request->ajax()) {
-            return response()->json(['message' => 'ERP created successfully']);
+            return response()->json($erp);
         }
-        return back()->with(['eoi' => $erp]);
+        return back()->with(['erp' => $erp]);
     }
 
 
@@ -60,33 +88,59 @@ class ErpController extends Controller
         $progress = $erp->progress();
         $eoi = $erp->wsp->first()->eoi;
         $erp = $erp->load(['wsp', 'erp_items', 'attachments']);
+        if (\request()->has('print')) {
+            $pdf = PDF::loadView('erps.print', $erp);
+            return $pdf->inline();
+        }
         return view('erps.show')->with(compact('erp', 'progress', 'eoi'));
     }
 
 
     public function update(ErpRequest $request, Erp $erp)
     {
-        if($erp->status == "WSTF Approved"){
-            abort(403,'You cannot update ERP after WSTF has approved it');
+        if ($erp->status == "WSTF Approved") {
+            return response()->json([
+                'message' => 'The ERP has already been approved by WSFT no further changes can be made',
+                'errors' => ['wsp_id' => ['The ERP has already been approved by WSFT no further changes can be made!']]
+            ], 422);
         }
-        $erp->update($request->validated());
+
+        $erp->update($request->validated() + ['status' => 'Pending']);
         $erp->erp_items()->delete();
-        $this->createErpRelations($erp,$request);
+        $erp->operationcosts()->detach();
+        $this->createErpRelations($erp, $request);
+        SendMailNotification::postReview($erp->status, $erp->wsp_id, route('erps.show', $erp->id), $erp->wsp->name . ' ERP Updated');
         if ($request->ajax()) {
-            return response()->json(['message' => 'Emergency Response Plan updated successfully']);
+            return response()->json($erp);
         }
-        return back()->with('success', 'Emergency Response Plan updated successfully');
+        return back()->with(['erp' => $erp]);
     }
 
     private function createErpRelations(Erp $erp, Request $request)
     {
         foreach ($request->input('items') as $item) {
+            $risk = $item['risks'];
+            if($risk == 'Other'){
+                $risk = $item['other_risk'];
+            }
+            $mitigiation = [];
+            foreach ($item['mitigation'] as $m){
+                $m == 'Other' ? $m = $item['other_mitigation'] : $m;
+                $mitigiation[] = $m;
+            }
+
             $erp->erp_items()->create([
                 'emergency_intervention' => $item['emergency_intervention'],
-                'risks' => $item['risks'],
-                'mitigation' => $item['mitigation'],
+                'risks' => $risk,
+                'mitigation' => $mitigiation,
                 'cost' => $item['cost'],
                 'other' => $item['other'],
+            ]);
+        }
+
+        foreach ($request->input('operation_costs') as $operation_cost) {
+            $erp->operationcosts()->attach($operation_cost['operationcost_id'], [
+                'cost' => $operation_cost['cost']
             ]);
         }
     }

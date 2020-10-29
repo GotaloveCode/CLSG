@@ -88,4 +88,9 @@ class Bcp extends Model
     {
         return $this->hasMany(BcpMonthlyReport::class);
     }
+
+    public function mgms()
+    {
+        return $this->hasMany(MonthlyGrantMultiplier::class);
+    }
 }

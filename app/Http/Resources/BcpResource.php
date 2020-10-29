@@ -29,6 +29,7 @@ class BcpResource extends JsonResource
             'projected_revenues' => $this->revenue_projections,
             'bcp_teams'=> $this->bcpteams,
             'essential_operations' => $this->essentialOperations,
+            'mgms' => $this->mgms,
             'wsp_id' => $this->wsp_id
         ];
 

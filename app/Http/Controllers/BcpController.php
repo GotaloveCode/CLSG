@@ -4,17 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BcpFormRequest;
 use App\Http\Requests\CommentRequest;
+use App\Http\Requests\MgmRequest;
 use App\Http\Resources\BcpResource;
 use App\Models\Bcp;
 use App\Models\Essentialfunction;
-use App\Models\Operationcost;
-use App\Models\Staff;
 use App\Traits\BcpAuthTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 use App\Traits\SendMailNotification;
+use PDF;
+
 
 class BcpController extends Controller
 {
@@ -66,6 +65,8 @@ class BcpController extends Controller
 
         $this->createBcpRelations($bcp, $request);
 
+        SendMailNotification::postReview($bcp->status, $bcp->wsp_id, route('bcps.show', $bcp->id), $bcp->wsp->name . ' BCP Created');
+
         if ($request->ajax()) {
             return response()->json(['message' => 'Business Continuity Plan submitted successfully','bcp'=>$bcp]);
         }
@@ -74,6 +75,12 @@ class BcpController extends Controller
 
     public function update(BcpFormRequest $request, Bcp $bcp)
     {
+        if ($bcp->status == "WSTF Approved") {
+            return response()->json([
+                'message' => 'The BCP has already been approved by WSFT no further changes can be made',
+                'errors' => ['wsp_id' => ['The BCP has already been approved by WSFT no further changes can be made!']]
+            ], 422);
+        }
         $bcp->update([
             'executive_summary' => $request->input('executive_summary'),
             'introduction' => $request->input('introduction'),
@@ -84,19 +91,40 @@ class BcpController extends Controller
             'emergency_response_plan' => $request->input('emergency_response_plan'),
             'communication_plan' => $request->input('communication_plan'),
             'government_subsidy' => $request->input('government_subsidy'),
-            'wsp_id' => $request->input('wsp_id')
+            'wsp_id' => $request->input('wsp_id'),
+            'status' => 'Pending'
         ]);
 
         $bcp->essentialOperations()->delete();
         $bcp->bcpteams()->delete();
-        $bcp->revenue_projections()->delete();
 
         $this->createBcpRelations($bcp, $request);
+
+        SendMailNotification::postReview($bcp->status, $bcp->wsp_id, route('bcps.show', $bcp->id), $bcp->wsp->name . ' BCP Updated');
 
         if ($request->ajax()) {
             return response()->json(['message' => 'Business Continuity Plan updated successfully']);
         }
         return back()->with('success', 'Business Continuity Plan updated successfully');
+    }
+
+    public function mgm(MgmRequest $request, Bcp $bcp)
+    {
+        foreach ($request->input('mgms') as $mgm){
+            $bcp->mgms()->updateOrCreate([
+                'month' => $mgm['month'],
+                'year' => $mgm['year']
+            ], [
+                'amount' => $mgm['amount']
+            ]);
+        }
+
+        //#todo: add notification
+
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Monthly Grant Multiplier updated successfully']);
+        }
+        return back()->with('success', 'Monthly Grant Multiplier updated successfully');
     }
 
     private function createBcpRelations(Bcp $bcp, Request $request)
@@ -119,10 +147,11 @@ class BcpController extends Controller
         }
 
         foreach ($request->input('projected_revenues') as $revenue) {
-            $bcp->revenue_projections()->create([
-                'amount' => $revenue['amount'],
+            $bcp->revenue_projections()->updateOrCreate([
                 'month' => $revenue['month'],
                 'year' => now()->year,
+            ], [
+                'amount' => $revenue['amount']
             ]);
         }
     }
@@ -131,7 +160,13 @@ class BcpController extends Controller
     {
         $progress = $bcp->progress();
         $eoi = $bcp->wsp->first()->eoi;
-        $bcp = $bcp->load(['wsp', 'revenue_projections', 'essentialOperations', 'comments', 'bcpteams']);
+        $bcp = $bcp->load(['wsp', 'revenue_projections', 'essentialOperations', 'essentialOperations.essentialfunction', 'essentialOperations.primaryStaff', 'comments', 'comments.user', 'bcpteams']);
+
+        if (\request()->has('print')) {
+            $pdf = PDF::loadView('bcps.print', $bcp);
+            return $pdf->download();
+        }
+
         return view('bcps.show')->with(compact('bcp', 'progress', 'eoi'));
     }
 

@@ -1,8 +1,8 @@
 <template>
     <tr>
-        <ValidationProvider tag="td" name="Priority level[]" rules="required|numeric"
+        <ValidationProvider tag="td" name="Priority level[]" rules="required"
                             v-slot="{ errors }">
-            <input type="number" v-model="operation.priority_level" class="form-control">
+            <v-select :options="['High','Low']" v-model="operation.priority_level"></v-select>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
         <ValidationProvider tag="td" name="Essential Function[]" rules="required"

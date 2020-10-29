@@ -15,6 +15,7 @@ class CreateBcpsTable extends Migration
     {
         Schema::create('bcps', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('mgm')->default(0);
             $table->text('executive_summary');
             $table->text('introduction');
             $table->text('planning_assumptions');

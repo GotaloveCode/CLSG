@@ -29,9 +29,9 @@ class Operationcost extends Model
     /**
      * Get the Bcps for the Operationcost.
      */
-    public function bcps()
+    public function erps()
     {
-        return $this->belongsToMany(Bcp::class);
+        return $this->belongsToMany(Erp::class);
     }
 
 }

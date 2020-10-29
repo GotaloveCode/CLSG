@@ -93,7 +93,7 @@
             </div>
         </a>
         @php
-            $erp_route = $erp ? route('bcps.show',$erp->id) : '#';
+            $erp_route = $erp ? route('erps.show',$erp->id) : '#';
         @endphp
         <a href="{{ $erp_route }}" class="col-xl-3 col-sm-6 col-12">
             <div class="card">
@@ -192,7 +192,7 @@
                                         <p class="lead">
                                             Submit the Expression of interest form and attach the required attachments.
                                         </p>
-                                        <p class="text-muted"> Status - {{ $eoi->status }}</p>
+                                        <p class="text-muted"> Status - {{ $eoi->status == 'Pending' ? 'Pending Review By WASREB' : $eoi->status}}</p>
                                     </li>
                                 @endif
                                 @isset($att)
