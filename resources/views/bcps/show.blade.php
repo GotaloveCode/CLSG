@@ -46,10 +46,12 @@
                                         @role('wasreb')
                                         @if($bcp->status !== "WSTF Approved")
                                             <div class="alert alert-success alert-dismissible mb-2" role="alert">
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
                                                     <span aria-hidden="true">×</span>
                                                 </button>
-                                                <strong>Note: </strong> <a href="#mgm">Set the Monthly Grant Multiplier</a> to be applied to the BCP before approving this BCP!
+                                                <strong>Note: </strong> <a href="#mgm">Set the Monthly Grant
+                                                    Multiplier</a> to be applied to the BCP before approving this BCP!
                                             </div>
                                         @endif
                                         @endrole
@@ -73,7 +75,8 @@
                                     <div class="card-body">
                                         @role('wasreb')
                                         @if($bcp->status !== "WSTF Approved")
-                                            <mgm-form class="mb-2" submit-url="{{ route('bcps.mgm', $bcp->id) }}"></mgm-form>
+                                            <mgm-form class="mb-2"
+                                                      submit-url="{{ route('bcps.mgm', $bcp->id) }}"></mgm-form>
                                         @endif
                                         @endrole
                                         @if($bcp->mgms->count() > 0)
@@ -222,7 +225,8 @@
                                     @foreach($bcp->comments as $comment)
                                         @php
                                             $user_role = auth()->user()->roles()->first()->name;
-                                            $comment_role = $comment->user->roles()->first()->name
+                                            $comment_role = $comment->user->roles()->first()->name;
+                                        if($user_role == 'wsp' && $comment_role == "WSTF") return;
                                         @endphp
                                         <li>
                                             <div
