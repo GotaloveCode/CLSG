@@ -9,7 +9,6 @@ export const SET_SCORE = "setScore";
 export const SET_DETERMINATION = "setDetermination";
 export const SET_MONTH = "setMonth";
 export const SET_YEAR = "setYear";
-export const SET_WSP = "setWsp";
 
 
 const state = {
@@ -17,8 +16,7 @@ const state = {
     determinations: {},
     verification: {},
     month:'',
-    year:'',
-    wsp:''
+    year:''
 };
 
 const getters = {
@@ -36,10 +34,7 @@ const getters = {
     },
     getYears(state) {
        return state.year;
-    },
-    getWsp(state) {
-       return state.wsp;
-    },
+    }
 };
 
 const actions = {
@@ -56,7 +51,6 @@ const actions = {
                 context.commit(SET_VERIFICATION,res.data);
                 context.commit(SET_MONTH,payload.month);
                 context.commit(SET_YEAR,payload.year);
-                context.commit(SET_WSP,payload.wsp);
             })
     }
 
@@ -78,10 +72,7 @@ const mutations = {
     },
     [SET_YEAR](state, data) {
         state.year = data;
-    },
-    [SET_WSP](state, data) {
-        state.wsp = data;
-    },
+    }
 };
 
 export default {

@@ -245,9 +245,6 @@ import DateForm from "./DateForm";
 import {mapGetters} from "vuex";
 
 export default {
-    props: {
-        bcp_id: {required: true, type: Number}
-    },
     data() {
         return {
             error: '',
@@ -277,7 +274,6 @@ export default {
     },
     created() {
         this.listen();
-        console.log('bcp ->>'+this.bcp_id)
     },
     computed: {
         ...mapGetters({
@@ -296,7 +292,6 @@ export default {
             if (!this.validateCustomers()) return this.$toastr.e("All Vulnerable Customers Checklist fields are required!");
             if (!this.validateEssentials()) return this.$toastr.e("All Essential Operations Checklist fields are required!");
             let data = {
-                bcp_id: this.bcp_id,
                 challenges: this.challenges,
                 expected_activities: this.expected_activities,
                 revenue: this.revenue,
