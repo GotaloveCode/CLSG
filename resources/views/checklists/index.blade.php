@@ -23,6 +23,8 @@
                     <div class="card-content">
                         <div class="card-body">
                             <checklist-form
+                                :checklists="{{$checklists}}"
+                                :checklist_item="{{$checklist_item}}"
                             ></checklist-form>
                         </div>
                     </div>

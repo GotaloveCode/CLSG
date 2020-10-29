@@ -89,23 +89,18 @@
 
 
 <script>
-import ViewFormat from "./ViewFormat";
-import DateForm from "./DateForm";
-import {mapGetters} from "vuex";
 export default {
+    props:{
+        details:{type:Object},
+        scores:{type:Array},
+    },
     created(){
         this.listen();
     },
-    computed:{
-        ...mapGetters({
-            details:"getReportFormat",
-            scores:"getFormats",
 
-        })
-    },
     methods:{
         getName(id){
-          return this.scores.find(s => s.id === id).name;
+         return this.scores.find(s => s.id === id).name;
         },
         listen(){
             eventBus.$on("format_form",() => {
@@ -118,7 +113,7 @@ export default {
             })
         },
         goBack(){
-            window.location.href = "/reports/monthly-report-format";
+            window.location.href = "/reports/report-format-list";
         }
     }
 }

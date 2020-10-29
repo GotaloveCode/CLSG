@@ -2,13 +2,10 @@
     <div class="row">
         <div class="col-md-12">
             <div v-html="$error.handle(error)"/>
-            <template v-if="show_date_form && !show">
-                <date-form></date-form>
+            <template v-if="show">
+                <view-verification :scores="scores" :determinations="determinations" :verification="exiting_verification"></view-verification>
             </template>
-            <template v-if="show && !show_date_form">
-                <view-verification></view-verification>
-            </template>
-            <div v-if="!show && !show_date_form">
+            <div v-if="!show">
                 <form @submit.prevent="postData()" class="form">
                     <h4 class="text-uppercase text-center">A. Summary </h4>
                     <div class="row">
@@ -107,10 +104,12 @@
 
 <script>
 import ViewVerification from "./ViewVerification";
-import DateForm from "./DateForm";
-import {mapGetters} from "vuex";
 
 export default {
+    props:{
+        verification_items:{type:Array},
+        exiting_verification:{type: [Array,Object]}
+    },
     data() {
         return {
             error:'',
@@ -128,22 +127,23 @@ export default {
             scores_data: [],
             determination_data: [],
             show: false,
-            show_date_form: true,
             loading: false,
+            scores:{},
+            determinations:{}
         }
     },
     created() {
         this.listen();
-    },
-    computed: {
-        ...mapGetters({
-            scores: "getScores",
-            determinations: "getDeterminations",
-            month: "getMonths",
-            year: "getYears"
-        })
+        this.setUp();
     },
     methods: {
+        setUp(){
+            this.scores = this.verification_items.filter(e => e.type ==="Performance Score");
+            this.determinations = this.verification_items.filter(e => e.type ==="Determination");
+            if (this.exiting_verification.id !=undefined){
+                this.show = true;
+            }
+        },
         postData() {
             let deter = this.validateDeterminations();
             if (deter === "negative_value") return this.$toastr.e("Negative values are not allowed!");
@@ -159,15 +159,11 @@ export default {
                 clsg_details: this.determination_data,
                 recommendations: this.form.recommendations,
                 verification_period: this.form.verification_period,
-                verification_team: this.form.verification_team,
-                month: this.month,
-                year: this.year
+                verification_team: this.form.verification_team
             };
             this.loading = true;
             axios.post("/reports/verification", data).then(() => {
-                this.show_date_form = true;
-                this.show = false;
-                this.loading = false;
+               window.location.href = "/reports/verification-list"
             }).catch(error => {
                 this.error = error.response;
             });
@@ -262,8 +258,7 @@ export default {
         }
     },
     components: {
-        ViewVerification,
-        DateForm
+        ViewVerification
     }
 }
 </script>

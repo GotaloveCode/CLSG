@@ -27,9 +27,7 @@ class MonthlyVerificationRequest extends FormRequest
             'performance_score_details' => 'required',
             'clsg_details' => 'required',
             'recommendations' => 'required',
-            'verification_team' => 'required',
-            'month' => 'required|numeric|between:1,12',
-            'year' => 'required|numeric|in:'.now()->year,
+            'verification_team' => 'required'
         ];
     }
 }

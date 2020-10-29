@@ -1,12 +1,9 @@
 <template>
     <div>
-        <template v-if="show_date_form && !show">
-            <date-form></date-form>
+            <template v-if="show">
+            <view-format :details="format_item" :scores="scores"></view-format>
         </template>
-        <template v-if="show && !show_date_form">
-            <view-format></view-format>
-        </template>
-        <div v-if="!show && !show_date_form">
+        <div v-if="!show">
             <form @submit.prevent="postData()">
                 <div>
                     <div class="row">
@@ -100,9 +97,12 @@
 
 <script>
 import ViewFormat from "./ViewFormat";
-import DateForm from "./DateForm";
-import {mapGetters} from "vuex";
+
 export default {
+    props:{
+      scores:{type: Array},
+      format_item:{type:[Array, Object]}
+    },
     data(){
         return {
             form:{
@@ -118,21 +118,20 @@ export default {
                 evidence:[]
             },
             scores_data:[],
-            show:false,
-            show_date_form:true
+            show:false
         }
     },
     created(){
         this.listen();
+       this.setup();
     },
-    computed:{
-        ...mapGetters({
-            scores:"getFormats",
-            month:"getReportMonth",
-            year:"getReportYear",
-        })
-    },
+
     methods:{
+        setup(){
+         if (this.format_item.id !=undefined){
+            this.show = true;
+         }
+        },
         postData(){
             if (!this.validateScores()) return this.$toastr.e("All Performance Scorecard fields are required.")
           this.form.month = this.month;
@@ -140,8 +139,7 @@ export default {
           this.form.scores = this.scores_data;
             axios.post("/reports/report-format",this.form)
                 .then(res => {
-                    this.show_date_form = true;
-                    this.show = false;
+                    window.location.href = "/reports/report-format-list"
                 })
 
         },
@@ -151,9 +149,7 @@ export default {
             this.form.achievement.forEach((e,v) => {
               this.scores_data.push({id:v,achievement:e,evidence:""})
             })
-            console.log(this.scores_data)
-            console.log(this.scores_data.length)
-            if (this.scores_data.length < 10) return false;
+           if (this.scores_data.length < 10) return false;
 
             this.form.evidence.forEach((e,v) => {
                 for (let i=0;i<this.scores_data.length;i++){
@@ -178,15 +174,10 @@ export default {
                 this.show_date_form = false;
                 this.show = false;
             })
-            eventBus.$on("view_format",() => {
-                this.show_date_form = false;
-                this.show = true;
-            })
         }
     },
     components:{
-        ViewFormat,
-        DateForm
+        ViewFormat
     }
 }
 </script>

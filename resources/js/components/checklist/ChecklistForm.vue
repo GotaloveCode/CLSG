@@ -1,13 +1,12 @@
 <template>
     <div>
         <div v-html="$error.handle(error)"/>
-        <template v-if="show_date_form && !show">
-            <date-form></date-form>
+        <template v-if="!show">
         </template>
-        <template v-if="show && !show_date_form">
-            <view-checklist></view-checklist>
+        <template v-if="show">
+            <view-checklist :checklist="checklist_item" :essentials="essentials" :customers="customers" :staff="staff" :communication="communication"></view-checklist>
         </template>
-        <div v-if="!show && !show_date_form">
+        <div v-if="!show">
             <form @submit.prevent="postData()">
                 <div class="row">
                     <h4 class="text-uppercase col-md-12 text-center">A. GENERAL </h4>
@@ -241,10 +240,12 @@
 
 <script>
 import ViewChecklist from "./ViewChecklist";
-import DateForm from "./DateForm";
-import {mapGetters} from "vuex";
 
 export default {
+    props:{
+        checklists:{type:Array},
+        checklist_item:{type: [Object, Array]}
+    },
     data() {
         return {
             error: '',
@@ -269,23 +270,27 @@ export default {
             communication_data: [],
             loading: false,
             show: false,
-            show_date_form: true
+            essentials:{},
+            customers:{},
+            staff:{},
+            communication:{}
         }
     },
     created() {
         this.listen();
-    },
-    computed: {
-        ...mapGetters({
-            essentials: "getEssentials",
-            customers: "getCustomers",
-            staff: "getStaffs",
-            communication: "getCommunications",
-            month: "getMonth",
-            year: "getYear",
-        })
+        this.setUp();
     },
     methods: {
+        setUp(){
+            this.essentials = this.checklists.filter(e => e.type ==="Essential Operations");
+            this.customers = this.checklists.filter(e => e.type ==="Vulnerable Customers");
+            this.staff = this.checklists.filter(e => e.type ==="Staff Health Protection");
+            this.communication = this.checklists.filter(e => e.type ==="Communication");
+
+            if (this.checklist_item.id !=undefined){
+                this.show = true;
+            }
+            },
         postData() {
             if (!this.validateCommunication()) return this.$toastr.e("All Communication Checklist fields are required!");
             if (!this.validateStaff()) return this.$toastr.e("All Staff Health Protection Checklist fields are required!");
@@ -300,16 +305,12 @@ export default {
                 essential: this.essential_data,
                 customer: this.customer_data,
                 staff: this.staff_data,
-                communication: this.communication_data,
-                month: this.month,
-                year: this.year,
+                communication: this.communication_data
             };
             this.error = '';
             this.loading = true;
             axios.post("/reports/checklist", data).then(() => {
-                this.show_date_form = true;
-                this.show = false;
-                this.loading = false;
+              window.location.href = "/reports/checklist-list"
             }).catch(error => {
                 this.error = error.response;
             });
@@ -395,15 +396,10 @@ export default {
                 this.show_date_form = false;
                 this.show = true;
             })
-            eventBus.$on("date_form", () => {
-                this.show_date_form = true;
-                this.show = false;
-            })
         }
     },
     components: {
-        ViewChecklist,
-        DateForm
+        ViewChecklist
     }
 }
 </script>

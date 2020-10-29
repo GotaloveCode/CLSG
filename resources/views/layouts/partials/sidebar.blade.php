@@ -83,10 +83,10 @@
             <li class=" nav-item"><a href="#"><i class="feather icon-bar-chart"></i><span
                         class="menu-title">Reports</span></a>
                 <ul class="menu-content">
-                    @role('wasreb')
+{{--                    @role('wasreb')--}}
                     <li><a class="menu-item" data-title="Monthly Verification List" href="{{ route('verification.list')}}">Monthly Verification List</a>
                     </li>
-                    @endrole
+{{--                    @endrole--}}
                     {{--                    @can('create-bcp')--}}
                     {{--                        @if($bcp)--}}
                     <li><a class="menu-item" href="{{ url('/reports/checklist-list') }}">BCP Monthly Reporting</a>

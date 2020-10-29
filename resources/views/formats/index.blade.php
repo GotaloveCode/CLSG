@@ -22,6 +22,8 @@
                 <div class="card">
                     <div class="card-content">
                         <format-form
+                            :scores="{{$items}}"
+                            :format_item="{{$format_item}}"
                         ></format-form>
 
                     </div>

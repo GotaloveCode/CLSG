@@ -208,17 +208,15 @@
 
 
 <script>
-import {mapGetters} from "vuex";
 export default {
-       computed:{
-        ...mapGetters({
-            essentials:"getEssentials",
-            customers:"getCustomers",
-            staff:"getStaffs",
-            communication:"getCommunications",
-            checklist:"getChecklist"
-        })
+    props:{
+      checklist: {type: Object},
+        essentials: {type: Array},
+        customers: {type: Array},
+        staff: {type: Array},
+        communication: {type: Array},
     },
+
     methods:{
         getEssentialName(id){
             if (this.essentials.length){
@@ -241,7 +239,7 @@ export default {
             }
         },
         goBack(){
-            window.location.href = "/reports/monthly-revenue";
+            window.location.href = "/reports/checklist-list";
         }
 
     }

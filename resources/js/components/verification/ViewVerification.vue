@@ -119,15 +119,12 @@
 
 
 <script>
-import {mapGetters} from "vuex";
 
 export default {
-    computed: {
-        ...mapGetters({
-            scores: "getScores",
-            determinations: "getDeterminations",
-            verification: "getVerification"
-        })
+    props:{
+      scores:{type:Array},
+      determinations:{type:Array},
+      verification:{type:Object},
     },
     methods: {
         getScoreName(id) {
@@ -142,7 +139,7 @@ export default {
         },
 
         goBack() {
-            window.location.href = "/reports/monthly-verification";
+            window.location.href = "/reports/verification-list";
         }
     }
 }

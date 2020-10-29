@@ -12,6 +12,7 @@ use App\Models\MonthlyVerificationReport;
 use App\Models\ReportingFormart;
 use App\Models\MonthlyReportingFormat;
 use App\Models\Wsp;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\BcpChecklistResource;
 use App\Http\Resources\VerificationResource;
@@ -29,13 +30,22 @@ class ReportsController extends Controller
 
     public function monthlyVerification()
     {
-        $wsps = Wsp::select('id', 'name')->get();
-        return view("verification.index")->with(compact('wsps'));
+        $year = Carbon::now()->format("Y");
+        $month = Carbon::now()->format("m");
+        $exiting_verification = MonthlyVerificationReport::where("month",$month)->where("year",$year)->where('wsp_id',auth()->user()->wsps->first()->id)->first();
+        $exiting_verification ? $verification_item = json_encode(new VerificationResource($exiting_verification)) : $verification_item = json_encode([]);
+        $verification_items = json_encode(MonthlyVerification::all());
+        return view("verification.index")->with(compact('verification_items','verification_item'));
     }
 
     public function monthlyChecklist()
     {
-        return view("checklists.index");
+        $year = Carbon::now()->format("Y");
+        $month = Carbon::now()->format("m");
+        $exiting_checklist = BcpMonthlyReport::where("month",$month)->where("year",$year)->where('bcp_id',auth()->user()->wsps->first()->bcp->first()->id)->first();
+        $exiting_checklist ? $checklist_item = json_encode(new BcpChecklistResource($exiting_checklist)) : $checklist_item = json_encode([]);
+        $checklists = json_encode(BcpChecklist::all());
+        return view("checklists.index",compact("checklists","checklist_item"));
     }
 
     public function verificationIndex()
@@ -87,7 +97,14 @@ class ReportsController extends Controller
 
     public function monthlyReportFormat()
     {
-        return view("formats.index");
+        $year = Carbon::now()->format("Y");
+        $month = Carbon::now()->format("m");
+
+        $exiting_format = MonthlyReportingFormat::where("month",$month)->where("year",$year)->where('wsp_id',auth()->user()->wsps->first()->id)->first();
+        $exiting_format ? $format_item = json_encode(new ReportingFormatResource($exiting_format)) : $format_item = json_encode([]);
+        $items = json_encode(ReportingFormart::all());
+
+        return view("formats.index",compact("items","format_item"));
 
     }
 
@@ -129,19 +146,6 @@ class ReportsController extends Controller
 
     public function saveChecklist(BcpMonthlyReportRequest $request)
     {
-        $bcp_id = auth()->user()->wsps()->first()->bcp->first()->id;
-        $bcp = BcpMonthlyReport::where('month', $request->input("month"))
-            ->where('year', $request->input("year"))
-            ->where('bcp_id', $bcp_id)
-            ->first();
-
-        if ($bcp) {
-            return response()->json([
-                'message' => 'The given field was invalid',
-                'errors' => ['month' => ['A BCP Monthly report already exists for this month!']]
-            ], 422);
-        }
-
         $bcp = BcpMonthlyReport::create([
             'revenue' => $request->input("revenue"),
             'operations_costs' => $request->input("operations_costs"),
@@ -152,35 +156,23 @@ class ReportsController extends Controller
             'customer' => json_encode($request->input("customer")),
             'staff' => json_encode($request->input("staff")),
             'communication' => json_encode($request->input("communication")),
-            'bcp_id' => $bcp_id,
-            'month' => $request->input("month"),
-            'year' => $request->input("year"),
+            'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
+            'month' => Carbon::now()->format("m"),
+            'year' => Carbon::now()->format("Y"),
         ]);
         return response()->json($bcp);
     }
 
     public function saveVerification(MonthlyVerificationRequest $request)
     {
-        $wsp_id = auth()->user()->wsps()->first()->bcp->first()->id;
-        $verification = MonthlyVerificationReport::where('month', $request->input("month"))
-            ->where('year', $request->input("year"))
-            ->where('wsp_id', $wsp_id)
-            ->first();
-
-        if ($verification) {
-            return response()->json([
-                'message' => 'The given field was invalid',
-                'errors' => ['month' => ['A Monthly Performance Verification Report for this WSP already exists for this period!']]
-            ], 422);
-        }
         $verification = MonthlyVerificationReport::create([
             'performance_score_details' => json_encode($request->input("performance_score_details")),
             'clsg_details' => json_encode($request->input("clsg_details")),
-            'wsp_id' => $wsp_id,
+            'wsp_id' => auth()->user()->wsps->first()->id,
             'recommendations' => $request->input("recommendations"),
             'verification_team' => $request->input("verification_team"),
-            'month' => $request->input("month"),
-            'year' => $request->input("year"),
+            'month' => Carbon::now()->format("m"),
+            'year' => Carbon::now()->format("Y"),
         ]);
         return response()->json($verification);
     }
@@ -198,8 +190,8 @@ class ReportsController extends Controller
             'challenges'=>$request->input("challenges"),
             'expected_activities_next_month'=>$request->input("expected_activities_next_month"),
             'scores_details'=> json_encode($request->input("scores")),
-            'month' =>   $request->input("month"),
-            'year' =>   $request->input("year"),
+            'month' => Carbon::now()->format("m"),
+            'year' => Carbon::now()->format("Y"),
         ]);
         return response()->json($format);
     }

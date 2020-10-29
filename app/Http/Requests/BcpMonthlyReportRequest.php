@@ -32,9 +32,7 @@ class BcpMonthlyReportRequest extends FormRequest
             'essential' => 'required',
             'customer' => 'required',
             'staff' => 'required',
-            'communication' => 'required',
-            'month' => 'required|numeric|between:1,12',
-            'year' => 'required|numeric|in:' . now()->year,
+            'communication' => 'required'
         ];
     }
 }

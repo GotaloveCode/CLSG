@@ -23,6 +23,8 @@
                     <div class="card-content">
                         <div class="card-body">
                             <verification-form
+                                :exiting_verification="{{$verification_item}}"
+                                :verification_items="{{$verification_items}}"
                             ></verification-form>
                         </div>
                     </div>
