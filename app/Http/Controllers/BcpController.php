@@ -173,6 +173,14 @@ class BcpController extends Controller
     public function review(Bcp $bcp, Request $request)
     {
         $this->canAccessBcp($bcp);
+        if($bcp->status == "Pending" && $request->status == "WASREB Approved"){
+            if($bcp->mgms()->count() < 3){
+                return response()->json([
+                    'message' => 'Please set Monthly Grant Multiplier first',
+                    'errors' => ['status' => ['Please set Monthly Grant Multiplier first before approving!']]
+                ], 422);
+            }
+        }
         $bcp->status = $request->status;
         $bcp->save();
 
