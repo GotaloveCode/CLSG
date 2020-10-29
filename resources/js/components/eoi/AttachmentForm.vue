@@ -11,7 +11,7 @@
                 </tr>
                 </thead>
                 <tr>
-                    <ValidationProvider tag="td" name="Document Type" rules="required"
+                 <ValidationProvider tag="td" name="Document Type" rules="required"
                                         v-slot="{ errors }">
                         <v-select label="name" placeholder="Select Document Type"
                                   v-model="document.document_type" :options="documents">
@@ -91,3 +91,8 @@ export default {
 }
 </script>
 
+<style>
+.vs--searchable{
+  width: 20rem !important;
+}
+</style>

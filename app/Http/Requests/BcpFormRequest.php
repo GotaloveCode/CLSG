@@ -33,6 +33,7 @@ class BcpFormRequest extends FormRequest
             'emergency_response_plan' => 'required',
             'communication_plan' => 'required',
             'government_subsidy' => 'numeric|nullable',
+            'government_subsidy_amount' => 'nullable',
             'projected_revenues.*.month' => 'required|numeric|between:1,12',
             'projected_revenues.*.year' => 'required|numeric|min:2020',
             'projected_revenues.*.amount' => 'required|numeric|min:1',

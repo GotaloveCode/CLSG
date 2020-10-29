@@ -26,7 +26,6 @@ class MonthlyVerificationRequest extends FormRequest
         return [
             'performance_score_details' => 'required',
             'clsg_details' => 'required',
-            'wsp_id' => 'required|numeric|exists:wsps,id',
             'recommendations' => 'required',
             'verification_team' => 'required',
             'month' => 'required|numeric|between:1,12',

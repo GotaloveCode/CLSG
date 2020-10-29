@@ -130,13 +130,11 @@ export default {
             scores:"getFormats",
             month:"getReportMonth",
             year:"getReportYear",
-            wsp:"getWspId",
         })
     },
     methods:{
         postData(){
             if (!this.validateScores()) return this.$toastr.e("All Performance Scorecard fields are required.")
-          this.form.wsp_id = this.wsp;
           this.form.month = this.month;
           this.form.year = this.year;
           this.form.scores = this.scores_data;

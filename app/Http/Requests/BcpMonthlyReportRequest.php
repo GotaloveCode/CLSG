@@ -33,7 +33,6 @@ class BcpMonthlyReportRequest extends FormRequest
             'customer' => 'required',
             'staff' => 'required',
             'communication' => 'required',
-            'bcp_id' => 'required|numeric|exists:bcps,id',
             'month' => 'required|numeric|between:1,12',
             'year' => 'required|numeric|in:' . now()->year,
         ];

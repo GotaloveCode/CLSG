@@ -7,13 +7,11 @@ export const SET_FORMAT = "setFormat";
 export const SET_REPORT_FORMAT = "setReportFormat";
 export const SET_MONTH = "setMonth";
 export const SET_YEAR = "setYear";
-export const SET_WSP = "setWsp";
 
 
 const state = {
     formats: {},
     report_format: {},
-    wsp:'',
     month:'',
     year:'',
 };
@@ -27,9 +25,6 @@ const getters = {
     },
     getReportMonth(state) {
         return state.month;
-    },
-    getWspId(state) {
-        return state.wsp;
     },
     getReportYear(state) {
         return state.year;
@@ -49,7 +44,6 @@ const actions = {
                 context.commit(SET_REPORT_FORMAT,res.data);
                 context.commit(SET_MONTH,payload.month);
                 context.commit(SET_YEAR,payload.year);
-                context.commit(SET_WSP,payload.wsp);
             })
     },
 
@@ -61,10 +55,6 @@ const mutations = {
     },
     [SET_REPORT_FORMAT](state, data) {
         state.report_format = data;
-    },
-
-    [SET_WSP](state, data) {
-        state.wsp = data;
     },
     [SET_MONTH](state, data) {
         state.month = data;

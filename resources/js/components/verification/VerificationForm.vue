@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div v-html="$error.handle(error)"/>
             <template v-if="show_date_form && !show">
-                <date-form :wsps="wsps"></date-form>
+                <date-form></date-form>
             </template>
             <template v-if="show && !show_date_form">
                 <view-verification></view-verification>
@@ -111,9 +111,6 @@ import DateForm from "./DateForm";
 import {mapGetters} from "vuex";
 
 export default {
-    props: {
-        wsps: {required: true, type: Array}
-    },
     data() {
         return {
             error:'',
@@ -143,8 +140,7 @@ export default {
             scores: "getScores",
             determinations: "getDeterminations",
             month: "getMonths",
-            year: "getYears",
-            wsp:"getWsp"
+            year: "getYears"
         })
     },
     methods: {
@@ -161,7 +157,6 @@ export default {
             let data = {
                 performance_score_details: this.scores_data,
                 clsg_details: this.determination_data,
-                wsp_id: this.wsp,
                 recommendations: this.form.recommendations,
                 verification_period: this.form.verification_period,
                 verification_team: this.form.verification_team,

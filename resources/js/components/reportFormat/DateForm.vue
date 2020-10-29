@@ -1,6 +1,6 @@
 <template>
         <form @submit.prevent="fetchData()" class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                     <label>Month</label>
                     <select class="form-control" v-model="month" required>
                         <option value="1">1</option>
@@ -18,7 +18,7 @@
                     </select>
                 </div>
 
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                     <label>Year</label>
                     <select v-model="year" class="form-control" required>
                         <option value="2020">2020</option>
@@ -30,12 +30,8 @@
                     </select>
                 </div>
 
-            <div class="form-group col-md-3">
-                <label>Wsp</label>
-                <v-select type="text" label="name" :reduce="c=>c.id" v-model="wsp_id" :options="wsps"
-                          required></v-select>
-            </div>
-            <div class="form-group text-center col-md-3" style="margin-top: 1.5%">
+
+            <div class="form-group text-center col-md-4" style="margin-top: 1.5%">
                 <button type="submit" class="btn btn-primary"> <i class="fa fa-search" aria-hidden="true"></i> Fetch Report Format</button>
             </div>
         </form>
@@ -49,8 +45,7 @@ export default {
         return {
             month:'',
             year:'',
-            wsp_id:'',
-            wsps:[]
+            wsp_id:''
         }
     },
     created(){
@@ -62,7 +57,7 @@ export default {
     },
     methods:{
         fetchData(){
-            this.$store.dispatch(SET_REPORT_FORMATS,{month:this.month,year:this.year,wsp:this.wsp_id})
+            this.$store.dispatch(SET_REPORT_FORMATS,{month:this.month,year:this.year})
                 .then(res => {
                     setTimeout(()=>{
                         if (Object.keys(this.getReportFormat).length ===0){
@@ -72,13 +67,6 @@ export default {
                         }
                     },1000)
 
-                })
-        },
-        getWsp(){
-            axios.get("/wsps/list")
-                .then(res => {
-                    this.wsps = res.data
-                    console.log(res.data)
                 })
         }
     },

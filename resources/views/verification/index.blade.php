@@ -22,7 +22,7 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-body">
-                            <verification-form :wsps="{{$wsps}}"
+                            <verification-form
                             ></verification-form>
                         </div>
                     </div>

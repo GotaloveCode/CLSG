@@ -22,7 +22,7 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-body">
-                            <checklist-form :bcp_id="{{$bcp->id}}"
+                            <checklist-form
                             ></checklist-form>
                         </div>
                     </div>

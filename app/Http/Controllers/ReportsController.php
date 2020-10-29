@@ -129,18 +129,10 @@ class ReportsController extends Controller
 
     public function saveChecklist(BcpMonthlyReportRequest $request)
     {
-        $bcp = auth()->user()->wsps()->first()->bcp;
-
-        if ($bcp->id != $request->input("bcp_id")) {
-            return response()->json([
-                'message' => 'The given field was invalid',
-                'errors' => ['bcp_id' => ['The BCP does not belong to the WSP!']]
-            ], 422);
-        }
-
+        $bcp_id = auth()->user()->wsps()->first()->bcp->first()->id;
         $bcp = BcpMonthlyReport::where('month', $request->input("month"))
             ->where('year', $request->input("year"))
-            ->where('bcp_id', $request->input("bcp_id"))
+            ->where('bcp_id', $bcp_id)
             ->first();
 
         if ($bcp) {
@@ -160,7 +152,7 @@ class ReportsController extends Controller
             'customer' => json_encode($request->input("customer")),
             'staff' => json_encode($request->input("staff")),
             'communication' => json_encode($request->input("communication")),
-            'bcp_id' => $request->input("bcp_id"),
+            'bcp_id' => $bcp_id,
             'month' => $request->input("month"),
             'year' => $request->input("year"),
         ]);
@@ -169,9 +161,10 @@ class ReportsController extends Controller
 
     public function saveVerification(MonthlyVerificationRequest $request)
     {
+        $wsp_id = auth()->user()->wsps()->first()->bcp->first()->id;
         $verification = MonthlyVerificationReport::where('month', $request->input("month"))
             ->where('year', $request->input("year"))
-            ->where('wsp_id', $request->input("wsp_id"))
+            ->where('wsp_id', $wsp_id)
             ->first();
 
         if ($verification) {
@@ -183,7 +176,7 @@ class ReportsController extends Controller
         $verification = MonthlyVerificationReport::create([
             'performance_score_details' => json_encode($request->input("performance_score_details")),
             'clsg_details' => json_encode($request->input("clsg_details")),
-            'wsp_id' => $request->input("wsp_id"),
+            'wsp_id' => $wsp_id,
             'recommendations' => $request->input("recommendations"),
             'verification_team' => $request->input("verification_team"),
             'month' => $request->input("month"),
@@ -195,54 +188,44 @@ class ReportsController extends Controller
     public function saveFormat(Request $request)
     {
         $format = MonthlyReportingFormat::create([
-            'wsp_id' => $request->input("wsp_id"),
-            'bcp_status_implementation' => $request->input("bcp_status_implementation"),
-            'covid_status_implementation' => $request->input("covid_status_implementation"),
-            'revenues_collected' => $request->input("revenues_collected"),
-            'o_m_costs' => $request->input("o_m_costs"),
-            'amount_disbursed' => $request->input("amount_disbursed"),
-            'resolution_status' => $request->input("resolution_status"),
-            'challenges' => $request->input("challenges"),
-            'expected_activities_next_month' => $request->input("expected_activities_next_month"),
-            'scores_details' => json_encode($request->input("scores")),
-            'month' => $request->input("month"),
-            'year' => $request->input("year"),
+            'wsp_id'=>auth()->user()->wsps->first()->id,
+            'bcp_status_implementation'=> $request->input("bcp_status_implementation"),
+            'covid_status_implementation'=> $request->input("covid_status_implementation"),
+            'revenues_collected'=> $request->input("revenues_collected"),
+            'o_m_costs'=>$request->input("o_m_costs"),
+            'amount_disbursed'=>$request->input("amount_disbursed"),
+            'resolution_status'=>$request->input("resolution_status"),
+            'challenges'=>$request->input("challenges"),
+            'expected_activities_next_month'=>$request->input("expected_activities_next_month"),
+            'scores_details'=> json_encode($request->input("scores")),
+            'month' =>   $request->input("month"),
+            'year' =>   $request->input("year"),
         ]);
         return response()->json($format);
     }
 
     public function getChecklist(Request $request)
     {
-        $checklist = [];
-        $bcp = BcpMonthlyReport::where("year", $request->get("year"))->where('bcp_id',auth()->user()->wsps()->first()->bcp->id)->first();
-        if ($bcp){
-            if (($request->get("month") - $bcp->month) < 3 ){
-                $checklist = new BcpChecklistResource($bcp);
-            }
-        }
+
+        $checklist = BcpMonthlyReport::where("month", $request->get("month"))->where("year", $request->get("year"))->where('bcp_id',auth()->user()->wsps()->first()->bcp->first()->id
+        )->first();
+        if ($checklist) $checklist = new BcpChecklistResource($checklist);
+        else $checklist = [];
         return response()->json($checklist);
     }
 
     public function getVerification(Request $request)
     {
-        $verification = [];
-        $wsp = MonthlyVerificationReport::where("year", $request->get("year"))->where("wsp_id",$request->get("wsp"))->first();
-         if ($wsp){
-            if (($request->get("month") - $wsp->month) < 3){
-                $verification = new VerificationResource($wsp);
-            }
-        }
-       return response()->json($verification);
+        $verification = MonthlyVerificationReport::where("month", $request->get("month"))->where("year", $request->get("year"))->where("wsp_id",auth()->user()->wsps->first()->id)->first();
+        if ($verification) $verification = new VerificationResource($verification);
+        else $verification = [];
+        return response()->json($verification);
     }
     public function getFormat(Request $request)
     {
-        $format = [];
-        $report = MonthlyReportingFormat::where("year",$request->get("year"))->where('wsp_id',$request->get("wsp"))->first();
-           if ($report){
-            if (($request->get("month") - $report->month) < 3){
-              $format = new ReportingFormatResource($report);
-            }
-        }
-      return response()->json($format);
+        $format = MonthlyReportingFormat::where("month",$request->get("month"))->where("year",$request->get("year"))->where('wsp_id',auth()->user()->wsps->first()->id)->first();
+        if ($format) $format = new ReportingFormatResource($format);
+        else $format = [];
+        return response()->json($format);
     }
 }
