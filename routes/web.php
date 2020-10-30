@@ -75,6 +75,22 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get("/checklist-show/{id}","ReportsController@showChecklist")->name("checklist.show");
         Route::get("/monthly-checklist","ReportsController@monthlyChecklist")->name("checklist.monthly-checklist");
 
+        //Essentials
+        Route::post("/essential-operation","ReportsController@saveEssential");
+        Route::get("/essential-operation-list","ReportsController@essentialIndex")->name('essential-operation.list');
+        Route::get("/essential-operation/create","ReportsController@createEssential")->name('essential-operation.create');
+        Route::get("/essential-operation-show/{id}","ReportsController@showEssentialOperation")->name('essential-operation.show');//Essentials
+
+        //Vulnerable customers & staff
+        Route::post("/vulnerable-customer","ReportsController@saveCustomer");
+        Route::get("/vulnerable-customer-list","ReportsController@customerIndex")->name('vulnerable-customer.list');
+        Route::get("/vulnerable-customer/create","ReportsController@createCustomer")->name('vulnerable-customer.create');
+        Route::get("/vulnerable-customer-show/{id}","ReportsController@showCustomer")->name('vulnerable-customer.show');
+
+        //Wsp Reporting Monthly
+        Route::get("/wsp-reporting-list","ReportsController@wspIndex")->name('wsp-reporting.list');
+        Route::post("/wsp-reporting","ReportsController@saveWsp");
+
         //verifications
         Route::get("/monthly-verification","ReportsController@monthlyVerification")->name("reports.monthly-verification");
         Route::get("/verification","ReportsController@verification");

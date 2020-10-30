@@ -24,6 +24,11 @@ const ChecklistForm = () => import('./components/checklist/ChecklistForm' /* web
 const VerificationForm = () => import('./components/verification/VerificationForm' /* webpackChunkName: "js/components/verification/verification-form" */);
 const ShowVerification = () => import('./components/verification/ShowVerification' /* webpackChunkName: "js/components/verification/show-verification" */);
 const ShowChecklist = () => import('./components/checklist/ShowChecklist' /* webpackChunkName: "js/components/checklist/show-checklist" */);
+const EssentialOperation = () => import('./components/checklist/EssentialOperation' /* webpackChunkName: "js/components/checklist/essential-operation" */);
+const ViewEssentialOperation = () => import('./components/checklist/ViewEssentialOperation' /* webpackChunkName: "js/components/checklist/view-essential-operation" */);
+const VulnerableCustomer = () => import('./components/checklist/VulnerableCustomer' /* webpackChunkName: "js/components/checklist/vulnerable-customer" */);
+const ViewVulnerableCustomer = () => import('./components/checklist/ViewVulnerableCustomer' /* webpackChunkName: "js/components/checklist/view-vulnerable-customer" */);
+const WspReporting = () => import('./components/checklist/WspReporting' /* webpackChunkName: "js/components/checklist/wsps-reporting" */);
 const FormatForm = () => import('./components/reportFormat/FormatForm' /* webpackChunkName: "js/components/reportFormat/format-form" */);
 const ShowFormat = () => import('./components/reportFormat/ShowFormat' /* webpackChunkName: "js/components/reportFormat/show-format" */);
 
@@ -49,6 +54,11 @@ const app = new Vue({
         ShowVerification,
         ShowChecklist,
         FormatForm,
-        ShowFormat
+        ShowFormat,
+        ViewEssentialOperation,
+        EssentialOperation,
+        VulnerableCustomer,
+        ViewVulnerableCustomer,
+        WspReporting
     },
 });

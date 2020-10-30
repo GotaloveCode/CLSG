@@ -84,16 +84,16 @@
                         class="menu-title">Reports</span></a>
                 <ul class="menu-content">
 {{--                    @role('wasreb')--}}
-                    <li><a class="menu-item" data-title="Monthly Verification List" href="{{ route('verification.list')}}">Monthly Verification List</a>
-                    </li>
+{{--                    <li><a class="menu-item" data-title="Monthly Verification List" href="{{ route('verification.list')}}">Monthly Verification List</a>--}}
+{{--                    </li>--}}
 {{--                    @endrole--}}
                     {{--                    @can('create-bcp')--}}
                     {{--                        @if($bcp)--}}
-                    <li><a class="menu-item" href="{{ url('/reports/checklist-list') }}">BCP Monthly Reporting</a>
+                    <li><a class="menu-item" href="{{ url('/reports/essential-operation-list') }}">Essential Operations</a>
                     </li>
                     {{--                        @endif--}}
                     {{--                    @endcan--}}
-                    <li><a class="menu-item" data-title="Monthly Reporting Format List" href="{{ route('report-format.list')}}">Report Formats List</a>
+                    <li><a class="menu-item" data-title="Vulnerable and Staff" href="{{ route('vulnerable-customer.list')}}">Vulnerable & Staff</a>
                     </li>
                 </ul>
             </li>
