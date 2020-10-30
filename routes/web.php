@@ -91,7 +91,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get("/wsp-reporting-list","ReportsController@wspIndex")->name('wsp-reporting.list');
         Route::post("/wsp-reporting","ReportsController@saveWsp");
         Route::get("/wsp-reporting-show/{id}","ReportsController@showWsp")->name("wsp-reporting.show");
-        Route::get("/wsp-reporting/create","ReportsController@createWsp")->name("wsp-reporting.create");
+        Route::get("/wsp-reporting/create","ReportsController@createWsp")->name("wsp-reporting.create"); //Wsp Reporting Monthly
+
+        //Cslg Calculation
+        Route::get("/cslg-calculation-list","ReportsController@CslgIndex")->name('cslg-calculation.list');
+        Route::post("/cslg-calculation","ReportsController@saveCslg");
+        Route::get("/cslg-calculation-show/{id}","ReportsController@showCslg")->name("cslg-calculation.show");
+        Route::get("/cslg-calculation/create","ReportsController@createCslg")->name("cslg-calculation.create");
 
         //verifications
         Route::get("/monthly-verification","ReportsController@monthlyVerification")->name("reports.monthly-verification");

@@ -16,6 +16,7 @@ use App\Models\VulnerableCustomer;
 use App\Models\Wsp;
 use App\Models\Service;
 use App\Models\WspReporting;
+use App\Models\CslgCalculation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\BcpChecklistResource;
@@ -24,6 +25,7 @@ use App\Http\Resources\ReportingFormatResource;
 use App\Http\Resources\EssentialReportResource;
 use App\Http\Resources\VulnerableCustomerResource;
 use App\Http\Resources\WspReportingResource;
+use App\Http\Resources\CslgResource;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -46,13 +48,25 @@ class ReportsController extends Controller
 
         return Datatables::of($reporting)
             ->addColumn('action', function ($reporting) {
-                //  dd($checklist);
+
                 return '<a href="' . route("wsp-reporting.show", $reporting['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
             })
             ->make(true);
 
     }
+    public function cslgIndex()
+    {
+        if (!request()->ajax()) {
+            return view('checklists.cslg.list');
+        }
+        $reporting = CslgResource::collection(CslgCalculation::get());
 
+        return Datatables::of($reporting)
+            ->addColumn('action', function ($reporting) {
+                return '<a href="' . route("cslg-calculation.show", $reporting['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
+            })
+            ->make(true);
+    }
     public function monthlyVerification()
     {
         $year = Carbon::now()->format("Y");
@@ -98,7 +112,7 @@ class ReportsController extends Controller
 
         return Datatables::of($checklist)
             ->addColumn('action', function ($checklist) {
-                //  dd($checklist);
+
                 return '<a href="' . route("checklist.show", $checklist['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
             })
             ->make(true);
@@ -203,6 +217,16 @@ class ReportsController extends Controller
 
         return view("checklists.wsps.index", compact( "wsp_report","services"));
     }
+    public function createCslg()
+    {
+
+        $year = Carbon::now()->format("Y");
+        $month = Carbon::now()->format("m");
+
+        $exiting_cslg = CslgCalculation::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $exiting_cslg ? $cslg = json_encode(new CslgResource($exiting_cslg)) : $cslg = json_encode([]);
+        return view("checklists.cslg.index", compact( "cslg"));
+    }
 
     public function showVerification($id)
     {
@@ -246,6 +270,11 @@ class ReportsController extends Controller
 
             $wsp_report = json_encode(new WspReportingResource(WspReporting::find($id)));
             return view("checklists.wsps.show", compact("wsp_report", "services"));
+        }
+        public function showCslg($id)
+        {
+            $cslg = json_encode(new CslgResource(CslgCalculation::find($id)));
+            return view("checklists.cslg.show", compact("cslg"));
         }
 
     public function checklist()
@@ -345,6 +374,14 @@ class ReportsController extends Controller
             'year' => Carbon::now()->format("Y"),
         ]);
         return response()->json($customer);
+    }
+    public function saveCslg(Request $request)
+    {
+        $request['month'] = Carbon::now()->format("m");
+        $request['year'] = Carbon::now()->format("Y");
+        $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
+        $cslg = CslgCalculation::create($request->all());
+        return response()->json($cslg);
     }
 
 }

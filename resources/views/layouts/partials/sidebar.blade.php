@@ -96,6 +96,7 @@
                     <li><a class="menu-item" data-title="Vulnerable and Staff" href="{{ route('vulnerable-customer.list')}}">Vulnerable & Staff</a>
                     </li>
                     <li><a class="menu-item" data-title="WSP Monthly Reporting" href="{{ route('wsp-reporting.list')}}">WSP Monthly Reporting</a>
+                    <li><a class="menu-item" data-title="CSLG CALCULATION" href="{{ route('cslg-calculation.list')}}">CSLG Calculation</a>
                     </li>
                 </ul>
             </li>

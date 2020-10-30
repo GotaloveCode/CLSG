@@ -30,6 +30,8 @@ const VulnerableCustomer = () => import('./components/checklist/VulnerableCustom
 const ViewVulnerableCustomer = () => import('./components/checklist/ViewVulnerableCustomer' /* webpackChunkName: "js/components/checklist/view-vulnerable-customer" */);
 const WspReporting = () => import('./components/checklist/WspReporting' /* webpackChunkName: "js/components/checklist/wsps-reporting" */);
 const ViewWspReporting = () => import('./components/checklist/ViewWspReporting' /* webpackChunkName: "js/components/checklist/view-wsps-reporting" */);
+const CslgCalculation = () => import('./components/checklist/CslgCalculation' /* webpackChunkName: "js/components/checklists/cslg-calculation" */);
+const ViewCslgCalculation = () => import('./components/checklist/ViewCslgCalculation' /* webpackChunkName: "js/components/checklists/view-cslg-calculation" */);
 const FormatForm = () => import('./components/reportFormat/FormatForm' /* webpackChunkName: "js/components/reportFormat/format-form" */);
 const ShowFormat = () => import('./components/reportFormat/ShowFormat' /* webpackChunkName: "js/components/reportFormat/show-format" */);
 
@@ -61,6 +63,8 @@ const app = new Vue({
         VulnerableCustomer,
         ViewVulnerableCustomer,
         WspReporting,
-        ViewWspReporting
+        ViewWspReporting,
+        CslgCalculation,
+        ViewCslgCalculation
     },
 });
