@@ -2,7 +2,7 @@
     <div>
         <div v-html="$error.handle(error)"/>
         <template v-if="show">
-<!--            <view-checklist :checklist="checklist_item" :essentials="essentials" :customers="customers" :staff="staff" :communication="communication"></view-checklist>-->
+            <view-wsp-reporting :services="services" :wsp_report="wsp_report"></view-wsp-reporting>
         </template>
         <div v-if="!show">
             <form @submit.prevent="postData()">
@@ -323,7 +323,8 @@ import ViewWspReporting from "./ViewWspReporting";
 
 export default {
     props:{
-        services:{type:Array}
+        services:{type:Array},
+        wsp_report:{type: [Object,Array]}
     },
     data() {
         return {
@@ -368,6 +369,7 @@ export default {
     },
     created() {
     console.log(this.services)
+        this.setUp();
     },
     watch:{
       'form.status_of_covid_implementation'(){
@@ -375,6 +377,11 @@ export default {
       }
     },
     methods: {
+        setUp(){
+         if (this.wsp_report.id !=undefined){
+             this.show = true;
+         }
+        },
         removeItem(i) {
             this.form.status_of_covid_implementation.splice(i, 1);
         },
@@ -399,10 +406,8 @@ export default {
 
             this.error = '';
             this.loading = true;
-            axios.post("/reports/wsp-reporting", this.form).then((res) => {
-                console.log('success')
-                console.log(res.data)
-                //window.location.href = "/reports/wasp-reporting-list"
+            axios.post("/reports/wsp-reporting", this.form).then(() => {
+                window.location.href = "/reports/wasp-reporting-list"
             }).catch(error => {
                 this.error = error.response;
             });

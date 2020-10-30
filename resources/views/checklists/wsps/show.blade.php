@@ -22,10 +22,10 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-body">
-                            <wsp-reporting
+                            <view-wsp-reporting
                                 :services="{{$services}}"
                                 :wsp_report="{{$wsp_report}}"
-                            ></wsp-reporting>
+                            ></view-wsp-reporting>
                         </div>
                     </div>
                 </div>

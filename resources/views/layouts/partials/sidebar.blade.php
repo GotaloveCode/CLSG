@@ -95,6 +95,8 @@
                     {{--                    @endcan--}}
                     <li><a class="menu-item" data-title="Vulnerable and Staff" href="{{ route('vulnerable-customer.list')}}">Vulnerable & Staff</a>
                     </li>
+                    <li><a class="menu-item" data-title="WSP Monthly Reporting" href="{{ route('wsp-reporting.list')}}">WSP Monthly Reporting</a>
+                    </li>
                 </ul>
             </li>
             @can('create-wsps')

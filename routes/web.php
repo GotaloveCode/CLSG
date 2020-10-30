@@ -90,6 +90,8 @@ Route::group(['middleware' => ['auth']], function () {
         //Wsp Reporting Monthly
         Route::get("/wsp-reporting-list","ReportsController@wspIndex")->name('wsp-reporting.list');
         Route::post("/wsp-reporting","ReportsController@saveWsp");
+        Route::get("/wsp-reporting-show/{id}","ReportsController@showWsp")->name("wsp-reporting.show");
+        Route::get("/wsp-reporting/create","ReportsController@createWsp")->name("wsp-reporting.create");
 
         //verifications
         Route::get("/monthly-verification","ReportsController@monthlyVerification")->name("reports.monthly-verification");

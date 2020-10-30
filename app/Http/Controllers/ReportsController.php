@@ -23,6 +23,7 @@ use App\Http\Resources\VerificationResource;
 use App\Http\Resources\ReportingFormatResource;
 use App\Http\Resources\EssentialReportResource;
 use App\Http\Resources\VulnerableCustomerResource;
+use App\Http\Resources\WspReportingResource;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -38,10 +39,18 @@ class ReportsController extends Controller
 
     public function wspIndex()
     {
-        $services = Cache::rememberForever('services', function () {
-            return Service::select('id', 'name')->get();
-        });
-        return view("checklists.wsps.index",compact("services"));
+        if (!request()->ajax()) {
+            return view('checklists.wsps.list');
+        }
+        $reporting = WspReportingResource::collection(WspReporting::get());
+
+        return Datatables::of($reporting)
+            ->addColumn('action', function ($reporting) {
+                //  dd($checklist);
+                return '<a href="' . route("wsp-reporting.show", $reporting['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
+            })
+            ->make(true);
+
     }
 
     public function monthlyVerification()
@@ -180,6 +189,20 @@ class ReportsController extends Controller
 
         return view("checklists.customer.index", compact("items", "customer"));
     }
+    public function createWsp()
+    {
+
+        $year = Carbon::now()->format("Y");
+        $month = Carbon::now()->format("m");
+
+        $exiting_wsp = WspReporting::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $exiting_wsp ? $wsp_report = json_encode(new WspReportingResource($exiting_wsp)) : $wsp_report = json_encode([]);
+           $services = Cache::rememberForever('services', function () {
+            return Service::select('id', 'name')->get();
+        });
+
+        return view("checklists.wsps.index", compact( "wsp_report","services"));
+    }
 
     public function showVerification($id)
     {
@@ -215,6 +238,15 @@ class ReportsController extends Controller
         $staff = json_encode(BcpChecklist::where("type","Staff Health Protection")->get());
         return view("checklists.customer.show", compact("customers", "checklist","staff"));
     }
+     public function showWsp($id)
+        {
+            $services = Cache::rememberForever('services', function () {
+                return Service::select('id', 'name')->get();
+            });
+
+            $wsp_report = json_encode(new WspReportingResource(WspReporting::find($id)));
+            return view("checklists.wsps.show", compact("wsp_report", "services"));
+        }
 
     public function checklist()
     {
