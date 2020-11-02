@@ -62,7 +62,11 @@
                     {data: 'variable_grant', name: 'variable_grant', render: $.fn.dataTable.render.number(',', '.', 2,'')},
                     {data: 'emergency_intervention_total', name: 'emergency_intervention_total', render: $.fn.dataTable.render.number(',', '.', 2,'')},
                     {data: 'operation_costs_total', name: 'operation_costs_total', render: $.fn.dataTable.render.number(',', '.', 2,'')},
-                    {data: 'status', name: 'status'},
+                    {data: 'status', name: 'status',
+                        render : function (data, type, row) {
+                            return data == 'WASREB Approved' ? 'Pending Approval' : data
+                        }
+                    },
                     {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]

@@ -26,7 +26,7 @@ class ErpController extends Controller
         if (!request()->ajax()) {
             return view('erps.index');
         }
-        $erps = Erp::query()->with('wsp:id,name');
+        $erps = Erp::query()->with('wsp:id,name')->select('erps.*');
 
         return Datatables::of($erps)
             ->addColumn('action', function ($erp) {
