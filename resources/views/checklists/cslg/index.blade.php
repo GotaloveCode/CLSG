@@ -16,19 +16,14 @@
             </div>
         </div>
     </div>
+
     <div class="content-body">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-body">
-                            <cslg-calculation
-                                :cslg="{{$cslg}}"
-                            ></cslg-calculation>
-                        </div>
-                    </div>
-                </div>
+        <section id="card-headings">
+            <div class="row">
+                <cslg-calculation
+                    :cslg="{{$cslg}}"
+                ></cslg-calculation>
             </div>
-        </div>
+        </section>
     </div>
 @endsection
