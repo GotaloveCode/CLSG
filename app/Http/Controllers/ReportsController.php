@@ -11,6 +11,7 @@ use App\Models\CslgCalculation;
 use App\Models\StaffHealth;
 use App\Models\PerformanceScore;
 use App\Models\BcpChecklist;
+use App\Models\Erp;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\EssentialReportResource;
@@ -166,8 +167,10 @@ class ReportsController extends Controller
 
         $operations = WspReporting::select("clsg_total","operations_costs","revenue")->where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first(); ;
         if (!$operations) return redirect()->back();
-        //$wsp = ;
-        return view("checklists.cslg.index", compact( "cslg","operations"));
+        ;
+        $grant = Erp::where('wsp_id',auth()->user()->wsps()->first()->bcp->first()->id)->first()->erp_items->sum('cost');
+
+        return view("checklists.cslg.index", compact( "cslg","operations",'grant'));
     }
     public function createStaff()
     {

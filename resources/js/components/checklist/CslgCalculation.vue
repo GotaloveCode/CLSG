@@ -37,7 +37,7 @@
                            <div class="card-body" style="padding-top: 0">
                     <div class="form-group">
                         <label>Amount</label>
-                        <vue-numeric separator="," class="form-control" required v-model="form.grant_multiplier_amount" required></vue-numeric>
+                        <vue-numeric separator="," class="form-control" required v-model="grant" required></vue-numeric>
                     </div>
                     <div class="form-group">
                         <label>Comment</label>
@@ -106,7 +106,8 @@ import ViewCslgCalculation from "./ViewCslgCalculation";
 export default {
     props:{
         cslg:{type: [Object,Array]},
-        operations:{type: Object}
+        operations:{type: Object},
+        grant:{type: Number},
     },
     data() {
         return {

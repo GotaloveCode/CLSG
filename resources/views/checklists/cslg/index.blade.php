@@ -23,6 +23,7 @@
                 <cslg-calculation
                     :cslg="{{$cslg}}"
                     :operations="{{$operations}}"
+                    :grant="{{$grant}}"
                 ></cslg-calculation>
             </div>
         </section>
