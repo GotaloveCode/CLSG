@@ -221,20 +221,64 @@ export default {
                 unit: ''
             }],
             projected_revenues: [{month: 10, year: 2020, amount: 0}]
+
         }
     }),
     watch:{
       'bcp.government_subsidy'(){
-          return this.bcp.government_subsidy;
-      }
+          this.updateForm('government_subsidy',this.bcp.government_subsidy);
+      },
+        'bcp.supply_chain'(){
+          this.updateForm('supply_chain',this.bcp.supply_chain);
+      },
+        'bcp.communication_plan'(){
+          this.updateForm('communication_plan',this.bcp.communication_plan);
+      },
+        'bcp.emergency_response_plan'(){
+          this.updateForm('emergency_response_plan',this.bcp.emergency_response_plan);
+      },
+        'bcp.staff_health_protection'(){
+          this.updateForm('staff_health_protection',this.bcp.staff_health_protection);
+      },
+        'bcp.training'(){
+          this.updateForm('training',this.bcp.training);
+      },
+        'bcp.planning_assumptions'(){
+          this.updateForm('planning_assumptions',this.bcp.planning_assumptions);
+      },
+        'bcp.introduction'(){
+          this.updateForm('introduction',this.bcp.introduction);
+      },
+        'bcp.government_subsidy_amount'(){
+          this.updateForm('government_subsidy_amount',this.bcp.government_subsidy_amount);
+      },
+        'bcp.executive_summary'(){
+          this.updateForm('executive_summary',this.bcp.executive_summary);
+        }
     },
     mounted() {
+       this.setUp();
         this.setWspId();
         if (this.existingBcp) {
             this.initBcp();
         }
     },
     methods: {
+        setUp(){
+            if (this.openStorage()){
+              let bcp = this.openStorage();
+              if (bcp.government_subsidy !=undefined) this.bcp.government_subsidy = bcp.government_subsidy;
+              if (bcp.government_subsidy_amount !=undefined) this.bcp.government_subsidy_amount = bcp.government_subsidy_amount;
+              if (bcp.executive_summary !=undefined) this.bcp.executive_summary = bcp.executive_summary;
+              if (bcp.introduction !=undefined) this.bcp.introduction = bcp.introduction;
+              if (bcp.planning_assumptions !=undefined) this.bcp.planning_assumptions = bcp.planning_assumptions;
+              if (bcp.staff_health_protection !=undefined) this.bcp.staff_health_protection = bcp.staff_health_protection;
+              if (bcp.training !=undefined) this.bcp.training = bcp.training;
+              if (bcp.emergency_response_plan !=undefined) this.bcp.emergency_response_plan = bcp.emergency_response_plan;
+              if (bcp.communication_plan !=undefined) this.bcp.communication_plan = bcp.communication_plan;
+              if (bcp.supply_chain !=undefined) this.bcp.supply_chain = bcp.supply_chain;
+            }
+        },
         setWspId() {
             this.bcp.wsp_id = this.wsp_id;
         },
@@ -275,10 +319,26 @@ export default {
         postData() {
             axios.post(this.submitUrl, this.bcp).then(response => {
                 this.$toastr.s(response.data.message);
+                localStorage.removeItem('bcp');
                 window.location.href = `/bcps/${response.data.bcp.id}/attachments`
             }).catch(error => {
                 this.error = error.response;
             });
+        },
+        updateForm (input, value) {
+            this.bcp[input] = value
+
+            let storedForm = this.openStorage() // extract stored form
+            if (!storedForm) storedForm = {} // if none exists, default to empty object
+
+            storedForm[input] = value // store new value
+            this.saveStorage(storedForm) // save changes into localStorage
+        },
+        openStorage () {
+            return JSON.parse(localStorage.getItem('bcp'))
+        },
+        saveStorage (form) {
+            localStorage.setItem('bcp', JSON.stringify(form))
         },
         updateData(){
             axios.put(this.submitUrl, this.bcp).then(() => {
