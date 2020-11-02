@@ -12,8 +12,9 @@ use App\Models\StaffHealth;
 use App\Models\PerformanceScore;
 use App\Models\BcpChecklist;
 use App\Models\Erp;
-use Carbon\Carbon;
+use App\Models\Attachment;
 use Illuminate\Http\Request;
+use App\Http\Requests\BcpAttachmentRequest;
 use App\Http\Resources\EssentialReportResource;
 use App\Http\Resources\VulnerableCustomerResource;
 use App\Http\Resources\WspReportingResource;
@@ -22,11 +23,49 @@ use App\Http\Resources\StaffHealthResource;
 use App\Http\Resources\PerformaceScoreResource;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
+use App\Traits\FilesTrait;
+use App\Traits\PeriodTrait;
 
 
 class ReportsController extends Controller
 {
+    use FilesTrait, PeriodTrait;
 
+    public function attachmentIndex(WspReporting $wsp)
+    {
+
+        $wsp = $wsp->load('attachments');
+        $progress = ceil($wsp->attachments->pluck('document_type')->unique()->count() / 2 * 100);
+        $progress = $progress > 100 ? 100 : $progress;
+        $wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        if (!$wsp) return redirect()->back()->with("success","Please ensure you have filled first the WSP Monthly Reporting");
+
+        return view('checklists.wsps.attachments.index',compact('wsp','progress'));
+    }
+
+    public function saveWspAttachment(BcpAttachmentRequest $request)
+    {
+        $wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $fileName = $this->storeDocument($request->attachment, $request->display_name);
+
+          $wsp->attachments()->create([
+            'name' => $fileName,
+            'display_name' => $request->display_name,
+            'document_type' => $request->document_type,
+        ]);
+
+        return back();
+    }
+
+    public function showAttachment($filename)
+    {
+        return $this->showFile(storage_path('app/WspReporting/' . $filename));
+    }
+    public function destroyFile(Attachment $attachment)
+    {
+
+        return $this->deleteAttachment($attachment, 'app/Bcp/');
+    }
     public function wspIndex()
     {
         if (!request()->ajax()) {
@@ -119,11 +158,7 @@ class ReportsController extends Controller
     public function createEssential()
     {
 
-        $year = Carbon::now()->format("Y");
-        $month = Carbon::now()->format("m");
-
-        $exiting_essential = EssentialOperationReport::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-
+         $exiting_essential = EssentialOperationReport::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         $exiting_essential ? $essential_item = json_encode(new EssentialReportResource($exiting_essential)) : $essential_item = json_encode([]);
         $items = json_encode(BcpChecklist::all());
 
@@ -133,10 +168,7 @@ class ReportsController extends Controller
     public function createCustomer()
     {
 
-        $year = Carbon::now()->format("Y");
-        $month = Carbon::now()->format("m");
-
-        $exiting_customer = VulnerableCustomer::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $exiting_customer = VulnerableCustomer::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         $exiting_customer ? $customer = json_encode(new VulnerableCustomerResource($exiting_customer)) : $customer = json_encode([]);
         $items = json_encode(BcpChecklist::all());
 
@@ -144,11 +176,7 @@ class ReportsController extends Controller
     }
     public function createWsp()
     {
-
-        $year = Carbon::now()->format("Y");
-        $month = Carbon::now()->format("m");
-
-        $exiting_wsp = WspReporting::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $exiting_wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         $exiting_wsp ? $wsp_report = json_encode(new WspReportingResource($exiting_wsp)) : $wsp_report = json_encode([]);
            $services = Cache::rememberForever('services', function () {
             return Service::select('id', 'name')->get();
@@ -159,13 +187,11 @@ class ReportsController extends Controller
     public function createCslg()
     {
 
-        $year = Carbon::now()->format("Y");
-        $month = Carbon::now()->format("m");
 
-        $exiting_cslg = CslgCalculation::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $exiting_cslg = CslgCalculation::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         $exiting_cslg ? $cslg = json_encode(new CslgResource($exiting_cslg)) : $cslg = json_encode([]);
 
-        $operations = WspReporting::select("clsg_total","operations_costs","revenue")->where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first(); ;
+        $operations = WspReporting::select("clsg_total","operations_costs","revenue")->where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first(); ;
         if (!$operations) return redirect()->back()->with('success', 'Please ensure you have created WSP Reporting first');
 
         $erp =Erp::where('wsp_id',auth()->user()->wsps()->first()->bcp->first()->id)->first();
@@ -176,23 +202,17 @@ class ReportsController extends Controller
     }
     public function createStaff()
     {
-        $year = Carbon::now()->format("Y");
-        $month = Carbon::now()->format("m");
-
-        $exiting_staff = StaffHealth::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $exiting_staff = StaffHealth::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         $exiting_staff ? $staff = json_encode(new StaffHealthResource($exiting_staff)) : $staff = json_encode([]);
         $items = json_encode(BcpChecklist::all());
         return view("checklists.staff.index", compact( "staff","items"));
     }
     public function createCard()
     {
-        $year = Carbon::now()->format("Y");
-        $month = Carbon::now()->format("m");
-
-        $exiting_score = PerformanceScore::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $exiting_score = PerformanceScore::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         $exiting_score ? $score = json_encode(new PerformaceScoreResource($exiting_score)) : $score = json_encode([]);
 
-       $wsp = WspReporting::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+       $wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
        if (!$wsp) return redirect()->back()->with("success","Please ensure you have have filled in the general checklist form first");
        return view("checklists.performance.index", compact( "score"));
     }
@@ -242,8 +262,8 @@ class ReportsController extends Controller
 
     public function saveWsp(Request $request)
     {
-        $request['month'] = Carbon::now()->format("m");
-        $request['year'] = Carbon::now()->format("Y");
+        $request['month'] =$this->getMonth();
+        $request['year'] = $this->getYear();
         $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
         $request['status_of_covid_implementation'] = json_encode($request->input("status_of_covid_implementation")) ;
         $request['expected_activities'] = json_encode($request->input("expected_activities")) ;
@@ -256,8 +276,8 @@ class ReportsController extends Controller
         $format = EssentialOperationReport::create([
             'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
             'details' => json_encode($request->input("details")),
-            'month' => Carbon::now()->format("m"),
-            'year' => Carbon::now()->format("Y"),
+            'month' => $this->getMonth(),
+            'year' => $this->getYear(),
         ]);
         return response()->json($format);
     }
@@ -266,8 +286,8 @@ class ReportsController extends Controller
         $customer = VulnerableCustomer::create([
             'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
             'customer_details' => json_encode($request->input("customer_details")),
-            'month' => Carbon::now()->format("m"),
-            'year' => Carbon::now()->format("Y"),
+            'month' => $this->getMonth(),
+            'year' => $this->getYear(),
         ]);
         return response()->json($customer);
     }
@@ -276,23 +296,23 @@ class ReportsController extends Controller
         $staff = StaffHealth::create([
             'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
             'staff_details' => json_encode($request->input("staff_details")),
-            'month' => Carbon::now()->format("m"),
-            'year' => Carbon::now()->format("Y"),
+            'month' => $this->getMonth(),
+            'year' => $this->getYear(),
         ]);
         return response()->json($staff);
     }
     public function saveCslg(Request $request)
     {
-        $request['month'] = Carbon::now()->format("m");
-        $request['year'] = Carbon::now()->format("Y");
+        $request['month'] = $this->getMonth();
+        $request['year'] = $this->getYear();
         $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
         $cslg = CslgCalculation::create($request->all());
         return response()->json($cslg);
     }
     public function saveCard(Request $request)
     {
-        $request['month'] = Carbon::now()->format("m");
-        $request['year'] = Carbon::now()->format("Y");
+        $request['month'] = $this->getMonth();
+        $request['year'] = $this->getYear();
         $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
         $score = PerformanceScore::create($request->all());
         return response()->json($score);

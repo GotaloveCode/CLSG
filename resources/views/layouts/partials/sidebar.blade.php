@@ -83,9 +83,11 @@
             <li class=" nav-item"><a href="#"><i class="feather icon-bar-chart"></i><span
                         class="menu-title">Reports</span></a>
                 <ul class="menu-content">
-                    <li><a class="menu-item" href="#" data-i18n="Page Layouts">Monthly WSP Reporting</a>
+                    <li><a class="menu-item" href="#" data-i18n="Page Layouts">Monthly WSP</a>
                         <ul class="menu-content">
                             <li><a class="menu-item" href="{{ route('wsp-reporting.list')}}" data-i18n="General">General</a>
+                            </li>
+                            <li><a class="menu-item" href="{{ route('wsp-reporting-attachments.list')}}" data-i18n="Attachments">Attachments</a>
                             </li>
                                 <li><a class="menu-item" href="{{ route('performance-score-card.list')}}" data-i18n="Performance Scorecard">Performance Scorecard</a>
                             </li>

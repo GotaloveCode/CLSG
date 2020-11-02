@@ -94,8 +94,13 @@ Route::group(['middleware' => ['auth']], function () {
         //Wsp Reporting Monthly
         Route::get("/wsp-reporting-list","ReportsController@wspIndex")->name('wsp-reporting.list');
         Route::post("/wsp-reporting","ReportsController@saveWsp");
+        Route::get("/wsp-reporting-attachments","ReportsController@attachmentIndex")->name("wsp-reporting-attachments.list");
+        Route::post("/wsp-reporting-attachments","ReportsController@saveWspAttachment")->name("wsp-reporting-attachments.store");
+        Route::get("/wsp-reporting-attachments/{wsp}","ReportsController@showAttachment")->name("wsp-reporting-attachments.show");
         Route::get("/wsp-reporting-show/{id}","ReportsController@showWsp")->name("wsp-reporting.show");
-        Route::get("/wsp-reporting/create","ReportsController@createWsp")->name("wsp-reporting.create"); //Wsp Reporting Monthly
+        Route::get("/wsp-reporting/create","ReportsController@createWsp")->name("wsp-reporting.create");
+        Route::get("/wsp-reporting/create","ReportsController@createWsp")->name("wsp-reporting.create");
+        Route::delete('/attachments/{attachment}', 'ReportsController@destroyFile')->name('wsp-reporting.attachments.destroy');
 
         //Cslg Calculation
         Route::get("/cslg-calculation-list","ReportsController@CslgIndex")->name('cslg-calculation.list');

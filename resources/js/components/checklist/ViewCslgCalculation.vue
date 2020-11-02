@@ -1,6 +1,6 @@
 <template>
     <div>
-            <form>
+          <form>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card" style="width: 95%">
@@ -113,7 +113,6 @@ export default {
         }
     },
     created() {
-        console.log(this.services)
         this.setUp();
     },
     methods: {
@@ -128,31 +127,3 @@ export default {
 }
 </script>
 
-<style>
-.the-legend {
-    border-style: none;
-    border-width: 0;
-    font-size: 14px;
-    line-height: 20px;
-    margin-bottom: 0;
-    width: auto;
-    padding: 0 10px;
-    border: 1px solid #e0e0e0;
-}
-.the-fieldset {
-    border: 1px solid #e0e0e0;
-    padding: 10px;
-}
-.fyr{
-    font-weight:800
-}
-.ml-10{
-    margin-left: 10px;
-}
-.mt-5{
-    margin-top: 5px;
-}
-.fs-20{
-    font-size: 20px;
-}
-</style>
