@@ -23,8 +23,9 @@ class CreateCslgCalculationsTable extends Migration
             $table->text('grant_multiplier_comment');
             $table->double('cslg_gross_amount');
             $table->text('cslg_gross_comment');
-            $table->double('cslg_adjusted_amount');
+            $table->integer('cslg_adjusted_amount');
             $table->text('cslg_adjusted_comment');
+            $table->string('status')->default("Pending");
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->unsignedInteger('bcp_id');
             $table->timestamps();
