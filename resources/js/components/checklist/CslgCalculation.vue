@@ -69,7 +69,7 @@
                     <div class="col-md-6">
                     <div class="card" style="height: 95%">
                         <div class="card-header">
-                            <h4>Gross CLSG Amount (KES)</h4>
+                         <h4>Gross CLSG Amount (KES)</h4>
                         </div>
                         <div class="card-content collapse show">
                             <div class="card-body" style="padding-top: 0">
@@ -128,7 +128,6 @@ export default {
         }
     },
     created() {
-        console.log(this.services)
        this.setUp();
     },
     methods: {
@@ -139,6 +138,7 @@ export default {
         },
 
         postData() {
+            this.computeValues();
             this.error = '';
             this.loading = true;
             axios.post("/reports/cslg-calculation", this.form).then(() => {
@@ -148,6 +148,12 @@ export default {
             });
 
         },
+        computeValues(){
+          this.form.revenues = this.operations.revenue;
+          this.form.grant_multiplier_amount = this.grant;
+          this.form.cslg_gross_amount = this.operations.clsg_total;
+          this.form.grant_multiplier_amount = this.operations.operations_costs;
+        }
 
     },
     components: {
