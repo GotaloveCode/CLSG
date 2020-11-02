@@ -65,8 +65,6 @@ class ErpController extends Controller
 
         if ($erp_load) $erp_load = json_encode(new ErpResource($erp_load));
 
-
-
         return view('erps.create')->with(compact('interventions', 'risks', 'mitigation', 'services', 'eoiOperations', 'erp_load', 'operationCosts'));
     }
 
