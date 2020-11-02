@@ -135,7 +135,6 @@ class EoiController extends Controller
 
     public function show(Eoi $eoi)
     {
-        info('here');
         $progress = $eoi->progress();
         $eoi = $eoi->load(['wsp', 'services', 'connections', 'estimatedcosts', 'operationcosts']);
         if(\request()->has('print')){

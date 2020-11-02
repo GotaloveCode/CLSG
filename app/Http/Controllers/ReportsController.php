@@ -166,9 +166,11 @@ class ReportsController extends Controller
         $exiting_cslg ? $cslg = json_encode(new CslgResource($exiting_cslg)) : $cslg = json_encode([]);
 
         $operations = WspReporting::select("clsg_total","operations_costs","revenue")->where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first(); ;
-        if (!$operations) return redirect()->back();
-        ;
-        $grant = Erp::where('wsp_id',auth()->user()->wsps()->first()->bcp->first()->id)->first()->erp_items->sum('cost');
+        if (!$operations) return redirect()->back()->with('success', 'Please ensure you have created WSP Reporting first');
+
+        $erp =Erp::where('wsp_id',auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        if (!$erp) return redirect()->back()->with('success', 'Please ensure you have created ERP first');
+        $grant = $erp->erp_items->sum('cost');
 
         return view("checklists.cslg.index", compact( "cslg","operations",'grant'));
     }
@@ -189,6 +191,9 @@ class ReportsController extends Controller
 
         $exiting_score = PerformanceScore::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         $exiting_score ? $score = json_encode(new PerformaceScoreResource($exiting_score)) : $score = json_encode([]);
+
+       $wsp = WspReporting::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+       if (!$wsp) return redirect()->back()->with("success","Please ensure you have have filled in the general checklist form first");
        return view("checklists.performance.index", compact( "score"));
     }
 
