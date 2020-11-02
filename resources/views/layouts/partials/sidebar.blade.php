@@ -81,8 +81,16 @@
                 </ul>
             </li>
             <li class=" nav-item"><a href="#"><i class="feather icon-bar-chart"></i><span
-                        class="menu-title">Monthly Reports</span></a>
+                        class="menu-title">Reports</span></a>
                 <ul class="menu-content">
+                    <li><a class="menu-item" href="#" data-i18n="Page Layouts">Monthly WSP Reporting</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="{{ route('wsp-reporting.list')}}" data-i18n="General">General</a>
+                            </li>
+                                <li><a class="menu-item" href="{{ route('performance-score-card.list')}}" data-i18n="Performance Scorecard">Performance Scorecard</a>
+                            </li>
+                        </ul>
+                    </li>
 {{--                    @role('wasreb')--}}
 {{--                    <li><a class="menu-item" data-title="Monthly Verification List" href="{{ route('verification.list')}}">Monthly Verification List</a>--}}
 {{--                    </li>--}}
@@ -97,14 +105,7 @@
                     </li>
                     <li><a class="menu-item" data-title="Staff & Health Protection" href="{{ route('staff-health.list')}}">Staff & Health Protection</a>
                     </li>
-                    <li><a class="menu-item" href="#" data-i18n="Page Layouts">WSP Reporting</a>
-                        <ul class="menu-content">
-                            <li><a class="menu-item" href="{{ route('wsp-reporting.list')}}" data-i18n="General">General</a>
-                            </li>
-                            <li><a class="menu-item" href="{{ route('performance-score-card.list')}}" data-i18n="Performance Scorecard">Performance Scorecard</a>
-                            </li>
-                        </ul>
-                    </li>
+
                     <li><a class="menu-item" data-title="CSLG CALCULATION" href="{{ route('cslg-calculation.list')}}">CSLG Calculation</a>
                     </li>
                 </ul>
