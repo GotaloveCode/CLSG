@@ -142,7 +142,7 @@
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
                     @can('create-bcp')
-                        @if($bcp->status=='Pending' || $bcp->status =='Needs Review')
+                        @if($bcp->status != 'WSTF Approved')
                             <div class="mb-2">
                                 <a class="btn btn-info" href="{{ route('bcps.create') }}"><i
                                         class="feather icon-edit"></i>
