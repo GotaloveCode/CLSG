@@ -145,7 +145,7 @@
                         <div class="card-content">
                             <div class="card-body">
                                 <div class="insights">
-                                    <p>{{$erp->status}}<span class="float-right text-warning h3">{{$progress}}%</span>
+                                    <p>{{$erp->status == 'WASREB Approved' ? 'Pending Approval' : $erp->status}} <span class="float-right text-warning h3">{{$progress}}%</span>
                                     </p>
                                     <div class="progress progress-sm mt-1 mb-0">
                                         <div class="progress-bar bg-warning" role="progressbar"

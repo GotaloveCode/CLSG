@@ -54,7 +54,11 @@
                 ajax: '{!! route('bcps.index') !!}',
                 columns: [
                     {data: 'wsp.name', name: 'wsp.name'},
-                    {data: 'status', name: 'status'},
+                    {data: 'status', name: 'status',
+                        render : function (data, type, row) {
+                            return data == 'WASREB Approved' ? 'Pending Approval' : data
+                        }
+                    },
                     {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
