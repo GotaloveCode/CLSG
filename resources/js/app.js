@@ -20,10 +20,6 @@ const NotificationComponent = () => import('./components/NotificationComponent' 
 const ErpForm = () => import('./components/erp/ErpForm.vue' /* webpackChunkName: "js/components/erp/erp-form" */);
 const StaffForm = () => import('./components/staff/Create.vue' /* webpackChunkName: "js/components/staff/create" */);
 const ManageStaff= () => import('./components/staff/ManageStaff' /* webpackChunkName: "js/components/staff/manage-staff" */);
-const ChecklistForm = () => import('./components/checklist/ChecklistForm' /* webpackChunkName: "js/components/checklist/checklist-form" */);
-const VerificationForm = () => import('./components/verification/VerificationForm' /* webpackChunkName: "js/components/verification/verification-form" */);
-const ShowVerification = () => import('./components/verification/ShowVerification' /* webpackChunkName: "js/components/verification/show-verification" */);
-const ShowChecklist = () => import('./components/checklist/ShowChecklist' /* webpackChunkName: "js/components/checklist/show-checklist" */);
 const EssentialOperation = () => import('./components/checklist/EssentialOperation' /* webpackChunkName: "js/components/checklist/essential-operation" */);
 const ViewEssentialOperation = () => import('./components/checklist/ViewEssentialOperation' /* webpackChunkName: "js/components/checklist/view-essential-operation" */);
 const VulnerableCustomer = () => import('./components/checklist/VulnerableCustomer' /* webpackChunkName: "js/components/checklist/vulnerable-customer" */);
@@ -32,8 +28,10 @@ const WspReporting = () => import('./components/checklist/WspReporting' /* webpa
 const ViewWspReporting = () => import('./components/checklist/ViewWspReporting' /* webpackChunkName: "js/components/checklist/view-wsps-reporting" */);
 const CslgCalculation = () => import('./components/checklist/CslgCalculation' /* webpackChunkName: "js/components/checklists/cslg-calculation" */);
 const ViewCslgCalculation = () => import('./components/checklist/ViewCslgCalculation' /* webpackChunkName: "js/components/checklists/view-cslg-calculation" */);
-const FormatForm = () => import('./components/reportFormat/FormatForm' /* webpackChunkName: "js/components/reportFormat/format-form" */);
-const ShowFormat = () => import('./components/reportFormat/ShowFormat' /* webpackChunkName: "js/components/reportFormat/show-format" */);
+const StaffHealth = () => import('./components/checklist/StaffHealth' /* webpackChunkName: "js/components/checklists/staff-health" */);
+const ViewStaffHealth = () => import('./components/checklist/ViewStaffHealth' /* webpackChunkName: "js/components/checklists/view-staff-health" */);
+const PerformanceCard = () => import('./components/checklist/PerformanceCard' /* webpackChunkName: "js/components/reportFormat/performance-card" */);
+const ViewPerformanceCard = () => import('./components/checklist/ViewPerformanceCard' /* webpackChunkName: "js/components/reportFormat/view-performance-card" */);
 
 
 const app = new Vue({
@@ -50,14 +48,8 @@ const app = new Vue({
         ErpForm,
         StaffForm,
         ManageStaff,
-        ChecklistForm,
         ManageAttachments,
         NotificationComponent,
-        VerificationForm,
-        ShowVerification,
-        ShowChecklist,
-        FormatForm,
-        ShowFormat,
         ViewEssentialOperation,
         EssentialOperation,
         VulnerableCustomer,
@@ -65,6 +57,10 @@ const app = new Vue({
         WspReporting,
         ViewWspReporting,
         CslgCalculation,
-        ViewCslgCalculation
+        ViewCslgCalculation,
+        StaffHealth,
+        ViewStaffHealth,
+        PerformanceCard,
+        ViewPerformanceCard
     },
 });

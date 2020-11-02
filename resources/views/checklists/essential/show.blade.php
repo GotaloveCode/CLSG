@@ -17,19 +17,15 @@
         </div>
     </div>
     <div class="content-body">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-body">
-                            <view-essential-operation
-                                :essentials="{{$items}}"
-                                :essential_item="{{$essential}}"
-                            ></view-essential-operation>
-                        </div>
-                    </div>
-                </div>
+        <section id="card-headings">
+            <div class="row">
+                <view-essential-operation
+                    :essentials="{{$items}}"
+                    :essential_item="{{$essential}}"
+                ></view-essential-operation>
             </div>
-        </div>
+
+        </section>
     </div>
+
 @endsection

@@ -1,24 +1,24 @@
 @extends('layouts.dashboard')
 @push('css')
-    <link rel="stylesheet" type="text/css"
-          href="{{ asset('app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
+ <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
 @endpush
 @section('content')
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title mb-0">{{ __('MONTHLY PERFORMANCE VERIFICATION REPORT List') }}</h3>
+            <h3 class="content-header-title mb-0">{{ __('Performance Score Card List') }}</h3>
             <div class="row breadcrumbs-top">
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url("/")}}">Home</a>
-                        </li>
-                        <li class="breadcrumb-item active">{{ __('MONTHLY PERFORMANCE VERIFICATION REPORT List') }}
-                        </li>
+                       <li class="breadcrumb-item"><a href="{{url("/")}}">Home</a>
+                       </li>
+                       <li class="breadcrumb-item active">{{ __('Performance Score Card List') }}
+                      </li>
                     </ol>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="content-body">
         <div class="row">
             <div class="col-12">
@@ -26,12 +26,16 @@
                     <div class="card-content">
                         <div class="card-header">
                             <div class="card-title text-right">
-                                <a href="{{route("reports.monthly-verification")}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add New</a>
+                                @can("create-bcp")
+                                    @if($bcp)
+                                <a href="{{route("performance-score-card.create")}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add New</a>
+                                    @endif
+                                @endcan
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table" id="verification-table">
+                                <table class="table" id="card-table">
                                     <thead>
                                     <tr>
                                         <th>Wsp</th>
@@ -54,13 +58,13 @@
     <script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
     <script defer>
         $(function () {
-            $('#verification-table').DataTable({
+            $('#card-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{!! route('verification.list') !!}',
+                ajax: '{!! route('performance-score-card.list') !!}',
                 columns: [
-                    {data: 'wsp.name', name: 'wsp.name'},
-                    {data: 'verification_month', name: 'verification_month'},
+                    {data: 'wsp', name: 'wsp'},
+                    {data: 'month', name: 'month'},
                     {data: 'year', name: 'year'},
                     {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}

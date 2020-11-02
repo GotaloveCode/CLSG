@@ -67,25 +67,29 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::group(['prefix' => 'reports'],function (){
-        //checklists
-        Route::get("/monthly-revenue","ReportsController@index");
-        Route::get("/checklist","ReportsController@checklist");
-        Route::post("/checklist","ReportsController@saveChecklist");
-        Route::get("/checklist-list","ReportsController@checklistIndex")->name("checklist.list");
-        Route::get("/checklist-show/{id}","ReportsController@showChecklist")->name("checklist.show");
-        Route::get("/monthly-checklist","ReportsController@monthlyChecklist")->name("checklist.monthly-checklist");
-
         //Essentials
         Route::post("/essential-operation","ReportsController@saveEssential");
         Route::get("/essential-operation-list","ReportsController@essentialIndex")->name('essential-operation.list');
         Route::get("/essential-operation/create","ReportsController@createEssential")->name('essential-operation.create');
         Route::get("/essential-operation-show/{id}","ReportsController@showEssentialOperation")->name('essential-operation.show');//Essentials
 
-        //Vulnerable customers & staff
+        //Vulnerable customers
         Route::post("/vulnerable-customer","ReportsController@saveCustomer");
         Route::get("/vulnerable-customer-list","ReportsController@customerIndex")->name('vulnerable-customer.list');
         Route::get("/vulnerable-customer/create","ReportsController@createCustomer")->name('vulnerable-customer.create');
-        Route::get("/vulnerable-customer-show/{id}","ReportsController@showCustomer")->name('vulnerable-customer.show');
+        Route::get("/vulnerable-customer-show/{id}","ReportsController@showCustomer")->name('vulnerable-customer.show'); //Vulnerable customers & staff
+
+        // Staff Health
+        Route::post("/staff-health","ReportsController@saveStaff");
+        Route::get("/staff-health-list","ReportsController@staffIndex")->name('staff-health.list');
+        Route::get("/staff-health/create","ReportsController@createStaff")->name('staff-health.create');
+        Route::get("/staff-health-show/{id}","ReportsController@showStaff")->name('staff-health.show');
+
+        // Performance Scorecard
+        Route::post("/performance-score-card","ReportsController@saveCard");
+        Route::get("/performance-score-card-list","ReportsController@cardIndex")->name('performance-score-card.list');
+        Route::get("/performance-score-card/create","ReportsController@createCard")->name('performance-score-card.create');
+        Route::get("/performance-score-card-show/{id}","ReportsController@showCard")->name('performance-score-card.show');
 
         //Wsp Reporting Monthly
         Route::get("/wsp-reporting-list","ReportsController@wspIndex")->name('wsp-reporting.list');
@@ -98,21 +102,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post("/cslg-calculation","ReportsController@saveCslg");
         Route::get("/cslg-calculation-show/{id}","ReportsController@showCslg")->name("cslg-calculation.show");
         Route::get("/cslg-calculation/create","ReportsController@createCslg")->name("cslg-calculation.create");
-
-        //verifications
-        Route::get("/monthly-verification","ReportsController@monthlyVerification")->name("reports.monthly-verification");
-        Route::get("/verification","ReportsController@verification");
-        Route::get("/score","ReportsController@score");
-        Route::post("/verification","ReportsController@saveVerification");
-        Route::get("/verification-list","ReportsController@verificationIndex")->name("verification.list");
-        Route::get("/verification-show/{id}","ReportsController@showVerification")->name("verification.show");
-
-        //report formats
-        Route::get("/monthly-report-format","ReportsController@monthlyReportFormat")->name("reports.monthly-report-format");
-        Route::get("/report-format","ReportsController@reportFormat");
-        Route::get("/report-format-list","ReportsController@formatIndex")->name("report-format.list");
-        Route::get("/report-format/{id}","ReportsController@showFormat")->name("report-format.show");
-        Route::post("/report-format","ReportsController@saveFormat");
     });
 
     Route::resource('staff', 'StaffController');

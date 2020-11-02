@@ -1,19 +1,19 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-6 col-sm-12"  v-for="cus in checklist.customer_details">
+            <div class="col-md-6 col-sm-12"  v-for="staff in checklist.staff_details">
                 <div class="card" style="height: 98%">
                     <div class="card-header">
                         <div class="heading-elements">
-                            <span :class="['badge round',getAppliedClass(cus.status)]" style="font-weight: 800">{{ cus.status }}</span>
+                            <span :class="['badge round',getAppliedClass(staff.status)]" style="font-weight: 800">{{ staff.status }}</span>
                         </div>
                     </div>
                     <div class="card-body">
                         <h4 class="card-title">Description</h4>
-                        <p class="card-text">{{getCustomerName(cus.id)}}</p>
+                        <p class="card-text">{{getStaffName(staff.id)}}</p>
 
-                        <h4 class="card-title" v-if="cus.comment">Notes:</h4>
-                        <p>{{cus.comment}}</p>
+                        <h4 class="card-title" v-if="staff.comment">Notes:</h4>
+                        <p>{{staff.comment}}</p>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,10 @@
 export default {
     props:{
         checklist: {type: Object},
-        customers: {type: Array}
+        staff: {type: Array},
+    },
+    created(){
+        console.log(this.checklist)
     },
     methods:{
         getAppliedClass(status){
@@ -51,11 +54,12 @@ export default {
             }
             return badge;
         },
-        getCustomerName(id){
-            if (this.customers.length){
-                return this.customers.find(c => c.id ==id).name;
+        getStaffName(id){
+            if (this.staff.length){
+                return this.staff.find(c => c.id ==id).name;
             }
         },
+
         goBack(){
             window.location.href = "/reports/staff-health-list";
         }

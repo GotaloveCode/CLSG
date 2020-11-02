@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVulnerableCustomersTable extends Migration
+class CreateStaffHealthsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateVulnerableCustomersTable extends Migration
      */
     public function up()
     {
-        Schema::create('vulnerable_customers', function (Blueprint $table) {
+        Schema::create('staff_healths', function (Blueprint $table) {
             $table->id();
             $table->string("month");
             $table->string("year");
-            $table->text("customer_details");
+            $table->text("staff_details");
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->unsignedInteger('bcp_id');
             $table->timestamps();
@@ -31,6 +31,6 @@ class CreateVulnerableCustomersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vulnerable_customers');
+        Schema::dropIfExists('staff_healths');
     }
 }

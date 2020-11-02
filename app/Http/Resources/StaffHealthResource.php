@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VulnerableCustomerResource extends JsonResource
+class StaffHealthResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,8 +17,8 @@ class VulnerableCustomerResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'customer_details' => json_decode($this->customer_details),
             'wsp' => $this->bcp()->first()->wsp->name,
+            'staff_details' => json_decode($this->staff_details),
             'month' => \DateTime::createFromFormat("!m",$this->month)->format("F"),
             'year' => $this->year,
             'created_at' => Carbon::parse($this->created_at)->format("d-m-Y H:i")

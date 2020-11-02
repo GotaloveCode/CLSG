@@ -6,13 +6,13 @@
 @section('content')
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title mb-0">{{ __('MONTHLY BCP REPORTING CHECKLIST List') }}</h3>
+            <h3 class="content-header-title mb-0">{{ __('Staff & Health Protection List') }}</h3>
             <div class="row breadcrumbs-top">
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url("/")}}">Home</a>
                         </li>
-                        <li class="breadcrumb-item active">{{ __('MONTHLY BCP REPORTING CHECKLIST List') }}
+                        <li class="breadcrumb-item active">{{ __('Staff & Health Protection List') }}
                         </li>
                     </ol>
                 </div>
@@ -28,14 +28,14 @@
                             <div class="card-title text-right">
                                 @can("create-bcp")
                                     @if($bcp)
-                                <a href="{{route("checklist.monthly-checklist")}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add New</a>
+                                <a href="{{route("staff-health.create")}}" class="btn btn-primary"> <i class="fa fa-plus"></i> Add New</a>
                                     @endif
                                 @endcan
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table" id="verification-table">
+                                <table class="table" id="staff-table">
                                     <thead>
                                     <tr>
                                         <th>Wsp</th>
@@ -58,13 +58,13 @@
     <script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
     <script defer>
         $(function () {
-            $('#verification-table').DataTable({
+            $('#staff-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{!! route('checklist.list') !!}',
+                ajax: '{!! route('staff-health.list') !!}',
                 columns: [
                     {data: 'wsp', name: 'wsp'},
-                    {data: 'checklist_month', name: 'checklist_month'},
+                    {data: 'month', name: 'month'},
                     {data: 'year', name: 'year'},
                     {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}

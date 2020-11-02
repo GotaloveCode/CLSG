@@ -16,20 +16,15 @@
             </div>
         </div>
     </div>
-    <div class="content-body">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-body">
-                            <view-wsp-reporting
-                                :services="{{$services}}"
-                                :wsp_report="{{$wsp_report}}"
-                            ></view-wsp-reporting>
-                        </div>
-                    </div>
-                </div>
+
+ <div class="content-body">
+        <section id="card-headings">
+            <div class="row">
+                <view-wsp-reporting
+                    :services="{{$services}}"
+                    :wsp_report="{{$wsp_report}}"
+                ></view-wsp-reporting>
             </div>
-        </div>
+        </section>
     </div>
 @endsection

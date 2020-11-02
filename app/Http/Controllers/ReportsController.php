@@ -2,42 +2,28 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Http\Requests\BcpMonthlyReportRequest;
-use App\Http\Requests\MonthlyVerificationRequest;
-use App\Models\BcpChecklist;
-use App\Models\BcpMonthlyReport;
-use App\Models\MonthlyVerification;
-use App\Models\MonthlyVerificationReport;
-use App\Models\ReportingFormart;
-use App\Models\MonthlyReportingFormat;
 use App\Models\EssentialOperationReport;
 use App\Models\VulnerableCustomer;
 use App\Models\Wsp;
 use App\Models\Service;
 use App\Models\WspReporting;
 use App\Models\CslgCalculation;
+use App\Models\StaffHealth;
+use App\Models\PerformanceScore;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Resources\BcpChecklistResource;
-use App\Http\Resources\VerificationResource;
-use App\Http\Resources\ReportingFormatResource;
 use App\Http\Resources\EssentialReportResource;
 use App\Http\Resources\VulnerableCustomerResource;
 use App\Http\Resources\WspReportingResource;
 use App\Http\Resources\CslgResource;
+use App\Http\Resources\StaffHealthResource;
+use App\Http\Resources\PerformaceScoreResource;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 
 class ReportsController extends Controller
 {
-
-    public function index()
-    {
-
-        return view("checklists.index");
-    }
 
     public function wspIndex()
     {
@@ -50,6 +36,21 @@ class ReportsController extends Controller
             ->addColumn('action', function ($reporting) {
 
                 return '<a href="' . route("wsp-reporting.show", $reporting['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
+            })
+            ->make(true);
+
+    }
+    public function cardIndex()
+    {
+        if (!request()->ajax()) {
+            return view('checklists.performance.list');
+        }
+        $score = PerformaceScoreResource::collection(PerformanceScore::get());
+
+        return Datatables::of($score)
+            ->addColumn('action', function ($score) {
+
+                return '<a href="' . route("performance-score-card.show", $score['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
             })
             ->make(true);
 
@@ -67,72 +68,20 @@ class ReportsController extends Controller
             })
             ->make(true);
     }
-    public function monthlyVerification()
-    {
-        $year = Carbon::now()->format("Y");
-        $month = Carbon::now()->format("m");
-        $exiting_verification = MonthlyVerificationReport::where("month", $month)->where("year", $year)->where('wsp_id', auth()->user()->wsps->first()->id)->first();
-        $exiting_verification ? $verification_item = json_encode(new VerificationResource($exiting_verification)) : $verification_item = json_encode([]);
-        $verification_items = json_encode(MonthlyVerification::all());
-        return view("verification.index")->with(compact('verification_items', 'verification_item'));
-    }
-
-    public function monthlyChecklist()
-    {
-        $year = Carbon::now()->format("Y");
-        $month = Carbon::now()->format("m");
-        $exiting_checklist = BcpMonthlyReport::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps->first()->bcp->first()->id)->first();
-        $exiting_checklist ? $checklist_item = json_encode(new BcpChecklistResource($exiting_checklist)) : $checklist_item = json_encode([]);
-        $checklists = json_encode(BcpChecklist::all());
-        return view("checklists.index", compact("checklists", "checklist_item"));
-    }
-
-    public function verificationIndex()
+    public function staffIndex()
     {
         if (!request()->ajax()) {
-            return view('verification.list');
+            return view('checklists.staff.list');
         }
-        $verify = MonthlyVerificationReport::query()->with('wsp:id,name')->select('monthly_verification_reports.*');
+        $staff = StaffHealthResource::collection(StaffHealth::get());
 
-
-        return Datatables::of($verify)
-            ->addColumn('action', function ($verify) {
-                return '<a href="' . route("verification.show", $verify->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
+        return Datatables::of($staff)
+            ->addColumn('action', function ($staff) {
+                return '<a href="' . route("staff-health.show", $staff['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
             })
             ->make(true);
-
     }
 
-    public function checklistIndex()
-    {
-        if (!request()->ajax()) {
-            return view('checklists.list');
-        }
-        $checklist = BcpChecklistResource::collection(BcpMonthlyReport::get());
-
-        return Datatables::of($checklist)
-            ->addColumn('action', function ($checklist) {
-
-                return '<a href="' . route("checklist.show", $checklist['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
-            })
-            ->make(true);
-
-    }
-
-    public function formatIndex()
-    {
-        if (!request()->ajax()) {
-            return view('formats.list');
-        }
-        $format = ReportingFormatResource::collection(MonthlyReportingFormat::get());
-
-        return Datatables::of($format)
-            ->addColumn('action', function ($format) {
-                return '<a href="' . route("report-format.show", $format['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
-            })
-            ->make(true);
-
-    }
 
     public function essentialIndex()
     {
@@ -151,7 +100,6 @@ class ReportsController extends Controller
 
     public function customerIndex()
     {
-
         if (!request()->ajax()) {
             return view('checklists.customer.list');
         }
@@ -165,18 +113,6 @@ class ReportsController extends Controller
 
     }
 
-    public function monthlyReportFormat()
-    {
-        $year = Carbon::now()->format("Y");
-        $month = Carbon::now()->format("m");
-
-        $exiting_format = MonthlyReportingFormat::where("month", $month)->where("year", $year)->where('wsp_id', auth()->user()->wsps->first()->id)->first();
-        $exiting_format ? $format_item = json_encode(new ReportingFormatResource($exiting_format)) : $format_item = json_encode([]);
-        $items = json_encode(ReportingFormart::all());
-
-        return view("formats.index", compact("items", "format_item"));
-
-    }
 
     public function createEssential()
     {
@@ -227,26 +163,24 @@ class ReportsController extends Controller
         $exiting_cslg ? $cslg = json_encode(new CslgResource($exiting_cslg)) : $cslg = json_encode([]);
         return view("checklists.cslg.index", compact( "cslg"));
     }
-
-    public function showVerification($id)
+    public function createStaff()
     {
-        $verify = json_encode(new VerificationResource(MonthlyVerificationReport::find($id)));
-        $checklist_items = json_encode(MonthlyVerification::all());
-        return view("verification.show", compact("verify", "checklist_items"));
+        $year = Carbon::now()->format("Y");
+        $month = Carbon::now()->format("m");
+
+        $exiting_staff = StaffHealth::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $exiting_staff ? $staff = json_encode(new StaffHealthResource($exiting_staff)) : $staff = json_encode([]);
+        $items = json_encode(BcpChecklist::all());
+        return view("checklists.staff.index", compact( "staff","items"));
     }
-
-    public function showChecklist($id)
+    public function createCard()
     {
-        $checklist = json_encode(new BcpChecklistResource(BcpMonthlyReport::find($id)));
-        $checklist_items = json_encode(BcpChecklist::all());
-        return view("checklists.show", compact("checklist", "checklist_items"));
-    }
+        $year = Carbon::now()->format("Y");
+        $month = Carbon::now()->format("m");
 
-    public function showFormat($id)
-    {
-        $format = json_encode(new ReportingFormatResource(MonthlyReportingFormat::find($id)));
-        $items = json_encode(ReportingFormart::all());
-        return view("formats.show", compact("format", "items"));
+        $exiting_score = PerformanceScore::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $exiting_score ? $score = json_encode(new PerformaceScoreResource($exiting_score)) : $score = json_encode([]);
+       return view("checklists.performance.index", compact( "score"));
     }
 
     public function showEssentialOperation($id)
@@ -262,6 +196,12 @@ class ReportsController extends Controller
         $staff = json_encode(BcpChecklist::where("type","Staff Health Protection")->get());
         return view("checklists.customer.show", compact("customers", "checklist","staff"));
     }
+    public function showStaff($id)
+    {
+        $checklist = json_encode(new StaffHealthResource(StaffHealth::find($id)));
+        $staff = json_encode(BcpChecklist::where("type","Staff Health Protection")->get());
+        return view("checklists.staff.show", compact( "checklist","staff"));
+    }
      public function showWsp($id)
         {
             $services = Cache::rememberForever('services', function () {
@@ -276,73 +216,12 @@ class ReportsController extends Controller
             $cslg = json_encode(new CslgResource(CslgCalculation::find($id)));
             return view("checklists.cslg.show", compact("cslg"));
         }
+        public function showCard($id)
+        {
+            $score = json_encode(new PerformaceScoreResource(PerformanceScore::find($id)));
+            return view("checklists.performance.show", compact("score"));
+        }
 
-    public function checklist()
-    {
-        return response()->json(BcpChecklist::all());
-    }
-
-    public function score()
-    {
-        return response()->json(MonthlyVerification::all());
-    }
-
-    public function reportFormat()
-    {
-        return response()->json(ReportingFormart::all());
-    }
-
-    public function saveChecklist(BcpMonthlyReportRequest $request)
-    {
-        $bcp = BcpMonthlyReport::create([
-            'revenue' => $request->input("revenue"),
-            'operations_costs' => $request->input("operations_costs"),
-            'clsg_total' => $request->input("clsg_total"),
-            'challenges' => $request->input("challenges"),
-            'expected_activities' => $request->input("expected_activities"),
-            'essential' => json_encode($request->input("essential")),
-            'customer' => json_encode($request->input("customer")),
-            'staff' => json_encode($request->input("staff")),
-            'communication' => json_encode($request->input("communication")),
-            'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
-            'month' => Carbon::now()->format("m"),
-            'year' => Carbon::now()->format("Y"),
-        ]);
-        return response()->json($bcp);
-    }
-
-    public function saveVerification(MonthlyVerificationRequest $request)
-    {
-        $verification = MonthlyVerificationReport::create([
-            'performance_score_details' => json_encode($request->input("performance_score_details")),
-            'clsg_details' => json_encode($request->input("clsg_details")),
-            'wsp_id' => auth()->user()->wsps->first()->id,
-            'recommendations' => $request->input("recommendations"),
-            'verification_team' => $request->input("verification_team"),
-            'month' => Carbon::now()->format("m"),
-            'year' => Carbon::now()->format("Y"),
-        ]);
-        return response()->json($verification);
-    }
-
-    public function saveFormat(Request $request)
-    {
-        $format = MonthlyReportingFormat::create([
-            'wsp_id' => auth()->user()->wsps->first()->id,
-            'bcp_status_implementation' => $request->input("bcp_status_implementation"),
-            'covid_status_implementation' => $request->input("covid_status_implementation"),
-            'revenues_collected' => $request->input("revenues_collected"),
-            'o_m_costs' => $request->input("o_m_costs"),
-            'amount_disbursed' => $request->input("amount_disbursed"),
-            'resolution_status' => $request->input("resolution_status"),
-            'challenges' => $request->input("challenges"),
-            'expected_activities_next_month' => $request->input("expected_activities_next_month"),
-            'scores_details' => json_encode($request->input("scores")),
-            'month' => Carbon::now()->format("m"),
-            'year' => Carbon::now()->format("Y"),
-        ]);
-        return response()->json($format);
-    }
     public function saveWsp(Request $request)
     {
         $request['month'] = Carbon::now()->format("m");
@@ -369,11 +248,20 @@ class ReportsController extends Controller
         $customer = VulnerableCustomer::create([
             'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
             'customer_details' => json_encode($request->input("customer_details")),
-            'staff_details' => json_encode($request->input("staff_details")),
             'month' => Carbon::now()->format("m"),
             'year' => Carbon::now()->format("Y"),
         ]);
         return response()->json($customer);
+    }
+    public function saveStaff(Request $request)
+    {
+        $staff = StaffHealth::create([
+            'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
+            'staff_details' => json_encode($request->input("staff_details")),
+            'month' => Carbon::now()->format("m"),
+            'year' => Carbon::now()->format("Y"),
+        ]);
+        return response()->json($staff);
     }
     public function saveCslg(Request $request)
     {
@@ -382,6 +270,14 @@ class ReportsController extends Controller
         $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
         $cslg = CslgCalculation::create($request->all());
         return response()->json($cslg);
+    }
+    public function saveCard(Request $request)
+    {
+        $request['month'] = Carbon::now()->format("m");
+        $request['year'] = Carbon::now()->format("Y");
+        $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
+        $score = PerformanceScore::create($request->all());
+        return response()->json($score);
     }
 
 }

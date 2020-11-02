@@ -2,48 +2,47 @@
     <div>
         <div v-html="$error.handle(error)"/>
         <template v-if="show">
-            <view-essential-operation :essential_item="essential_item" :essentials="items"></view-essential-operation>
+            <view-staff-health :checklist="checklist_item"  :staff="staff"></view-staff-health>
         </template>
         <div v-if="!show">
             <form @submit.prevent="postData()">
                 <div class="row">
-                    <div class="col-md-6" v-for="(essn,k) in essentials" style="margin-top: -10px">
-                        <div class="card" style="height: 92%">
+                    <div class="col-md-6" v-for="stf in staff" style="margin-top: -10px">
+                        <div class="card">
                             <div class="card-header">
-                                <p> {{k+1}}. {{ essn.name }}</p>
+                                <p><i class="fa fa-angle-double-right" aria-hidden="true"></i> {{ stf.name }}</p>
                             </div>
                             <div class="card-content collapse show">
                                 <div class="card-body" style="padding-top: 0">
                             <span style="display: flex">
-                              <div>
-                              <fieldset class="radio">
+                                <div>
+                            <fieldset class="radio">
                                 <label>
-                                    <input type="radio" value="Completed" v-model="form.essential[essn.id]"
-                                           :name="'status_completed'+essn.id">
-                                  <b>Completed</b>
+                                    <input type="radio" value="Completed" v-model="form.staff[stf.id]"
+                                           :name="'status_completed'+stf.id">
+                                    <b>Completed</b>
                                 </label>
                             </fieldset>
                             <fieldset class="radio">
                                 <label>
-                                    <input type="radio" value="In Progress" v-model="form.essential[essn.id]"
-                                           :name="'status_in_progress'+essn.id">
+                                    <input type="radio" value="In Progress" v-model="form.staff[stf.id]"
+                                           :name="'status_in_progress'+stf.id">
                                     <b>In Progress</b>
                                 </label>
                             </fieldset>
                             <fieldset class="radio">
                                 <label>
-                                    <input type="radio" value="Not Started" v-model="form.essential[essn.id]"
-                                           :name="'status_not_started'+essn.id">
-                                   <b>Not Started</b>
+                                    <input type="radio" value="Not Started" v-model="form.staff[stf.id]"
+                                           :name="'status_not_started'+stf.id">
+                                    <b>Not Started</b>
                                 </label>
                             </fieldset>
-                              </div>
-                                <div style="margin-left: 15%;">
+                                </div>
+                                  <div style="margin-left: 15%;">
                                    <textarea cols="30" rows="2" class="form-control"
-                                             v-model="form.essential_comment[essn.id]"
+                                             v-model="form.staff_comment[stf.id]"
                                              placeholder="Your comment here"></textarea>
                                 </div>
-
                             </span>
                                 </div>
                             </div>
@@ -64,24 +63,24 @@
 
 
 <script>
-import ViewEssentialOperation from "./ViewEssentialOperation";
+import ViewStaffHealth from "./ViewStaffHealth";
 
 export default {
     props:{
-        items:{type:Array},
-        essential_item:{type: [Object, Array]}
+        checklists:{type:Array},
+        checklist_item:{type: [Object, Array]}
     },
     data() {
         return {
             error: '',
             form: {
-                essential: [],
-                essential_comment: []
+                staff: [],
+                staff_comment: []
             },
-            essential_data: [],
+            staff_data: [],
             loading: false,
             show: false,
-            essentials:{}
+            staff:{}
         }
     },
     created() {
@@ -89,37 +88,39 @@ export default {
     },
     methods: {
         setUp(){
-            this.essentials = this.items.filter(e => e.type ==="Essential Operations");
-            if (this.essential_item.id !=undefined){
+            this.staff = this.checklists.filter(e => e.type ==="Staff Health Protection");
+            if (this.checklist_item.id !=undefined){
                 this.show = true;
             }
         },
         postData() {
-            if (!this.validateEssentials()) return this.$toastr.e("All Essential Operations Checklist fields are required!");
+            if (!this.validateStaff()) return this.$toastr.e("All Staff Health Protection Checklist fields are required!");
             let data = {
-                details: this.essential_data
+                staff_details: this.staff_data
             };
             this.error = '';
             this.loading = true;
-            axios.post("/reports/essential-operation", data).then(() => {
-                window.location.href = "/reports/essential-operation-list"
+            axios.post("/reports/staff-health", data).then(() => {
+                window.location.href = "/reports/staff-health-list"
             }).catch(error => {
                 this.error = error.response;
             });
 
         },
-         validateEssentials() {
-            this.essential_data = [];
-            if (this.form.essential.length < 7) {
+
+        validateStaff() {
+            this.staff_data = [];
+            this.form.staff.forEach((e, v) => {
+                this.staff_data.push({id: v, status: e, comment: ""})
+            })
+            if (this.staff_data.length < 11) {
                 return false;
             }
-            this.form.essential.forEach((e, v) => {
-                this.essential_data.push({id: v, status: e, comment: ""})
-            })
-            this.form.essential_comment.forEach((p, q) => {
-                for (let i = 0; i < this.essential_data.length; i++) {
-                    if (this.essential_data[i]['id'] === q) {
-                        this.essential_data[i]['comment'] = p;
+
+            this.form.staff_comment.forEach((p, q) => {
+                for (let i = 0; i < this.staff_data.length; i++) {
+                    if (this.staff_data[i]['id'] === q) {
+                        this.staff_data[i]['comment'] = p;
                     }
                 }
             })
@@ -127,7 +128,7 @@ export default {
         },
     },
     components: {
-        ViewEssentialOperation
+      ViewStaffHealth
     }
 }
 </script>
