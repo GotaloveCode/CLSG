@@ -22,6 +22,7 @@
             <div class="row">
                 <cslg-calculation
                     :cslg="{{$cslg}}"
+                    :operations="{{$operations}}"
                 ></cslg-calculation>
             </div>
         </section>

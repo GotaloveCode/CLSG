@@ -16,7 +16,7 @@
                            <div class="card-body" style="padding-top: 0">
                             <div class="form-group">
                                 <label>Amount</label>
-                                <vue-numeric separator="," class="form-control" required v-model="form.revenues" required></vue-numeric>
+                                <vue-numeric separator="," class="form-control" required v-model="operations.revenue" required></vue-numeric>
                             </div>
                             <div class="form-group">
                                 <label>Comment</label>
@@ -56,7 +56,7 @@
                             <div class="card-body" style="padding-top: 0">
                     <div class="form-group">
                         <label>Amount</label>
-                        <vue-numeric separator="," class="form-control" required v-model="form.cslg_gross_amount" required></vue-numeric>
+                        <vue-numeric separator="," class="form-control" required v-model="operations.clsg_total" required></vue-numeric>
                     </div>
                     <div class="form-group">
                         <label>Comment</label>
@@ -73,9 +73,8 @@
                         </div>
                         <div class="card-content collapse show">
                             <div class="card-body" style="padding-top: 0">
-                 <label>Performance Adjusted- CLSG %</label>
                     <div class="form-group">
-                        <label>Amount</label>
+                        <label>Performance Adjusted- CLSG %</label>
                         <vue-numeric separator="," class="form-control" required v-model="form.cslg_adjusted_amount" required></vue-numeric>
                     </div>
                     <div class="form-group">
@@ -106,7 +105,8 @@ import ViewCslgCalculation from "./ViewCslgCalculation";
 
 export default {
     props:{
-        cslg:{type: [Object,Array]}
+        cslg:{type: [Object,Array]},
+        operations:{type: Object}
     },
     data() {
         return {
@@ -118,8 +118,9 @@ export default {
                 grant_multiplier_comment:'',
                 cslg_gross_amount:0,
                 cslg_gross_comment:'',
-                cslg_adjusted_amount:0,
-                cslg_adjusted_comment:''
+                cslg_adjusted_amount:100,
+                cslg_adjusted_comment:'',
+                status:'Pending',
             },
             loading: false,
             show: false

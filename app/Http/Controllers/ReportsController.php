@@ -126,6 +126,7 @@ class ReportsController extends Controller
         $exiting_essential ? $essential_item = json_encode(new EssentialReportResource($exiting_essential)) : $essential_item = json_encode([]);
         $items = json_encode(BcpChecklist::all());
 
+
         return view("checklists.essential.index", compact("items", "essential_item"));
     }
     public function createCustomer()
@@ -162,7 +163,11 @@ class ReportsController extends Controller
 
         $exiting_cslg = CslgCalculation::where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         $exiting_cslg ? $cslg = json_encode(new CslgResource($exiting_cslg)) : $cslg = json_encode([]);
-        return view("checklists.cslg.index", compact( "cslg"));
+
+        $operations = WspReporting::select("clsg_total","operations_costs","revenue")->where("month", $month)->where("year", $year)->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first(); ;
+        if (!$operations) return redirect()->back();
+        //$wsp = ;
+        return view("checklists.cslg.index", compact( "cslg","operations"));
     }
     public function createStaff()
     {
@@ -214,8 +219,12 @@ class ReportsController extends Controller
         }
         public function showCslg($id)
         {
-            $cslg = json_encode(new CslgResource(CslgCalculation::find($id)));
-            return view("checklists.cslg.show", compact("cslg"));
+            $item = CslgCalculation::find($id);
+            $operations = WspReporting::select("clsg_total","operations_costs","revenue")->where("month", $item->month)->where("year", $item->year)->where('bcp_id', $item->bcp_id)->first(); ;
+            if (!$operations) return redirect()->back();
+            $cslg = json_encode(new CslgResource($item));
+
+            return view("checklists.cslg.show", compact("cslg","operations"));
         }
         public function showCard($id)
         {

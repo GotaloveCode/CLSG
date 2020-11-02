@@ -95,6 +95,23 @@ export default {
     props:{
         cslg:{type: [Object,Array]}
     },
+    data() {
+        return {
+            error: '',
+            form: {
+                revenues:0,
+                revenues_comment:'',
+                grant_multiplier_amount:0,
+                grant_multiplier_comment:'',
+                cslg_gross_amount:0,
+                cslg_gross_comment:'',
+                cslg_adjusted_amount:0,
+                cslg_adjusted_comment:''
+            },
+            loading: false,
+            show: false
+        }
+    },
     created() {
         console.log(this.services)
         this.setUp();
@@ -111,3 +128,31 @@ export default {
 }
 </script>
 
+<style>
+.the-legend {
+    border-style: none;
+    border-width: 0;
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 0;
+    width: auto;
+    padding: 0 10px;
+    border: 1px solid #e0e0e0;
+}
+.the-fieldset {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+}
+.fyr{
+    font-weight:800
+}
+.ml-10{
+    margin-left: 10px;
+}
+.mt-5{
+    margin-top: 5px;
+}
+.fs-20{
+    font-size: 20px;
+}
+</style>
