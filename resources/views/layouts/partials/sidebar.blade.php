@@ -81,19 +81,31 @@
                 </ul>
             </li>
             <li class=" nav-item"><a href="#"><i class="feather icon-bar-chart"></i><span
-                        class="menu-title">Reports</span></a>
+                        class="menu-title">Monthly Reports</span></a>
                 <ul class="menu-content">
 {{--                    @role('wasreb')--}}
-                    <li><a class="menu-item" data-title="Monthly Verification List" href="{{ route('verification.list')}}">Monthly Verification List</a>
-                    </li>
+{{--                    <li><a class="menu-item" data-title="Monthly Verification List" href="{{ route('verification.list')}}">Monthly Verification List</a>--}}
+{{--                    </li>--}}
 {{--                    @endrole--}}
                     {{--                    @can('create-bcp')--}}
                     {{--                        @if($bcp)--}}
-                    <li><a class="menu-item" href="{{ url('/reports/checklist-list') }}">BCP Monthly Reporting</a>
+                    <li><a class="menu-item" href="{{ url('/reports/essential-operation-list') }}">Essential Operations</a>
                     </li>
                     {{--                        @endif--}}
                     {{--                    @endcan--}}
-                    <li><a class="menu-item" data-title="Monthly Reporting Format List" href="{{ route('report-format.list')}}">Report Formats List</a>
+                    <li><a class="menu-item" data-title="Vulnerable Customers" href="{{ route('vulnerable-customer.list')}}">Vulnerable Customers</a>
+                    </li>
+                    <li><a class="menu-item" data-title="Staff & Health Protection" href="{{ route('staff-health.list')}}">Staff & Health Protection</a>
+                    </li>
+                    <li><a class="menu-item" href="#" data-i18n="Page Layouts">WSP Reporting</a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="{{ route('wsp-reporting.list')}}" data-i18n="General">General</a>
+                            </li>
+                            <li><a class="menu-item" href="{{ route('performance-score-card.list')}}" data-i18n="Performance Scorecard">Performance Scorecard</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="menu-item" data-title="CSLG CALCULATION" href="{{ route('cslg-calculation.list')}}">CSLG Calculation</a>
                     </li>
                 </ul>
             </li>
