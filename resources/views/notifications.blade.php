@@ -66,7 +66,6 @@
             $('#eois-table').DataTable();
             $("body").on("click", ".mark-read", function () {
                 let id = $(this).data("id");
-                alert($(this).data("id"));
                 $.ajax({
                     url: '/notifications/' + id,
                     data: {
