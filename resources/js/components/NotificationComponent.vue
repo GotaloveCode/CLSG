@@ -56,12 +56,12 @@ export default {
         }
     },
     mounted() {
-        if (this.messages.length){
+        if (this.messages){
             this.notifications = this.messages;
+            this.count = this.notificationsCount;
         }else{
             this.fetchNotifications();
         }
-        if (this.notificationsCount) this.count = this.notificationsCount;
     },
     methods: {
         diffForHuman(date) {

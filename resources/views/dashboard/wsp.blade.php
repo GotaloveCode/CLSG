@@ -130,7 +130,7 @@
                     <div class="card-body pt-0">
                         <div class="widget-timeline">
                             <ul>
-                                <li class="timeline-items timeline-icon-success">
+                                <li class="timeline-items @if($eoi) timeline-icon-success @else timeline-icon-warning @endif">
                                     @if($eoi)
                                         <p class="timeline-time">{{ $eoi->updated_at->diffForHumans() }}</p>
                                     @endif
@@ -143,7 +143,7 @@
                                     <span
                                         class="badge badge-pill badge-sm {{ $eoi->status == 'WASREB Approved' ? 'badge-success' : 'bagde-warning'}}">{{ $eoi->status == 'Pending' ? 'Pending Review By WASREB' : $eoi->status}}</span>
                                 </li>
-                                <li class="timeline-items timeline-icon-success">
+                                <li class="timeline-items @isset($att) timeline-icon-success @else timeline-icon-warning @endisset">
                                     @isset($att)
                                         <p class="timeline-time">{{ $att->updated_at->diffForHumans() }}</p>
                                     @endisset
@@ -158,10 +158,10 @@
                                         <span class="badge badge-pill badge-sm badge-success">Uploaded</span>
                                     @endisset
                                 </li>
-                                <li class="timeline-items timeline-icon-success">
-                                    @php
-                                        $staff = $wsp->staff()->first();
-                                    @endphp
+                                @php
+                                    $staff = $wsp->staff()->first();
+                                @endphp
+                                <li class="timeline-items @if($staff) timeline-icon-success @else timeline-icon-warning @endif">
                                     @if($staff)
                                         <p class="timeline-time">{{ $staff->updated_at->diffForHumans() }}</p>
                                     @endif
@@ -173,7 +173,7 @@
                                         <span class="badge badge-pill badge-sm badge-success">Created</span>
                                     @endif
                                 </li>
-                                <li class="timeline-items timeline-icon-success">
+                                <li class="timeline-items @if($erp) timeline-icon-success @else timeline-icon-warning @endif">
                                     <p class="timeline-time">{{ $erp->updated_at->diffForHumans() }}</p>
                                     <div class="timeline-title">Create ERP</div>
                                     <div class="timeline-subtitle">
@@ -184,9 +184,9 @@
                                         @endif
                                     </div>
                                 </li>
-                                <li class="timeline-items timeline-icon-success">
+                                <li class="timeline-items @if($bcp) timeline-icon-success @else timeline-icon-warning @endif">
                                     <p class="timeline-time">{{ $bcp->updated_at->diffForHumans() }}</p>
-                                    <div class="timeline-title">Create ERP</div>
+                                    <div class="timeline-title">Create BCP</div>
                                     <div class="timeline-subtitle">
                                         Create Business Continuity Plan and submit.
                                         @if($bcp)
