@@ -161,10 +161,6 @@
                                                    data-date="{{ $bcp->updated_at->format('d/m/Y') }}">{{ $bcp->updated_at->format('d M') }}</a>
                                             </li>
                                         @endif
-                                        {{--                                        <li><a href="#0" data-date="20/12/2012">Create BCP</a></li>--}}
-                                        {{--                                        <li><a href="#0" data-date="20/03/2013">Sign of CLSGA</a></li>--}}
-                                        {{--                                        <li><a href="#0" data-date="20/06/2013">Submit Monthly Reports</a></li>--}}
-                                        {{--                                        <li><a href="#0" data-date="20/09/2013">Funds Disbursed</a></li>--}}
                                     </ol>
 
                                     <span class="filling-line" aria-hidden="true"></span>
@@ -244,26 +240,6 @@
                                         </p>
                                     </li>
                                 @endif
-                                {{--                                    <li data-date="20/03/2013">--}}
-                                {{--                                        <h2>Sign of CLSGA</h2>--}}
-                                {{--                                        <p class="lead">--}}
-                                {{--                                            Sign of CLSGA upon agreement by all parties (WSP and WSTF).--}}
-                                {{--                                        </p>--}}
-                                {{--                                    </li>--}}
-
-                                {{--                                <li data-date="20/06/2013">--}}
-                                {{--                                    <h2>Submit Monthly Reports</h2>--}}
-                                {{--                                    <p class="lead">--}}
-                                {{--                                        Submit Monthly Reports--}}
-                                {{--                                    </p>--}}
-                                {{--                                </li>--}}
-
-                                {{--                                <li data-date="20/09/2013">--}}
-                                {{--                                    <h2>Funds Disbursed</h2>--}}
-                                {{--                                    <p class="lead">--}}
-                                {{--                                        Funds get disbursed to accounts--}}
-                                {{--                                    </p>--}}
-                                {{--                                </li>--}}
                             </ol>
                         </div>
                         <!-- .events-content -->

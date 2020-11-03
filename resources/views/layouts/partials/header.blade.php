@@ -80,7 +80,7 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-nav float-right">
-                        <notification-component></notification-component>
+                        <notification-component :notifications-count="{{ $notifications_count }}" :messages="{{ $notifications ?? [] }}"></notification-component>
                         <li class="dropdown dropdown-user nav-item">
                             <a class="dropdown-toggle nav-link dropdown-user-link"
                                href="#" data-toggle="dropdown">

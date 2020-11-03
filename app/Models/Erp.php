@@ -59,4 +59,9 @@ class Erp extends Model
             ->withTimestamps();
     }
 
+    public function scopeOfStatus($query, $status)
+    {
+        $query->where('status', $status);
+    }
+
 }

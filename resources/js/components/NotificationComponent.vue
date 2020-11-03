@@ -42,16 +42,26 @@
 
 <script>
 import moment from 'moment';
+
 export default {
     name: "NotificationComponent",
+    props: {
+        messages: {required: false, type: Array},
+        notificationsCount: {required: false, type: Number}
+    },
     data() {
         return {
             notifications: [],
-            count:0,
+            count: 0,
         }
     },
-    mounted(){
-        this.fetchNotifications();
+    mounted() {
+        if (this.messages.length){
+            this.notifications = this.messages;
+        }else{
+            this.fetchNotifications();
+        }
+        if (this.notificationsCount) this.count = this.notificationsCount;
     },
     methods: {
         diffForHuman(date) {
