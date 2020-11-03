@@ -105,6 +105,7 @@ Route::group(['middleware' => ['auth']], function () {
         //Cslg Calculation
         Route::get("/cslg-calculation-list","ReportsController@CslgIndex")->name('cslg-calculation.list');
         Route::post("/cslg-calculation","ReportsController@saveCslg");
+        Route::post("/cslg-calculation/approve","ReportsController@approveCslg");
         Route::get("/cslg-calculation-show/{id}","ReportsController@showCslg")->name("cslg-calculation.show");
         Route::get("/cslg-calculation/create","ReportsController@createCslg")->name("cslg-calculation.create");
     });

@@ -19,6 +19,7 @@ class CslgResource extends JsonResource
             'id' => $this->id,
             'revenues' => $this->revenues,
             'wsp' => $this->bcp()->first()->wsp->name,
+            'status' => $this->status,
             'revenues_comment' => $this->revenues_comment,
             'grant_multiplier_amount' => $this->grant_multiplier_amount,
             'grant_multiplier_comment' => $this->grant_multiplier_comment,

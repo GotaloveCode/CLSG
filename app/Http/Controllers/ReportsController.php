@@ -248,7 +248,7 @@ class ReportsController extends Controller
         public function showCslg($id)
         {
             $item = CslgCalculation::find($id);
-            $operations = WspReporting::select("clsg_total","operations_costs","revenue")->where("month", $item->month)->where("year", $item->year)->where('bcp_id', $item->bcp_id)->first(); ;
+            $operations = WspReporting::with('attachments')->where("month", $item->month)->where("year", $item->year)->where('bcp_id', $item->bcp_id)->first();
             if (!$operations) return redirect()->back();
             $cslg = json_encode(new CslgResource($item));
 
@@ -316,6 +316,11 @@ class ReportsController extends Controller
         $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
         $score = PerformanceScore::create($request->all());
         return response()->json($score);
+    }
+    public function approveCslg(Request $request)
+    {
+        CslgCalculation::find($request->input("id"))->update($request->except(['month','wsp']));
+        return response()->json('success');
     }
 
 }
