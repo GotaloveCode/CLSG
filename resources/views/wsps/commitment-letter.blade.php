@@ -58,18 +58,7 @@
                                     Download
                                 </a>
                             @endif
-                            <form action="{{ route('eois.commitment_letter.store', $eoi->id) }}" method="post"
-                                  enctype="multipart/form-data" class="form">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="attachment" class="control-label">Signed Commitment letter</label>
-                                    <input type="file" required name="attachment" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-info" type="submit"><i class="fa fa-upload"></i>Upload
-                                    </button>
-                                </div>
-                            </form>
+                            <commitment-upload submit-url="{{ route('eois.commitment_letter.store', $eoi->id) }}"></commitment-upload>
                         @endif
                     </div>
                 </div>

@@ -33,7 +33,7 @@ const StaffHealth = () => import('./components/checklist/StaffHealth' /* webpack
 const ViewStaffHealth = () => import('./components/checklist/ViewStaffHealth' /* webpackChunkName: "js/components/checklists/view-staff-health" */);
 const PerformanceCard = () => import('./components/checklist/PerformanceCard' /* webpackChunkName: "js/components/reportFormat/performance-card" */);
 const ViewPerformanceCard = () => import('./components/checklist/ViewPerformanceCard' /* webpackChunkName: "js/components/reportFormat/view-performance-card" */);
-
+const CommitmentUpload = () => import('./components/bcp/CommitmentUpload' /* webpackChunkName: "js/components/bcp/commitment-upload" */);
 
 const app = new Vue({
     el: '#app',
@@ -45,6 +45,7 @@ const app = new Vue({
         ManageReview,
         ReviewForm,
         BcpForm,
+        CommitmentUpload,
         MgmForm,
         ErpForm,
         StaffForm,
