@@ -20,10 +20,19 @@
   <div class="content-body">
         <section id="card-headings">
             <div class="row">
+                @if(auth()->user()->hasRole('wsp'))
                 <view-cslg-calculation
                     :cslg="{{$cslg}}"
                     :operations="{{$operations}}"
                 ></view-cslg-calculation>
+                @else
+                    <approve-clg-calculation
+                        :cslg="{{$cslg}}"
+                        :operations="{{$operations}}"
+                    ></approve-clg-calculation>
+
+
+                @endif
             </div>
         </section>
   </div>

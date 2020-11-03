@@ -57,7 +57,7 @@ export default {
             }
         },
         goBack(){
-            window.location.href = "/reports/staff-health-list";
+            window.location.href = "/reports/vulnerable-customer-list";
         }
 
     }
