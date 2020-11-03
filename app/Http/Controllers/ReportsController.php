@@ -46,7 +46,7 @@ class ReportsController extends Controller
     public function saveWspAttachment(BcpAttachmentRequest $request)
     {
         $wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-        $fileName = $this->storeDocument($request->attachment, $request->display_name);
+        $fileName = $this->storeDocument($request->attachment, $request->display_name,'app/WspReporting');
 
           $wsp->attachments()->create([
             'name' => $fileName,

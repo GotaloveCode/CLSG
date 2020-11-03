@@ -39,7 +39,7 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Document Name</th>
+                            <th>Document Name </th>
                             <th>Document Type</th>
                             <th>Created</th>
                             <th></th>

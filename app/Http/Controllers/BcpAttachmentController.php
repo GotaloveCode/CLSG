@@ -32,8 +32,7 @@ class BcpAttachmentController extends Controller
             abort('403', 'You may only attach documents while the BCP has not been approved by WSTF');
         }
 
-        $fileName = $this->storeDocument($request->attachment, $request->display_name,'app/Bcp');
-
+        $fileName = $this->storeDocument($request->attachment, $request->display_name,"app/Bcp");
         $attachment = $bcp->attachments()->create([
             'name' => $fileName,
             'display_name' => $request->display_name,
@@ -51,6 +50,7 @@ class BcpAttachmentController extends Controller
 
     public function show($filename)
     {
+
         return $this->showFile(storage_path('app/Bcp/' . $filename));
     }
 

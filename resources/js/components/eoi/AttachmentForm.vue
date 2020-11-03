@@ -26,7 +26,8 @@
 
                     <ValidationProvider tag="td" name="Attachment" v-slot="{ validate, errors }"
                                         rules="required|ext:jpg,png,pdf,doc,docx,xls,xlsx,csv">
-                        <input type="file" ref="the_document" @change="validate" class="form-control">
+                       <span class="webkit"> <input type="file" ref="the_document" @change="validate" class="form-control"></span>
+
                         <div class="text-danger">{{ errors[0] }}</div>
                     </ValidationProvider>
                 </tr>
@@ -94,5 +95,8 @@ export default {
 <style>
 .vs--searchable{
   width: 20rem !important;
+}
+.webkit{
+    display: -webkit-box;
 }
 </style>
