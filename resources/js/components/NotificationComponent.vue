@@ -65,7 +65,7 @@ export default {
             this.notifications.splice(i, 1);
         },
         fetchNotifications() {
-            axios.get('/notifications?limit=5').then(response => {
+            axios.get('/notifications?limit=4').then(response => {
                 this.notifications = response.data.notifications;
                 this.count = response.data.count;
             });
