@@ -138,7 +138,15 @@
                                 @endif
                             @endif
                             @if($eoi->status =='WSTF Approved')
-                                <a class="btn btn-info mt-2"
+                                <div class="alert alert-success alert-dismissible mb-2" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                    Please download <a
+                                        href="{{ route('eois.commitment_letter',$eoi->id) }}" class="alert-link"> the
+                                        commitment letter,</a> sign and upload
+                                </div>
+                                <a class="btn btn-info mt-1"
                                    href="{{ route('eois.commitment_letter',$eoi->id) }}"><i
                                         class="feather icon-eye"></i>
                                     View Commitment Letter
@@ -160,7 +168,8 @@
                         <div class="card-content collapse show">
                             <div class="card-body">
                                 <div class="insights">
-                                    <p>{{$eoi->status == 'WASREB Approved' ? 'Pending Approval' : $eoi->status}} <span class="float-right text-warning h3">{{$progress}}%</span>
+                                    <p>{{$eoi->status == 'WASREB Approved' ? 'Pending Approval' : $eoi->status}} <span
+                                            class="float-right text-warning h3">{{$progress}}%</span>
                                     </p>
                                     <div class="progress progress-sm mt-1 mb-0">
                                         <div class="progress-bar bg-warning" role="progressbar"
