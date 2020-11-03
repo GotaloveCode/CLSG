@@ -3,7 +3,7 @@
         <ValidationProvider tag="td" name="Month[]" rules="required"
                             v-slot="{ errors }">
             <v-select label="name" placeholder="Select Month"
-                      v-model="revenue.month" :options="months">
+                      v-model="revenue.month" :reduce="c => c.no" :options="months">
             </v-select>
             <span class="text-danger">{{ errors[0] }}</span>
         </ValidationProvider>
@@ -34,9 +34,7 @@ export default {
     name: "RevenueRow",
     props: {
         revenue: {required: true, type: Object},
-    },
-    data: () => ({
-        months: [1,2,3,4,5,6,7,8,9,10,11,12],
-    }),
+        months: {required: true, type: Array},
+    }
 }
 </script>

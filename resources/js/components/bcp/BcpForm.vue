@@ -85,11 +85,13 @@
                         <label>Government Subsidy</label>
                         <br>
                         <div class="d-inline-block custom-control custom-radio mr-1">
-                            <input type="radio" class="custom-control-input" name="government_subsidy" id="yes" value="1" v-model="bcp.government_subsidy" checked>
+                            <input type="radio" class="custom-control-input" name="government_subsidy" id="yes"
+                                   value="1" v-model="bcp.government_subsidy" checked>
                             <label class="custom-control-label" for="yes">Yes</label>
                         </div>
                         <div class="d-inline-block custom-control custom-radio mr-1">
-                            <input type="radio" class="custom-control-input" name="government_subsidy" id="no"  value="0" v-model="bcp.government_subsidy">
+                            <input type="radio" class="custom-control-input" name="government_subsidy" id="no" value="0"
+                                   v-model="bcp.government_subsidy">
                             <label class="custom-control-label" for="no">No</label>
                         </div>
                         <span class="text-danger"> {{ errors[0] }}</span>
@@ -99,9 +101,9 @@
                                         v-slot="{ errors }"
                                         class="col-md-6 form-group">
                         <label>Government Subsidy Amount</label>
-                        <vue-numeric  separator="," v-model="bcp.government_subsidy_amount" class="form-control"
-                                  data-toggle="tooltip"
-                                  title="Government Subsidy Amount"></vue-numeric>
+                        <vue-numeric separator="," v-model="bcp.government_subsidy_amount" class="form-control"
+                                     data-toggle="tooltip"
+                                     title="Government Subsidy Amount"></vue-numeric>
                         <span class="text-danger"> {{ errors[0] }}</span>
                     </ValidationProvider>
 
@@ -162,6 +164,7 @@
                             @add="addRevenue"
                             @remove="removeRevenue(index)"
                             :revenue="d"
+                            :months="mths"
                             v-bind:key="index"
                             :index="index"/>
                     </table>
@@ -180,7 +183,7 @@
 import EssentialOperationRow from "./EssentialOperationRow";
 import RevenueRow from "./RevenueRow";
 import TeamRow from "./TeamRow";
-
+import months from "../months";
 export default {
     name: "BcpForm",
     components: {
@@ -197,6 +200,7 @@ export default {
     },
     data: () => ({
         error: '',
+        mths: [],
         bcp: {
             wsp_id: null,
             government_subsidy: 1,
@@ -221,62 +225,63 @@ export default {
                 unit: ''
             }],
             projected_revenues: [{month: 10, year: 2020, amount: 0}]
+        },
 
-        }
     }),
-    watch:{
-      'bcp.government_subsidy'(){
-          this.updateForm('government_subsidy',this.bcp.government_subsidy);
-      },
-        'bcp.supply_chain'(){
-          this.updateForm('supply_chain',this.bcp.supply_chain);
-      },
-        'bcp.communication_plan'(){
-          this.updateForm('communication_plan',this.bcp.communication_plan);
-      },
-        'bcp.emergency_response_plan'(){
-          this.updateForm('emergency_response_plan',this.bcp.emergency_response_plan);
-      },
-        'bcp.staff_health_protection'(){
-          this.updateForm('staff_health_protection',this.bcp.staff_health_protection);
-      },
-        'bcp.training'(){
-          this.updateForm('training',this.bcp.training);
-      },
-        'bcp.planning_assumptions'(){
-          this.updateForm('planning_assumptions',this.bcp.planning_assumptions);
-      },
-        'bcp.introduction'(){
-          this.updateForm('introduction',this.bcp.introduction);
-      },
-        'bcp.government_subsidy_amount'(){
-          this.updateForm('government_subsidy_amount',this.bcp.government_subsidy_amount);
-      },
-        'bcp.executive_summary'(){
-          this.updateForm('executive_summary',this.bcp.executive_summary);
+    watch: {
+        'bcp.government_subsidy'() {
+            this.updateForm('government_subsidy', this.bcp.government_subsidy);
+        },
+        'bcp.supply_chain'() {
+            this.updateForm('supply_chain', this.bcp.supply_chain);
+        },
+        'bcp.communication_plan'() {
+            this.updateForm('communication_plan', this.bcp.communication_plan);
+        },
+        'bcp.emergency_response_plan'() {
+            this.updateForm('emergency_response_plan', this.bcp.emergency_response_plan);
+        },
+        'bcp.staff_health_protection'() {
+            this.updateForm('staff_health_protection', this.bcp.staff_health_protection);
+        },
+        'bcp.training'() {
+            this.updateForm('training', this.bcp.training);
+        },
+        'bcp.planning_assumptions'() {
+            this.updateForm('planning_assumptions', this.bcp.planning_assumptions);
+        },
+        'bcp.introduction'() {
+            this.updateForm('introduction', this.bcp.introduction);
+        },
+        'bcp.government_subsidy_amount'() {
+            this.updateForm('government_subsidy_amount', this.bcp.government_subsidy_amount);
+        },
+        'bcp.executive_summary'() {
+            this.updateForm('executive_summary', this.bcp.executive_summary);
         }
     },
     mounted() {
-       this.setUp();
+        this.mths = months;
+        this.setUp();
         this.setWspId();
         if (this.existingBcp) {
             this.initBcp();
         }
     },
     methods: {
-        setUp(){
-            if (this.openStorage()){
-              let bcp = this.openStorage();
-              if (bcp.government_subsidy !=undefined) this.bcp.government_subsidy = bcp.government_subsidy;
-              if (bcp.government_subsidy_amount !=undefined) this.bcp.government_subsidy_amount = bcp.government_subsidy_amount;
-              if (bcp.executive_summary !=undefined) this.bcp.executive_summary = bcp.executive_summary;
-              if (bcp.introduction !=undefined) this.bcp.introduction = bcp.introduction;
-              if (bcp.planning_assumptions !=undefined) this.bcp.planning_assumptions = bcp.planning_assumptions;
-              if (bcp.staff_health_protection !=undefined) this.bcp.staff_health_protection = bcp.staff_health_protection;
-              if (bcp.training !=undefined) this.bcp.training = bcp.training;
-              if (bcp.emergency_response_plan !=undefined) this.bcp.emergency_response_plan = bcp.emergency_response_plan;
-              if (bcp.communication_plan !=undefined) this.bcp.communication_plan = bcp.communication_plan;
-              if (bcp.supply_chain !=undefined) this.bcp.supply_chain = bcp.supply_chain;
+        setUp() {
+            if (this.openStorage()) {
+                let bcp = this.openStorage();
+                if (bcp.government_subsidy != undefined) this.bcp.government_subsidy = bcp.government_subsidy;
+                if (bcp.government_subsidy_amount != undefined) this.bcp.government_subsidy_amount = bcp.government_subsidy_amount;
+                if (bcp.executive_summary != undefined) this.bcp.executive_summary = bcp.executive_summary;
+                if (bcp.introduction != undefined) this.bcp.introduction = bcp.introduction;
+                if (bcp.planning_assumptions != undefined) this.bcp.planning_assumptions = bcp.planning_assumptions;
+                if (bcp.staff_health_protection != undefined) this.bcp.staff_health_protection = bcp.staff_health_protection;
+                if (bcp.training != undefined) this.bcp.training = bcp.training;
+                if (bcp.emergency_response_plan != undefined) this.bcp.emergency_response_plan = bcp.emergency_response_plan;
+                if (bcp.communication_plan != undefined) this.bcp.communication_plan = bcp.communication_plan;
+                if (bcp.supply_chain != undefined) this.bcp.supply_chain = bcp.supply_chain;
             }
         },
         setWspId() {
@@ -325,7 +330,7 @@ export default {
                 this.error = error.response;
             });
         },
-        updateForm (input, value) {
+        updateForm(input, value) {
             this.bcp[input] = value
 
             let storedForm = this.openStorage() // extract stored form
@@ -334,13 +339,13 @@ export default {
             storedForm[input] = value // store new value
             this.saveStorage(storedForm) // save changes into localStorage
         },
-        openStorage () {
+        openStorage() {
             return JSON.parse(localStorage.getItem('bcp'))
         },
-        saveStorage (form) {
+        saveStorage(form) {
             localStorage.setItem('bcp', JSON.stringify(form))
         },
-        updateData(){
+        updateData() {
             axios.put(this.submitUrl, this.bcp).then(() => {
                 this.$toastr.s("BCP updated successfully!");
             }).catch(error => {
