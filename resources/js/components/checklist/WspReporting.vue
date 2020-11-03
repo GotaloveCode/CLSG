@@ -17,8 +17,9 @@
                                 <div class="card-body" style="padding-top: 0">
                                     <table style="width: 100%">
                                         <tr>
-                                            <th>Service</th>
-                                            <th width="50%"><span class="ml-10">Description</span></th>
+                                            <th width="20%">Service</th>
+                                            <th><span class="ml-10">Description</span></th>
+                                            <th>Cost</th>
                                             <th></th>
                                         </tr>
                                         <tr v-for="(item,k) in form.status_of_covid_implementation" :key="k">
@@ -31,6 +32,9 @@
                                             </td>
                                             <td><input type="text" class="form-control ml-10" v-model="item.description"
                                                        placeholder="description" style="margin-top: 5px;">
+                                            </td>
+                                            <td><input type="number" class="form-control ml-10" v-model="item.cost"
+                                                       placeholder="cost" style="margin-top: 5px;">
                                             </td>
 
                                             <td>
@@ -205,7 +209,7 @@ export default {
                 challenges_cooment: '',
                 status_of_resolution: 1,
                 status_of_resolution_comment: '',
-                status_of_covid_implementation: [{service: '', description: ''}],
+                status_of_covid_implementation: [{service: '',description: '',cost:''}],
                 expected_activities: [{activity: '', description: ''}]
             },
             loading: false,
@@ -226,7 +230,7 @@ export default {
             this.form.status_of_covid_implementation.splice(i, 1);
         },
         addItem() {
-            this.form.status_of_covid_implementation.push({service: '', description: ''});
+            this.form.status_of_covid_implementation.push({service: '', description: '',cost: ''});
 
         },
         removeActivity(i) {

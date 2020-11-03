@@ -95,12 +95,15 @@ export default {
             }
         },
         postData() {
-            if (!this.validateEssentials()) return this.$toastr.e("All Essential Operations Checklist fields are required!");
+            let ess = this.validateEssentials();
+            if (ess=="comment_required") return this.$toastr.e("Comments are required for In Progress/Not Started Essential Operations!");
+            if (!ess) return this.$toastr.e("All Essential Operations Checklist fields are required!");
             let data = {
                 details: this.essential_data
             };
             this.error = '';
             this.loading = true;
+
             axios.post("/reports/essential-operation", data).then(() => {
                 window.location.href = "/reports/essential-operation-list"
             }).catch(error => {
@@ -110,6 +113,7 @@ export default {
         },
          validateEssentials() {
             this.essential_data = [];
+            let status = true;
             if (this.form.essential.length < 7) {
                 return false;
             }
@@ -123,6 +127,15 @@ export default {
                     }
                 }
             })
+
+             this.essential_data.forEach(e => {
+                 if (e.status !="Completed" && e.comment ===""){
+                     status = false;
+                     return;
+                 }
+             })
+
+             if (!status) return "comment_required";
             return true;
         },
     },

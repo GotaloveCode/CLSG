@@ -90,14 +90,17 @@ export default {
         setUp(){
             this.staff = this.checklists.filter(e => e.type ==="Staff Health Protection");
             if (this.checklist_item.id !=undefined){
-                this.show = true;
+               this.show = true;
             }
         },
         postData() {
-            if (!this.validateStaff()) return this.$toastr.e("All Staff Health Protection Checklist fields are required!");
+            let staff = this.validateStaff();
+            if (staff=="comment_required") return this.$toastr.e("Comments are required for In Progress/Not Started Staff Health Protection Checklist are required!");
+            if (!staff) return this.$toastr.e("All Staff Health Protection Checklist fields are required!");
             let data = {
                 staff_details: this.staff_data
             };
+
             this.error = '';
             this.loading = true;
             axios.post("/reports/staff-health", data).then(() => {
@@ -110,6 +113,8 @@ export default {
 
         validateStaff() {
             this.staff_data = [];
+            let status = true;
+
             this.form.staff.forEach((e, v) => {
                 this.staff_data.push({id: v, status: e, comment: ""})
             })
@@ -124,6 +129,15 @@ export default {
                     }
                 }
             })
+
+            this.staff_data.forEach(e => {
+                if (e.status !="Completed" && e.comment ===""){
+                    status = false;
+                    return;
+                }
+            })
+
+            if (!status) return "comment_required";
             return true;
         },
     },

@@ -94,12 +94,15 @@ export default {
             }
         },
         postData() {
-            if (!this.validateCustomers()) return this.$toastr.e("All Vulnerable Customers Checklist fields are required!");
+            let customers= this.validateCustomers();
+            if (customers=="comment_required") return this.$toastr.e("Comments are required for In Progress/Not Started Vulnerable Customers Checklist!");
+            if (!customers) return this.$toastr.e("All Vulnerable Customers Checklist fields are required!");
                let data = {
                    customer_details: this.customer_data
             };
             this.error = '';
             this.loading = true;
+
             axios.post("/reports/vulnerable-customer", data).then(() => {
                 window.location.href = "/reports/vulnerable-customer-list"
             }).catch(error => {
@@ -109,6 +112,8 @@ export default {
         },
         validateCustomers() {
             this.customer_data = [];
+            let status = true;
+
             this.form.customer.forEach((e, v) => {
                 this.customer_data.push({id: v, status: e, comment: ""})
             })
@@ -123,6 +128,16 @@ export default {
                     }
                 }
             })
+
+            this.customer_data.forEach(e => {
+                if (e.status !="Completed" && e.comment ===""){
+                    status = false;
+                    return;
+                }
+            })
+
+            if (!status) return "comment_required";
+
             return true;
         }
     },

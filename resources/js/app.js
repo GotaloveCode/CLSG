@@ -28,6 +28,7 @@ const WspReporting = () => import('./components/checklist/WspReporting' /* webpa
 const ViewWspReporting = () => import('./components/checklist/ViewWspReporting' /* webpackChunkName: "js/components/checklist/view-wsps-reporting" */);
 const CslgCalculation = () => import('./components/checklist/CslgCalculation' /* webpackChunkName: "js/components/checklists/cslg-calculation" */);
 const ViewCslgCalculation = () => import('./components/checklist/ViewCslgCalculation' /* webpackChunkName: "js/components/checklists/view-cslg-calculation" */);
+const ApproveClgCalculation = () => import('./components/checklist/ApproveClgCalculation' /* webpackChunkName: "js/components/checklists/approve-cslg-calculation" */);
 const StaffHealth = () => import('./components/checklist/StaffHealth' /* webpackChunkName: "js/components/checklists/staff-health" */);
 const ViewStaffHealth = () => import('./components/checklist/ViewStaffHealth' /* webpackChunkName: "js/components/checklists/view-staff-health" */);
 const PerformanceCard = () => import('./components/checklist/PerformanceCard' /* webpackChunkName: "js/components/reportFormat/performance-card" */);
@@ -61,6 +62,7 @@ const app = new Vue({
         StaffHealth,
         ViewStaffHealth,
         PerformanceCard,
-        ViewPerformanceCard
+        ViewPerformanceCard,
+        ApproveClgCalculation
     },
 });
