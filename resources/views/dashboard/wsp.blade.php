@@ -1,6 +1,7 @@
 @extends('layouts.dashboard')
 @push('css')
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/css/pages/timeline.min.css")}}"/>
+    <link rel="stylesheet" type="text/css" href="{{asset("app-assets/css/pages/vertical-timeline.min.css")}}"/>
 @endpush
 @section('content')
     <div class="row">
@@ -119,135 +120,112 @@
             </div>
         </a>
     </div>
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">Basic Timeline</h4>
-            <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-            <div class="heading-elements">
-                <ul class="list-inline mb-0">
-                    <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
-                    <li><a data-action="reload"><i class="feather icon-rotate-cw"></i></a></li>
-                    <li><a data-action="close"><i class="feather icon-x"></i></a></li>
-                </ul>
+    <div class="row">
+        <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-bold-500">Basic Timeline</h4>
+                </div>
+                <div class="card-content">
+                    <div class="card-body pt-0">
+                        <div class="widget-timeline">
+                            <ul>
+                                <li class="timeline-items timeline-icon-success">
+                                    @if($eoi)
+                                        <p class="timeline-time">{{ $eoi->updated_at->diffForHumans() }}</p>
+                                    @endif
+                                    <div class="timeline-title">Expression of Interest Form</div>
+                                    <div class="timeline-subtitle">
+                                        Submit the Expression of interest form and attach the required attachments.
+                                        <small>
+                                            -- {{ $eoi ? "Submitted on ".$eoi->updated_at->format('M d, Y') : 'Pending Submission' }}</small>
+                                    </div>
+                                    <span
+                                        class="badge badge-pill badge-sm {{ $eoi->status == 'WASREB Approved' ? 'badge-success' : 'bagde-warning'}}">{{ $eoi->status == 'Pending' ? 'Pending Review By WASREB' : $eoi->status}}</span>
+                                </li>
+                                <li class="timeline-items timeline-icon-success">
+                                    @isset($att)
+                                        <p class="timeline-time">{{ $att->updated_at->diffForHumans() }}</p>
+                                    @endisset
+                                    <div class="timeline-title">Sign Commitment Letter</div>
+                                    <div class="timeline-subtitle">
+                                        Once the EOI has been reviewed and accepted.Download the signed Commitment
+                                        letter from WSTF sign and upload
+                                        <small>
+                                            -- {{ $att ? "Uploaded on ".$att->updated_at->format('M d, Y') : 'Pending' }}</small>
+                                    </div>
+                                    @isset($att)
+                                        <span class="badge badge-pill badge-sm badge-success">Uploaded</span>
+                                    @endisset
+                                </li>
+                                <li class="timeline-items timeline-icon-success">
+                                    @php
+                                        $staff = $wsp->staff()->first();
+                                    @endphp
+                                    @if($staff)
+                                        <p class="timeline-time">{{ $staff->updated_at->diffForHumans() }}</p>
+                                    @endif
+                                    <div class="timeline-title">Add Staff</div>
+                                    <div class="timeline-subtitle">
+                                        Add staff members in preparation to create BCP.
+                                    </div>
+                                    @if($staff)
+                                        <span class="badge badge-pill badge-sm badge-success">Created</span>
+                                    @endif
+                                </li>
+                                <li class="timeline-items timeline-icon-success">
+                                    <p class="timeline-time">{{ $erp->updated_at->diffForHumans() }}</p>
+                                    <div class="timeline-title">Create ERP</div>
+                                    <div class="timeline-subtitle">
+                                        Create Emergency Response Plan. This should compliment your Business Continuity
+                                        Plan.
+                                        @if($erp)
+                                            <small>{{ $erp ? "Submitted on ".$erp->updated_at->format('M d, Y') : 'Pending Submission' }}</small>
+                                        @endif
+                                    </div>
+                                </li>
+                                <li class="timeline-items timeline-icon-success">
+                                    <p class="timeline-time">{{ $bcp->updated_at->diffForHumans() }}</p>
+                                    <div class="timeline-title">Create ERP</div>
+                                    <div class="timeline-subtitle">
+                                        Create Business Continuity Plan and submit.
+                                        @if($bcp)
+                                            <small>{{ $bcp ? "Submitted on ".$bcp->updated_at->format('M d, Y') : 'Pending Submission' }}</small>
+                                        @endif
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="card-content collapse show">
-            <div class="card-body">
-                <div class="card-text">
-                    <section class="cd-horizontal-timeline">
-                        <div class="timeline">
-                            <div class="events-wrapper">
-                                <div class="events">
-                                    <ol>
-                                        @if($eoi)
-                                            <li><a href="#0" data-date="{{ $eoi->updated_at->format('d/m/Y') }}"
-                                                   class="selected">{{ $eoi->updated_at->format('d M') }}</a></li>
-                                        @endif
-                                        @isset($att)
-                                            <li><a href="#0"
-                                                   data-date="{{$att->updated_at->format('d/m/Y')}}">{{ $att->updated_at->format('d M') }}</a>
-                                            </li>
-                                        @endisset
-                                        @php
-                                            $staff = $wsp->staff()->first();
-                                        @endphp
-                                        @if($staff)
-                                            <li><a href="#0"
-                                                   data-date="{{$staff->created_at->format('d/m/Y')}}">{{$staff->created_at->format('d M')}}</a>
-                                            </li>
-                                        @endif
-                                        @if($bcp)
-                                            <li><a href="#0"
-                                                   data-date="{{ $bcp->updated_at->format('d/m/Y') }}">{{ $bcp->updated_at->format('d M') }}</a>
-                                            </li>
-                                        @endif
-                                    </ol>
-
-                                    <span class="filling-line" aria-hidden="true"></span>
-                                </div>
-                                <!-- .events -->
-                            </div>
-                            <!-- .events-wrapper -->
-
-                            <ul class="cd-timeline-navigation">
-                                <li><a href="#0" class="prev inactive">Prev</a></li>
-                                <li><a href="#0" class="next">Next</a></li>
+        <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-bold-500">Recent Activity</h4>
+                </div>
+                <div class="card-content">
+                    <div class="card-body pt-0">
+                        <div class="widget-timeline">
+                            <ul>
+                                @foreach($notifications as $notification)
+                                    <li class="timeline-items timeline-icon-info">
+                                        <p class="timeline-time">{{ $notification->created_at->diffForHumans() }}</p>
+                                        <div class="timeline-title"><a
+                                                href="{{ $notification->data['url'] }}">{{ $notification->data['title'] }}</a>
+                                        </div>
+                                        <div class="timeline-subtitle">{{ $notification->data['details'] }}</div>
+                                    </li>
+                                @endforeach
                             </ul>
-                            <!-- .cd-timeline-navigation -->
                         </div>
-                        <!-- .timeline -->
-
-                        <div class="events-content">
-                            <ol>
-                                @if($eoi)
-                                    <li class="selected" data-date="{{ $eoi->updated_at->format('d/m/Y') }}">
-                                        <h2>Expression of Interest Form</h2>
-                                        <h3 class="text-muted mb-1">
-                                            <em>{{ $eoi ? "Submitted on ".$eoi->updated_at->format('M d, Y') : 'Pending Submission' }}</em>
-                                        </h3>
-                                        <p class="lead">
-                                            Submit the Expression of interest form and attach the required attachments.
-                                        </p>
-                                        <p class="text-muted"> Status
-                                            - {{ $eoi->status == 'Pending' ? 'Pending Review By WASREB' : $eoi->status}}</p>
-                                    </li>
-                                @endif
-                                @isset($att)
-                                    <li data-date="{{ $eoi->updated_at->format('d/m/Y') }}">
-                                        <h2>Sign Commitment Letter</h2>
-                                        <h3 class="text-muted mb-1">
-                                            <em>{{ $att ? "Uploaded on ". $att->updated_at->format('M d, Y') : 'Pending' }}</em>
-                                        </h3>
-                                        <p class="lead">
-                                            Once the EOI has been reviewed and accepted.Download the Commitment letter
-                                            sign
-                                            and upload
-                                        </p>
-                                    </li>
-                                @endisset
-
-                                @if($staff)
-                                    <li data-date="{{$staff->created_at->format('d M')}}">
-                                        <h2>Add Staff</h2>
-                                        <h3 class="text-muted mb-1">
-                                            <em>{{$staff->created_at->format('M d, Y')}}</em></h3>
-                                        <p class="lead">
-                                            Add staff members in preparation to create BCP.
-                                        </p>
-                                    </li>
-                                @endif
-                                @if($erp)
-                                    <li data-date="{{ $erp->updated_at->format('d/m/Y') }}">
-                                        <h2>Create ERP</h2>
-                                        <h3 class="text-muted mb-1">
-                                            <em>{{ $erp ? "Submitted on ".$erp->updated_at->format('M d, Y') : 'Pending Submission' }}</em>
-                                        </h3>
-                                        <p class="lead">
-                                            Create Emergency Response Plan. This should compliment your Business
-                                            Continuity
-                                            Plan.
-                                        </p>
-                                    </li>
-                                @endif
-                                @if($bcp)
-                                    <li data-date="{{ $bcp->updated_at->format('d/m/Y') }}">
-                                        <h2>Create BCP</h2>
-                                        <h3 class="text-muted mb-1">
-                                            <em>{{ $bcp ? "Submitted on ".$bcp->updated_at->format('M d, Y') : 'Pending Submission' }}</em>
-                                        </h3>
-                                        <p class="lead">
-                                            Create Business Continuity Plan and submit.
-                                        </p>
-                                    </li>
-                                @endif
-                            </ol>
-                        </div>
-                        <!-- .events-content -->
-                    </section>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 @endsection
 @push('scripts')
     <script src="{{asset('app-assets/vendors/js/timeline/horizontal-timeline.js')}}"></script>
