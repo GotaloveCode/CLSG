@@ -33,7 +33,7 @@ class ErpAttachmentController extends Controller
             abort('403', 'You may only attach documents while the ERP has not been approved by WSTF');
         }
 
-        $fileName = $this->storeDocument($request->attachment, $request->display_name);
+        $fileName = $this->storeDocument($request->attachment, $request->display_name,"app/Erp");
 
         $attachment = $erp->attachments()->create([
             'name' => $fileName,

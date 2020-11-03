@@ -63,7 +63,7 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="attachment" class="control-label">Signed Commitment letter</label>
-                                    <input type="file" required name="attachment" class="form-control">
+                                    <span class="webkit"><input type="file" required name="attachment" class="form-control"></span>
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-info" type="submit"><i class="fa fa-upload"></i>Upload

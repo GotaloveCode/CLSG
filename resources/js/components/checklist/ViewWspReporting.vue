@@ -89,12 +89,22 @@
                         <h4>Expected activities for the next month (specifying any planned procurement or contracting)</h4>
                     </div>
                     <div class="row">
-                        <div class="col-md-4" v-for="activity in wsp_report.expected_activities">
-                            <div class="card-body">
-                                <h4 class="card-title">Activity</h4>
-                                <p class="card-text">{{getActivityName(activity.activity)}}</p>
-                                <h4 class="card-title">Description</h4>
-                                <p class="card-text">{{activity.description}}</p>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Service</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="activity in wsp_report.expected_activities">
+                                        <td>{{getActivityName(activity.activity)}}</td>
+                                        <td>{{activity.description}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -108,13 +118,23 @@
                         <h4>Status of implementation of COVID-19 emergency interventions (both physical and financial progress)</h4>
                     </div>
                     <div class="row">
-                        <div class="col-md-4" v-for="erp in wsp_report.status_of_covid_implementation">
-                            <div class="card-body">
-                                <h4 class="card-title">Service</h4>
-                                <p class="card-text">{{getActivityName(erp.service)}}</p>
-                                <h4 class="card-title">Description</h4>
-                                <p class="card-text">{{erp.description}}</p>
-                            </div>
+                        <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="erp in wsp_report.status_of_covid_implementation">
+                                    <td>{{getActivityName(erp.service)}}</td>
+                                    <td>{{erp.description}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         </div>
                     </div>
                 </div>

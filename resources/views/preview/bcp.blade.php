@@ -82,7 +82,9 @@
             <td><b>{{ number_format($bcp->revenue_projections->sum('amount')) }}</b></td>
         </tr>
     </table>
+    @if($bcp->government_subsidy==1)
     <h6>Government Subsidy</h6>
-    <p>KES {{ number_format($bcp->government_subsidy) }}</p>
+    <p>KES {{ number_format($bcp->government_subsidy_amount) }}</p>
+    @endif
 </div>
 

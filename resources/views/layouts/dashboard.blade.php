@@ -33,6 +33,12 @@
 
     <!-- BEGIN: Custom CSS-->
     @stack('css')
+    <style>
+        .webkit{
+            display: -webkit-box;
+        }
+    </style>
+
     <!-- END: Custom CSS-->
     <script>
     window.url ="{{url('/')}}";
