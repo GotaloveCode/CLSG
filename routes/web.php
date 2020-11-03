@@ -24,7 +24,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'wsps'], function () {
-        Route::get('list', 'WspController@index')->name('wsps.list');
+        Route::get('', 'WspController@index')->name('wsps.index');
         Route::get('export', 'WspController@import_view')->name('wsps.export');
         Route::post('import', 'WspController@import')->name('wsps.import');
     });

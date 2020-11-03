@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Imports\WspsImport;
-use App\Models\Eoi;
 use App\Models\Wsp;
 use Exception;
 use Illuminate\Http\Request;
@@ -12,12 +11,17 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
+use Yajra\DataTables\Facades\DataTables;
 
 class WspController extends Controller
 {
     public function index()
     {
-        return response()->json(Wsp::select("id", "name")->get());
+        if (!request()->ajax()) {
+            return view('wsps.index');
+        }
+
+        return Datatables::of(Wsp::all())->make(true);
     }
 
     public function import_view(Request $request)
