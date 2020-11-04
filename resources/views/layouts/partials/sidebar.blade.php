@@ -88,8 +88,6 @@
                             <li><a class="menu-item" href="{{ route('wsp-reporting.list')}}" data-i18n="General">General</a>
                             </li>
                             @can('create-bcp')
-                            <li><a class="menu-item" href="{{ route('wsp-reporting-attachments.list')}}" data-i18n="Attachments">Attachments</a>
-                            </li>
                             @endcan
                                 <li><a class="menu-item" href="{{ route('performance-score-card.list')}}" data-i18n="Performance Scorecard">Performance Scorecard</a>
                             </li>

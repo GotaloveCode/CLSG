@@ -80,37 +80,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card" style="width: 95%">
-                        <div class="card-header">
-                            <h4>Attachments</h4>
-                        </div>
-                        <div class="card-content collapse show">
-                            <div class="card-body" style="padding-top: 0">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>Document Name</th>
-                                        <th>Document Type</th>
-                                        <th>Created</th>
-                                    </tr>
-                                    </thead>
-                                    <tr v-for="attachment in operations.attachments">
-                                        <td><a  class="btn btn-warning" @click="viewFile(attachment.name)" target="_blank"
-                                               >{{ attachment.display_name }}
-                                            <i class="feather icon-file"></i></a></td>
-                                        <td>{{ attachment.document_type }}</td>
-                                        <td>{{ new Date(attachment.created_at).toLocaleDateString() }}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="form-group text-center" v-if="cslg.status=='Pending'">
                 <button type="submit" class="btn btn-secondary"><i class="fa fa-check" aria-hidden="true"> Approve</i>
                 </button>
