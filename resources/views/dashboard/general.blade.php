@@ -82,7 +82,7 @@
                 <div class="card-content pt-0 pb-1 px-2 position-relative ps">
                     <ul class="list-group">
                         <li class="list-group-item px-0 border-0 d-flex justify-content-between">
-                            <div class="d-flex align-items-center">
+                            <a href="{{ route('eois.index') }}" class="d-flex align-items-center">
                               <span class="list-group-item-icon d-inline mr-1">
                                 <i class="feather icon-edit bg-light-info text-info rounded-circle p-50"></i>
                               </span>
@@ -90,11 +90,11 @@
                                     <p class="mb-25 text-bold-600">Pending EOIs</p>
                                     <small class="font-small-3">Waiting for review</small>
                                 </div>
-                            </div>
+                            </a>
                             <span class="text-bold-600">{{ $eoi_pending }}</span>
                         </li>
                         <li class="list-group-item pt-0 px-0 border-0 d-flex justify-content-between">
-                            <div class="d-flex align-items-center">
+                            <a href="{{ route('bcps.index') }}" class="d-flex align-items-center">
                               <span class="list-group-item-icon d-inline mr-1">
                                 <i class="feather icon-book-open text-primary bg-light-primary rounded-circle p-50"></i>
                               </span>
@@ -102,19 +102,19 @@
                                     <p class="mb-25 text-bold-600">Pending BCPs</p>
                                     <small class="font-small-3">Waiting for review</small>
                                 </div>
-                            </div>
+                            </a>
                             <span class="text-bold-600">{{ $bcp_pending }}</span>
                         </li>
                         <li class="list-group-item px-0 border-0 d-flex justify-content-between">
-                            <div class="d-flex align-items-center">
-                          <span class="list-group-item-icon d-inline mr-1">
-                            <i class="feather icon-life-buoy bg-light-danger text-danger rounded-circle p-50"></i>
-                          </span>
+                            <a href="{{ route('erps.index') }}" class="d-flex align-items-center">
+                                  <span class="list-group-item-icon d-inline mr-1">
+                                    <i class="feather icon-life-buoy bg-light-danger text-danger rounded-circle p-50"></i>
+                                  </span>
                                 <div>
                                     <p class="mb-25 text-bold-600">Pending ERPs</p>
                                     <small class="font-small-3">Waiting for review</small>
                                 </div>
-                            </div>
+                            </a>
                             <span class="text-bold-600">{{ $erp_pending }}</span>
                         </li>
                     </ul>
