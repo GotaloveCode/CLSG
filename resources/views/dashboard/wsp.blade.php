@@ -153,8 +153,10 @@
                                     <div class="timeline-subtitle">
                                         Once the EOI has been reviewed and accepted.Download the signed Commitment
                                         letter from WSTF sign and upload
+                                        @isset($att)
                                         <small>
                                             -- {{ $att ? "Uploaded on ".$att->updated_at->format('M d, Y') : 'Pending' }}</small>
+                                        @endisset
                                     </div>
                                     @isset($att)
                                         <span class="badge badge-pill badge-sm badge-success">Uploaded</span>
