@@ -12,6 +12,7 @@ export default {
     },
     data() {
         return {
+            error:"",
             show_comment_dialog: false,
         }
     },
@@ -31,8 +32,15 @@ export default {
                         this.$toastr.s(response.data.message, "Success");
                         location.href = response.data.route;
                     }).catch(error => {
-                        this.$toastr.e("An error occured");
-                        console.log("err", error);
+                        if(error.status == 422){
+                            let str = '';
+                            Object.values(error.response.data.errors).forEach(e => {
+                                str += '<p>' + e + '</p>';
+                            });
+                            this.$toastr.e(str);
+                        }else{
+                            this.$toastr.e("An error occured");
+                        }
                     });
                 }
             })
