@@ -4,7 +4,9 @@
         <form @submit.prevent="handleSubmit(onSubmit)" class="form">
             <div class="form-group">
                 <label class="control-label">Signed Commitment letter</label>
-                <input type="file" ref="the_document" required name="attachment" class="form-control">
+                <span class="webkit">
+                    <input type="file" ref="the_document" required name="attachment" class="form-control">
+                </span>
                 <progress max="100"
                           :value.prop="uploadPercentage"></progress>
             </div>
