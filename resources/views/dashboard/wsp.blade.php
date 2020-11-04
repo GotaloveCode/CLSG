@@ -154,8 +154,8 @@
                                         Once the EOI has been reviewed and accepted.Download the signed Commitment
                                         letter from WSTF sign and upload
                                         @isset($att)
-                                        <small>
-                                            -- {{ $att ? "Uploaded on ".$att->updated_at->format('M d, Y') : 'Pending' }}</small>
+                                            <small>
+                                                -- {{ $att ? "Uploaded on ".$att->updated_at->format('M d, Y') : 'Pending' }}</small>
                                         @endisset
                                     </div>
                                     @isset($att)
@@ -179,7 +179,7 @@
                                 </li>
                                 <li class="timeline-items @if($erp) timeline-icon-success @else timeline-icon-warning @endif">
                                     @if($erp)
-                                    <p class="timeline-time">{{ $erp->updated_at->diffForHumans() }}</p>
+                                        <p class="timeline-time">{{ $erp->updated_at->diffForHumans() }}</p>
                                     @endif
                                     <div class="timeline-title">Create ERP</div>
                                     <div class="timeline-subtitle">
@@ -191,7 +191,9 @@
                                     </div>
                                 </li>
                                 <li class="timeline-items @if($bcp) timeline-icon-success @else timeline-icon-warning @endif">
-                                    <p class="timeline-time">{{ $bcp->updated_at->diffForHumans() }}</p>
+                                    @if($bcp)
+                                        <p class="timeline-time">{{ $bcp->updated_at->diffForHumans() }}</p>
+                                    @endif
                                     <div class="timeline-title">Create BCP</div>
                                     <div class="timeline-subtitle">
                                         Create Business Continuity Plan and submit.
