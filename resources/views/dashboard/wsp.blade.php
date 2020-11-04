@@ -140,8 +140,10 @@
                                         <small>
                                             -- {{ $eoi ? "Submitted on ".$eoi->updated_at->format('M d, Y') : 'Pending Submission' }}</small>
                                     </div>
-                                    <span
-                                        class="badge badge-pill badge-sm {{ $eoi->status == 'WASREB Approved' ? 'badge-success' : 'bagde-warning'}}">{{ $eoi->status == 'Pending' ? 'Pending Review By WASREB' : $eoi->status}}</span>
+                                    @if($eoi)
+                                        <span
+                                            class="badge badge-pill badge-sm {{ $eoi->status == 'WASREB Approved' ? 'badge-success' : 'bagde-warning'}}">{{ $eoi->status == 'Pending' ? 'Pending Review By WASREB' : $eoi->status}}</span>
+                                    @endif
                                 </li>
                                 <li class="timeline-items @isset($att) timeline-icon-success @else timeline-icon-warning @endisset">
                                     @isset($att)
