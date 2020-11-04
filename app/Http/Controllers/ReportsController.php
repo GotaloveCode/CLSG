@@ -32,31 +32,6 @@ class ReportsController extends Controller
 {
     use FilesTrait, PeriodTrait;
 
-    public function attachmentIndex(WspReporting $wsp)
-    {
-
-        $wsp = $wsp->load('attachments');
-        $progress = ceil($wsp->attachments->pluck('document_type')->unique()->count() / 2 * 100);
-        $progress = $progress > 100 ? 100 : $progress;
-        $wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-        if (!$wsp) return redirect()->back()->with("success","Please ensure you have filled first the WSP Monthly Reporting");
-
-        return view('checklists.wsps.attachments.index',compact('wsp','progress'));
-    }
-
-    public function saveWspAttachment(BcpAttachmentRequest $request)
-    {
-        $wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-        $fileName = $this->storeDocument($request->attachment, $request->display_name,'app/WspReporting');
-
-          $wsp->attachments()->create([
-            'name' => $fileName,
-            'display_name' => $request->display_name,
-            'document_type' => $request->document_type,
-        ]);
-
-        return back();
-    }
 
     public function showAttachment($filename)
     {
@@ -152,14 +127,12 @@ class ReportsController extends Controller
                 return '<a href="' . route("vulnerable-customer.show", $customer['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
             })
             ->make(true);
-
     }
 
 
     public function createEssential()
     {
-
-         $exiting_essential = EssentialOperationReport::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $exiting_essential = EssentialOperationReport::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         $exiting_essential ? $essential_item = json_encode(new EssentialReportResource($exiting_essential)) : $essential_item = json_encode([]);
         $items = json_encode(BcpChecklist::all());
 
@@ -242,7 +215,6 @@ class ReportsController extends Controller
             $services = Cache::rememberForever('services', function () {
                 return Service::select('id', 'name')->get();
             });
-
             $wsp_report = json_encode(new WspReportingResource(WspReporting::find($id)));
 
             return view("checklists.wsps.show", compact("wsp_report", "services"));
