@@ -10,7 +10,7 @@ class EssentialReportResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -19,9 +19,9 @@ class EssentialReportResource extends JsonResource
             'id' => $this->id,
             'details' => json_decode($this->details),
             'wsp' => $this->bcp()->first()->wsp->name,
-            'month' => \DateTime::createFromFormat("!m",$this->month)->format("F"),
+            'month' => \DateTime::createFromFormat("!m", $this->month)->format("F"),
             'year' => $this->year,
-            'created_at' => Carbon::parse($this->created_at)->format("d-m-Y H:i")
+            'created_at' => Carbon::parse($this->created_at)->format("d-m-Y")
         ];
     }
 }

@@ -38,17 +38,17 @@ class ReportsController extends Controller
         $progress = ceil($wsp->attachments->pluck('document_type')->unique()->count() / 2 * 100);
         $progress = $progress > 100 ? 100 : $progress;
         $wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-        if (!$wsp) return redirect()->back()->with("success","Please ensure you have filled first the WSP Monthly Reporting");
+        if (!$wsp) return redirect()->back()->with("success", "Please ensure you have filled first the WSP Monthly Reporting");
 
-        return view('checklists.wsps.attachments.index',compact('wsp','progress'));
+        return view('checklists.wsps.attachments.index', compact('wsp', 'progress'));
     }
 
     public function saveWspAttachment(BcpAttachmentRequest $request)
     {
         $wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-        $fileName = $this->storeDocument($request->attachment, $request->display_name,'app/WspReporting');
+        $fileName = $this->storeDocument($request->attachment, $request->display_name, 'app/WspReporting');
 
-          $wsp->attachments()->create([
+        $wsp->attachments()->create([
             'name' => $fileName,
             'display_name' => $request->display_name,
             'document_type' => $request->document_type,
@@ -61,11 +61,13 @@ class ReportsController extends Controller
     {
         return $this->showFile(storage_path('app/WspReporting/' . $filename));
     }
+
     public function destroyFile(Attachment $attachment)
     {
 
         return $this->deleteAttachment($attachment, 'app/Bcp/');
     }
+
     public function wspIndex()
     {
         if (!request()->ajax()) {
@@ -81,6 +83,7 @@ class ReportsController extends Controller
             ->make(true);
 
     }
+
     public function cardIndex()
     {
         if (!request()->ajax()) {
@@ -96,6 +99,7 @@ class ReportsController extends Controller
             ->make(true);
 
     }
+
     public function cslgIndex()
     {
         if (!request()->ajax()) {
@@ -109,6 +113,7 @@ class ReportsController extends Controller
             })
             ->make(true);
     }
+
     public function staffIndex()
     {
         if (!request()->ajax()) {
@@ -157,64 +162,76 @@ class ReportsController extends Controller
 
     public function createEssential()
     {
-
-         $exiting_essential = EssentialOperationReport::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $exiting_essential = EssentialOperationReport::where("month", $this->getMonth())
+            ->where("year", $this->getYear())
+            ->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)
+            ->first();
         $exiting_essential ? $essential_item = json_encode(new EssentialReportResource($exiting_essential)) : $essential_item = json_encode([]);
         $items = json_encode(BcpChecklist::all());
 
-
         return view("checklists.essential.index", compact("items", "essential_item"));
     }
+
     public function createCustomer()
     {
-
         $exiting_customer = VulnerableCustomer::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         $exiting_customer ? $customer = json_encode(new VulnerableCustomerResource($exiting_customer)) : $customer = json_encode([]);
         $items = json_encode(BcpChecklist::all());
 
         return view("checklists.customer.index", compact("items", "customer"));
     }
+
     public function createWsp()
     {
         $exiting_wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         $exiting_wsp ? $wsp_report = json_encode(new WspReportingResource($exiting_wsp)) : $wsp_report = json_encode([]);
-           $services = Cache::rememberForever('services', function () {
+        $services = Cache::rememberForever('services', function () {
             return Service::select('id', 'name')->get();
         });
 
-        return view("checklists.wsps.index", compact( "wsp_report","services"));
+        return view("checklists.wsps.index", compact("wsp_report", "services"));
     }
+
     public function createCslg()
     {
-
-
-        $exiting_cslg = CslgCalculation::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $exiting_cslg = CslgCalculation::where("month", $this->getMonth())
+            ->where("year", $this->getYear())
+            ->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)
+            ->first();
         $exiting_cslg ? $cslg = json_encode(new CslgResource($exiting_cslg)) : $cslg = json_encode([]);
 
-        $operations = WspReporting::select("clsg_total","operations_costs","revenue")->where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first(); ;
+        $operations = WspReporting::select("clsg_total", "operations_costs", "revenue")
+            ->where("month", $this->getMonth())
+            ->where("year", $this->getYear())
+            ->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)
+            ->first();
+
         if (!$operations) return redirect()->back()->with('success', 'Please ensure you have created WSP Reporting first');
 
-        $erp =Erp::where('wsp_id',auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        $erp = Erp::where('wsp_id', auth()->user()->wsps()->first()->bcp->first()->id)
+            ->first();
         if (!$erp) return redirect()->back()->with('success', 'Please ensure you have created ERP first');
         $grant = $erp->erp_items->sum('cost');
 
-        return view("checklists.cslg.index", compact( "cslg","operations",'grant'));
+        return view("checklists.cslg.index", compact("cslg", "operations", 'grant'));
     }
+
     public function createStaff()
     {
         $exiting_staff = StaffHealth::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         $exiting_staff ? $staff = json_encode(new StaffHealthResource($exiting_staff)) : $staff = json_encode([]);
         $items = json_encode(BcpChecklist::all());
-        return view("checklists.staff.index", compact( "staff","items"));
+        return view("checklists.staff.index", compact("staff", "items"));
     }
+
     public function createCard()
     {
         $exiting_score = PerformanceScore::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         $exiting_score ? $score = json_encode(new PerformaceScoreResource($exiting_score)) : $score = json_encode([]);
 
-       $wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-       if (!$wsp) return redirect()->back()->with("success","Please ensure you have have filled in the general checklist form first");
-       return view("checklists.performance.index", compact( "score"));
+        $wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
+        if (!$wsp) return redirect()->back()->with("success", "Please ensure you have have filled in the general checklist form first");
+        return view("checklists.performance.index", compact("score"));
     }
 
     public function showEssentialOperation($id)
@@ -223,50 +240,55 @@ class ReportsController extends Controller
         $items = json_encode(BcpChecklist::all());
         return view("checklists.essential.show", compact("essential", "items"));
     }
+
     public function showCustomer($id)
     {
         $checklist = json_encode(new VulnerableCustomerResource(VulnerableCustomer::find($id)));
-        $customers = json_encode(BcpChecklist::where("type","Vulnerable Customers")->get());
-        $staff = json_encode(BcpChecklist::where("type","Staff Health Protection")->get());
-        return view("checklists.customer.show", compact("customers", "checklist","staff"));
+        $customers = json_encode(BcpChecklist::where("type", "Vulnerable Customers")->get());
+        $staff = json_encode(BcpChecklist::where("type", "Staff Health Protection")->get());
+        return view("checklists.customer.show", compact("customers", "checklist", "staff"));
     }
+
     public function showStaff($id)
     {
         $checklist = json_encode(new StaffHealthResource(StaffHealth::find($id)));
-        $staff = json_encode(BcpChecklist::where("type","Staff Health Protection")->get());
-        return view("checklists.staff.show", compact( "checklist","staff"));
+        $staff = json_encode(BcpChecklist::where("type", "Staff Health Protection")->get());
+        return view("checklists.staff.show", compact("checklist", "staff"));
     }
-     public function showWsp($id)
-        {
-            $services = Cache::rememberForever('services', function () {
-                return Service::select('id', 'name')->get();
-            });
 
-            $wsp_report = json_encode(new WspReportingResource(WspReporting::find($id)));
-            return view("checklists.wsps.show", compact("wsp_report", "services"));
-        }
-        public function showCslg($id)
-        {
-            $item = CslgCalculation::find($id);
-            $operations = WspReporting::with('attachments')->where("month", $item->month)->where("year", $item->year)->where('bcp_id', $item->bcp_id)->first();
-            if (!$operations) return redirect()->back();
-            $cslg = json_encode(new CslgResource($item));
+    public function showWsp($id)
+    {
+        $services = Cache::rememberForever('services', function () {
+            return Service::select('id', 'name')->get();
+        });
 
-            return view("checklists.cslg.show", compact("cslg","operations"));
-        }
-        public function showCard($id)
-        {
-            $score = json_encode(new PerformaceScoreResource(PerformanceScore::find($id)));
-            return view("checklists.performance.show", compact("score"));
-        }
+        $wsp_report = json_encode(new WspReportingResource(WspReporting::find($id)));
+        return view("checklists.wsps.show", compact("wsp_report", "services"));
+    }
+
+    public function showCslg($id)
+    {
+        $item = CslgCalculation::find($id);
+        $operations = WspReporting::with('attachments')->where("month", $item->month)->where("year", $item->year)->where('bcp_id', $item->bcp_id)->first();
+        if (!$operations) return redirect()->back();
+        $cslg = json_encode(new CslgResource($item));
+
+        return view("checklists.cslg.show", compact("cslg", "operations"));
+    }
+
+    public function showCard($id)
+    {
+        $score = json_encode(new PerformaceScoreResource(PerformanceScore::find($id)));
+        return view("checklists.performance.show", compact("score"));
+    }
 
     public function saveWsp(Request $request)
     {
-        $request['month'] =$this->getMonth();
+        $request['month'] = $this->getMonth();
         $request['year'] = $this->getYear();
         $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
-        $request['status_of_covid_implementation'] = json_encode($request->input("status_of_covid_implementation")) ;
-        $request['expected_activities'] = json_encode($request->input("expected_activities")) ;
+        $request['status_of_covid_implementation'] = json_encode($request->input("status_of_covid_implementation"));
+        $request['expected_activities'] = json_encode($request->input("expected_activities"));
         $reporting = WspReporting::create($request->all());
         return response()->json($reporting);
     }
@@ -281,6 +303,7 @@ class ReportsController extends Controller
         ]);
         return response()->json($format);
     }
+
     public function saveCustomer(Request $request)
     {
         $customer = VulnerableCustomer::create([
@@ -291,6 +314,7 @@ class ReportsController extends Controller
         ]);
         return response()->json($customer);
     }
+
     public function saveStaff(Request $request)
     {
         $staff = StaffHealth::create([
@@ -301,6 +325,7 @@ class ReportsController extends Controller
         ]);
         return response()->json($staff);
     }
+
     public function saveCslg(Request $request)
     {
         $request['month'] = $this->getMonth();
@@ -309,6 +334,7 @@ class ReportsController extends Controller
         $cslg = CslgCalculation::create($request->all());
         return response()->json($cslg);
     }
+
     public function saveCard(Request $request)
     {
         $request['month'] = $this->getMonth();
@@ -317,9 +343,10 @@ class ReportsController extends Controller
         $score = PerformanceScore::create($request->all());
         return response()->json($score);
     }
+
     public function approveCslg(Request $request)
     {
-        CslgCalculation::find($request->input("id"))->update($request->except(['month','wsp']));
+        CslgCalculation::find($request->input("id"))->update($request->except(['month', 'wsp']));
         return response()->json('success');
     }
 
