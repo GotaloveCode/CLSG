@@ -41,4 +41,23 @@
             <td><b>{{ number_format($erp->erp_items->sum('cost')) }}</b></td>
         </tr>
     </table>
+    <p>D. <b>O&M Costs:</b></p>
+    <table class="table table-bordered table-responsive">
+        <thead>
+        <tr>
+            <th>COVID-19 Emergency Intervention</th>
+            <th>Cost(KSHS)</th>
+        </tr>
+        </thead>
+        @foreach($erp->operationcosts as $item)
+            <tr>
+                <td>{{ $item->name }}</td>
+                <td>{{ number_format($item->pivot->cost) }}</td>
+            </tr>
+        @endforeach
+        <tr>
+            <td><b>Total Costs</b></td>
+            <td><b>{{ number_format($erp->operationcosts->sum('pivot.cost')) }}</b></td>
+        </tr>
+    </table>
 </div>
