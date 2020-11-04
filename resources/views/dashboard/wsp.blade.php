@@ -178,7 +178,9 @@
                                     @endif
                                 </li>
                                 <li class="timeline-items @if($erp) timeline-icon-success @else timeline-icon-warning @endif">
+                                    @if($erp)
                                     <p class="timeline-time">{{ $erp->updated_at->diffForHumans() }}</p>
+                                    @endif
                                     <div class="timeline-title">Create ERP</div>
                                     <div class="timeline-subtitle">
                                         Create Emergency Response Plan. This should compliment your Business Continuity
