@@ -18,6 +18,8 @@
      <div class="content-body">
         <section id="card-headings">
             <div class="row">
+                <a href="{{ route('performance-score-card.print',json_decode($score)->id) }}" style="margin-left: 90%"><i
+                        class="feather icon-printer" style="font-size: 20px" title="Print"></i></a>
                 <view-performance-card
                     :score="{{$score}}"
                 ></view-performance-card>

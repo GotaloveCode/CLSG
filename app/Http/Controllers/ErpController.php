@@ -87,7 +87,7 @@ class ErpController extends Controller
         $eoi = $erp->wsp->first()->eoi;
         $erp = $erp->load(['wsp', 'erp_items', 'attachments']);
         if (\request()->has('print')) {
-            $pdf = PDF::loadView('erps.print', $erp);
+            $pdf = \PDF::loadView('erps.print', $erp);
             return $pdf->inline();
         }
         return view('erps.show')->with(compact('erp', 'progress', 'eoi'));

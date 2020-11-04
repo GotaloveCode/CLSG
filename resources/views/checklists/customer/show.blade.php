@@ -9,7 +9,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url("/")}}">Home</a>
                         </li>
-                        <li class="breadcrumb-item active">{{ __('Vulnerable and staff') }}
+                        <li class="breadcrumb-item active">{{ __('Vulnerable Customers') }}
                         </li>
                     </ol>
                 </div>
@@ -20,6 +20,9 @@
       <div class="content-body">
         <section id="card-headings">
             <div class="row">
+
+                <a href="{{ route('vulnerable-customer.print',json_decode($checklist)->id) }}" style="margin-left: 90%"><i
+                        class="feather icon-printer" style="font-size: 20px" title="Print"></i></a>
                 <view-vulnerable-customer
                     :customers="{{$customers}}"
                     :staff="{{$staff}}"

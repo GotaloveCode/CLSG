@@ -69,12 +69,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'reports'],function (){
         //Essentials
         Route::post("/essential-operation","ReportsController@saveEssential");
+        Route::get("/essential-operation-print/{id}","ReportsController@printEssential")->name('essential-operation.print');
         Route::get("/essential-operation-list","ReportsController@essentialIndex")->name('essential-operation.list');
         Route::get("/essential-operation/create","ReportsController@createEssential")->name('essential-operation.create');
         Route::get("/essential-operation-show/{id}","ReportsController@showEssentialOperation")->name('essential-operation.show');//Essentials
 
         //Vulnerable customers
         Route::post("/vulnerable-customer","ReportsController@saveCustomer");
+        Route::get("/vulnerable-customer-print/{id}","ReportsController@printCustomer")->name('vulnerable-customer.print');
         Route::get("/vulnerable-customer-list","ReportsController@customerIndex")->name('vulnerable-customer.list');
         Route::get("/vulnerable-customer/create","ReportsController@createCustomer")->name('vulnerable-customer.create');
         Route::get("/vulnerable-customer-show/{id}","ReportsController@showCustomer")->name('vulnerable-customer.show'); //Vulnerable customers & staff
@@ -87,6 +89,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         // Performance Scorecard
         Route::post("/performance-score-card","ReportsController@saveCard");
+        Route::get("/performance-score-card-print/{id}","ReportsController@printCard")->name('performance-score-card.print');
         Route::get("/performance-score-card-list","ReportsController@cardIndex")->name('performance-score-card.list');
         Route::get("/performance-score-card/create","ReportsController@createCard")->name('performance-score-card.create');
         Route::get("/performance-score-card-show/{id}","ReportsController@showCard")->name('performance-score-card.show');
@@ -94,6 +97,7 @@ Route::group(['middleware' => ['auth']], function () {
         //Wsp Reporting Monthly
         Route::get("/wsp-reporting-list","ReportsController@wspIndex")->name('wsp-reporting.list');
         Route::post("/wsp-reporting","ReportsController@saveWsp");
+        Route::get("/wsp-reporting/print/{id}","ReportsController@printWsp")->name('wsp-reporting.print');
         Route::get("/wsp-reporting-attachments","ReportsController@attachmentIndex")->name("wsp-reporting-attachments.list");
         Route::post("/wsp-reporting-attachments","ReportsController@saveWspAttachment")->name("wsp-reporting-attachments.store");
         Route::get("/wsp-reporting-attachments/{wsp}","ReportsController@showAttachment")->name("wsp-reporting-attachments.show");

@@ -20,6 +20,7 @@
                                             <th width="20%">Service</th>
                                             <th><span class="ml-10">Description</span></th>
                                             <th>Cost</th>
+                                            <th>Evidence</th>
                                             <th></th>
                                         </tr>
                                         <tr v-for="(item,k) in form.status_of_covid_implementation" :key="k">
@@ -35,6 +36,10 @@
                                             </td>
                                             <td><input type="number" class="form-control ml-10" v-model="item.cost"
                                                        placeholder="cost" style="margin-top: 5px;">
+                                            </td>
+                                            <td>
+                                                <span class="webkit"><input type="file" v-on:change="onImageChange($event,item.service,'covid_status')" class="form-control" accept=".pdf,.doc,.docx"></span>
+
                                             </td>
 
                                             <td>
@@ -53,30 +58,123 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                    <div class="card" style="height: 92%">
-                        <div class="card-content collapse show">
-                            <div class="card-body">
-                                <div class="row">
-                                <div class="col-md-4 form-group">
-                                    <label>Revenues collected this month (KES)</label>
-                                    <vue-numeric separator="," v-model="form.revenue" class="form-control"
-                                                 required></vue-numeric>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label>O&M costs this month (KES)</label>
-                                    <vue-numeric separator="," v-model="form.operations_costs" class="form-control"
-                                                 required></vue-numeric>
-                                </div>
-
-                                <div class="col-md-4 form-group">
-                                    <label>Total CLSG amount disbursed to date (KES)</label>
-                                    <vue-numeric separator="," v-model="form.clsg_total" class="form-control"
-                                                 required></vue-numeric>
-                                </div>
+                        <div class="card" style="height: 92%">
+                            <div class="card-header">
+                                <h4>O&M costs this month (KES)</h4>
                             </div>
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <th width="20%">Service</th>
+                                                <th>Amount</th>
+                                                <th>Evidence</th>
+                                                <th></th>
+                                            </tr>
+                                            <tr v-for="(item,k) in form.operations_costs" :key="k">
+                                                <td>
+                                                    <v-select label="name" placeholder="Select Service"
+                                                              v-model="item.id" :reduce="s => s.id"
+                                                              :options="services" style="margin-top: 5px">
+                                                    </v-select>
+
+                                                </td>
+                                                <td>
+                                                    <vue-numeric separator="," v-model="item.amount" class="form-control"
+                                                                 required></vue-numeric>
+                                                </td>
+                                                <td>
+                                                    <span class="webkit"><input type="file" v-on:change="onImageChange($event,item.id,'operations')" class="form-control" accept=".pdf,.doc,.docx"></span>
+                                                </td>
+                                                <td>
+                                                    <i class="fa fa-minus-circle ml-10 fs-20" @click="removeOp(k)"
+                                                       v-show="k || ( !k && form.operations_costs.length > 1)"></i>
+                                                    <i class="fa fa-plus-circle ml-10 fs-20" @click="addOp(k)"
+                                                       v-show="k == form.operations_costs.length-1"></i>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="card" style="height: 92%">
+                        <div class="card-header">
+                            <h4>Revenues collected this month (KES)</h4>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <th>Amount</th>
+                                        <th>Evidence</th>
+                                        <th></th>
+                                    </tr>
+                                    <tr v-for="(item,k) in form.revenue" :key="k">
+                                        <td>
+                                            <vue-numeric separator="," v-model="item.amount" class="form-control"
+                                                         required></vue-numeric>
+
+                                        <input type="hidden"  v-model="item.index=k">
+                                        </td>
+                                        <td>
+                                         <span class="webkit"><input type="file" v-on:change="onImageChange($event,item.index,'revenues')" class="form-control" accept=".pdf,.doc,.docx"></span>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-minus-circle ml-10 fs-20" @click="removeRev(k)"
+                                               v-show="k || ( !k && form.revenue.length > 1)"></i>
+                                            <i class="fa fa-plus-circle ml-10 fs-20" @click="addRev(k)"
+                                               v-show="k == form.revenue.length-1"></i>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card" style="height: 92%">
+                            <div class="card-header">
+                                <h4>Total CLSG amount disbursed to date (KES)</h4>
+                            </div>
+                            <div class="card-content collapse show">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <th>Amount</th>
+                                                <th>Evidence</th>
+                                                <th></th>
+                                            </tr>
+                                            <tr v-for="(item,k) in form.clsg_total" :key="k">
+                                                <td>
+                                                    <vue-numeric separator="," v-model="item.amount" class="form-control"
+                                                                 required></vue-numeric>
+
+                                                    <input type="hidden"  v-model="item.index=k">
+                                                </td>
+                                                <td>
+                                                    <span class="webkit"><input type="file" v-on:change="onImageChange($event,item.index,'cslg')" class="form-control" accept=".pdf,.doc,.docx"></span>
+                                                </td>
+                                                <td>
+                                                    <i class="fa fa-minus-circle ml-10 fs-20" @click="removeRev(k)"
+                                                       v-show="k || ( !k && form.clsg_total.length > 1)"></i>
+                                                    <i class="fa fa-plus-circle ml-10 fs-20" @click="addRev(k)"
+                                                       v-show="k == form.clsg_total.length-1"></i>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
                 </div>
 
@@ -178,9 +276,9 @@
                 </div>
 
                 <div class="form-group text-center" style="margin-top: 2%">
-                    <button class="btn btn-warning" v-if="loading" type="button">Sending ... <i
-                        class="feather icon-loader"></i></button>
-                    <button type="submit" v-else class="btn btn-primary">
+<!--                    <button class="btn btn-warning" v-if="loading" type="button">Sending ... <i-->
+<!--                        class="feather icon-loader"></i></button>-->
+                    <button type="submit"  class="btn btn-primary">
                         Submit <i class="feather icon-send"></i>
                     </button>
 
@@ -202,14 +300,14 @@ export default {
         return {
             error: '',
             form: {
-                revenue: 0,
-                operations_costs: 0,
-                clsg_total: 0,
+                revenue:[{index:'',amount:'',document:''}],
+                operations_costs: [{id:'',amount:'',document:''}],
+                clsg_total: [{index:'',amount:'',document:''}],
                 challenges: 1,
                 challenges_cooment: '',
                 status_of_resolution: 1,
                 status_of_resolution_comment: '',
-                status_of_covid_implementation: [{service: '',description: '',cost:''}],
+                status_of_covid_implementation: [{service: '',description: '',cost:'',document:''}],
                 expected_activities: [{activity: '', description: ''}]
             },
             loading: false,
@@ -221,6 +319,28 @@ export default {
         this.setUp();
     },
     methods: {
+
+        onImageChange(e,item_id,doc_type) {
+            let files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.createImage(files[0],item_id,doc_type);
+        },
+        createImage(file,item_id,doc_type) {
+            console.log("walla")
+            console.log(file);
+            console.log(item_id);
+            let reader = new FileReader();
+            let vm = this;
+            reader.onload = (e) => {
+                if (doc_type =="covid_status") vm.form.status_of_covid_implementation.find(item => item.service ==item_id).document = e.target.result;
+                if (doc_type =="revenues") vm.form.revenue.find(item => item.index ==item_id).document = e.target.result;
+                if (doc_type =="cslg") vm.form.clsg_total.find(item => item.index ==item_id).document = e.target.result;
+                if (doc_type =="operations") vm.form.operations_costs.find(item => item.id ==item_id).document = e.target.result;
+
+            };
+           reader.readAsDataURL(file);
+        },
         setUp() {
             if (this.wsp_report.id != undefined) {
                 this.show = true;
@@ -230,7 +350,28 @@ export default {
             this.form.status_of_covid_implementation.splice(i, 1);
         },
         addItem() {
-            this.form.status_of_covid_implementation.push({service: '', description: '',cost: ''});
+            this.form.status_of_covid_implementation.push({service: '', description: '',cost: '',document:''});
+
+        },
+        removeRev(i) {
+            this.form.revenue.splice(i, 1);
+        },
+        addRev() {
+            this.form.revenue.push({index: '', amount: '',document:''});
+
+        },
+        removeCslg(i) {
+            this.form.clsg_total.splice(i, 1);
+        },
+        addCslg() {
+            this.form.clsg_total.push({index: '', amount: '',document:''});
+
+        },
+        removeOp(i) {
+            this.form.operations_costs.splice(i, 1);
+        },
+        addOp() {
+            this.form.operations_costs.push({id: '', amount: '',document:''});
 
         },
         removeActivity(i) {
@@ -260,13 +401,13 @@ export default {
 
         validateImplemetationStatus() {
             let empty_field = false;
-            if (this.form.status_of_covid_implementation[0]["description"] == "") {
+            if (this.form.status_of_covid_implementation[0]["service"] == "") {
                 return 'empty';
             }
             this.form.status_of_covid_implementation.forEach(s => {
                 if (s.description == "" || s.item_name == "") {
                     empty_field = true;
-                    return false;
+                    return;
                 }
             })
             if (empty_field) return false;
@@ -313,5 +454,10 @@ export default {
 }
 .fs-20{
     font-size: 20px;
+}
+.vs__search{
+    height: 28px !important;
+    margin-top: 1px !important;
+    margin-bottom: 6px !important;
 }
 </style>

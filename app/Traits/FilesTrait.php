@@ -19,10 +19,9 @@ trait FilesTrait
 
      function storeDocument($doc, $title, $path='app/Eoi')
     {
-        info('file path --> '.$path);
-
-        $destinationPath = storage_path($path);
-       info('destination --> '.$destinationPath);
+        
+       $destinationPath = storage_path($path);
+           
         if ($doc->isValid()) {
 
             $extension = $doc->getClientOriginalExtension();

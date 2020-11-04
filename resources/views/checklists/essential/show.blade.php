@@ -19,6 +19,8 @@
     <div class="content-body">
         <section id="card-headings">
             <div class="row">
+                <a href="{{ route('essential-operation.print',json_decode($essential)->id) }}" style="margin-left: 90%"><i
+                        class="feather icon-printer" style="font-size: 20px" title="Print"></i></a>
                 <view-essential-operation
                     :essentials="{{$items}}"
                     :essential_item="{{$essential}}"
