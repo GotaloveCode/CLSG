@@ -32,7 +32,8 @@ export default {
                         this.$toastr.s(response.data.message, "Success");
                         location.href = response.data.route;
                     }).catch(error => {
-                        if(error.status == 422){
+                        console.log(error);
+                        if(error.response.status === 422){
                             let str = '';
                             Object.values(error.response.data.errors).forEach(e => {
                                 str += '<p>' + e + '</p>';
