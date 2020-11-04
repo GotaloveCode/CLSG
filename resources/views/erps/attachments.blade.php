@@ -24,12 +24,15 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
-                        <strong>Almost there!</strong> ERP will be considered binding upon attachment and review of the documents indicated below by WASREB!
+                        <strong>Almost there!</strong> ERP will be considered binding upon attachment and review of the
+                        documents indicated below by WASREB!
                     </div>
                 @endif
+                <a class="btn btn-info mb-2" href="{{ route('erps.show',['erp' => $erp->id,'print' => 'pdf']) }}"><i
+                        class="feather icon-download"></i> Download ERP</a>
                 <p>The following documents are attached to support this request:</p>
                 <ul>
-                    <li>Signed Copy of ERP document </li>
+                    <li>Signed Copy of ERP document</li>
                     <li>Copy of board resolution or minutes of board meeting approving the plan</li>
                 </ul>
                 <manage-attachments inline-template delete_url="{{ route('erps.attachments.destroy',0) }}">
@@ -68,7 +71,9 @@
                 @if($erp->status != "WSTF Approved")
                     <div class="row">
                         <div class="col-md-12">
-                            <attachment-form :documents="['Signed ERP Document','Board Resolution on ERP','Board Meeting Minutes on ERP']" submit-url="{{ route('erps.attachments.store',$erp->id) }}"/>
+                            <attachment-form
+                                :documents="['Signed ERP Document','Board Resolution on ERP','Board Meeting Minutes on ERP']"
+                                submit-url="{{ route('erps.attachments.store',$erp->id) }}"/>
                         </div>
                     </div>
                 @endif

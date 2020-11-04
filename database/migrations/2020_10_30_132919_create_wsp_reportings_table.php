@@ -19,10 +19,10 @@ class CreateWspReportingsTable extends Migration
             $table->string("year");
             $table->tinyInteger("challenges");
             $table->text("challenges_cooment")->nullable();
-            $table->double("clsg_total");
+            $table->text("clsg_total");
             $table->text("expected_activities");
-            $table->double("operations_costs");
-            $table->double("revenue");
+            $table->text("operations_costs");
+            $table->text("revenue");
             $table->text("status_of_covid_implementation");
             $table->tinyInteger("status_of_resolution");
             $table->text("status_of_resolution_comment")->nullable();

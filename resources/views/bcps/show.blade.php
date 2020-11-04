@@ -43,11 +43,23 @@
                                 </div>
                                 <div class="card-content collapse show">
                                     <div class="card-body">
+                                        @role('wasreb')
+                                        @if($bcp->status !== "WSTF Approved")
+                                            <div class="alert alert-success alert-dismissible mb-2" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                                <strong>Note: </strong> <a href="#mgm">Set the Monthly Grant
+                                                    Multiplier</a> to be applied to the BCP before approving this BCP!
+                                            </div>
+                                        @endif
+                                        @endrole
                                         @include('preview.bcp')
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
+                            <div class="card" id="mgm">
                                 <div class="card-header">
                                     <h4 class="card-title">Business Continuity Plan Monthly Grant Multiplier</h4>
                                     <a class="heading-elements-toggle"><i
@@ -63,7 +75,8 @@
                                     <div class="card-body">
                                         @role('wasreb')
                                         @if($bcp->status !== "WSTF Approved")
-                                            <mgm-form class="mb-2" submit-url="{{ route('bcps.mgm', $bcp->id) }}"></mgm-form>
+                                            <mgm-form class="mb-2"
+                                                      submit-url="{{ route('bcps.mgm', $bcp->id) }}"></mgm-form>
                                         @endif
                                         @endrole
                                         @if($bcp->mgms->count() > 0)
@@ -129,7 +142,7 @@
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
                     @can('create-bcp')
-                        @if($bcp->status=='Pending' || $bcp->status =='Needs Review')
+                        @if($bcp->status != 'WSTF Approved')
                             <div class="mb-2">
                                 <a class="btn btn-info" href="{{ route('bcps.create') }}"><i
                                         class="feather icon-edit"></i>
@@ -184,7 +197,8 @@
                         <div class="card-content collapse show">
                             <div class="card-body">
                                 <div class="insights">
-                                    <p>{{$bcp->status}}<span class="float-right text-warning h3">{{$progress}}%</span>
+                                    <p>{{$bcp->status == 'WASREB Approved' ? 'Pending Approval' : $bcp->status}}<span
+                                            class="float-right text-warning h3">{{$progress}}%</span>
                                     </p>
                                     <div class="progress progress-sm mt-1 mb-0">
                                         <div class="progress-bar bg-warning" role="progressbar"
@@ -212,7 +226,8 @@
                                     @foreach($bcp->comments as $comment)
                                         @php
                                             $user_role = auth()->user()->roles()->first()->name;
-                                            $comment_role = $comment->user->roles()->first()->name
+                                            $comment_role = $comment->user->roles()->first()->name;
+                                        if($user_role == 'wsp' && $comment_role == "WSTF") return;
                                         @endphp
                                         <li>
                                             <div

@@ -70,6 +70,7 @@
                                     </button>
                                 </div>
                             </form>
+                            <commitment-upload submit-url="{{ route('eois.commitment_letter.store', $eoi->id) }}"></commitment-upload>
                         @endif
                     </div>
                 </div>

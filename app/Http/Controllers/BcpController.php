@@ -68,7 +68,7 @@ class BcpController extends Controller
         SendMailNotification::postReview($bcp->status, $bcp->wsp_id, route('bcps.show', $bcp->id), $bcp->wsp->name . ' BCP Created');
 
         if ($request->ajax()) {
-            return response()->json(['message' => 'Business Continuity Plan submitted successfully','bcp'=>$bcp]);
+            return response()->json(['message' => 'Business Continuity Plan submitted successfully', 'bcp' => $bcp]);
         }
         return back()->with('success', 'Business Continuity Plan submitted successfully');
     }
@@ -97,6 +97,7 @@ class BcpController extends Controller
 
         $bcp->essentialOperations()->delete();
         $bcp->bcpteams()->delete();
+        $bcp->revenue_projections()->delete();
 
         $this->createBcpRelations($bcp, $request);
 
@@ -110,7 +111,7 @@ class BcpController extends Controller
 
     public function mgm(MgmRequest $request, Bcp $bcp)
     {
-        foreach ($request->input('mgms') as $mgm){
+        foreach ($request->input('mgms') as $mgm) {
             $bcp->mgms()->updateOrCreate([
                 'month' => $mgm['month'],
                 'year' => $mgm['year']
@@ -147,10 +148,9 @@ class BcpController extends Controller
         }
 
         foreach ($request->input('projected_revenues') as $revenue) {
-            $bcp->revenue_projections()->updateOrCreate([
+            $bcp->revenue_projections()->create([
                 'month' => $revenue['month'],
                 'year' => now()->year,
-            ], [
                 'amount' => $revenue['amount']
             ]);
         }
@@ -174,6 +174,14 @@ class BcpController extends Controller
     public function review(Bcp $bcp, Request $request)
     {
         $this->canAccessBcp($bcp);
+        if ($bcp->status == "Pending" && $request->status == "WASREB Approved") {
+            if ($bcp->mgms()->count() < 3) {
+                return response()->json([
+                    'message' => 'Please set Monthly Grant Multiplier first',
+                    'errors' => ['status' => ['Please set Monthly Grant Multiplier first before approving!']]
+                ], 422);
+            }
+        }
         $bcp->status = $request->status;
         $bcp->save();
 

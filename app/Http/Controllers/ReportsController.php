@@ -22,6 +22,7 @@ use App\Http\Resources\CslgResource;
 use App\Http\Resources\StaffHealthResource;
 use App\Http\Resources\PerformaceScoreResource;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 use App\Traits\FilesTrait;
 use App\Traits\PeriodTrait;
@@ -243,6 +244,7 @@ class ReportsController extends Controller
             });
 
             $wsp_report = json_encode(new WspReportingResource(WspReporting::find($id)));
+
             return view("checklists.wsps.show", compact("wsp_report", "services"));
         }
         public function showCslg($id)
@@ -262,13 +264,106 @@ class ReportsController extends Controller
 
     public function saveWsp(Request $request)
     {
+        $status_of_impl = [];
+        $clsg_total = [];
+        $revenue = [];
+        $operations_costs = [];
+        foreach ($request->get('status_of_covid_implementation') as $value) {
+            if ($value['document']) {
+                $fileName = $this->saveFileDoc($value['document']);
+                $status_of_impl[] = [
+                    'service' => $value['service'],
+                    'description' => $value['description'],
+                    'cost' => $value['cost'],
+                    'document' => $fileName
+                ];
+            }else {
+                $status_of_impl[] = [
+                    'service' => $value['service'],
+                    'description' => $value['description'],
+                    'cost' => $value['cost'],
+                    'document' => ""
+                ];
+            }
+        }
+        foreach ($request->get('clsg_total') as $value) {
+            if ($value['document']) {
+                $fileName = $this->saveFileDoc($value['document']);
+                $clsg_total[] = [
+                    'index' => $value['index'],
+                    'amount' => $value['amount'],
+                    'document' => $fileName
+                ];
+            }else {
+                $clsg_total[] = [
+                    'index' => $value['index'],
+                    'amount' => $value['amount'],
+                    'document' => ""
+                ];
+            }
+        }
+        foreach ($request->get('revenue') as $value) {
+            if ($value['document']) {
+                $fileName = $this->saveFileDoc($value['document']);
+                $revenue[] = [
+                    'index' => $value['index'],
+                    'amount' => $value['amount'],
+                    'document' => $fileName
+                ];
+            }else {
+                $revenue[] = [
+                    'index' => $value['index'],
+                    'amount' => $value['amount'],
+                    'document' => ""
+                ];
+            }
+        }
+        foreach ($request->get('operations_costs') as $value) {
+            if ($value['document']) {
+                $fileName = $this->saveFileDoc($value['document']);
+                $operations_costs[] = [
+                    'id' => $value['id'],
+                    'amount' => $value['amount'],
+                    'document' => $fileName
+                ];
+            }else {
+                $operations_costs[] = [
+                    'id' => $value['id'],
+                    'amount' => $value['amount'],
+                    'document' => ""
+                ];
+            }
+        }
+
         $request['month'] =$this->getMonth();
         $request['year'] = $this->getYear();
         $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
-        $request['status_of_covid_implementation'] = json_encode($request->input("status_of_covid_implementation")) ;
-        $request['expected_activities'] = json_encode($request->input("expected_activities")) ;
+        $request['status_of_covid_implementation'] = json_encode($status_of_impl) ;
+        $request['clsg_total'] = json_encode($clsg_total) ;
+        $request['revenue'] = json_encode($revenue) ;
+        $request['operations_costs'] = json_encode($operations_costs) ;
+        $request['expected_activities'] = json_encode($request->input("expected_activities"));
+
         $reporting = WspReporting::create($request->all());
         return response()->json($reporting);
+    }
+
+    public function saveFileDoc($base64_image)
+    {
+        $fileName = "";
+        $type = explode(",",$base64_image)[0];
+        // your base64 encoded
+        @list($type, $file_data) = explode(';', $base64_image);
+        @list(, $file_data) = explode(',', $file_data);
+        if ($type=="data:application/pdf"){
+            $fileName = Str::random(6).''.date('s').gettimeofday()['usec'].'.pdf';
+            \Storage::disk('local')->put($fileName, base64_decode($file_data));
+        }else {
+            $fileName = Str::random(6).''.date('s').gettimeofday()['usec'].'.docx';
+           \Storage::disk('local')->put($fileName, base64_decode($file_data));
+        }
+        return $fileName;
+
     }
 
     public function saveEssential(Request $request)
@@ -321,6 +416,31 @@ class ReportsController extends Controller
     {
         CslgCalculation::find($request->input("id"))->update($request->except(['month','wsp']));
         return response()->json('success');
+    }
+
+    public function printWsp($id)
+    {
+        $wsp_report = WspReporting::with('bcp')->find($id);
+        $pdf = \PDF::loadView('checklists.wsps.print',compact('wsp_report'));
+        return $pdf->inline();
+    }
+    public function printCard($id)
+    {
+        $score = PerformanceScore::with('bcp')->find($id);
+        $pdf = \PDF::loadView('checklists.performance.print',compact('score'));
+        return $pdf->inline();
+    }
+    public function printEssential($id)
+    {
+        $essential = EssentialOperationReport::with('bcp')->find($id);
+        $pdf = \PDF::loadView('checklists.essential.print',compact('essential'));
+        return $pdf->inline();
+    }
+    public function printCustomer($id)
+    {
+        $customer = EssentialOperationReport::with('bcp')->find($id);
+        $pdf = \PDF::loadView('checklists.customer.print',compact('customer'));
+        return $pdf->inline();
     }
 
 }

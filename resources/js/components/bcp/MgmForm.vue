@@ -16,6 +16,7 @@
                     @add="addMgm"
                     @remove="removeMgm(index)"
                     :mgm="d"
+                    :months="mths"
                     v-bind:key="index"
                     :index="index"/>
             </table>
@@ -32,7 +33,7 @@
 <script>
 
 import MgmRow from "./MgmRow";
-
+import months from "../months";
 export default {
     name: "MgmForm",
     components: {
@@ -51,8 +52,12 @@ export default {
                     {month: 12, year: 2020, amount: null}
                 ]
             },
-            loading: false
+            loading: false,
+            mths: [],
         };
+    },
+    mounted() {
+        this.mths = months;
     },
     methods: {
         onSubmit() {

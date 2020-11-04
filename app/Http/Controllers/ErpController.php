@@ -26,7 +26,7 @@ class ErpController extends Controller
         if (!request()->ajax()) {
             return view('erps.index');
         }
-        $erps = Erp::query()->with('wsp:id,name');
+        $erps = Erp::query()->with('wsp:id,name')->select('erps.*');
 
         return Datatables::of($erps)
             ->addColumn('action', function ($erp) {
@@ -65,8 +65,6 @@ class ErpController extends Controller
 
         if ($erp_load) $erp_load = json_encode(new ErpResource($erp_load));
 
-
-
         return view('erps.create')->with(compact('interventions', 'risks', 'mitigation', 'services', 'eoiOperations', 'erp_load', 'operationCosts'));
     }
 
@@ -89,7 +87,7 @@ class ErpController extends Controller
         $eoi = $erp->wsp->first()->eoi;
         $erp = $erp->load(['wsp', 'erp_items', 'attachments']);
         if (\request()->has('print')) {
-            $pdf = PDF::loadView('erps.print', $erp);
+            $pdf = \PDF::loadView('erps.print', $erp);
             return $pdf->inline();
         }
         return view('erps.show')->with(compact('erp', 'progress', 'eoi'));

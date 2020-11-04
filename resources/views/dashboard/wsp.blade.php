@@ -192,7 +192,8 @@
                                         <p class="lead">
                                             Submit the Expression of interest form and attach the required attachments.
                                         </p>
-                                        <p class="text-muted"> Status - {{ $eoi->status == 'Pending' ? 'Pending Review By WASREB' : $eoi->status}}</p>
+                                        <p class="text-muted"> Status
+                                            - {{ $eoi->status == 'Pending' ? 'Pending Review By WASREB' : $eoi->status}}</p>
                                     </li>
                                 @endif
                                 @isset($att)

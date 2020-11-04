@@ -79,7 +79,57 @@ class RoleSeeder extends Seeder
                 'postal_address' => '494',
                 'physical_address' => 'Westlands',
                 'postal_code_id' => 12,
-                'managing_director' => 'Alehandro DMore'
+                'managing_director' => 'Moses Nzioki'
+            ]);
+
+        $user_exists = $water_company->users->contains($user->id);
+
+        if (!$user_exists) {
+            $water_company->users()->attach($user->id);
+        }
+
+        $user = User::firstOrCreate([
+            'email' => 'info@bungomawater.test'],
+            ['name' => 'Bungoma Water & Sewerage Company',
+                'password' => bcrypt('password')
+            ]);
+
+        $user->assignRole($wsp);
+
+        $water_company = Wsp::firstOrCreate([
+            'name' => 'Bungoma Water & Sewerage Company'],
+            [
+                'email' => 'info@bungomawater.test',
+                'acronym' => 'BWS',
+                'postal_address' => '494',
+                'physical_address' => 'Bungoma',
+                'postal_code_id' => 12,
+                'managing_director' => 'Vincent Kituyi'
+            ]);
+
+        $user_exists = $water_company->users->contains($user->id);
+
+        if (!$user_exists) {
+            $water_company->users()->attach($user->id);
+        }
+
+        $user = User::firstOrCreate([
+            'email' => 'info@nyeriwater.test'],
+            ['name' => 'Nyeri Water & Sewerage Company',
+                'password' => bcrypt('password')
+            ]);
+
+        $user->assignRole($wsp);
+
+        $water_company = Wsp::firstOrCreate([
+            'name' => 'Nyeri Water & Sewerage Company'],
+            [
+                'email' => 'info@nyeriwater.test',
+                'acronym' => 'NYEWASCO',
+                'postal_address' => '22',
+                'physical_address' => 'Nyeri',
+                'postal_code_id' => 4,
+                'managing_director' => 'Martin Iriga'
             ]);
 
         $user_exists = $water_company->users->contains($user->id);

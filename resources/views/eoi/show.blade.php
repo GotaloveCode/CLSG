@@ -160,7 +160,7 @@
                         <div class="card-content collapse show">
                             <div class="card-body">
                                 <div class="insights">
-                                    <p>{{$eoi->status}}<span class="float-right text-warning h3">{{$progress}}%</span>
+                                    <p>{{$eoi->status == 'WASREB Approved' ? 'Pending Approval' : $eoi->status}} <span class="float-right text-warning h3">{{$progress}}%</span>
                                     </p>
                                     <div class="progress progress-sm mt-1 mb-0">
                                         <div class="progress-bar bg-warning" role="progressbar"
