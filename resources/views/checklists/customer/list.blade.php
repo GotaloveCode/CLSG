@@ -41,7 +41,10 @@
                                         <th>Wsp</th>
                                         <th>Month</th>
                                         <th>Year</th>
-                                        <th>Created At</th>
+                                        <th>Completed</th>
+                                        <th>In Progress</th>
+                                        <th>Not Started</th>
+                                        <th>Created</th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -66,6 +69,42 @@
                     {data: 'wsp', name: 'wsp'},
                     {data: 'month', name: 'month'},
                     {data: 'year', name: 'year'},
+                    {
+                        data: 'customer_details', name: 'completed',
+                        "render": function (data, type, row) {
+                            let count = 0;
+                            data.forEach(x => {
+                                if (x.status === "Completed") {
+                                    count++;
+                                }
+                            })
+                            return count + "/" + data.length;
+                        },
+                    },
+                    {
+                        data: 'customer_details', name: 'in_progress',
+                        "render": function (data, type, row) {
+                            let count = 0;
+                            data.forEach(x => {
+                                if (x.status === "In Progress") {
+                                    count++;
+                                }
+                            })
+                            return count + "/" + data.length;
+                        },
+                    },
+                    {
+                        data: 'customer_details', name: 'not_started',
+                        "render": function (data, type, row) {
+                            let count = 0;
+                            data.forEach(x => {
+                                if (x.status === "Not Started") {
+                                    count++;
+                                }
+                            })
+                            return count + "/" + data.length;
+                        },
+                    },
                     {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]

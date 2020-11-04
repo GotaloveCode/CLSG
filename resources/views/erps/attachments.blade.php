@@ -28,7 +28,7 @@
                         documents indicated below by WASREB!
                     </div>
                 @endif
-                <a class="btn btn-info mb-2" href="{{ route('erps.show',['erp' => $erp->id,'print' => 'pdf']) }}"><i
+                <a class="btn btn-info mb-2" target="_blank" href="{{ route('erps.show',['erp' => $erp->id,'print' => 'pdf']) }}"><i
                         class="feather icon-download"></i> Download ERP</a>
                 <p>The following documents are attached to support this request:</p>
                 <ul>

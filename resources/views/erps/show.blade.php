@@ -33,8 +33,8 @@
                                     <div class="heading-elements">
                                         <ul class="list-inline mb-0">
                                             <li>
-                                                <a href="{{ route('erps.show',['erp' => $erp->id,'print' => 'pdf']) }}"><i
-                                                        class="feather icon-printer"></i></a>
+                                                <a href="{{ route('erps.show',['erp' => $erp->id,'print' => 'pdf']) }}"
+                                                   target="_blank"><i class="feather icon-printer"></i></a>
                                             </li>
                                             <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
                                             <li><a data-action="close"><i class="feather icon-x"></i></a></li>
@@ -145,7 +145,8 @@
                         <div class="card-content">
                             <div class="card-body">
                                 <div class="insights">
-                                    <p>{{$erp->status == 'WASREB Approved' ? 'Pending Approval' : $erp->status}} <span class="float-right text-warning h3">{{$progress}}%</span>
+                                    <p>{{$erp->status == 'WASREB Approved' ? 'Pending Approval' : $erp->status}} <span
+                                            class="float-right text-warning h3">{{$progress}}%</span>
                                     </p>
                                     <div class="progress progress-sm mt-1 mb-0">
                                         <div class="progress-bar bg-warning" role="progressbar"

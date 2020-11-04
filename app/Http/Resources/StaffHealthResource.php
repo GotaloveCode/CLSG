@@ -21,7 +21,7 @@ class StaffHealthResource extends JsonResource
             'staff_details' => json_decode($this->staff_details),
             'month' => \DateTime::createFromFormat("!m",$this->month)->format("F"),
             'year' => $this->year,
-            'created_at' => Carbon::parse($this->created_at)->format("d-m-Y H:i")
+            'created_at' => Carbon::parse($this->created_at)->format("d-m-Y")
         ];
     }
 }
