@@ -12,12 +12,6 @@
                     <span class="menu-title">Dashboard</span>
                 </a>
             </li>
-            <li class=" nav-item">
-                <a href="{{ route('clsg') }}">
-                    <i class="feather icon-award"></i>
-                    <span class="menu-title">CLSG</span>
-                </a>
-            </li>
             <li class="nav-item"><a href="#"><i class="feather icon-edit"></i><span class="menu-title">EOIs</span></a>
                 <ul class="menu-content">
                     @can('create-eoi')
@@ -37,6 +31,12 @@
             </li>
             <li class="nav-item"><a href="#"><i class="feather icon-briefcase"></i><span class="menu-title">BCPs</span></a>
                 <ul class="menu-content">
+                    <li>
+                        <a class="menu-item" href="{{ route('clsg') }}">
+                            <i class="feather icon-award"></i>
+                            <span class="menu-title">CLSG</span>
+                        </a>
+                    </li>
                     @can('create-bcp')
                         @if($bcp)
                             <li><a class="menu-item" href="{{ route('bcps.show',$bcp->id) }}">View BCP</a>

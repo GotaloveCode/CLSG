@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\EssentialOperationReport;
 use App\Models\VulnerableCustomer;
-use App\Models\Wsp;
 use App\Models\Service;
 use App\Models\WspReporting;
 use App\Models\CslgCalculation;
@@ -14,7 +13,6 @@ use App\Models\BcpChecklist;
 use App\Models\Erp;
 use App\Models\Attachment;
 use Illuminate\Http\Request;
-use App\Http\Requests\BcpAttachmentRequest;
 use App\Http\Resources\EssentialReportResource;
 use App\Http\Resources\VulnerableCustomerResource;
 use App\Http\Resources\WspReportingResource;
@@ -49,7 +47,20 @@ class ReportsController extends Controller
         if (!request()->ajax()) {
             return view('checklists.wsps.list');
         }
-        $reporting = WspReportingResource::collection(WspReporting::get());
+
+        $wsp = auth()->user()->wsps()->first();
+
+        if ($wsp) {
+            if ($wsp->bcp) {
+                $reporting = WspReporting::where('bcp_id', $wsp->bcp->id)->get();
+            } else {
+                $reporting = [];
+            }
+        } else {
+            $reporting = WspReporting::get();
+        }
+
+        $reporting = WspReportingResource::collection($reporting);
 
         return Datatables::of($reporting)
             ->addColumn('action', function ($reporting) {
@@ -95,7 +106,20 @@ class ReportsController extends Controller
         if (!request()->ajax()) {
             return view('checklists.staff.list');
         }
-        $staff = StaffHealthResource::collection(StaffHealth::get());
+
+        $wsp = auth()->user()->wsps()->first();
+
+        if ($wsp) {
+            if ($wsp->bcp) {
+                $essential = StaffHealth::where('bcp_id', $wsp->bcp->id)->get();
+            } else {
+                $essential = [];
+            }
+        } else {
+            $essential = StaffHealth::get();
+        }
+
+        $staff = StaffHealthResource::collection($essential);
 
         return Datatables::of($staff)
             ->addColumn('action', function ($staff) {
@@ -110,7 +134,20 @@ class ReportsController extends Controller
         if (!request()->ajax()) {
             return view('checklists.essential.list');
         }
-        $essential = EssentialReportResource::collection(EssentialOperationReport::get());
+
+        $wsp = auth()->user()->wsps()->first();
+
+        if ($wsp) {
+            if ($wsp->bcp) {
+                $essential = EssentialOperationReport::where('bcp_id', $wsp->bcp->id)->get();
+            } else {
+                $essential = [];
+            }
+        } else {
+            $essential = EssentialOperationReport::get();
+        }
+
+        $essential = EssentialReportResource::collection($essential);
 
         return Datatables::of($essential)
             ->addColumn('action', function ($essential) {
@@ -125,7 +162,20 @@ class ReportsController extends Controller
         if (!request()->ajax()) {
             return view('checklists.customer.list');
         }
-        $customer = VulnerableCustomerResource::collection(VulnerableCustomer::get());
+
+        $wsp = auth()->user()->wsps()->first();
+
+        if ($wsp) {
+            if ($wsp->bcp) {
+                $customer = VulnerableCustomer::where('bcp_id', $wsp->bcp->id)->get();
+            } else {
+                $customer = [];
+            }
+        } else {
+            $customer = VulnerableCustomer::get();
+        }
+
+        $customer = VulnerableCustomerResource::collection($customer);
 
         return Datatables::of($customer)
             ->addColumn('action', function ($customer) {
@@ -138,7 +188,7 @@ class ReportsController extends Controller
     public function createEssential()
     {
         $exiting_essential = EssentialOperationReport::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-        $exiting_essential ? $essential_item = json_encode(new EssentialReportResource($exiting_essential)) : $essential_item = json_encode([]);
+        $exiting_essential ? $essential_item = json_encode(new VulnerableCustomerResource($exiting_essential)) : $essential_item = json_encode([]);
         $items = json_encode(BcpChecklist::all());
 
         return view("checklists.essential.index", compact("items", "essential_item"));
@@ -269,7 +319,7 @@ class ReportsController extends Controller
                     'cost' => $value['cost'],
                     'document' => $fileName
                 ];
-            }else {
+            } else {
                 $status_of_impl[] = [
                     'service' => $value['service'],
                     'description' => $value['description'],
@@ -286,7 +336,7 @@ class ReportsController extends Controller
                     'amount' => $value['amount'],
                     'document' => $fileName
                 ];
-            }else {
+            } else {
                 $clsg_total[] = [
                     'index' => $value['index'],
                     'amount' => $value['amount'],
@@ -302,7 +352,7 @@ class ReportsController extends Controller
                     'amount' => $value['amount'],
                     'document' => $fileName
                 ];
-            }else {
+            } else {
                 $revenue[] = [
                     'index' => $value['index'],
                     'amount' => $value['amount'],
@@ -318,7 +368,7 @@ class ReportsController extends Controller
                     'amount' => $value['amount'],
                     'document' => $fileName
                 ];
-            }else {
+            } else {
                 $operations_costs[] = [
                     'id' => $value['id'],
                     'amount' => $value['amount'],
@@ -327,13 +377,13 @@ class ReportsController extends Controller
             }
         }
 
-        $request['month'] =$this->getMonth();
+        $request['month'] = $this->getMonth();
         $request['year'] = $this->getYear();
         $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
-        $request['status_of_covid_implementation'] = json_encode($status_of_impl) ;
-        $request['clsg_total'] = json_encode($clsg_total) ;
-        $request['revenue'] = json_encode($revenue) ;
-        $request['operations_costs'] = json_encode($operations_costs) ;
+        $request['status_of_covid_implementation'] = json_encode($status_of_impl);
+        $request['clsg_total'] = json_encode($clsg_total);
+        $request['revenue'] = json_encode($revenue);
+        $request['operations_costs'] = json_encode($operations_costs);
         $request['expected_activities'] = json_encode($request->input("expected_activities"));
 
         $reporting = WspReporting::create($request->all());
@@ -343,16 +393,16 @@ class ReportsController extends Controller
     public function saveFileDoc($base64_image)
     {
         $fileName = "";
-        $type = explode(",",$base64_image)[0];
+        $type = explode(",", $base64_image)[0];
         // your base64 encoded
         @list($type, $file_data) = explode(';', $base64_image);
         @list(, $file_data) = explode(',', $file_data);
-        if ($type=="data:application/pdf"){
-            $fileName = Str::random(6).''.date('s').gettimeofday()['usec'].'.pdf';
+        if ($type == "data:application/pdf") {
+            $fileName = Str::random(6) . '' . date('s') . gettimeofday()['usec'] . '.pdf';
             \Storage::disk('local')->put($fileName, base64_decode($file_data));
-        }else {
-            $fileName = Str::random(6).''.date('s').gettimeofday()['usec'].'.docx';
-           \Storage::disk('local')->put($fileName, base64_decode($file_data));
+        } else {
+            $fileName = Str::random(6) . '' . date('s') . gettimeofday()['usec'] . '.docx';
+            \Storage::disk('local')->put($fileName, base64_decode($file_data));
         }
         return $fileName;
 
@@ -368,6 +418,7 @@ class ReportsController extends Controller
         ]);
         return response()->json($format);
     }
+
     public function saveCustomer(Request $request)
     {
         $customer = VulnerableCustomer::create([
@@ -417,25 +468,28 @@ class ReportsController extends Controller
     public function printWsp($id)
     {
         $wsp_report = WspReporting::with('bcp')->find($id);
-        $pdf = \PDF::loadView('checklists.wsps.print',compact('wsp_report'));
+        $pdf = \PDF::loadView('checklists.wsps.print', compact('wsp_report'));
         return $pdf->inline();
     }
+
     public function printCard($id)
     {
         $score = PerformanceScore::with('bcp')->find($id);
-        $pdf = \PDF::loadView('checklists.performance.print',compact('score'));
+        $pdf = \PDF::loadView('checklists.performance.print', compact('score'));
         return $pdf->inline();
     }
+
     public function printEssential($id)
     {
         $essential = EssentialOperationReport::with('bcp')->find($id);
-        $pdf = \PDF::loadView('checklists.essential.print',compact('essential'));
+        $pdf = \PDF::loadView('checklists.essential.print', compact('essential'));
         return $pdf->inline();
     }
+
     public function printCustomer($id)
     {
         $customer = EssentialOperationReport::with('bcp')->find($id);
-        $pdf = \PDF::loadView('checklists.customer.print',compact('customer'));
+        $pdf = \PDF::loadView('checklists.customer.print', compact('customer'));
         return $pdf->inline();
     }
 
