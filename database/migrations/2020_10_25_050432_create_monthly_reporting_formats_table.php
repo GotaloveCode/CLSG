@@ -15,8 +15,8 @@ class CreateMonthlyReportingFormatsTable extends Migration
     {
         Schema::create('monthly_reporting_formats', function (Blueprint $table) {
             $table->id();
-            $table->string("month");
-            $table->string("year");
+            $table->integer("month");
+            $table->year("year");
             $table->string("bcp_status_implementation");
             $table->string("covid_status_implementation");
             $table->double("revenues_collected");

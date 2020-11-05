@@ -15,8 +15,8 @@ class CreatePerformanceScoresTable extends Migration
     {
         Schema::create('performance_scores', function (Blueprint $table) {
             $table->id();
-            $table->string("month");
-            $table->string("year");
+            $table->integer("month");
+            $table->year("year");
             $table->tinyInteger("drinking_water");
             $table->text("drinking_water_comment")->nullable();
             $table->string("drinking_water_score");

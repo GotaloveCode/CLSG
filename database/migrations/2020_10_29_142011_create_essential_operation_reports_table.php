@@ -16,8 +16,8 @@ class CreateEssentialOperationReportsTable extends Migration
         Schema::create('essential_operation_reports', function (Blueprint $table) {
             $table->id();
             $table->text("details");
-            $table->string("month");
-            $table->string("year");
+            $table->integer("month");
+            $table->year("year");
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->unsignedInteger('bcp_id');
             $table->timestamps();

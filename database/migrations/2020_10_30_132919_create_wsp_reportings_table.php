@@ -15,8 +15,8 @@ class CreateWspReportingsTable extends Migration
     {
         Schema::create('wsp_reportings', function (Blueprint $table) {
             $table->id();
-            $table->string("month");
-            $table->string("year");
+            $table->integer("month");
+            $table->year("year");
             $table->tinyInteger("challenges");
             $table->text("challenges_cooment")->nullable();
             $table->text("clsg_total");

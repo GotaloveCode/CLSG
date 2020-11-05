@@ -15,8 +15,8 @@ class CreateStaffHealthsTable extends Migration
     {
         Schema::create('staff_healths', function (Blueprint $table) {
             $table->id();
-            $table->string("month");
-            $table->string("year");
+            $table->integer("month");
+            $table->year("year");
             $table->text("staff_details");
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->unsignedInteger('bcp_id');

@@ -15,8 +15,8 @@ class CreateCslgCalculationsTable extends Migration
     {
         Schema::create('cslg_calculations', function (Blueprint $table) {
             $table->id();
-            $table->string("month");
-            $table->string("year");
+            $table->integer("month");
+            $table->year("year");
             $table->double('revenues');
             $table->text('revenues_comment');
             $table->double('grant_multiplier_amount');

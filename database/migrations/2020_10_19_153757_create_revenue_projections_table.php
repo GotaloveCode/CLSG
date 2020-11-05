@@ -16,8 +16,8 @@ class CreateRevenueProjectionsTable extends Migration
         Schema::create('revenue_projections', function (Blueprint $table) {
             $table->increments('id');
             $table->string('amount');
-            $table->string('month');
-            $table->string('year')->default('2020');
+            $table->integer('month');
+            $table->year('year')->default('2020');
             $table->unsignedInteger('bcp_id');
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->timestamps();
