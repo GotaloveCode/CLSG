@@ -16,8 +16,8 @@ class CreateRevenuesTable extends Migration
         Schema::create('revenues', function (Blueprint $table) {
             $table->increments('id');
             $table->string('amount');
-            $table->string('month');
-            $table->string('year');
+            $table->integer('month');
+            $table->year('year');
             $table->unsignedInteger('wsp_id');
             $table->foreign('wsp_id')->references('id')->on('wsps');
             $table->timestamps();
