@@ -64,7 +64,6 @@ class ReportsController extends Controller
 
         return Datatables::of($reporting)
             ->addColumn('action', function ($reporting) {
-
                 return '<a href="' . route("wsp-reporting.show", $reporting['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
             })
             ->make(true);
@@ -76,11 +75,21 @@ class ReportsController extends Controller
         if (!request()->ajax()) {
             return view('checklists.performance.list');
         }
-        $score = PerformaceScoreResource::collection(PerformanceScore::get());
+        $wsp = auth()->user()->wsps()->first();
+
+        if ($wsp) {
+            if ($wsp->bcp) {
+                $score = PerformanceScore::where('bcp_id', $wsp->bcp->id)->get();
+            } else {
+                $score = [];
+            }
+        } else {
+            $score = PerformanceScore::get();
+        }
+        $score = PerformaceScoreResource::collection($score);
 
         return Datatables::of($score)
             ->addColumn('action', function ($score) {
-
                 return '<a href="' . route("performance-score-card.show", $score['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
             })
             ->make(true);

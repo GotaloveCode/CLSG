@@ -7,6 +7,16 @@
         <div v-if="!show">
             <form @submit.prevent="postData()">
                 <div class="row">
+                    <div class="col-md-4 form-group">
+                        <label>Month</label>
+                        <v-select label="name" placeholder="Select Month"
+                                  v-model="form.month" :reduce="c => c.no" :options="mths">
+                        </v-select>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label>Year</label>
+                        <input class="form-control" disabled v-model="form.year">
+                    </div>
                     <div class="col-md-12 form-group">
                         <div class="card" style="height: 92%">
                             <div class="card-header">
@@ -290,6 +300,8 @@
 
 <script>
 import ViewWspReporting from "./ViewWspReporting";
+import moment  from "moment";
+import months from "../months";
 
 export default {
     props: {
@@ -299,7 +311,10 @@ export default {
     data() {
         return {
             error: '',
+            mths: [],
             form: {
+                month: moment().month(),
+                year: moment().year(),
                 revenue:[{index:'',amount:'',document:''}],
                 operations_costs: [{id:'',amount:'',document:''}],
                 clsg_total: [{index:'',amount:'',document:''}],
@@ -315,11 +330,9 @@ export default {
         }
     },
     created() {
-        console.log(this.services)
         this.setUp();
     },
     methods: {
-
         onImageChange(e,item_id,doc_type) {
             let files = e.target.files || e.dataTransfer.files;
             if (!files.length)
@@ -342,6 +355,12 @@ export default {
            reader.readAsDataURL(file);
         },
         setUp() {
+            let allowed = [moment().month()];
+            if(moment().date() <= 5){
+                allowed.push(moment().month() -1);
+                this.form.month = moment().month() - 1;
+            }
+            this.mths = months.filter( x => allowed.includes(x.no));
             if (this.wsp_report.id != undefined) {
                 this.show = true;
             }
