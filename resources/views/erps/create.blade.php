@@ -28,12 +28,14 @@
                                           :eoi-operations="{{ $eoiOperations }}"
                                           :services="{{ $services }}"
                                           :mitigation="{{ $mitigation }}"
+                                          :staff="{{ $staff }}"
                                           :risks="{{ $risks }}"
                                           :operation-costs="{{ $operationCosts }}"
                                           :interventions="{{ $interventions }}"></erp-form>
                             @else
                                 <erp-form submit-url="{{ route('erps.store') }}" wsp_id="{{$wsp->id}}"
                                           :eoi-operations="{{ $eoiOperations }}"
+                                          :staff="{{ $staff }}"
                                           :services="{{ $services }}"
                                           :mitigation="{{ $mitigation }}"
                                           :risks="{{ $risks }}"

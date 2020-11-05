@@ -12,7 +12,10 @@
                 <ValidationProvider name="ERP Coordinator" rules="required" v-slot="{ errors }"
                                     class="col-md-4 form-group">
                     <label>ERP Coordinator</label>
-                    <input v-model="erp.coordinator" type="text" class="form-control"/>
+                    <v-select label="name" placeholder="full name" v-model="erp.coordinator"
+                              data-toggle="tooltip" :reduce="c =>c.name"
+                              title="Add primary staff first for them to appear here"
+                              :options="staff"></v-select>
                     <span class="ml-2 text-danger"> {{ errors[0] }}</span>
                 </ValidationProvider>
                 <h5 class="col-md-12">Breakdown of short-term COVID-19 related emergency interventions</h5>
@@ -92,6 +95,7 @@ export default {
         services: {required: true, type: Array},
         risks: {required: true, type: Array},
         mitigation: {required: true, type: Array},
+        staff: {required: true, type: Array},
     },
     mounted() {
         this.initOperations();

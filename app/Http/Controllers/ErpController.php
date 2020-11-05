@@ -44,7 +44,7 @@ class ErpController extends Controller
         }
         $interventions = $wsp->eoi->estimatedcosts;
         $eoiOperations = $wsp->eoi->operationCosts;
-
+        $staff = $wsp->staff()->selectRaw("CONCAT(firstname,' ',lastname) as name,id,type")->get();
         $erp_load = $wsp->erp;
         $operationCosts = Cache::rememberForever('operationCosts', function () {
             return Operationcost::select('id', 'name')->get();
@@ -65,7 +65,7 @@ class ErpController extends Controller
 
         if ($erp_load) $erp_load = json_encode(new ErpResource($erp_load));
 
-        return view('erps.create')->with(compact('interventions', 'risks', 'mitigation', 'services', 'eoiOperations', 'erp_load', 'operationCosts'));
+        return view('erps.create')->with(compact('interventions', 'staff','risks', 'mitigation', 'services', 'eoiOperations', 'erp_load', 'operationCosts'));
     }
 
     public function store(ErpRequest $request)
