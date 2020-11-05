@@ -25,6 +25,37 @@
                     >
                     <span class="ml-2 text-danger"> {{ errors[0] }}</span>
                 </ValidationProvider>
+                <ValidationProvider name="Email" rules="required|email" v-slot="{ errors }"
+                                    class="col-md-4 form-group">
+                    <label>Email</label>
+                    <input
+                        v-model="user.email"
+                        autocomplete="email"
+                        type="text"
+                        class="form-control"
+                    >
+                    <span class="ml-2 text-danger"> {{ errors[0] }}</span>
+                </ValidationProvider>
+                <ValidationProvider name="Phone" rules="required" v-slot="{ errors }"
+                                    class="col-md-4 form-group">
+                    <label>Phone</label>
+                    <input
+                        v-model="user.phone"
+                        autocomplete="tel"
+                        type="text"
+                        class="form-control"
+                    >
+                    <span class="ml-2 text-danger"> {{ errors[0] }}</span>
+                </ValidationProvider>
+                <ValidationProvider name="Position" rules="required" v-slot="{ errors }"
+                                    class="col-md-4 form-group">
+                    <label>Position </label>
+                    <input
+                        v-model="user.position"
+                        class="form-control"
+                    />
+                    <span class="ml-2 text-danger"> {{ errors[0] }}</span>
+                </ValidationProvider>
                 <ValidationProvider name="Type" rules="required" v-slot="{ errors }"
                                     class="col-md-4 form-group">
                     <label>Type</label>
@@ -54,15 +85,6 @@
                     ></textarea>
                     <span class="ml-2 text-danger"> {{ errors[0] }}</span>
                 </ValidationProvider>
-                <ValidationProvider name="Position" rules="required" v-slot="{ errors }"
-                                    class="col-md-4 form-group">
-                    <label>Position </label>
-                    <input
-                        v-model="user.position"
-                        class="form-control"
-                    />
-                    <span class="ml-2 text-danger"> {{ errors[0] }}</span>
-                </ValidationProvider>
             </div>
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">
@@ -85,6 +107,8 @@ export default {
             user: {
                 firstname: '',
                 middlename: '',
+                email:'',
+                phone:'',
                 lastname: '',
                 qualifications: '',
                 skills: '',

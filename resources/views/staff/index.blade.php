@@ -28,10 +28,11 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
                                 <th>Position</th>
                                 <th>Type</th>
                                 <th>WSP</th>
-                                <th>Created At</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -52,10 +53,11 @@
                 ajax: '{!! route('staff.index') !!}',
                 columns: [
                     {data: 'name', name: 'name'},
+                    {data: 'email', name: 'email'},
+                    {data: 'phone', name: 'phone'},
                     {data: 'position', name: 'position'},
                     {data: 'type', name: 'type'},
                     {data: 'wsp.name', name: 'wsp.name', searchable: true},
-                    {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });

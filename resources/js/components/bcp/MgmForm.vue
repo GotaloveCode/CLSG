@@ -34,6 +34,7 @@
 
 import MgmRow from "./MgmRow";
 import months from "../months";
+
 export default {
     name: "MgmForm",
     components: {
@@ -41,6 +42,7 @@ export default {
     },
     props: {
         submitUrl: {required: true, type: String},
+        existingMgm: {required: false, type: Array}
     },
     data() {
         return {
@@ -58,6 +60,16 @@ export default {
     },
     mounted() {
         this.mths = months;
+        if (this.existingMgm) {
+            this.mgm.mgms = [];
+            this.existingMgm.forEach(s => {
+                this.mgm.mgms.push({
+                    month: s.month,
+                    year: s.year,
+                    amount: s.amount
+                });
+            });
+        }
     },
     methods: {
         onSubmit() {

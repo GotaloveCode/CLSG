@@ -16,7 +16,7 @@ class Staff extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'firstname', 'lastname', 'position', 'skills', 'qualifications', 'type', 'wsp_id'
+        'id', 'firstname', 'lastname', 'position', 'skills', 'qualifications', 'type', 'phone', 'email', 'wsp_id'
     ];
 
     /**

@@ -26,6 +26,8 @@ class StaffRequest extends FormRequest
         return [
             'firstname' => 'required|max:191',
             'lastname' => 'required|max:191',
+            'email' => 'required|email',
+            'phone' => 'required',
             'type' => 'required|in:Essential,Backup',
             'position' => 'required|max:191',
             'skills' => 'required',

@@ -75,8 +75,14 @@
                                     <div class="card-body">
                                         @role('wasreb')
                                         @if($bcp->status !== "WSTF Approved")
-                                            <mgm-form class="mb-2"
-                                                      submit-url="{{ route('bcps.mgm', $bcp->id) }}"></mgm-form>
+                                            @if($bcp->mgms->count() > 0)
+                                                <mgm-form class="mb-2"
+                                                          :existing-mgm="{{ $bcp->mgms }}"
+                                                          submit-url="{{ route('bcps.mgm', $bcp->id) }}"></mgm-form>
+                                            @else
+                                                <mgm-form class="mb-2"
+                                                          submit-url="{{ route('bcps.mgm', $bcp->id) }}"></mgm-form>
+                                            @endif
                                         @endif
                                         @endrole
                                         @if($bcp->mgms->count() > 0)
