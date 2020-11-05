@@ -8,6 +8,7 @@ window.eventBus = new Vue();
 
 import "./components/components";
 
+
 const EoiForm = () => import('./components/eoi/EoiForm' /* webpackChunkName: "js/components/eoi/eoi-form" */);
 const ManageAttachments= () => import('./components/eoi/ManageAttachments' /* webpackChunkName: "js/components/eoi/manage-attachments" */);
 const AttachmentForm = () => import('./components/eoi/AttachmentForm' /* webpackChunkName: "js/components/eoi/attachment-form" */);

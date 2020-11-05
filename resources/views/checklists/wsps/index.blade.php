@@ -21,6 +21,7 @@
         <section id="card-headings">
             <div class="row">
                 <wsp-reporting
+                    :operation-costs="{{ $operationCosts }}"
                     :services="{{$services}}"
                     :wsp_report="{{$wsp_report}}"
                 ></wsp-reporting>

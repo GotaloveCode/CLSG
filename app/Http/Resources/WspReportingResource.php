@@ -24,7 +24,7 @@ class WspReportingResource extends JsonResource
            'challenges_cooment' => $this->challenges_cooment,
            'clsg_total' => $this->clsg_total,
            'expected_activities' => json_decode($this->expected_activities),
-           'operations_costs' => $this->operations_costs,
+           'operations_costs' => json_decode($this->operations_costs),
            'revenue' => $this->revenue,
            'status_of_covid_implementation' => json_decode($this->status_of_covid_implementation),
            'status_of_resolution' => $this->status_of_resolution,

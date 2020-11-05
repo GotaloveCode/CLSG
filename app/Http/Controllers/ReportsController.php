@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EssentialOperationReport;
+use App\Models\Operationcost;
 use App\Models\VulnerableCustomer;
 use App\Models\Service;
 use App\Models\WspReporting;
@@ -219,8 +220,10 @@ class ReportsController extends Controller
         $services = Cache::rememberForever('services', function () {
             return Service::select('id', 'name')->get();
         });
-
-        return view("checklists.wsps.index", compact("wsp_report", "services"));
+        $operationCosts = Cache::rememberForever('operationCosts', function () {
+            return Operationcost::select('id', 'name')->get();
+        });
+        return view("checklists.wsps.index", compact("wsp_report", "services",'operationCosts'));
     }
 
     public function createCslg()
@@ -292,9 +295,11 @@ class ReportsController extends Controller
         $services = Cache::rememberForever('services', function () {
             return Service::select('id', 'name')->get();
         });
-
+        $operationCosts = Cache::rememberForever('operationCosts', function () {
+            return Operationcost::select('id', 'name')->get();
+        });
         $wsp_report = json_encode(new WspReportingResource(WspReporting::find($id)));
-        return view("checklists.wsps.show", compact("wsp_report", "services"));
+        return view("checklists.wsps.show", compact("wsp_report", "services",'operationCosts'));
     }
 
     public function showCslg($id)
@@ -316,8 +321,6 @@ class ReportsController extends Controller
     public function saveWsp(Request $request)
     {
         $status_of_impl = [];
-        $clsg_total = [];
-        $revenue = [];
         $operations_costs = [];
         foreach ($request->get('status_of_covid_implementation') as $value) {
             if ($value['document']) {
@@ -337,38 +340,7 @@ class ReportsController extends Controller
                 ];
             }
         }
-        foreach ($request->get('clsg_total') as $value) {
-            if ($value['document']) {
-                $fileName = $this->saveFileDoc($value['document']);
-                $clsg_total[] = [
-                    'index' => $value['index'],
-                    'amount' => $value['amount'],
-                    'document' => $fileName
-                ];
-            } else {
-                $clsg_total[] = [
-                    'index' => $value['index'],
-                    'amount' => $value['amount'],
-                    'document' => ""
-                ];
-            }
-        }
-        foreach ($request->get('revenue') as $value) {
-            if ($value['document']) {
-                $fileName = $this->saveFileDoc($value['document']);
-                $revenue[] = [
-                    'index' => $value['index'],
-                    'amount' => $value['amount'],
-                    'document' => $fileName
-                ];
-            } else {
-                $revenue[] = [
-                    'index' => $value['index'],
-                    'amount' => $value['amount'],
-                    'document' => ""
-                ];
-            }
-        }
+
         foreach ($request->get('operations_costs') as $value) {
             if ($value['document']) {
                 $fileName = $this->saveFileDoc($value['document']);
@@ -390,8 +362,6 @@ class ReportsController extends Controller
         $request['year'] = $this->getYear();
         $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
         $request['status_of_covid_implementation'] = json_encode($status_of_impl);
-        $request['clsg_total'] = json_encode($clsg_total);
-        $request['revenue'] = json_encode($revenue);
         $request['operations_costs'] = json_encode($operations_costs);
         $request['expected_activities'] = json_encode($request->input("expected_activities"));
 
@@ -477,7 +447,13 @@ class ReportsController extends Controller
     public function printWsp($id)
     {
         $wsp_report = WspReporting::with('bcp')->find($id);
-        $pdf = \PDF::loadView('checklists.wsps.print', compact('wsp_report'));
+        $operationCosts = Cache::rememberForever('operationCosts', function () {
+            return Operationcost::select('id', 'name')->get();
+        });
+        $services = Cache::rememberForever('services', function () {
+            return Service::select('id', 'name')->get();
+        });
+        $pdf = \PDF::loadView('checklists.wsps.print', compact('wsp_report','operationCosts','services'));
         return $pdf->inline();
     }
 

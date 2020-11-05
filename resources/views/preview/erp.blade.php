@@ -2,14 +2,14 @@
     <h4 class="text-center">EMERGENCY RESPONSE PLAN</h4>
     <p>{{ $eoi->date ? $eoi->date->format('d/m/Y') : now()->format('d/m/Y') }}</p>
 
-    <p>A. <b>Coordinator</b></p>
+    <p><b>A. Coordinator</b></p>
     <p>{{$erp->coordinator}}</p>
 
-    <p>B. <b>Period</b></p>
+    <p><b>B. Period</b></p>
     <p>{{$erp->period}}</p>
 
 
-    <p>C. <b>Resource Requirement:</b></p>
+    <p><b>C. Resource Requirement:</b></p>
 
     <table class="table table-bordered table-responsive">
         <thead>
@@ -41,11 +41,11 @@
             <td><b>{{ number_format($erp->erp_items->sum('cost')) }}</b></td>
         </tr>
     </table>
-    <p>D. <b>O&M Costs:</b></p>
+    <p><b>D. O&M Costs:</b></p>
     <table class="table table-bordered table-responsive">
         <thead>
         <tr>
-            <th>COVID-19 Emergency Intervention</th>
+            <th>Type of Service/Item</th>
             <th>Cost(KSHS)</th>
         </tr>
         </thead>

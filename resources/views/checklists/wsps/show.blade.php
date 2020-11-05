@@ -23,6 +23,7 @@
                 <a href="{{ route('wsp-reporting.print',json_decode($wsp_report)->id) }}" style="margin-left: 90%"><i
                         class="feather icon-printer" style="font-size: 20px" title="Print"></i></a>
                 <view-wsp-reporting
+                    :operation-costs="{{ $operationCosts }}"
                     :services="{{$services}}"
                     :wsp_report="{{$wsp_report}}"
                 ></view-wsp-reporting>
