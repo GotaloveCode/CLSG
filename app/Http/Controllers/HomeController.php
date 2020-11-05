@@ -48,4 +48,9 @@ class HomeController extends Controller
                     ->with(compact('notifications', 'notifications_count', 'bcp_pending', 'eoi_pending', 'erp_pending', 'wsp_count', 'eoi_count', 'bcp_count', 'erp_count'));
         }
     }
+
+    public function clsg()
+    {
+        return view('clsg');
+    }
 }

@@ -208,4 +208,5 @@ class BcpController extends Controller
 
         return response()->json(['message' => 'Comment posted successfully']);
     }
+
 }

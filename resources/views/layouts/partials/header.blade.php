@@ -10,8 +10,10 @@
                         <img class="brand-logo" alt="stack admin logo" src="{{ asset('images/logo.png') }}">
                         <h2 class="brand-text">{{ config('app.name', 'CLSG') }}</h2></a>
                 </li>
-                <li class="nav-item d-md-none"><a class="nav-link open-navbar-container" data-toggle="collapse"
-                                                  data-target="#navbar-mobile"><i class="fa fa-ellipsis-v"></i></a></li>
+                <li class="nav-item d-md-none">
+                    <a class="nav-link open-navbar-container" data-toggle="collapse"
+                                                  data-target="#navbar-mobile"><i class="fa fa-ellipsis-v"></i></a>
+                </li>
             </ul>
         </div>
         @auth
@@ -20,7 +22,7 @@
                     <ul class="nav navbar-nav mr-auto float-left">
                         <li class="nav-item d-none d-md-block">
                             <a class="nav-link nav-menu-main menu-toggle hidden-xs"
-                               href="#"><i class="feather icon-menu"></i></a>
+                               href="#" id="burger"><i class="feather icon-menu"></i></a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav float-right">

@@ -12,6 +12,12 @@
                     <span class="menu-title">Dashboard</span>
                 </a>
             </li>
+            <li class=" nav-item">
+                <a href="{{ route('clsg') }}">
+                    <i class="feather icon-award"></i>
+                    <span class="menu-title">CLSG</span>
+                </a>
+            </li>
             <li class="nav-item"><a href="#"><i class="feather icon-edit"></i><span class="menu-title">EOIs</span></a>
                 <ul class="menu-content">
                     @can('create-eoi')
