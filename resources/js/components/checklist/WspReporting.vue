@@ -1,56 +1,206 @@
 <template>
     <div>
-        <div v-html="$error.handle(error)"/>
-        <template v-if="show">
-            <view-wsp-reporting :services="services" :wsp_report="wsp_report"></view-wsp-reporting>
-        </template>
-        <div v-if="!show">
-            <form @submit.prevent="postData()">
-                <div class="row">
-                    <div class="col-md-4 form-group">
-                        <label>Month</label>
-                        <v-select label="name" placeholder="Select Month"
-                                  v-model="form.month" :reduce="c => c.no" :options="mths">
-                        </v-select>
-                    </div>
-                    <div class="col-md-4 form-group">
-                        <label>Year</label>
-                        <input class="form-control" disabled v-model="form.year">
-                    </div>
-                    <div class="col-md-12 form-group">
-                        <div class="card" style="height: 92%">
-                            <div class="card-header">
-                                <p>Status of implementation of COVID-19 emergency interventions (both physical and
-                                    financial progress)</p>
+        <div v-html="$error.handle(error)"></div>
+        <form @submit.prevent="postData()">
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label>Month</label>
+                    <v-select label="name" placeholder="Select Month"
+                              v-model="form.month" :reduce="c => c.no" :options="mths">
+                    </v-select>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label>Year</label>
+                    <input class="form-control" disabled v-model="form.year">
+                </div>
+                <div class="col-md-12 form-group">
+                    <div class="card" style="height: 92%">
+                        <div class="card-header">
+                            <p>Status of implementation of COVID-19 emergency interventions (both physical and
+                                financial progress)</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body" style="padding-top: 0">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <th width="20%">Service</th>
+                                        <th><span class="ml-10">Description</span></th>
+                                        <th>Cost</th>
+                                        <th></th>
+                                    </tr>
+                                    <tr v-for="(item,k) in form.status_of_covid_implementation" :key="k">
+                                        <td>
+                                            <v-select label="name" placeholder="Select Service"
+                                                      v-model="item.service" :reduce="s => s.id"
+                                                      :options="services" style="margin-top: 5px">
+                                            </v-select>
+
+                                        </td>
+                                        <td><textarea class="form-control ml-10 mt-1" v-model="item.description"
+                                                      placeholder="description"></textarea>
+                                        </td>
+                                        <td><input type="number" class="form-control ml-10" v-model="item.cost"
+                                                   placeholder="cost" style="margin-top: 5px;">
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-minus-circle ml-10 fs-20" @click="removeItem(k)"
+                                               v-show="k || ( !k && form.status_of_covid_implementation.length > 1)"></i>
+                                            <i class="fa fa-plus-circle ml-10 fs-20" @click="addItem(k)"
+                                               v-show="k == form.status_of_covid_implementation.length-1"></i>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="card-content">
-                                <div class="card-body" style="padding-top: 0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header pb-0">
+                            <h6>O&M costs this month (KES)</h6>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <th>Service</th>
+                                        <th>Amount</th>
+                                        <th></th>
+                                    </tr>
+                                    <tr v-for="(item,k) in form.operations_costs" :key="k">
+                                        <td>
+                                            <v-select label="name" placeholder="Select Service"
+                                                      v-model="item.id" :reduce="s => s.id"
+                                                      :options="operationCosts" style="margin-top: 5px">
+                                            </v-select>
+
+                                        </td>
+                                        <td>
+                                            <vue-numeric separator="," v-model="item.amount"
+                                                         class="form-control"
+                                                         required></vue-numeric>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-minus-circle ml-10 fs-20" @click="removeOp(k)"
+                                               v-show="k || ( !k && form.operations_costs.length > 1)"></i>
+                                            <i class="fa fa-plus-circle ml-10 fs-20" @click="addOp(k)"
+                                               v-show="k == form.operations_costs.length-1"></i>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label>Revenues collected this month (KES)</label>
+                                        <vue-numeric separator="," v-model="form.revenue" class="form-control"
+                                                     required></vue-numeric>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Total CLSG amount disbursed to date (KES)</label>
+                                        <vue-numeric separator="," v-model="form.clsg_total" class="form-control"
+                                                     required></vue-numeric>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Status of resolution of issues (if any) raised in previous
+                                            performance
+                                            verification reports</label>
+                                        <div class="d-inline-block custom-control custom-radio mr-1">
+                                            <input type="radio" class="custom-control-input"
+                                                   name="status_of_resolution"
+                                                   id="yes" value="1" v-model="form.status_of_resolution">
+                                            <label class="custom-control-label" for="yes">Yes</label>
+                                        </div>
+                                        <div class="d-inline-block custom-control custom-radio mr-1">
+                                            <input type="radio" class="custom-control-input"
+                                                   name="status_of_resolution"
+                                                   id="no" value="0" v-model="form.status_of_resolution">
+                                            <label class="custom-control-label" for="no">No</label>
+                                        </div>
+
+                                        <div class="form-group" v-if="form.status_of_resolution ==1"
+                                             style="margin-top: 4%">
+                                            <label>Comment</label>
+                                            <textarea class="form-control" required
+                                                      v-model="form.status_of_resolution_comment"></textarea>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6 form-group">
+                                        <label>Challenges (if any) encountered during the reporting period and
+                                            mitigation
+                                            measures</label>
+                                        <div class="d-inline-block custom-control custom-radio mr-1">
+                                            <input type="radio" class="custom-control-input" name="challenges"
+                                                   id="yes_1"
+                                                   value="1" v-model="form.challenges">
+                                            <label class="custom-control-label" for="yes_1">Yes</label>
+                                        </div>
+                                        <div class="d-inline-block custom-control custom-radio mr-1">
+                                            <input type="radio" class="custom-control-input" name="challenges"
+                                                   id="no_1"
+                                                   value="0" v-model="form.challenges">
+                                            <label class="custom-control-label" for="no_1">No</label>
+                                        </div>
+
+                                        <div class="form-group" v-if="form.challenges ==1" style="margin-top: 4%">
+                                            <label>Challenges encountered Comment</label>
+                                            <textarea class="form-control" required
+                                                      v-model="form.challenges_comment"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card" style="height: 92%">
+                        <div class="card-header">
+                            <p>Expected activities for the next month (specifying any planned procurement or
+                                contracting)</p>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body" style="padding-top: 0">
+                                <div class="form-group">
                                     <table style="width: 100%">
                                         <tr>
-                                            <th width="20%">Service</th>
+                                            <th width="50%">Activity</th>
                                             <th><span class="ml-10">Description</span></th>
-                                            <th>Cost</th>
                                             <th></th>
                                         </tr>
-                                        <tr v-for="(item,k) in form.status_of_covid_implementation" :key="k">
+                                        <tr v-for="(item,k) in form.expected_activities" :key="k">
                                             <td>
-                                                <v-select label="name" placeholder="Select Service"
-                                                          v-model="item.service" :reduce="s => s.id"
-                                                          :options="services" style="margin-top: 5px">
+                                                <v-select label="name" placeholder="Select Activity"
+                                                          v-model="item.activity" :reduce="s => s.id"
+                                                          :options="services">
                                                 </v-select>
-
                                             </td>
-                                            <td><textarea class="form-control ml-10 mt-1" v-model="item.description"
+                                            <td><textarea class="form-control ml-10 mt-1"
+                                                          v-model="item.description"
                                                           placeholder="description"></textarea>
                                             </td>
-                                            <td><input type="number" class="form-control ml-10" v-model="item.cost"
-                                                       placeholder="cost" style="margin-top: 5px;">
-                                            </td>
+
                                             <td>
-                                                <i class="fa fa-minus-circle ml-10 fs-20" @click="removeItem(k)"
-                                                   v-show="k || ( !k && form.status_of_covid_implementation.length > 1)"></i>
-                                                <i class="fa fa-plus-circle ml-10 fs-20" @click="addItem(k)"
-                                                   v-show="k == form.status_of_covid_implementation.length-1"></i>
+                                                <i class="fa fa-minus-circle ml-10 fs-20" @click="removeActivity(k)"
+                                                   v-show="k || ( !k && form.expected_activities.length > 1)"></i>
+                                                <i class="fa fa-plus-circle ml-10 fs-20" @click="addActivity(k)"
+                                                   v-show="k == form.expected_activities.length-1"></i>
                                             </td>
                                         </tr>
                                     </table>
@@ -59,177 +209,21 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header pb-0">
-                                <h6>O&M costs this month (KES)</h6>
-                            </div>
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <table class="table table-borderless">
-                                        <tr>
-                                            <th>Service</th>
-                                            <th>Amount</th>
-                                            <th></th>
-                                        </tr>
-                                        <tr v-for="(item,k) in form.operations_costs" :key="k">
-                                            <td>
-                                                <v-select label="name" placeholder="Select Service"
-                                                          v-model="item.id" :reduce="s => s.id"
-                                                          :options="operationCosts" style="margin-top: 5px">
-                                                </v-select>
+            <div class="form-group text-center" style="margin-top: 2%">
+                <!--                    <button class="btn btn-warning" v-if="loading" type="button">Sending ... <i-->
+                <!--                        class="feather icon-loader"></i></button>-->
+                <button type="submit" class="btn btn-primary">
+                    Submit <i class="feather icon-send"></i>
+                </button>
 
-                                            </td>
-                                            <td>
-                                                <vue-numeric separator="," v-model="item.amount"
-                                                             class="form-control"
-                                                             required></vue-numeric>
-                                            </td>
-                                            <td>
-                                                <i class="fa fa-minus-circle ml-10 fs-20" @click="removeOp(k)"
-                                                   v-show="k || ( !k && form.operations_costs.length > 1)"></i>
-                                                <i class="fa fa-plus-circle ml-10 fs-20" @click="addOp(k)"
-                                                   v-show="k == form.operations_costs.length-1"></i>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6 form-group">
-                                            <label>Revenues collected this month (KES)</label>
-                                            <vue-numeric separator="," v-model="form.revenue" class="form-control"
-                                                         required></vue-numeric>
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label>Total CLSG amount disbursed to date (KES)</label>
-                                            <vue-numeric separator="," v-model="form.clsg_total" class="form-control"
-                                                         required></vue-numeric>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label>Status of resolution of issues (if any) raised in previous
-                                                performance
-                                                verification reports</label>
-                                            <div class="d-inline-block custom-control custom-radio mr-1">
-                                                <input type="radio" class="custom-control-input"
-                                                       name="status_of_resolution"
-                                                       id="yes" value="1" v-model="form.status_of_resolution">
-                                                <label class="custom-control-label" for="yes">Yes</label>
-                                            </div>
-                                            <div class="d-inline-block custom-control custom-radio mr-1">
-                                                <input type="radio" class="custom-control-input"
-                                                       name="status_of_resolution"
-                                                       id="no" value="0" v-model="form.status_of_resolution">
-                                                <label class="custom-control-label" for="no">No</label>
-                                            </div>
-
-                                            <div class="form-group" v-if="form.status_of_resolution ==1"
-                                                 style="margin-top: 4%">
-                                                <label>Comment</label>
-                                                <textarea class="form-control" required
-                                                          v-model="form.status_of_resolution_comment"></textarea>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-6 form-group">
-                                            <label>Challenges (if any) encountered during the reporting period and
-                                                mitigation
-                                                measures</label>
-                                            <div class="d-inline-block custom-control custom-radio mr-1">
-                                                <input type="radio" class="custom-control-input" name="challenges"
-                                                       id="yes_1"
-                                                       value="1" v-model="form.challenges">
-                                                <label class="custom-control-label" for="yes_1">Yes</label>
-                                            </div>
-                                            <div class="d-inline-block custom-control custom-radio mr-1">
-                                                <input type="radio" class="custom-control-input" name="challenges"
-                                                       id="no_1"
-                                                       value="0" v-model="form.challenges">
-                                                <label class="custom-control-label" for="no_1">No</label>
-                                            </div>
-
-                                            <div class="form-group" v-if="form.challenges ==1" style="margin-top: 4%">
-                                                <label>Challenges encountered Comment</label>
-                                                <textarea class="form-control" required
-                                                          v-model="form.challenges_comment"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card" style="height: 92%">
-                            <div class="card-header">
-                                <p>Expected activities for the next month (specifying any planned procurement or
-                                    contracting)</p>
-                            </div>
-                            <div class="card-content">
-                                <div class="card-body" style="padding-top: 0">
-                                    <div class="form-group">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <th width="50%">Activity</th>
-                                                <th><span class="ml-10">Description</span></th>
-                                                <th></th>
-                                            </tr>
-                                            <tr v-for="(item,k) in form.expected_activities" :key="k">
-                                                <td>
-                                                    <v-select label="name" placeholder="Select Activity"
-                                                              v-model="item.activity" :reduce="s => s.id"
-                                                              :options="services">
-                                                    </v-select>
-                                                </td>
-                                                <td><textarea class="form-control ml-10 mt-1"
-                                                              v-model="item.description"
-                                                              placeholder="description"></textarea>
-                                                </td>
-
-                                                <td>
-                                                    <i class="fa fa-minus-circle ml-10 fs-20" @click="removeActivity(k)"
-                                                       v-show="k || ( !k && form.expected_activities.length > 1)"></i>
-                                                    <i class="fa fa-plus-circle ml-10 fs-20" @click="addActivity(k)"
-                                                       v-show="k == form.expected_activities.length-1"></i>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group text-center" style="margin-top: 2%">
-                    <!--                    <button class="btn btn-warning" v-if="loading" type="button">Sending ... <i-->
-                    <!--                        class="feather icon-loader"></i></button>-->
-                    <button type="submit" class="btn btn-primary">
-                        Submit <i class="feather icon-send"></i>
-                    </button>
-
-                </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </template>
 
 <script>
-import ViewWspReporting from "./ViewWspReporting";
 import moment from "moment";
 import months from "../months";
 
@@ -256,8 +250,7 @@ export default {
                 status_of_covid_implementation: [{service: '', description: '', cost: '', document: ''}],
                 expected_activities: [{activity: '', description: ''}]
             },
-            loading: false,
-            show: false
+            loading: false
         }
     },
     created() {
@@ -272,7 +265,6 @@ export default {
             }
             this.mths = months.filter(x => allowed.includes(x.no));
             if (this.wsp_report) {
-                // this.show = true;
                 this.form.revenue = this.wsp_report.revenue;
                 this.form.month = this.wsp_report.month;
                 this.form.year = this.wsp_report.year;
@@ -391,9 +383,6 @@ export default {
                 }
             }
         },
-    },
-    components: {
-        ViewWspReporting
     }
 }
 </script>
