@@ -56,7 +56,7 @@ class WspReportingController extends Controller
         $operationCosts = Cache::rememberForever('operationCosts', function () {
             return Operationcost::select('id', 'name')->get();
         });
-        $exiting_wsp ? $attachments = $exiting_wsp->attachments : null;
+        $exiting_wsp ? $attachments = $exiting_wsp->attachments : [];
         return view("checklists.wsps.create", compact("wsp_report", "attachments", "services", "operationCosts"));
     }
 
