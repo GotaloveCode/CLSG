@@ -48,7 +48,7 @@ class WspReportingController extends Controller
 
     public function create()
     {
-        $exiting_wsp = WspReporting::where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->latest()->first();
+        $exiting_wsp = WspReporting::where('bcp_id', auth()->user()->wsps()->first()->bcp->id)->latest()->first();
         $exiting_wsp ? $wsp_report = json_encode(new WspReportingResource($exiting_wsp)) : $wsp_report = null;
         $services = Cache::rememberForever('services', function () {
             return Service::select('id', 'name')->get();
