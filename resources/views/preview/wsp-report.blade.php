@@ -1,7 +1,7 @@
 <h4 class="text-center">WSP MONTHLY REPORTING</h4>
 <br>
 <p>Name of WSP: <b>{{$wsp_report->bcp->wsp->name}}</b></p>
-<p>Reporting period (month): <b>{{\DateTime::createFromFormat("!m",$wsp_report->month)->format("F")}}</b></p>
+<p>Reporting period (month): <b>{{\DateTime::createFromFormat("!m",$wsp_report->month)->format("F")}} {{ $wsp_report->year }}</b></p>
 <p>Revenues collected this month (KES): <b>{{$wsp_report->revenue}}</b></p>
 <p>Total CLSG amount disbursed to date (KES): <b>{{$wsp_report->clsg_total}}</b></p>
 
