@@ -100,7 +100,7 @@ class ReportsController extends Controller
     public function cslgIndex()
     {
         if (!request()->ajax()) {
-            return view('checklists.cslg.list');
+            return view('checklists.cslg.index');
         }
         $reporting = CslgResource::collection(CslgCalculation::get());
 
@@ -247,7 +247,7 @@ class ReportsController extends Controller
         if (!$erp) return redirect()->back()->with('success', 'Please ensure you have created ERP first');
         $grant = $erp->erp_items->sum('cost');
 
-        return view("checklists.cslg.index", compact("cslg", "operations", 'grant'));
+        return view("checklists.cslg.create", compact("cslg", "operations", 'grant'));
     }
 
     public function createStaff()
