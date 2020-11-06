@@ -91,7 +91,7 @@
                 <ul class="menu-content">
                     <li><a class="menu-item" href="#" data-i18n="Page Layouts">Monthly WSP</a>
                         <ul class="menu-content">
-                            <li><a class="menu-item" href="{{ route('wsp-reporting.list')}}" data-i18n="General">General</a>
+                            <li><a class="menu-item" href="{{ route('wsp-reporting.index')}}" data-i18n="General">General</a>
                             </li>
                             @can('create-bcp')
                             @endcan

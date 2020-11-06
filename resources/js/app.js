@@ -26,7 +26,6 @@ const ViewEssentialOperation = () => import('./components/checklist/ViewEssentia
 const VulnerableCustomer = () => import('./components/checklist/VulnerableCustomer' /* webpackChunkName: "js/components/checklist/vulnerable-customer" */);
 const ViewVulnerableCustomer = () => import('./components/checklist/ViewVulnerableCustomer' /* webpackChunkName: "js/components/checklist/view-vulnerable-customer" */);
 const WspReporting = () => import('./components/checklist/WspReporting' /* webpackChunkName: "js/components/checklist/wsps-reporting" */);
-const ViewWspReporting = () => import('./components/checklist/ViewWspReporting' /* webpackChunkName: "js/components/checklist/view-wsps-reporting" */);
 const CslgCalculation = () => import('./components/checklist/CslgCalculation' /* webpackChunkName: "js/components/checklists/cslg-calculation" */);
 const ViewCslgCalculation = () => import('./components/checklist/ViewCslgCalculation' /* webpackChunkName: "js/components/checklists/view-cslg-calculation" */);
 const ApproveClgCalculation = () => import('./components/checklist/ApproveClgCalculation' /* webpackChunkName: "js/components/checklists/approve-cslg-calculation" */);
@@ -58,7 +57,6 @@ const app = new Vue({
         VulnerableCustomer,
         ViewVulnerableCustomer,
         WspReporting,
-        ViewWspReporting,
         CslgCalculation,
         ViewCslgCalculation,
         StaffHealth,

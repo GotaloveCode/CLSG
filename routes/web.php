@@ -96,16 +96,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get("/performance-score-card-show/{id}","ReportsController@showCard")->name('performance-score-card.show');
 
         //Wsp Reporting Monthly
-        Route::get("/wsp-reporting-list","ReportsController@wspIndex")->name('wsp-reporting.list');
-        Route::post("/wsp-reporting","ReportsController@saveWsp");
+//        Route::get("/wsp-reporting-list","ReportsController@wspIndex")->name('wsp-reporting.list');
         Route::get("/wsp-reporting/print/{id}","ReportsController@printWsp")->name('wsp-reporting.print');
         Route::get("/wsp-reporting-attachments","ReportsController@attachmentIndex")->name("wsp-reporting-attachments.list");
-        Route::post("/wsp-reporting-attachments","ReportsController@saveWspAttachment")->name("wsp-reporting-attachments.store");
-        Route::get("/wsp-reporting-attachments/{wsp}","ReportsController@showAttachment")->name("wsp-reporting-attachments.show");
-        Route::get("/wsp-reporting-show/{id}","ReportsController@showWsp")->name("wsp-reporting.show");
-        Route::get("/wsp-reporting/create","ReportsController@createWsp")->name("wsp-reporting.create");
-        Route::get("/wsp-reporting/create","ReportsController@createWsp")->name("wsp-reporting.create");
-        Route::delete('/attachments/{attachment}', 'ReportsController@destroyFile')->name('wsp-reporting.attachments.destroy');
+//        Route::get("/wsp-reporting-show/{id}","ReportsController@showWsp")->name("wsp-reporting.show");
 
         //Cslg Calculation
         Route::get("/cslg-calculation-list","ReportsController@CslgIndex")->name('cslg-calculation.list');
@@ -114,6 +108,17 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get("/cslg-calculation-show/{id}","ReportsController@showCslg")->name("cslg-calculation.show");
         Route::get("/cslg-calculation/create","ReportsController@createCslg")->name("cslg-calculation.create");
     });
+
+    Route::resource('wsp-reporting', 'WspReportingController');
+    Route::group(['prefix' => 'wsp-reporting'], function () {
+        Route::post("/{report}/attachments", "WspReportingAttachmentController@store")->name("wsp-reporting.attachments.store");
+        Route::get('/attachments/{filename}', 'WspReportingAttachmentController@show')->name('wsp-reporting.attachments.show');
+        Route::delete('/attachments/{attachment}', 'WspReportingAttachmentController@destroy')->name('wsp-reporting.attachments.destroy');
+        Route::post('{report}/review', 'WspReportingController@review')->name('wsp-reporting.review');
+        Route::post('{report}/comment', 'WspReportingController@comment')->name('wsp-reporting.comment');
+    });
+
+//    Route::post("/wsp-reporting","ReportsController@saveWsp");
 
     Route::resource('staff', 'StaffController');
 

@@ -24,7 +24,7 @@ export function Errors() {
             }
 
             if (error.status == 403) {
-                return this._handle('User Does not have proper permissions!');
+                return this._handle(error.data.message);
             }
 
             if (error.status == 400) {

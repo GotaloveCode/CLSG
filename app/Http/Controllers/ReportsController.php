@@ -12,7 +12,6 @@ use App\Models\StaffHealth;
 use App\Models\PerformanceScore;
 use App\Models\BcpChecklist;
 use App\Models\Erp;
-use App\Models\Attachment;
 use Illuminate\Http\Request;
 use App\Http\Resources\EssentialReportResource;
 use App\Http\Resources\VulnerableCustomerResource;
@@ -31,45 +30,6 @@ class ReportsController extends Controller
 {
     use FilesTrait, PeriodTrait;
 
-
-    public function showAttachment($filename)
-    {
-        return $this->showFile(storage_path('app/WspReporting/' . $filename));
-    }
-
-    public function destroyFile(Attachment $attachment)
-    {
-
-        return $this->deleteAttachment($attachment, 'app/Bcp/');
-    }
-
-    public function wspIndex()
-    {
-        if (!request()->ajax()) {
-            return view('checklists.wsps.list');
-        }
-
-        $wsp = auth()->user()->wsps()->first();
-
-        if ($wsp) {
-            if ($wsp->bcp) {
-                $reporting = WspReporting::where('bcp_id', $wsp->bcp->id)->get();
-            } else {
-                $reporting = [];
-            }
-        } else {
-            $reporting = WspReporting::get();
-        }
-
-        $reporting = WspReportingResource::collection($reporting);
-
-        return Datatables::of($reporting)
-            ->addColumn('action', function ($reporting) {
-                return '<a href="' . route("wsp-reporting.show", $reporting['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
-            })
-            ->make(true);
-
-    }
 
     public function cardIndex()
     {
@@ -213,18 +173,6 @@ class ReportsController extends Controller
         return view("checklists.customer.index", compact("items", "customer"));
     }
 
-    public function createWsp()
-    {
-        $exiting_wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-        $exiting_wsp ? $wsp_report = json_encode(new WspReportingResource($exiting_wsp)) : $wsp_report = json_encode([]);
-        $services = Cache::rememberForever('services', function () {
-            return Service::select('id', 'name')->get();
-        });
-        $operationCosts = Cache::rememberForever('operationCosts', function () {
-            return Operationcost::select('id', 'name')->get();
-        });
-        return view("checklists.wsps.index", compact("wsp_report", "services",'operationCosts'));
-    }
 
     public function createCslg()
     {
@@ -290,18 +238,6 @@ class ReportsController extends Controller
         return view("checklists.staff.show", compact("checklist", "staff"));
     }
 
-    public function showWsp($id)
-    {
-        $services = Cache::rememberForever('services', function () {
-            return Service::select('id', 'name')->get();
-        });
-        $operationCosts = Cache::rememberForever('operationCosts', function () {
-            return Operationcost::select('id', 'name')->get();
-        });
-        $wsp_report = json_encode(new WspReportingResource(WspReporting::find($id)));
-        return view("checklists.wsps.show", compact("wsp_report", "services",'operationCosts'));
-    }
-
     public function showCslg($id)
     {
         $item = CslgCalculation::find($id);
@@ -318,56 +254,6 @@ class ReportsController extends Controller
         return view("checklists.performance.show", compact("score"));
     }
 
-    public function saveWsp(Request $request)
-    {
-        $status_of_impl = [];
-        $operations_costs = [];
-        foreach ($request->get('status_of_covid_implementation') as $value) {
-            if ($value['document']) {
-                $fileName = $this->saveFileDoc($value['document']);
-                $status_of_impl[] = [
-                    'service' => $value['service'],
-                    'description' => $value['description'],
-                    'cost' => $value['cost'],
-                    'document' => $fileName
-                ];
-            } else {
-                $status_of_impl[] = [
-                    'service' => $value['service'],
-                    'description' => $value['description'],
-                    'cost' => $value['cost'],
-                    'document' => ""
-                ];
-            }
-        }
-
-        foreach ($request->get('operations_costs') as $value) {
-            if ($value['document']) {
-                $fileName = $this->saveFileDoc($value['document']);
-                $operations_costs[] = [
-                    'id' => $value['id'],
-                    'amount' => $value['amount'],
-                    'document' => $fileName
-                ];
-            } else {
-                $operations_costs[] = [
-                    'id' => $value['id'],
-                    'amount' => $value['amount'],
-                    'document' => ""
-                ];
-            }
-        }
-
-        $request['month'] = $this->getMonth();
-        $request['year'] = $this->getYear();
-        $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
-        $request['status_of_covid_implementation'] = json_encode($status_of_impl);
-        $request['operations_costs'] = json_encode($operations_costs);
-        $request['expected_activities'] = json_encode($request->input("expected_activities"));
-
-        $reporting = WspReporting::create($request->all());
-        return response()->json($reporting);
-    }
 
     public function saveFileDoc($base64_image)
     {

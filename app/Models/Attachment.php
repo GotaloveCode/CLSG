@@ -12,6 +12,8 @@ class Attachment extends Model
 
     protected $fillable = ['name', 'display_name', 'document_type'];
 
+    protected $dates = ['created_at', 'updated_at'];
+
     public function attachable()
     {
         return $this->morphTo();

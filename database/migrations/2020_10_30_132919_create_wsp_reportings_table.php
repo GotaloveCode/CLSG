@@ -28,6 +28,7 @@ class CreateWspReportingsTable extends Migration
             $table->text("status_of_resolution_comment")->nullable();
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->unsignedInteger('bcp_id');
+            $table->string('status')->default('Pending');
             $table->timestamps();
         });
     }

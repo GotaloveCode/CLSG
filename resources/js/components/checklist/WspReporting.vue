@@ -40,8 +40,8 @@
                                                 </v-select>
 
                                             </td>
-                                            <td><input type="text" class="form-control ml-10" v-model="item.description"
-                                                       placeholder="description" style="margin-top: 5px;">
+                                            <td><textarea class="form-control ml-10 mt-1" v-model="item.description"
+                                                          placeholder="description"></textarea>
                                             </td>
                                             <td><input type="number" class="form-control ml-10" v-model="item.cost"
                                                        placeholder="cost" style="margin-top: 5px;">
@@ -195,9 +195,9 @@
                                                               :options="services">
                                                     </v-select>
                                                 </td>
-                                                <td><input type="text" class="form-control ml-10"
-                                                           v-model="item.description"
-                                                           placeholder="description" style="margin-top: 5px;">
+                                                <td><textarea class="form-control ml-10 mt-1"
+                                                              v-model="item.description"
+                                                              placeholder="description"></textarea>
                                                 </td>
 
                                                 <td>
@@ -271,8 +271,35 @@ export default {
                 this.form.month = moment().month() - 1;
             }
             this.mths = months.filter(x => allowed.includes(x.no));
-            if (this.wsp_report.id != undefined) {
-                this.show = true;
+            if (this.wsp_report) {
+                // this.show = true;
+                this.form.revenue = this.wsp_report.revenue;
+                this.form.month = this.wsp_report.month;
+                this.form.year = this.wsp_report.year;
+                this.form.clsg_total = this.wsp_report.clsg_total;
+                this.form.challenges = this.wsp_report.challenges;
+                this.form.challenges_comment = this.wsp_report.challenges_comment;
+                this.form.status_of_resolution = this.wsp_report.status_of_resolution;
+                this.form.status_of_resolution_comment = this.wsp_report.status_of_resolution_comment;
+                this.form.status_of_resolution_comment = this.wsp_report.status_of_resolution_comment;
+                this.form.status_of_covid_implementation = [];
+                this.wsp_report.status_of_covid_implementation.forEach(x => {
+                    this.form.status_of_covid_implementation.push({
+                        service: x.service, description: x.description, cost: x.cost, document: x.document
+                    })
+                });
+                this.form.expected_activities = [];
+                this.wsp_report.expected_activities.forEach(x => {
+                    this.form.expected_activities.push({
+                        activity: x.activity, description: x.description
+                    })
+                });
+                this.form.operations_costs = [];
+                this.wsp_report.operations_costs.forEach(x => {
+                    this.form.operations_costs.push({
+                        id: x.id, amount: x.amount, description: x.description
+                    })
+                });
             }
         },
         removeItem(i) {
@@ -306,8 +333,16 @@ export default {
 
             this.error = '';
             this.loading = true;
-            axios.post("/reports/wsp-reporting", this.form).then(() => {
-                window.location.href = "/reports/wsp-reporting-list"
+            axios.post("/wsp-reporting", this.form).then(() => {
+                this.$swal({
+                    title: 'Success',
+                    text: "WSP Monthly reported created successfully! Proceed to add attachments!!",
+                    icon: 'success'
+                }).then((result) => {
+                    if (result.value) {
+                        location.reload();
+                    }
+                });
             }).catch(error => {
                 this.error = error.response;
             });
