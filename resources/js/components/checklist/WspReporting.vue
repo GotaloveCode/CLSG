@@ -306,16 +306,14 @@ export default {
         },
         addOp() {
             this.form.operations_costs.push({id: '', amount: '', document: ''});
-
         },
         removeActivity(i) {
             this.form.expected_activities.splice(i, 1);
         },
         addActivity() {
             this.form.expected_activities.push({activity: '', description: ''});
-
         },
-        postData() {
+        onSubmit() {
             let activities = this.validateActivities();
             if (activities === "empty") return this.$toastr.e("Activities fields cannot be empty.");
             if (!activities) return this.$toastr.e("All activities fields are required.");
@@ -325,6 +323,9 @@ export default {
 
             this.error = '';
             this.loading = true;
+            this.wsp_report ? this.updateData() : this.postData();
+        },
+        postData() {
             axios.post("/wsp-reporting", this.form).then(() => {
                 this.$swal({
                     title: 'Success',
@@ -338,9 +339,22 @@ export default {
             }).catch(error => {
                 this.error = error.response;
             });
-
         },
-
+        updateData() {
+            axios.put("/wsp-reporting/" + this.wsp_report.id, this.form).then(() => {
+                this.$swal({
+                    title: 'Success',
+                    text: "WSP Monthly report updated successfully!Dont forget to post supporting documents as attachments",
+                    icon: 'success'
+                }).then((result) => {
+                    if (result.value) {
+                        location.reload();
+                    }
+                });
+            }).catch(error => {
+                this.error = error.response;
+            });
+        },
         validateImplemetationStatus() {
             let empty_field = false;
             if (this.form.status_of_covid_implementation[0]["service"] == "") {

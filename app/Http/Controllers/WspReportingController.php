@@ -97,6 +97,35 @@ class WspReportingController extends Controller
         return response()->json($reporting);
     }
 
+    public function update(Request $request, WspReporting $wsp_reporting)
+    {
+        $status_of_impl = [];
+        $operations_costs = [];
+        foreach ($request->get('status_of_covid_implementation') as $value) {
+            $status_of_impl[] = [
+                'service' => $value['service'],
+                'description' => $value['description'],
+                'cost' => $value['cost']
+            ];
+        }
+
+        foreach ($request->get('operations_costs') as $value) {
+            $operations_costs[] = [
+                'id' => $value['id'],
+                'amount' => $value['amount']
+            ];
+        }
+        $wsp_reporting->update([
+            'month' => $request->month,
+            'year' => $request->year,
+            'status_of_covid_implementation' => json_encode($status_of_impl),
+            'operations_costs' => json_encode($operations_costs),
+            'expected_activities' => json_encode($request->input("expected_activities")),
+            'status' => "Pending",
+        ]);
+        return response()->json($wsp_reporting);
+    }
+
     public function show($wsp_reporting)
     {
         $report = WspReporting::find($wsp_reporting);

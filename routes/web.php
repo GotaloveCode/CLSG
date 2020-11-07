@@ -67,49 +67,49 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
     });
 
-    Route::group(['prefix' => 'reports'],function (){
+    Route::group(['prefix' => 'reports'], function () {
         //Essentials
-        Route::post("/essential-operation","ReportsController@saveEssential");
-        Route::get("/essential-operation-print/{id}","ReportsController@printEssential")->name('essential-operation.print');
-        Route::get("/essential-operation-list","ReportsController@essentialIndex")->name('essential-operation.list');
-        Route::get("/essential-operation/create","ReportsController@createEssential")->name('essential-operation.create');
-        Route::get("/essential-operation-show/{id}","ReportsController@showEssentialOperation")->name('essential-operation.show');//Essentials
+        Route::post("/essential-operation", "ReportsController@saveEssential");
+        Route::get("/essential-operation-print/{id}", "ReportsController@printEssential")->name('essential-operation.print');
+        Route::get("/essential-operation-list", "ReportsController@essentialIndex")->name('essential-operation.list');
+        Route::get("/essential-operation/create", "ReportsController@createEssential")->name('essential-operation.create');
+        Route::get("/essential-operation-show/{id}", "ReportsController@showEssentialOperation")->name('essential-operation.show');//Essentials
 
         //Vulnerable customers
-        Route::post("/vulnerable-customer","ReportsController@saveCustomer");
-        Route::get("/vulnerable-customer-print/{id}","ReportsController@printCustomer")->name('vulnerable-customer.print');
-        Route::get("/vulnerable-customer-list","ReportsController@customerIndex")->name('vulnerable-customer.list');
-        Route::get("/vulnerable-customer/create","ReportsController@createCustomer")->name('vulnerable-customer.create');
-        Route::get("/vulnerable-customer-show/{id}","ReportsController@showCustomer")->name('vulnerable-customer.show'); //Vulnerable customers & staff
+        Route::post("/vulnerable-customer", "ReportsController@saveCustomer");
+        Route::get("/vulnerable-customer-print/{id}", "ReportsController@printCustomer")->name('vulnerable-customer.print');
+        Route::get("/vulnerable-customer-list", "ReportsController@customerIndex")->name('vulnerable-customer.list');
+        Route::get("/vulnerable-customer/create", "ReportsController@createCustomer")->name('vulnerable-customer.create');
+        Route::get("/vulnerable-customer-show/{id}", "ReportsController@showCustomer")->name('vulnerable-customer.show'); //Vulnerable customers & staff
 
         // Staff Health
-        Route::post("/staff-health","ReportsController@saveStaff");
-        Route::get("/staff-health-list","ReportsController@staffIndex")->name('staff-health.list');
-        Route::get("/staff-health/create","ReportsController@createStaff")->name('staff-health.create');
-        Route::get("/staff-health-show/{id}","ReportsController@showStaff")->name('staff-health.show');
+        Route::post("/staff-health", "ReportsController@saveStaff");
+        Route::get("/staff-health-list", "ReportsController@staffIndex")->name('staff-health.list');
+        Route::get("/staff-health/create", "ReportsController@createStaff")->name('staff-health.create');
+        Route::get("/staff-health-show/{id}", "ReportsController@showStaff")->name('staff-health.show');
 
         // Performance Scorecard
-        Route::post("/performance-score-card","ReportsController@saveCard");
-        Route::get("/performance-score-card-print/{id}","ReportsController@printCard")->name('performance-score-card.print');
-        Route::get("/performance-score-card-list","ReportsController@cardIndex")->name('performance-score-card.list');
-        Route::get("/performance-score-card/create","ReportsController@createCard")->name('performance-score-card.create');
-        Route::get("/performance-score-card-show/{id}","ReportsController@showCard")->name('performance-score-card.show');
+        Route::post("/performance-score-card", "ReportsController@saveCard");
+        Route::get("/performance-score-card-print/{id}", "ReportsController@printCard")->name('performance-score-card.print');
+        Route::get("/performance-score-card-list", "ReportsController@cardIndex")->name('performance-score-card.list');
+        Route::get("/performance-score-card/create", "ReportsController@createCard")->name('performance-score-card.create');
+        Route::get("/performance-score-card-show/{id}", "ReportsController@showCard")->name('performance-score-card.show');
 
         //Wsp Reporting Monthly
 //        Route::get("/wsp-reporting-list","ReportsController@wspIndex")->name('wsp-reporting.list');
-        Route::get("/wsp-reporting/print/{id}","ReportsController@printWsp")->name('wsp-reporting.print');
-        Route::get("/wsp-reporting-attachments","ReportsController@attachmentIndex")->name("wsp-reporting-attachments.list");
+        Route::get("/wsp-reporting/print/{id}", "ReportsController@printWsp")->name('wsp-reporting.print');
+        Route::get("/wsp-reporting-attachments", "ReportsController@attachmentIndex")->name("wsp-reporting-attachments.list");
 //        Route::get("/wsp-reporting-show/{id}","ReportsController@showWsp")->name("wsp-reporting.show");
 
         //Cslg Calculation
-        Route::get("/cslg-calculation-list","ReportsController@CslgIndex")->name('cslg-calculation.list');
-        Route::post("/cslg-calculation","ReportsController@saveCslg");
-        Route::post("/cslg-calculation/approve","ReportsController@approveCslg");
-        Route::get("/cslg-calculation-show/{id}","ReportsController@showCslg")->name("cslg-calculation.show");
-        Route::get("/cslg-calculation/create","ReportsController@createCslg")->name("cslg-calculation.create");
+        Route::get("/cslg-calculation-list", "ReportsController@CslgIndex")->name('cslg-calculation.list');
+        Route::post("/cslg-calculation", "ReportsController@saveCslg");
+        Route::post("/cslg-calculation/approve", "ReportsController@approveCslg");
+        Route::get("/cslg-calculation-show/{id}", "ReportsController@showCslg")->name("cslg-calculation.show");
+        Route::get("/cslg-calculation/create", "ReportsController@createCslg")->name("cslg-calculation.create");
     });
 
-    Route::resource('wsp-reporting', 'WspReportingController');
+    Route::resource('wsp-reporting', 'WspReportingController')->except('edit', 'destroy');
     Route::group(['prefix' => 'wsp-reporting'], function () {
         Route::post("/{report}/attachments", "WspReportingAttachmentController@store")->name("wsp-reporting.attachments.store");
         Route::get('/attachments/{filename}', 'WspReportingAttachmentController@show')->name('wsp-reporting.attachments.show');
