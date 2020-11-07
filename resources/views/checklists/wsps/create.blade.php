@@ -54,6 +54,7 @@
                         </div>
                     </div>
                 </div>
+{{--            TODO: add mitigation costs to potential risks ?--}}
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">

@@ -99,34 +99,6 @@ class ReportsController extends Controller
     }
 
 
-    public function essentialIndex()
-    {
-        if (!request()->ajax()) {
-            return view('checklists.essential.list');
-        }
-
-        $wsp = auth()->user()->wsps()->first();
-
-        if ($wsp) {
-            if ($wsp->bcp) {
-                $essential = EssentialOperationReport::where('bcp_id', $wsp->bcp->id)->get();
-            } else {
-                $essential = [];
-            }
-        } else {
-            $essential = EssentialOperationReport::get();
-        }
-
-        $essential = EssentialReportResource::collection($essential);
-
-        return Datatables::of($essential)
-            ->addColumn('action', function ($essential) {
-                return '<a href="' . route("essential-operation.show", $essential['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
-            })
-            ->make(true);
-
-    }
-
     public function customerIndex()
     {
         if (!request()->ajax()) {
@@ -154,15 +126,6 @@ class ReportsController extends Controller
             ->make(true);
     }
 
-
-    public function createEssential()
-    {
-        $exiting_essential = EssentialOperationReport::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-        $exiting_essential ? $essential_item = json_encode(new VulnerableCustomerResource($exiting_essential)) : $essential_item = json_encode([]);
-        $items = json_encode(BcpChecklist::all());
-
-        return view("checklists.essential.index", compact("items", "essential_item"));
-    }
 
     public function createCustomer()
     {
@@ -216,12 +179,6 @@ class ReportsController extends Controller
         return view("checklists.performance.index", compact("score"));
     }
 
-    public function showEssentialOperation($id)
-    {
-        $essential = json_encode(new EssentialReportResource(EssentialOperationReport::find($id)));
-        $items = json_encode(BcpChecklist::all());
-        return view("checklists.essential.show", compact("essential", "items"));
-    }
 
     public function showCustomer($id)
     {
@@ -273,16 +230,6 @@ class ReportsController extends Controller
 
     }
 
-    public function saveEssential(Request $request)
-    {
-        $format = EssentialOperationReport::create([
-            'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
-            'details' => json_encode($request->input("details")),
-            'month' => $this->getMonth(),
-            'year' => $this->getYear(),
-        ]);
-        return response()->json($format);
-    }
 
     public function saveCustomer(Request $request)
     {

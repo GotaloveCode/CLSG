@@ -67,14 +67,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
     });
 
-    Route::group(['prefix' => 'reports'], function () {
-        //Essentials
-        Route::post("/essential-operation", "ReportsController@saveEssential");
-        Route::get("/essential-operation-print/{id}", "ReportsController@printEssential")->name('essential-operation.print');
-        Route::get("/essential-operation-list", "ReportsController@essentialIndex")->name('essential-operation.list');
-        Route::get("/essential-operation/create", "ReportsController@createEssential")->name('essential-operation.create');
-        Route::get("/essential-operation-show/{id}", "ReportsController@showEssentialOperation")->name('essential-operation.show');//Essentials
 
+    Route::group(['prefix' => 'reports'], function () {
         //Vulnerable customers
         Route::post("/vulnerable-customer", "ReportsController@saveCustomer");
         Route::get("/vulnerable-customer-print/{id}", "ReportsController@printCustomer")->name('vulnerable-customer.print');
@@ -118,10 +112,18 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{report}/comment', 'WspReportingController@comment')->name('wsp-reporting.comment');
     });
 
-//    Route::post("/wsp-reporting","ReportsController@saveWsp");
+    Route::resource('essential-operation', 'EssentialReportController')->except('edit', 'destroy');
+//    Route::get("/essential-operation-print/{id}", "ReportsController@printEssential")->name('essential-operation.print');
+
+    Route::group(['prefix' => 'essential-operation'], function () {
+//        Route::post("/{report}/attachments", "WspReportingAttachmentController@store")->name("wsp-reporting.attachments.store");
+//        Route::get('/attachments/{filename}', 'WspReportingAttachmentController@show')->name('wsp-reporting.attachments.show');
+//        Route::delete('/attachments/{attachment}', 'WspReportingAttachmentController@destroy')->name('wsp-reporting.attachments.destroy');
+//        Route::post('{report}/review', 'WspReportingController@review')->name('wsp-reporting.review');
+//        Route::post('{report}/comment', 'WspReportingController@comment')->name('wsp-reporting.comment');
+    });
 
     Route::resource('staff', 'StaffController');
-
     Route::resource('notifications', 'NotificationController')->only('index', 'update', 'store');
 
 });

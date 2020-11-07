@@ -104,8 +104,8 @@ export default {
             this.error = '';
             this.loading = true;
 
-            axios.post("/reports/essential-operation", data).then(() => {
-                window.location.href = "/reports/essential-operation-list"
+            axios.post("/essential-operation", data).then(() => {
+                window.location.href = "/essential-operation-list"
             }).catch(error => {
                 this.error = error.response;
             });
