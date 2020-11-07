@@ -17,7 +17,7 @@ class VulnerableCustomerResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'customer_details' => json_decode($this->customer_details),
+            'details' => json_decode($this->details),
             'wsp' => $this->bcp()->first()->wsp->name,
             'month' => \DateTime::createFromFormat("!m",$this->month)->format("F"),
             'year' => $this->year,

@@ -98,45 +98,6 @@ class ReportsController extends Controller
             ->make(true);
     }
 
-
-    public function customerIndex()
-    {
-        if (!request()->ajax()) {
-            return view('checklists.customer.list');
-        }
-
-        $wsp = auth()->user()->wsps()->first();
-
-        if ($wsp) {
-            if ($wsp->bcp) {
-                $customer = VulnerableCustomer::where('bcp_id', $wsp->bcp->id)->get();
-            } else {
-                $customer = [];
-            }
-        } else {
-            $customer = VulnerableCustomer::get();
-        }
-
-        $customer = VulnerableCustomerResource::collection($customer);
-
-        return Datatables::of($customer)
-            ->addColumn('action', function ($customer) {
-                return '<a href="' . route("vulnerable-customer.show", $customer['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
-            })
-            ->make(true);
-    }
-
-
-    public function createCustomer()
-    {
-        $exiting_customer = VulnerableCustomer::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-        $exiting_customer ? $customer = json_encode(new VulnerableCustomerResource($exiting_customer)) : $customer = json_encode([]);
-        $items = json_encode(BcpChecklist::all());
-
-        return view("checklists.customer.index", compact("items", "customer"));
-    }
-
-
     public function createCslg()
     {
         $exiting_cslg = CslgCalculation::where("month", $this->getMonth())
@@ -177,14 +138,6 @@ class ReportsController extends Controller
         $wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         if (!$wsp) return redirect()->back()->with("success", "Please ensure you have have filled in the general checklist form first");
         return view("checklists.performance.index", compact("score"));
-    }
-
-    public function showCustomer($id)
-    {
-        $checklist = json_encode(new VulnerableCustomerResource(VulnerableCustomer::find($id)));
-        $customers = json_encode(BcpChecklist::where("type", "Vulnerable Customers")->get());
-        $staff = json_encode(BcpChecklist::where("type", "Staff Health Protection")->get());
-        return view("checklists.customer.show", compact("customers", "checklist", "staff"));
     }
 
     public function showStaff($id)
@@ -229,17 +182,6 @@ class ReportsController extends Controller
 
     }
 
-
-    public function saveCustomer(Request $request)
-    {
-        $customer = VulnerableCustomer::create([
-            'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
-            'customer_details' => json_encode($request->input("customer_details")),
-            'month' => $this->getMonth(),
-            'year' => $this->getYear(),
-        ]);
-        return response()->json($customer);
-    }
 
     public function saveStaff(Request $request)
     {
@@ -293,14 +235,6 @@ class ReportsController extends Controller
     {
         $score = PerformanceScore::with('bcp')->find($id);
         $pdf = \PDF::loadView('checklists.performance.print', compact('score'));
-        return $pdf->inline();
-    }
-
-    public function printEssential($id)
-    {
-        $essential = EssentialOperationReport::find($id);
-        $checklist = BcpChecklist::all();
-        $pdf = \PDF::loadView('checklists.essential.print', compact('essential','checklist'));
         return $pdf->inline();
     }
 

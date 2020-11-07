@@ -2,13 +2,29 @@
     <div>
         <div v-html="$error.handle(error)"/>
         <template v-if="show">
-            <view-vulnerable-customer :checklist="checklist_item"  :customers="customers"></view-vulnerable-customer>
+            <view-vulnerable-customer :checklist="checklist_item" :customers="customers"></view-vulnerable-customer>
         </template>
         <div v-if="!show">
             <form @submit.prevent="postData()">
                 <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-body">
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Month</label>
+                                    <v-select label="name" placeholder="Select Month"
+                                              v-model="form.month" :reduce="c => c.no" :options="mths">
+                                    </v-select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Year</label>
+                                    <input class="form-control" disabled v-model="form.year">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-6" v-for="cus in customers" style="margin-top: -10px">
-                            <div class="card" style="height: 92%">
+                        <div class="card" style="height: 92%">
                             <div class="card-header">
                                 <p><i class="fa fa-angle-double-right" aria-hidden="true"></i> {{ cus.name }}</p>
                             </div>
@@ -64,47 +80,50 @@
 
 <script>
 import ViewVulnerableCustomer from "./ViewVulnerableCustomer";
+import moment from "moment";
 
 export default {
-    props:{
-        checklists:{type:Array},
-        checklist_item:{type: [Object, Array]}
+    props: {
+        checklists: {type: Array},
+        checklist_item: {type: [Object, Array]}
     },
     data() {
         return {
             error: '',
             form: {
+                month: moment().month(),
+                year: moment().year(),
                 customer: [],
                 customer_comment: []
             },
             customer_data: [],
             loading: false,
             show: false,
-            customers:{}
+            customers: {}
         }
     },
     created() {
         this.setUp();
     },
     methods: {
-        setUp(){
-            this.customers = this.checklists.filter(e => e.type ==="Vulnerable Customers");
-                 if (this.checklist_item.id !=undefined){
+        setUp() {
+            this.customers = this.checklists.filter(e => e.type === "Vulnerable Customers");
+            if (this.checklist_item.id != undefined) {
                 this.show = true;
             }
         },
         postData() {
-            let customers= this.validateCustomers();
-            if (customers=="comment_required") return this.$toastr.e("Comments are required for In Progress/Not Started Vulnerable Customers Checklist!");
+            let customers = this.validateCustomers();
+            if (customers == "comment_required") return this.$toastr.e("Comments are required for In Progress/Not Started Vulnerable Customers Checklist!");
             if (!customers) return this.$toastr.e("All Vulnerable Customers Checklist fields are required!");
-               let data = {
-                   customer_details: this.customer_data
+            let data = {
+                customer_details: this.customer_data
             };
             this.error = '';
             this.loading = true;
 
-            axios.post("/reports/vulnerable-customer", data).then(() => {
-                window.location.href = "/reports/vulnerable-customer-list"
+            axios.post("/vulnerable-customer", data).then(() => {
+                window.location.href = "/vulnerable-customer"
             }).catch(error => {
                 this.error = error.response;
             });
@@ -130,7 +149,7 @@ export default {
             })
 
             this.customer_data.forEach(e => {
-                if (e.status !="Completed" && e.comment ===""){
+                if (e.status != "Completed" && e.comment === "") {
                     status = false;
                     return;
                 }

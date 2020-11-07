@@ -69,14 +69,9 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::group(['prefix' => 'reports'], function () {
-        Route::get("/essential-operation-print/{id}", "ReportsController@printEssential")->name('essential-operation.print');
 
         //Vulnerable customers
-        Route::post("/vulnerable-customer", "ReportsController@saveCustomer");
         Route::get("/vulnerable-customer-print/{id}", "ReportsController@printCustomer")->name('vulnerable-customer.print');
-        Route::get("/vulnerable-customer-list", "ReportsController@customerIndex")->name('vulnerable-customer.list');
-        Route::get("/vulnerable-customer/create", "ReportsController@createCustomer")->name('vulnerable-customer.create');
-        Route::get("/vulnerable-customer-show/{id}", "ReportsController@showCustomer")->name('vulnerable-customer.show'); //Vulnerable customers & staff
 
         // Staff Health
         Route::post("/staff-health", "ReportsController@saveStaff");
@@ -114,13 +109,15 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{report}/comment', 'WspReportingController@comment')->name('wsp-reporting.comment');
     });
 
+
+    Route::resource('vulnerable-customer', 'VulnerableCustomerReportController')->except('edit', 'destroy');
+    Route::group(['prefix' => 'vulnerable-customer'], function () {
+        Route::post('{report}/review', 'VulnerableCustomerReportController@review')->name('vulnerable-customer.review');
+        Route::post('{report}/comment', 'VulnerableCustomerReportController@comment')->name('vulnerable-customer.comment');
+    });
+
     Route::resource('essential-operation', 'EssentialReportController')->except('edit', 'destroy');
-
-
     Route::group(['prefix' => 'essential-operation'], function () {
-//        Route::post("/{report}/attachments", "WspReportingAttachmentController@store")->name("essential-operation.attachments.store");
-//        Route::get('/attachments/{filename}', 'WspReportingAttachmentController@show')->name('essential-operation.attachments.show');
-//        Route::delete('/attachments/{attachment}', 'WspReportingAttachmentController@destroy')->name('essential-operation.attachments.destroy');
         Route::post('{report}/review', 'EssentialReportController@review')->name('essential-operation.review');
         Route::post('{report}/comment', 'EssentialReportController@comment')->name('essential-operation.comment');
     });
