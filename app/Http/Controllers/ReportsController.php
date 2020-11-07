@@ -179,7 +179,6 @@ class ReportsController extends Controller
         return view("checklists.performance.index", compact("score"));
     }
 
-
     public function showCustomer($id)
     {
         $checklist = json_encode(new VulnerableCustomerResource(VulnerableCustomer::find($id)));

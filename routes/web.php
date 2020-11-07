@@ -116,11 +116,11 @@ Route::group(['middleware' => ['auth']], function () {
 //    Route::get("/essential-operation-print/{id}", "ReportsController@printEssential")->name('essential-operation.print');
 
     Route::group(['prefix' => 'essential-operation'], function () {
-//        Route::post("/{report}/attachments", "WspReportingAttachmentController@store")->name("wsp-reporting.attachments.store");
-//        Route::get('/attachments/{filename}', 'WspReportingAttachmentController@show')->name('wsp-reporting.attachments.show');
-//        Route::delete('/attachments/{attachment}', 'WspReportingAttachmentController@destroy')->name('wsp-reporting.attachments.destroy');
-//        Route::post('{report}/review', 'WspReportingController@review')->name('wsp-reporting.review');
-//        Route::post('{report}/comment', 'WspReportingController@comment')->name('wsp-reporting.comment');
+//        Route::post("/{report}/attachments", "WspReportingAttachmentController@store")->name("essential-operation.attachments.store");
+//        Route::get('/attachments/{filename}', 'WspReportingAttachmentController@show')->name('essential-operation.attachments.show');
+//        Route::delete('/attachments/{attachment}', 'WspReportingAttachmentController@destroy')->name('essential-operation.attachments.destroy');
+        Route::post('{report}/review', 'EssentialReportController@review')->name('essential-operation.review');
+        Route::post('{report}/comment', 'EssentialReportController@comment')->name('essential-operation.comment');
     });
 
     Route::resource('staff', 'StaffController');

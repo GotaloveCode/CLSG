@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Http\Resources\EssentialReportResource;
 use App\Http\Resources\VulnerableCustomerResource;
 use App\Models\BcpChecklist;
 use App\Models\EssentialOperationReport;
+use App\Traits\EssentialOperationReportAuthTrait;
+use App\Traits\SendMailNotification;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class EssentialReportController extends Controller
 {
+    use EssentialOperationReportAuthTrait;
 
     public function index()
     {
@@ -52,11 +56,16 @@ class EssentialReportController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'year' => 'required|in:' . now()->year,
+            'month' => 'required|in:' . now()->month . ',' . (now()->month - 1),
+            'details' => 'required'
+        ]);
         $format = EssentialOperationReport::create([
             'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
             'details' => json_encode($request->input("details")),
-            'month' => $this->getMonth(),
-            'year' => $this->getYear(),
+            'month' => $request->month,
+            'year' => $request->year,
         ]);
         return response()->json($format);
     }
@@ -69,37 +78,42 @@ class EssentialReportController extends Controller
         return view("checklists.essential.show", compact("essential", "items"));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function review(EssentialOperationReport $report, Request $request)
     {
-        //
+        $this->canAccessEssentialOperationReport($report);
+        $report->status = $request->status;
+        $report->save();
+        $wsp = $report->bcp->wsp;
+
+        $route = route('essential-operation.show', $report->id);
+        SendMailNotification::postReview($request->status, $wsp->id, $route, $wsp->name . ' Essential Operations Report Review');
+
+        return response()->json([
+            'message' => 'Essential Operations Report status changed to ' . $request->status,
+            'route' => $route
+        ]);
     }
+
+    public function comment(EssentialOperationReport $report, CommentRequest $request)
+    {
+        $this->canAccessEssentialOperationReport($report);
+
+        $report->comments()->create([
+            'description' => $request->description,
+            'user_id' => auth()->id()
+        ]);
+        $wsp = $report->bcp->wsp;
+
+        $route = route('essential-operation.show', $report->id);
+        SendMailNotification::postComment($request->description, $report->status, $wsp->id, $route, $wsp->name . ' Essential Operations Reporting Comment');
+
+        return response()->json(['message' => 'Comment posted successfully']);
+    }
+
 }
