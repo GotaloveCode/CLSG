@@ -81,6 +81,7 @@
 <script>
 import ViewVulnerableCustomer from "./ViewVulnerableCustomer";
 import moment from "moment";
+import months from "../months";
 
 export default {
     props: {
@@ -90,6 +91,7 @@ export default {
     data() {
         return {
             error: '',
+            mths: [],
             form: {
                 month: moment().month(),
                 year: moment().year(),
@@ -107,8 +109,14 @@ export default {
     },
     methods: {
         setUp() {
+            let allowed = [moment().month()];
+            if (moment().date() <= 5) {
+                allowed.push(moment().month() - 1);
+                this.form.month = moment().month() - 1;
+            }
+            this.mths = months.filter(x => allowed.includes(x.no));
             this.customers = this.checklists.filter(e => e.type === "Vulnerable Customers");
-            if (this.checklist_item.id != undefined) {
+            if (this.checklist_item.id !=undefined) {
                 this.show = true;
             }
         },
@@ -117,6 +125,8 @@ export default {
             if (customers == "comment_required") return this.$toastr.e("Comments are required for In Progress/Not Started Vulnerable Customers Checklist!");
             if (!customers) return this.$toastr.e("All Vulnerable Customers Checklist fields are required!");
             let data = {
+                month: this.form.month,
+                year: this.form.year,
                 customer_details: this.customer_data
             };
             this.error = '';

@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Http\Resources\VulnerableCustomerResource;
 use App\Models\BcpChecklist;
 use App\Models\VulnerableCustomer;
+use App\Traits\SendMailNotification;
+use App\Traits\VulnerableCustomerReportAuthTrait;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class VulnerableCustomerReportController extends Controller
 {
+    use VulnerableCustomerReportAuthTrait;
 
     public function index()
     {
@@ -50,13 +54,27 @@ class VulnerableCustomerReportController extends Controller
 
     public function store(Request $request)
     {
-        $customer = VulnerableCustomer::create([
-            'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
-            'customer_details' => json_encode($request->input("customer_details")),
-            'month' => $this->getMonth(),
-            'year' => $this->getYear(),
+        $request->validate([
+            'year' => 'required|in:' . now()->year,
+            'month' => 'required|in:' . now()->month . ',' . (now()->month - 1),
+            'customer_details' => 'required'
         ]);
-        return response()->json($customer);
+        $wsp = auth()->user()->wsps()->first();
+        $bcp = $wsp->bcp;
+        $report = VulnerableCustomer::create([
+            'bcp_id' => $bcp->id,
+            'customer_details' => json_encode($request->input("customer_details")),
+            'month' => $request->month,
+            'year' => $request->year,
+            'status' => 'Pending'
+        ]);
+        SendMailNotification::created($wsp,
+            route('vulnerable-customer.show', $report->id),
+            'Vulnerable customer report submitted',
+            $wsp->name . ' submitted Vulnerable customer report for ' . \DateTime::createFromFormat("!m", $report->month)->format("F") .
+            ' ' . $report->year
+        );
+        return response()->json($report);
     }
 
     public function show(VulnerableCustomer $vulnerable_customer)
@@ -74,8 +92,42 @@ class VulnerableCustomerReportController extends Controller
 
     public function update(Request $request, VulnerableCustomer $vulnerable_customer)
     {
-        //
+        $vulnerable_customer->update([
+            'customer_details' => json_encode($request->input("customer_details")),
+            'status' => 'Pending'
+        ]);
+        return response()->json($vulnerable_customer);
     }
 
+    public function review(VulnerableCustomer $report, Request $request)
+    {
+        $this->canAccessVulnerableCustomerReport($report);
+        $report->status = $request->status;
+        $report->save();
+        $wsp = $report->bcp->wsp;
 
+        $route = route('vulnerable-customer.show', $report->id);
+        SendMailNotification::postReview($request->status, $wsp->id, $route, $wsp->name . ' Vulnerable Customer Report Review');
+
+        return response()->json([
+            'message' => 'Vulnerable Customer Report status changed to ' . $request->status,
+            'route' => $route
+        ]);
+    }
+
+    public function comment(VulnerableCustomer $report, CommentRequest $request)
+    {
+        $this->canAccessVulnerableCustomerReport($report);
+
+        $report->comments()->create([
+            'description' => $request->description,
+            'user_id' => auth()->id()
+        ]);
+        $wsp = $report->bcp->wsp;
+
+        $route = route('vulnerable-customer.show', $report->id);
+        SendMailNotification::postComment($request->description, $report->status, $wsp->id, $route, $wsp->name . ' Vulnerable Customer Reporting Comment');
+
+        return response()->json(['message' => 'Comment posted successfully']);
+    }
 }

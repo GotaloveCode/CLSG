@@ -65,6 +65,18 @@ class EssentialReportController extends Controller
         ]);
         $wsp = auth()->user()->wsps()->first();
         $bcp = $wsp->bcp;
+        $report = EssentialOperationReport::where('bcp_id', $bcp->id)
+            ->where('month', $request->month)
+            ->where('year', $request->year)
+            ->first();
+
+        if($report){
+            return response()->json([
+                'message' => 'The given field was invalid',
+                'errors' => ['month' => ['A Monthly report already exists!']]
+            ], 422);
+        }
+
         $report = EssentialOperationReport::create([
             'bcp_id' => $bcp->id,
             'details' => json_encode($request->input("details")),
@@ -104,6 +116,8 @@ class EssentialReportController extends Controller
             'details' => json_encode($request->input("details")),
             'status' => 'Pending'
         ]);
+
+        return response()->json($essential_operation);
     }
 
     public function review(EssentialOperationReport $report, Request $request)
