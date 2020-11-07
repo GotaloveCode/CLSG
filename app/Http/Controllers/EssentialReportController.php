@@ -62,14 +62,24 @@ class EssentialReportController extends Controller
             'month' => 'required|in:' . now()->month . ',' . (now()->month - 1),
             'details' => 'required'
         ]);
-        $format = EssentialOperationReport::create([
-            'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
+        $wsp = auth()->user()->wsps()->first();
+        $bcp = $wsp->bcp;
+        $report = EssentialOperationReport::create([
+            'bcp_id' => $bcp->id,
             'details' => json_encode($request->input("details")),
             'month' => $request->month,
             'year' => $request->year,
             'status' => 'Pending'
         ]);
-        return response()->json($format);
+
+        SendMailNotification::created($wsp,
+            route('essential-operation.show', $report->id),
+            'Essential Operations report submitted',
+            $wsp->name . ' submitted Essential Operation report for ' . \DateTime::createFromFormat("!m", $report->month)->format("F") .
+            ' ' . $report->year
+        );
+
+        return response()->json($report);
     }
 
 

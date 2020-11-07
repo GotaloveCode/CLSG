@@ -84,16 +84,25 @@ class WspReportingController extends Controller
                 'amount' => $value['amount']
             ];
         }
-
+        $wsp = auth()->user()->wsps()->first();
+        $bcp = $wsp->bcp;
         $request['month'] = $request->month;
         $request['year'] = $request->year;
-        $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->id;
+        $request['bcp_id'] = $bcp->id;
         $request['status_of_covid_implementation'] = json_encode($status_of_impl);
         $request['operations_costs'] = json_encode($operations_costs);
         $request['expected_activities'] = json_encode($request->input("expected_activities"));
         $request['status'] = "Pending";
 
         $reporting = WspReporting::create($request->all());
+
+        SendMailNotification::created($wsp,
+            route('essential-operation.show', $reporting->id),
+            'WSP Monthly Report submitted',
+            $wsp->name . ' submitted WSP Monthly report for ' . \DateTime::createFromFormat("!m", $reporting->month)->format("F") .
+            ' ' . $reporting->year
+        );
+
         return response()->json($reporting);
     }
 

@@ -30,6 +30,14 @@ trait SendMailNotification
         });
     }
 
+    static public function created(Wsp $wsp, $route, $subject, $body)
+    {
+        $users = self::getRecipient("pending", $wsp);
+        $users->each(function ($user) use ($wsp, $route, $subject, $body) {
+            $user->notify(new ReviewNotification($wsp, $route, $subject, $body));
+        });
+    }
+
     static public function getRecipient($status, $wsp)
     {
         switch ($status) {
