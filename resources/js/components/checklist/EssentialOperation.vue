@@ -7,10 +7,26 @@
         <div v-if="!show">
             <form @submit.prevent="postData()">
                 <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-body">
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Month</label>
+                                    <v-select label="name" placeholder="Select Month"
+                                              v-model="form.month" :reduce="c => c.no" :options="mths">
+                                    </v-select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Year</label>
+                                    <input class="form-control" disabled v-model="form.year">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-6" v-for="(essn,k) in essentials" style="margin-top: -10px">
                         <div class="card" style="height: 92%">
                             <div class="card-header">
-                                <p> {{k+1}}. {{ essn.name }}</p>
+                                <p> {{ k + 1 }}. {{ essn.name }}</p>
                             </div>
                             <div class="card-content collapse show">
                                 <div class="card-body" style="padding-top: 0">
@@ -39,7 +55,7 @@
                             </fieldset>
                               </div>
                                 <div style="margin-left: 15%;">
-                                   <textarea cols="30" rows="2" class="form-control"
+                                   <textarea required cols="30" rows="2" class="form-control"
                                              v-model="form.essential_comment[essn.id]"
                                              placeholder="Your comment here"></textarea>
                                 </div>
@@ -65,53 +81,66 @@
 
 <script>
 import ViewEssentialOperation from "./ViewEssentialOperation";
+import moment from "moment";
+import months from "../months";
 
 export default {
-    props:{
-        items:{type:Array},
-        essential_item:{type: [Object, Array]}
+    props: {
+        items: {type: Array},
+        essential_item: {type: [Object, Array]}
     },
     data() {
         return {
             error: '',
+            mths: [],
             form: {
+                month: moment().month(),
+                year: moment().year(),
                 essential: [],
                 essential_comment: []
             },
             essential_data: [],
             loading: false,
             show: false,
-            essentials:{}
+            essentials: {}
         }
     },
     created() {
         this.setUp();
     },
     methods: {
-        setUp(){
-            this.essentials = this.items.filter(e => e.type ==="Essential Operations");
-            if (this.essential_item.id !=undefined){
+        setUp() {
+            let allowed = [moment().month()];
+            if (moment().date() <= 5) {
+                allowed.push(moment().month() - 1);
+                this.form.month = moment().month() - 1;
+            }
+            this.mths = months.filter(x => allowed.includes(x.no));
+            this.essentials = this.items.filter(e => e.type === "Essential Operations");
+            if (this.essential_item.id != undefined) {
                 this.show = true;
             }
         },
         postData() {
             let ess = this.validateEssentials();
-            if (ess=="comment_required") return this.$toastr.e("Comments are required for In Progress/Not Started Essential Operations!");
+            if (ess == "comment_required") return this.$toastr.e("Comments are required for In Progress/Not Started Essential Operations!");
             if (!ess) return this.$toastr.e("All Essential Operations Checklist fields are required!");
             let data = {
-                details: this.essential_data
+                details: this.essential_data,
+                month: this.form.month,
+                year: this.form.year
             };
             this.error = '';
             this.loading = true;
 
             axios.post("/essential-operation", data).then(() => {
-                window.location.href = "/essential-operation-list"
+                window.location.href = "/essential-operation"
             }).catch(error => {
                 this.error = error.response;
             });
 
         },
-         validateEssentials() {
+        validateEssentials() {
             this.essential_data = [];
             let status = true;
             if (this.form.essential.length < 7) {
@@ -128,14 +157,14 @@ export default {
                 }
             })
 
-             this.essential_data.forEach(e => {
-                 if (e.status !="Completed" && e.comment ===""){
-                     status = false;
-                     return;
-                 }
-             })
+            this.essential_data.forEach(e => {
+                if (e.status != "Completed" && e.comment === "") {
+                    status = false;
+                    return;
+                }
+            })
 
-             if (!status) return "comment_required";
+            if (!status) return "comment_required";
             return true;
         },
     },

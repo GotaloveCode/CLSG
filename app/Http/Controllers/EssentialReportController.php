@@ -11,6 +11,7 @@ use App\Traits\EssentialOperationReportAuthTrait;
 use App\Traits\SendMailNotification;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 
 class EssentialReportController extends Controller
 {
@@ -66,6 +67,7 @@ class EssentialReportController extends Controller
             'details' => json_encode($request->input("details")),
             'month' => $request->month,
             'year' => $request->year,
+            'status' => 'Pending'
         ]);
         return response()->json($format);
     }
@@ -73,9 +75,16 @@ class EssentialReportController extends Controller
 
     public function show($id)
     {
-        $essential = json_encode(new EssentialReportResource(EssentialOperationReport::find($id)));
-        $items = json_encode(BcpChecklist::all());
-        return view("checklists.essential.show", compact("essential", "items"));
+        $essential = EssentialOperationReport::find($id);
+        $checklist = BcpChecklist::all();
+        if (\request()->has('print')) {
+            $pdf = \PDF::loadView('checklists.essential.print', compact('essential', 'checklist'));
+            return $pdf->inline();
+        }
+        $progress = $essential->progress();
+//        $essential = json_encode(new EssentialReportResource(EssentialOperationReport::find($id)));
+//        $items = json_encode(BcpChecklist::all());
+        return view("checklists.essential.show", compact("essential", "checklist", "progress"));
     }
 
 

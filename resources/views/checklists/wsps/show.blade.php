@@ -1,5 +1,7 @@
 @extends('layouts.dashboard')
-
+@push('css')
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/comment.css') }}">
+@endpush
 @section('content')
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-2">

@@ -298,8 +298,9 @@ class ReportsController extends Controller
 
     public function printEssential($id)
     {
-        $essential = EssentialOperationReport::with('bcp')->find($id);
-        $pdf = \PDF::loadView('checklists.essential.print', compact('essential'));
+        $essential = EssentialOperationReport::find($id);
+        $checklist = BcpChecklist::all();
+        $pdf = \PDF::loadView('checklists.essential.print', compact('essential','checklist'));
         return $pdf->inline();
     }
 

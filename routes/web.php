@@ -69,6 +69,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     Route::group(['prefix' => 'reports'], function () {
+        Route::get("/essential-operation-print/{id}", "ReportsController@printEssential")->name('essential-operation.print');
+
         //Vulnerable customers
         Route::post("/vulnerable-customer", "ReportsController@saveCustomer");
         Route::get("/vulnerable-customer-print/{id}", "ReportsController@printCustomer")->name('vulnerable-customer.print');
@@ -113,7 +115,7 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::resource('essential-operation', 'EssentialReportController')->except('edit', 'destroy');
-//    Route::get("/essential-operation-print/{id}", "ReportsController@printEssential")->name('essential-operation.print');
+
 
     Route::group(['prefix' => 'essential-operation'], function () {
 //        Route::post("/{report}/attachments", "WspReportingAttachmentController@store")->name("essential-operation.attachments.store");

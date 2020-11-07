@@ -20,6 +20,7 @@ class CreateStaffHealthsTable extends Migration
             $table->text("staff_details");
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->unsignedInteger('bcp_id');
+            $table->string('status')->default('Pending');
             $table->timestamps();
         });
     }
