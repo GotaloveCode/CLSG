@@ -20,6 +20,11 @@
     <div class="content-body">
         <div class="row">
             @if($wsp_report)
+                <wsp-reporting
+                    :operation-costs="{{ $operationCosts }}"
+                    :services="{{$services}}"
+                    :wsp_report="{{$wsp_report}}"
+                ></wsp-reporting>
                 <div class="col-12">
                     <div class="card">
                         <div class="card-content">
@@ -35,6 +40,13 @@
                                 </div>
                             </div>
                             <div class="card-body">
+                                <div class="alert alert-info alert-dismissible mb-2" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                    <strong>Note: </strong> Please attach evidence for each operational cost!
+                                </div>
                                 <attachment-form
                                     :documents="['Expected activities','Revenues collected','O&M costs','COVID-19 interventions status']"
                                     submit-url="{{ route('wsp-reporting.attachments.store',json_decode($wsp_report)->id) }}"/>
@@ -77,11 +89,6 @@
                         </div>
                     </div>
                 </div>
-                <wsp-reporting
-                    :operation-costs="{{ $operationCosts }}"
-                    :services="{{$services}}"
-                    :wsp_report="{{$wsp_report}}"
-                ></wsp-reporting>
             @else
                 <wsp-reporting
                     :operation-costs="{{ $operationCosts }}"
