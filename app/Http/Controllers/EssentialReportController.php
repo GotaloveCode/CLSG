@@ -48,6 +48,7 @@ class EssentialReportController extends Controller
     public function create()
     {
         $exiting_essential = EssentialOperationReport::where('bcp_id', auth()->user()->wsps()->first()->bcp->id)->latest()->first();
+
         $exiting_essential ? $essential_item = json_encode(new VulnerableCustomerResource($exiting_essential)) : $essential_item = json_encode([]);
         $items = json_encode(BcpChecklist::all());
 
@@ -83,24 +84,26 @@ class EssentialReportController extends Controller
     }
 
 
-    public function show($id)
+    public function show(EssentialOperationReport $essential_operation)
     {
-        $essential = EssentialOperationReport::find($id);
+        $essential = $essential_operation;
         $checklist = BcpChecklist::all();
         if (\request()->has('print')) {
             $pdf = \PDF::loadView('checklists.essential.print', compact('essential', 'checklist'));
             return $pdf->inline();
         }
         $progress = $essential->progress();
-//        $essential = json_encode(new EssentialReportResource(EssentialOperationReport::find($id)));
-//        $items = json_encode(BcpChecklist::all());
+
         return view("checklists.essential.show", compact("essential", "checklist", "progress"));
     }
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request, EssentialOperationReport $essential_operation)
     {
-        //
+        $essential_operation->update([
+            'details' => json_encode($request->input("details")),
+            'status' => 'Pending'
+        ]);
     }
 
     public function review(EssentialOperationReport $report, Request $request)
