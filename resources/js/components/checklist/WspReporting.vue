@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-html="$error.handle(error)"></div>
-        <form @submit.prevent="postData()">
+        <form @submit.prevent="onSubmit()">
             <div class="row">
                 <div class="col-md-4 form-group">
                     <label>Month</label>
