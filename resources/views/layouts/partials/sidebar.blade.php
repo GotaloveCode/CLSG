@@ -96,7 +96,7 @@
                     <li><a class="menu-item" href="{{ route('essential-operation.index') }}">Essential Operations</a>
                     </li>
                     <li><a class="menu-item" data-title="Vulnerable Customers"
-                           href="{{ route('vulnerable-customer.list')}}">Vulnerable Customers</a>
+                           href="{{ route('vulnerable-customer.index')}}">Vulnerable Customers</a>
                     </li>
                     <li><a class="menu-item" data-title="Staff & Health Protection"
                            href="{{ route('staff-health.list')}}">Staff & Health Protection</a>
