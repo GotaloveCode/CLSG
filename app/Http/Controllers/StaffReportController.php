@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Http\Resources\StaffHealthResource;
 use App\Models\BcpChecklist;
 use App\Models\StaffHealth;
+use App\Traits\SendMailNotification;
+use App\Traits\StaffHealthReportAuthTrait;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class StaffReportController extends Controller
 {
+    use StaffHealthReportAuthTrait;
 
     public function index()
     {
@@ -43,7 +47,7 @@ class StaffReportController extends Controller
     {
         $exiting_staff = StaffHealth::where('bcp_id', auth()->user()->wsps()->first()->bcp->id)->latest()->first();
         $exiting_staff ? $staff = json_encode(new StaffHealthResource($exiting_staff)) : $staff = json_encode([]);
-        $items = json_encode(BcpChecklist::all());
+        $items = json_encode(BcpChecklist::where('type', 'Staff Health Protection')->get());
         return view("checklists.staff.create", compact("staff", "items"));
     }
 
@@ -76,10 +80,44 @@ class StaffReportController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request, StaffHealth $staff_health)
     {
-        //
+        $staff_health->update([
+            'staff_details' => json_encode($request->input("staff_details")),
+            'status' => 'Pending'
+        ]);
+        return response()->json($staff_health);
     }
 
+    public function review(StaffHealth $staff_health, Request $request)
+    {
+        $this->canAccessStaffHealthReport($staff_health);
+        $staff_health->status = $request->status;
+        $staff_health->save();
+        $wsp = $staff_health->bcp->wsp;
 
+        $route = route('staff-health.show', $staff_health->id);
+        SendMailNotification::postReview($request->status, $wsp->id, $route, $wsp->name . ' Staff Health Protection Report Review');
+
+        return response()->json([
+            'message' => 'Staff Health Protection Report status changed to ' . $request->status,
+            'route' => $route
+        ]);
+    }
+
+    public function comment(StaffHealth $staff_health, CommentRequest $request)
+    {
+        $this->canAccessStaffHealthReport($staff_health);
+
+        $staff_health->comments()->create([
+            'description' => $request->description,
+            'user_id' => auth()->id()
+        ]);
+        $wsp = $staff_health->bcp->wsp;
+
+        $route = route('staff-health.show', $staff_health->id);
+        SendMailNotification::postComment($request->description, $staff_health->status, $wsp->id, $route, $wsp->name . ' Staff Health Protection Reporting Comment');
+
+        return response()->json(['message' => 'Comment posted successfully']);
+    }
 }

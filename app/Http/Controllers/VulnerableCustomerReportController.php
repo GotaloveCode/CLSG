@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CommentRequest;
 use App\Http\Resources\VulnerableCustomerResource;
 use App\Models\BcpChecklist;
-use App\Models\EssentialOperationReport;
 use App\Models\VulnerableCustomer;
 use App\Traits\SendMailNotification;
 use App\Traits\VulnerableCustomerReportAuthTrait;
