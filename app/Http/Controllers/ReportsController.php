@@ -63,16 +63,6 @@ class ReportsController extends Controller
         return view("checklists.cslg.create", compact("cslg", "operations", 'grant'));
     }
 
-    public function createCard()
-    {
-        $exiting_score = PerformanceScore::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-        $exiting_score ? $score = json_encode(new PerformaceScoreResource($exiting_score)) : $score = json_encode([]);
-
-        $wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-        if (!$wsp) return redirect()->back()->with("success", "Please ensure you have have filled in the general checklist form first");
-        return view("checklists.performance.index", compact("score"));
-    }
-
     public function showCslg($id)
     {
         $item = CslgCalculation::find($id);
@@ -81,12 +71,6 @@ class ReportsController extends Controller
         $cslg = json_encode(new CslgResource($item));
 
         return view("checklists.cslg.show", compact("cslg", "operations"));
-    }
-
-    public function showCard($id)
-    {
-        $score = json_encode(new PerformaceScoreResource(PerformanceScore::find($id)));
-        return view("checklists.performance.show", compact("score"));
     }
 
 
@@ -115,11 +99,6 @@ class ReportsController extends Controller
         $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
         $cslg = CslgCalculation::create($request->all());
         return response()->json($cslg);
-    }
-
-    public function saveCard(Request $request)
-    {
-
     }
 
     public function approveCslg(Request $request)

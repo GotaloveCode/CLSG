@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PerformaceScoreResource;
 use App\Models\PerformanceScore;
+use App\Models\WspReporting;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -13,7 +14,7 @@ class ScorecardReportController extends Controller
     public function index()
     {
         if (!request()->ajax()) {
-            return view('checklists.performance.list');
+            return view('checklists.performance.index');
         }
         $wsp = auth()->user()->wsps()->first();
 
@@ -37,7 +38,12 @@ class ScorecardReportController extends Controller
 
     public function create()
     {
-        //
+        $bcp_id = auth()->user()->wsps()->first()->bcp->id;
+        $exiting_score = PerformanceScore::where('bcp_id', $bcp_id)->latest()->first();
+        $exiting_score ? $score = json_encode(new PerformaceScoreResource($exiting_score)) : $score = json_encode([]);
+        $wsp = WspReporting::where('bcp_id', $bcp_id)->latest()->first();
+        if (!$wsp) return redirect()->back()->with("success", "Please ensure you have have filled in the general checklist form first");
+        return view("checklists.performance.create", compact("score"));
     }
 
 
@@ -55,27 +61,12 @@ class ScorecardReportController extends Controller
         return response()->json($score);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        $score = json_encode(new PerformaceScoreResource(PerformanceScore::find($id)));
+        return view("checklists.performance.show", compact("score"));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -89,14 +80,5 @@ class ScorecardReportController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+
 }
