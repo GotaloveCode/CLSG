@@ -46,7 +46,7 @@ class VulnerableCustomerReportController extends Controller
     {
         $exiting_customer = VulnerableCustomer::where('bcp_id', auth()->user()->wsps()->first()->bcp->id)->latest()->first();
         $exiting_customer ? $customer = json_encode(new VulnerableCustomerResource($exiting_customer)) : $customer = json_encode([]);
-        $items = json_encode(BcpChecklist::all());
+        $items = json_encode(BcpChecklist::where('type','Vulnerable Customers')->get());
 
         return view("checklists.customer.create", compact("items", "customer"));
     }

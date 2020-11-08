@@ -61,7 +61,7 @@ class StaffReportController extends Controller
         ]);
 
         $staff = StaffHealth::create([
-            'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
+            'bcp_id' => auth()->user()->wsps()->first()->bcp->id,
             'staff_details' => json_encode($request->input("staff_details")),
             'month' => $request->month,
             'year' => $request->year,

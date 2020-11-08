@@ -56,7 +56,7 @@ class ScoreCardReportController extends Controller
 
         $request['month'] = $request->month;
         $request['year'] = $request->year;
-        $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
+        $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->id;
         $score = PerformanceScore::create($request->all());
         return response()->json($score);
     }

@@ -8,7 +8,7 @@
                         <div class="row">
                             <div class="col-md-4 form-group">
                                 <label>Month: </label>
-                                <template v-if="essential_item">
+                                <template v-if="essential_item.length">
                                     <input class="form-control" disabled v-model="essential_item.month">
                                 </template>
                                 <v-select v-else label="name" placeholder="Select Month"
@@ -113,7 +113,7 @@ export default {
             }
             this.mths = months.filter(x => allowed.includes(x.no));
             this.essentials = this.items.filter(e => e.type === "Essential Operations");
-            if (this.essential_item) {
+            if (this.essential_item.length) {
                 this.form.year = this.essential_item.year;
                 for (let i = 0; i < this.essential_item.details.length; i++) {
                     this.form.essential[i+1] = this.essential_item.details[i].status;
@@ -127,7 +127,7 @@ export default {
             if (!ess) return this.$toastr.e("All Essential Operations Checklist fields are required!");
             this.error = '';
             this.loading = true;
-            this.essential_item ? this.updateData() : this.postData();
+            this.essential_item.length ? this.updateData() : this.postData();
         },
         postData() {
             axios.post("/essential-operation", {

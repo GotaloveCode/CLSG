@@ -49,7 +49,7 @@ class EssentialReportController extends Controller
     {
         $exiting_essential = EssentialOperationReport::where('bcp_id', auth()->user()->wsps()->first()->bcp->id)->latest()->first();
 
-        $exiting_essential ? $essential_item = json_encode(new VulnerableCustomerResource($exiting_essential)) : $essential_item = json_encode([]);
+        $exiting_essential ? $essential_item = json_encode(new EssentialReportResource($exiting_essential)) : $essential_item = json_encode([]);
         $items = json_encode(BcpChecklist::all());
 
         return view("checklists.essential.create", compact("items", "essential_item"));

@@ -36,7 +36,7 @@
                 <div class="card-content collapse show">
                     <div class="card-body">
                         <p>Monthly CLSG transfers to WSPs will be determined using a standard formula as follows:
-                            <br> <b>Monthly CLSG transfer (in KES) - Fixed Grant + (Variable Grant * Performance
+                            <br> <b>Monthly CLSG transfer (in KES) = Fixed Grant + (Variable Grant * Performance
                                 Adjustment(%))</b>
                         </p>
                         <p>
