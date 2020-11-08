@@ -18,10 +18,6 @@
             </div>
         </div>
     </div>
-    {{--    <view-essential-operation--}}
-    {{--        :essentials="{{$checklist}}"--}}
-    {{--        :essential_item="{{$essential_load}}"--}}
-    {{--    ></view-essential-operation>--}}
     <manage-review inline-template submit-url="{{ route('essential-operation.review',$essential->id) }}">
         <div class="row">
             <div class="content-detached content-left">

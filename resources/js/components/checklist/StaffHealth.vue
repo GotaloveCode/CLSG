@@ -108,7 +108,7 @@ export default {
                 this.form.month = moment().month() - 1;
             }
             this.mths = months.filter(x => allowed.includes(x.no));
-            this.staff = this.checklists.filter(e => e.type === "Staff Health Protection");
+            this.staff = this.checklists;
             if (this.checklist_item.id != undefined) {
                 this.form.year = this.checklist_item.year;
                 for (let i = 0; i < this.checklist_item.staff_details.length; i++) {

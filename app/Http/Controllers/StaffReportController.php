@@ -73,7 +73,7 @@ class StaffReportController extends Controller
 
     public function show(StaffHealth $staff_health)
     {
-        $checklist = BcpChecklist::where("type", "Staff Health Protection")->get();
+        $checklist = BcpChecklist::select('id', 'name')->where("type", "Staff Health Protection")->get();
         $staff = $staff_health;
         $progress = $staff->progress();
         return view("checklists.staff.show", compact("checklist", "staff", "progress"));

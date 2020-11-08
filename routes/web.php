@@ -78,8 +78,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get("/performance-score-card-print/{id}", "ReportsController@printCard")->name('performance-score-card.print');
 
         //Wsp Reporting Monthly
-//        Route::get("/wsp-reporting-list","ReportsController@wspIndex")->name('wsp-reporting.list');
-        Route::get("/wsp-reporting/print/{id}", "ReportsController@printWsp")->name('wsp-reporting.print');
         Route::get("/wsp-reporting-attachments", "ReportsController@attachmentIndex")->name("wsp-reporting-attachments.list");
 //        Route::get("/wsp-reporting-show/{id}","ReportsController@showWsp")->name("wsp-reporting.show");
 
@@ -115,8 +113,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('performance-score-card', 'ScoreCardReportController')->except('edit', 'destroy');
     Route::group(['prefix' => 'performance-score-card'], function () {
-        Route::post('{report}/review', 'StaffReportController@review')->name('performance-score-card.review');
-        Route::post('{report}/comment', 'StaffReportController@comment')->name('performance-score-card.comment');
+        Route::post('{report}/review', 'ScoreCardReportController@review')->name('performance-score-card.review');
+        Route::post('{report}/comment', 'ScoreCardReportController@comment')->name('performance-score-card.comment');
     });
 
     Route::resource('essential-operation', 'EssentialReportController')->except('edit', 'destroy');

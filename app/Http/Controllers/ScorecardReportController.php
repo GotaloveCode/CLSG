@@ -42,7 +42,7 @@ class ScorecardReportController extends Controller
         $exiting_score = PerformanceScore::where('bcp_id', $bcp_id)->latest()->first();
         $exiting_score ? $score = json_encode(new PerformaceScoreResource($exiting_score)) : $score = json_encode([]);
         $wsp = WspReporting::where('bcp_id', $bcp_id)->latest()->first();
-        if (!$wsp) return redirect()->back()->with("success", "Please ensure you have have filled in the general checklist form first");
+        if (!$wsp) return redirect()->back()->with("success", "Please ensure you have have filled in the monthly wsp form first");
         return view("checklists.performance.create", compact("score"));
     }
 
@@ -61,23 +61,25 @@ class ScorecardReportController extends Controller
         return response()->json($score);
     }
 
-    public function show($id)
+    public function show(PerformanceScore $performance_score_card)
     {
-        $score = json_encode(new PerformaceScoreResource(PerformanceScore::find($id)));
-        return view("checklists.performance.show", compact("score"));
+        if (\request()->has('print')) {
+            $score = $performance_score_card;
+            $pdf = \PDF::loadView('checklists.performance.print', compact('score'));
+            return $pdf->inline();
+        }
+
+        $score = json_encode(new PerformaceScoreResource($performance_score_card));
+        return view("checklists.performance.show", compact("score","performance_score_card"));
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(Request $request, PerformanceScore $performance_score_card)
     {
-        //
+        $request['status'] = 'Pending';
+        $performance_score_card->update($request->except('month','year','wsp','total'));
+        return response()->json($performance_score_card);
     }
 
 

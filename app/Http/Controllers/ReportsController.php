@@ -107,18 +107,6 @@ class ReportsController extends Controller
         return response()->json('success');
     }
 
-    public function printWsp($id)
-    {
-        $wsp_report = WspReporting::with('bcp')->find($id);
-        $operationCosts = Cache::rememberForever('operationCosts', function () {
-            return Operationcost::select('id', 'name')->get();
-        });
-        $services = Cache::rememberForever('services', function () {
-            return Service::select('id', 'name')->get();
-        });
-        $pdf = \PDF::loadView('checklists.wsps.print', compact('wsp_report','operationCosts','services'));
-        return $pdf->inline();
-    }
 
     public function printCard($id)
     {

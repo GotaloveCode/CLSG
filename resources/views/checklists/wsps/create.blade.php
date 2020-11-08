@@ -48,7 +48,7 @@
                                     <strong>Note: </strong> Please attach evidence for each operational cost!
                                 </div>
                                 <attachment-form
-                                    :documents="['Expected activities','Revenues collected','O&M costs','COVID-19 interventions status']"
+                                    :documents="['Revenues collected','O&M costs','COVID-19 interventions status']"
                                     submit-url="{{ route('wsp-reporting.attachments.store',json_decode($wsp_report)->id) }}"/>
                             </div>
                         </div>
