@@ -299,7 +299,6 @@ export default {
         },
         addItem() {
             this.form.status_of_covid_implementation.push({service: '', description: '', cost: '', document: ''});
-
         },
         removeOp(i) {
             this.form.operations_costs.splice(i, 1);

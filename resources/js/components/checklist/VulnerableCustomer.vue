@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-html="$error.handle(error)"></div>
-        <form @submit.prevent="postData()">
+        <form @submit.prevent="onSubmit()">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-body">
@@ -112,29 +112,39 @@ export default {
             if (this.checklist_item.id != undefined) {
                 this.form.year = this.checklist_item.year;
                 for (let i = 0; i < this.checklist_item.customer_details.length; i++) {
-                    this.form.customer[i] = this.checklist_item.customer_details[i].status;
-                    this.form.customer_comment[i] = this.checklist_item.customer_details[i].comment;
+                    this.form.customer[this.checklist_item.customer_details[i].id] = this.checklist_item.customer_details[i].status;
+                    this.form.customer_comment[this.checklist_item.customer_details[i].id] = this.checklist_item.customer_details[i].comment;
                 }
             }
         },
-        postData() {
+        onSubmit() {
             let customers = this.validateCustomers();
             if (customers == "comment_required") return this.$toastr.e("Comments are required for In Progress/Not Started Vulnerable Customers Checklist!");
             if (!customers) return this.$toastr.e("All Vulnerable Customers Checklist fields are required!");
-            let data = {
+            this.error = '';
+            this.loading = true;
+            if (this.checklist_item.id != undefined) this.updateData(); else this.postData();
+        },
+        postData() {
+            axios.post("/vulnerable-customer", {
                 month: this.form.month,
                 year: this.form.year,
                 customer_details: this.customer_data
-            };
-            this.error = '';
-            this.loading = true;
-
-            axios.post("/vulnerable-customer", data).then(() => {
-                window.location.href = "/vulnerable-customer"
+            }).then(() => {
+                location.href = "/vulnerable-customer"
             }).catch(error => {
+                this.loading = false;
                 this.error = error.response;
             });
-
+        },
+        updateData() {
+            axios.put("/vulnerable-customer/" + this.checklist_item.id, {customer_details: this.customer_data}).then(() => {
+                this.$toastr.s("Vulnerable customer report updated successfully!");
+                location.href = "/vulnerable-customer"
+            }).catch(error => {
+                this.loading = false;
+                this.error = error.response;
+            });
         },
         validateCustomers() {
             this.customer_data = [];
