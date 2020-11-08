@@ -21,6 +21,88 @@
             <div class="content-detached content-left">
                 <div class="content-body">
                     <section class="row">
+                        @php
+                            $completed = 0;
+    $in_progress= 0;
+    $count=0;
+    $not_started = 0;
+                        foreach(json_decode($staff->staff_details) as $ess){
+                            $count++;
+                           switch ($ess->status){
+                               case 'Completed':
+                               $completed++;
+                               break;
+                               case 'In Progress':
+                                $in_progress++;
+                                 break;
+                               default:
+                                    $not_started++;
+                           }
+                        }
+                        @endphp
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-content collapse show">
+                                    <div class="card-body">
+                                        <div class="insights">
+                                            <p> {{ $completed }} Completed
+                                                <span
+                                                    class="float-right text-success h3">{{ceil($completed/$count *100)}}%</span>
+                                            </p>
+                                            <div class="progress progress-sm mt-1 mb-0">
+                                                <div class="progress-bar bg-success" role="progressbar"
+                                                     style="width: {{ ceil($completed/$count *100) }}%"
+                                                     aria-valuenow="{{ ceil($completed/$count *100) }}"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-content collapse show">
+                                    <div class="card-body">
+                                        <div class="insights">
+                                            <p> {{ $in_progress }} In Progress
+                                                <span
+                                                    class="float-right text-warning h3">{{ceil($in_progress/$count *100)}}%</span>
+                                            </p>
+                                            <div class="progress progress-sm mt-1 mb-0">
+                                                <div class="progress-bar bg-warning" role="progressbar"
+                                                     style="width: {{ ceil($in_progress/$count *100) }}%"
+                                                     aria-valuenow="{{ ceil($in_progress/$count *100) }}"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-content collapse show">
+                                    <div class="card-body">
+                                        <div class="insights">
+                                            <p> {{ $not_started }} Not Started
+                                                <span
+                                                    class="float-right text-danger h3">{{ceil($not_started/$count *100)}}%</span>
+                                            </p>
+                                            <div class="progress progress-sm mt-1 mb-0">
+                                                <div class="progress-bar bg-danger" role="progressbar"
+                                                     style="width: {{ ceil($not_started/$count *100) }}%"
+                                                     aria-valuenow="{{ ceil($not_started/$count *100) }}"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header pb-0">
@@ -50,81 +132,6 @@
             </div>
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
-                    @php
-                        $completed = 0;
-$in_progress= 0;
-$count=0;
-$not_started = 0;
-
-                    foreach(json_decode($staff->staff_details) as $ess){
-                        $count++;
-                       switch ($ess->status){
-                           case 'Completed':
-                           $completed++;
-                           break;
-                           case 'In Progress':
-                            $in_progress++;
-                             break;
-                           default:
-                                $not_started++;
-                       }
-                    }
-                    @endphp
-                    <div class="card">
-                        <div class="card-header">
-                            <p class="card-title">SUMMARY</p>
-                            <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-                            <div class="heading-elements">
-                                <ul class="list-inline mb-0">
-                                    <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
-                                    <li><a data-action="close"><i class="feather icon-x"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="card-content collapse show">
-                            <div class="card-body">
-                                <div class="insights">
-                                    <p> {{ $completed }} Completed
-                                        <span
-                                            class="float-right text-success h3">{{ceil($completed/$count *100)}}%</span>
-                                    </p>
-                                    <div class="progress progress-sm mt-1 mb-0">
-                                        <div class="progress-bar bg-success" role="progressbar"
-                                             style="width: {{ ceil($completed/$count *100) }}%"
-                                             aria-valuenow="{{ ceil($completed/$count *100) }}"
-                                             aria-valuemin="0"
-                                             aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                                <div class="insights mt-1">
-                                    <p> {{ $in_progress }} In Progress
-                                        <span
-                                            class="float-right text-warning h3">{{ceil($in_progress/$count *100)}}%</span>
-                                    </p>
-                                    <div class="progress progress-sm mt-1 mb-0">
-                                        <div class="progress-bar bg-warning" role="progressbar"
-                                             style="width: {{ ceil($in_progress/$count *100) }}%"
-                                             aria-valuenow="{{ ceil($in_progress/$count *100) }}"
-                                             aria-valuemin="0"
-                                             aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                                <div class="insights mt-1">
-                                    <p> {{ $not_started }} Not Started
-                                        <span
-                                            class="float-right text-danger h3">{{ceil($not_started/$count *100)}}%</span>
-                                    </p>
-                                    <div class="progress progress-sm mt-1 mb-0">
-                                        <div class="progress-bar bg-danger" role="progressbar"
-                                             style="width: {{ ceil($not_started/$count *100) }}%"
-                                             aria-valuenow="{{ ceil($not_started/$count *100) }}"
-                                             aria-valuemin="0"
-                                             aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     @can('create-bcp')
                         @if($staff->status != 'WSTF Approved')
                             <div class="mb-2">
