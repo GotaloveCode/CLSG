@@ -73,11 +73,6 @@ Route::group(['middleware' => ['auth']], function () {
         //Vulnerable customers
         Route::get("/vulnerable-customer-print/{id}", "ReportsController@printCustomer")->name('vulnerable-customer.print');
 
-        // Staff Health
-        Route::post("/staff-health", "ReportsController@saveStaff");
-        Route::get("/staff-health-list", "ReportsController@staffIndex")->name('staff-health.list');
-        Route::get("/staff-health/create", "ReportsController@createStaff")->name('staff-health.create');
-        Route::get("/staff-health-show/{id}", "ReportsController@showStaff")->name('staff-health.show');
 
         // Performance Scorecard
         Route::post("/performance-score-card", "ReportsController@saveCard");
@@ -114,6 +109,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'vulnerable-customer'], function () {
         Route::post('{report}/review', 'VulnerableCustomerReportController@review')->name('vulnerable-customer.review');
         Route::post('{report}/comment', 'VulnerableCustomerReportController@comment')->name('vulnerable-customer.comment');
+    });
+
+    Route::resource('staff-health', 'StaffReportController')->except('edit', 'destroy');
+    Route::group(['prefix' => 'staff-health'], function () {
+        Route::post('{report}/review', 'StaffReportController@review')->name('staff-health.review');
+        Route::post('{report}/comment', 'StaffReportController@comment')->name('staff-health.comment');
     });
 
     Route::resource('essential-operation', 'EssentialReportController')->except('edit', 'destroy');

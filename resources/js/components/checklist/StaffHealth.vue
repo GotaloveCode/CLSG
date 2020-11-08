@@ -2,11 +2,27 @@
     <div>
         <div v-html="$error.handle(error)"/>
         <template v-if="show">
-            <view-staff-health :checklist="checklist_item"  :staff="staff"></view-staff-health>
+            <view-staff-health :checklist="checklist_item" :staff="staff"></view-staff-health>
         </template>
         <div v-if="!show">
             <form @submit.prevent="postData()">
                 <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-body">
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Month</label>
+                                    <v-select label="name" placeholder="Select Month"
+                                              v-model="form.month" :reduce="c => c.no" :options="mths">
+                                    </v-select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Year</label>
+                                    <input class="form-control" disabled v-model="form.year">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-6" v-for="stf in staff" style="margin-top: -10px">
                         <div class="card">
                             <div class="card-header">
@@ -39,7 +55,7 @@
                             </fieldset>
                                 </div>
                                   <div style="margin-left: 15%;">
-                                   <textarea cols="30" rows="2" class="form-control"
+                                   <textarea cols="30" rows="2" class="form-control" required
                                              v-model="form.staff_comment[stf.id]"
                                              placeholder="Your comment here"></textarea>
                                 </div>
@@ -64,47 +80,57 @@
 
 <script>
 import ViewStaffHealth from "./ViewStaffHealth";
-
+import moment from "moment";
+import months from "../months";
 export default {
-    props:{
-        checklists:{type:Array},
-        checklist_item:{type: [Object, Array]}
+    props: {
+        checklists: {type: Array},
+        checklist_item: {type: [Object, Array]}
     },
     data() {
         return {
+            mths: [],
             error: '',
             form: {
+                month: moment().month(),
+                year: moment().year(),
                 staff: [],
                 staff_comment: []
             },
             staff_data: [],
             loading: false,
             show: false,
-            staff:{}
+            staff: {}
         }
     },
     created() {
         this.setUp();
     },
     methods: {
-        setUp(){
-            this.staff = this.checklists.filter(e => e.type ==="Staff Health Protection");
-            if (this.checklist_item.id !=undefined){
-               this.show = true;
+        setUp() {
+            let allowed = [moment().month()];
+            if (moment().date() <= 5) {
+                allowed.push(moment().month() - 1);
+                this.form.month = moment().month() - 1;
+            }
+            this.mths = months.filter(x => allowed.includes(x.no));
+            this.staff = this.checklists.filter(e => e.type === "Staff Health Protection");
+            if (this.checklist_item.id != undefined) {
+                this.show = true;
             }
         },
         postData() {
             let staff = this.validateStaff();
-            if (staff=="comment_required") return this.$toastr.e("Comments are required for In Progress/Not Started Staff Health Protection Checklist are required!");
+            if (staff == "comment_required") return this.$toastr.e("Comments are required for In Progress/Not Started Staff Health Protection Checklist are required!");
             if (!staff) return this.$toastr.e("All Staff Health Protection Checklist fields are required!");
-            let data = {
-                staff_details: this.staff_data
-            };
-
             this.error = '';
             this.loading = true;
-            axios.post("/reports/staff-health", data).then(() => {
-                window.location.href = "/reports/staff-health-list"
+            axios.post("/staff-health", {
+                month: this.form.month,
+                year: this.form.year,
+                staff_details: this.staff_data
+            }).then(() => {
+                window.location.href = "/staff-health"
             }).catch(error => {
                 this.error = error.response;
             });
@@ -131,7 +157,7 @@ export default {
             })
 
             this.staff_data.forEach(e => {
-                if (e.status !="Completed" && e.comment ===""){
+                if (e.status != "Completed" && e.comment === "") {
                     status = false;
                     return;
                 }
@@ -142,7 +168,7 @@ export default {
         },
     },
     components: {
-      ViewStaffHealth
+        ViewStaffHealth
     }
 }
 </script>

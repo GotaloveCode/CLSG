@@ -1,35 +1,31 @@
 <template>
     <div>
-        <div v-html="$error.handle(error)"/>
-        <template v-if="show">
-            <view-vulnerable-customer :checklist="checklist_item" :customers="customers"></view-vulnerable-customer>
-        </template>
-        <div v-if="!show">
-            <form @submit.prevent="postData()">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card card-body">
-                            <div class="row">
-                                <div class="col-md-4 form-group">
-                                    <label>Month</label>
-                                    <v-select label="name" placeholder="Select Month"
-                                              v-model="form.month" :reduce="c => c.no" :options="mths">
-                                    </v-select>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label>Year</label>
-                                    <input class="form-control" disabled v-model="form.year">
-                                </div>
+        <div v-html="$error.handle(error)"></div>
+        <form @submit.prevent="postData()">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-body">
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                <label>Month</label>
+                                <v-select label="name" placeholder="Select Month"
+                                          v-model="form.month" :reduce="c => c.no" :options="mths">
+                                </v-select>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label>Year</label>
+                                <input class="form-control" disabled v-model="form.year">
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6" v-for="cus in customers" style="margin-top: -10px">
-                        <div class="card" style="height: 92%">
-                            <div class="card-header">
-                                <p><i class="fa fa-angle-double-right" aria-hidden="true"></i> {{ cus.name }}</p>
-                            </div>
-                            <div class="card-content collapse show">
-                                <div class="card-body" style="padding-top: 0">
+                </div>
+                <div class="col-md-6" v-for="cus in customers" style="margin-top: -10px">
+                    <div class="card" style="height: 92%">
+                        <div class="card-header">
+                            <p><i class="fa fa-angle-double-right" aria-hidden="true"></i> {{ cus.name }}</p>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body" style="padding-top: 0">
                           <span style="display: flex">
                                 <div>
                             <fieldset class="radio">
@@ -60,26 +56,24 @@
                                              placeholder="Your comment here"></textarea>
                                 </div>
                             </span>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group text-center">
-                    <button class="btn btn-warning" v-if="loading" type="button">Sending ... <i
-                        class="feather icon-loader"></i></button>
-                    <button type="submit" v-else class="btn btn-primary">
-                        Submit <i class="feather icon-send"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="form-group text-center">
+                <button class="btn btn-warning" v-if="loading" type="button">Sending ... <i
+                    class="feather icon-loader"></i></button>
+                <button type="submit" v-else class="btn btn-primary">
+                    Submit <i class="feather icon-send"></i>
+                </button>
+            </div>
+        </form>
     </div>
 </template>
 
 
 <script>
-import ViewVulnerableCustomer from "./ViewVulnerableCustomer";
 import moment from "moment";
 import months from "../months";
 
@@ -100,7 +94,6 @@ export default {
             },
             customer_data: [],
             loading: false,
-            show: false,
             customers: {}
         }
     },
@@ -116,8 +109,12 @@ export default {
             }
             this.mths = months.filter(x => allowed.includes(x.no));
             this.customers = this.checklists.filter(e => e.type === "Vulnerable Customers");
-            if (this.checklist_item.id !=undefined) {
-                this.show = true;
+            if (this.checklist_item.id != undefined) {
+                this.form.year = this.checklist_item.year;
+                for (let i = 0; i < this.checklist_item.customer_details.length; i++) {
+                    this.form.customer[i] = this.checklist_item.customer_details[i].status;
+                    this.form.customer_comment[i] = this.checklist_item.customer_details[i].comment;
+                }
             }
         },
         postData() {
@@ -169,9 +166,6 @@ export default {
 
             return true;
         }
-    },
-    components: {
-        ViewVulnerableCustomer
     }
 }
 </script>

@@ -71,32 +71,6 @@ class ReportsController extends Controller
             ->make(true);
     }
 
-    public function staffIndex()
-    {
-        if (!request()->ajax()) {
-            return view('checklists.staff.list');
-        }
-
-        $wsp = auth()->user()->wsps()->first();
-
-        if ($wsp) {
-            if ($wsp->bcp) {
-                $essential = StaffHealth::where('bcp_id', $wsp->bcp->id)->get();
-            } else {
-                $essential = [];
-            }
-        } else {
-            $essential = StaffHealth::get();
-        }
-
-        $staff = StaffHealthResource::collection($essential);
-
-        return Datatables::of($staff)
-            ->addColumn('action', function ($staff) {
-                return '<a href="' . route("staff-health.show", $staff['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
-            })
-            ->make(true);
-    }
 
     public function createCslg()
     {
@@ -122,14 +96,6 @@ class ReportsController extends Controller
         return view("checklists.cslg.create", compact("cslg", "operations", 'grant'));
     }
 
-    public function createStaff()
-    {
-        $exiting_staff = StaffHealth::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
-        $exiting_staff ? $staff = json_encode(new StaffHealthResource($exiting_staff)) : $staff = json_encode([]);
-        $items = json_encode(BcpChecklist::all());
-        return view("checklists.staff.index", compact("staff", "items"));
-    }
-
     public function createCard()
     {
         $exiting_score = PerformanceScore::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
@@ -138,13 +104,6 @@ class ReportsController extends Controller
         $wsp = WspReporting::where("month", $this->getMonth())->where("year", $this->getYear())->where('bcp_id', auth()->user()->wsps()->first()->bcp->first()->id)->first();
         if (!$wsp) return redirect()->back()->with("success", "Please ensure you have have filled in the general checklist form first");
         return view("checklists.performance.index", compact("score"));
-    }
-
-    public function showStaff($id)
-    {
-        $checklist = json_encode(new StaffHealthResource(StaffHealth::find($id)));
-        $staff = json_encode(BcpChecklist::where("type", "Staff Health Protection")->get());
-        return view("checklists.staff.show", compact("checklist", "staff"));
     }
 
     public function showCslg($id)
@@ -180,18 +139,6 @@ class ReportsController extends Controller
         }
         return $fileName;
 
-    }
-
-
-    public function saveStaff(Request $request)
-    {
-        $staff = StaffHealth::create([
-            'bcp_id' => auth()->user()->wsps()->first()->bcp->first()->id,
-            'staff_details' => json_encode($request->input("staff_details")),
-            'month' => $this->getMonth(),
-            'year' => $this->getYear(),
-        ]);
-        return response()->json($staff);
     }
 
     public function saveCslg(Request $request)

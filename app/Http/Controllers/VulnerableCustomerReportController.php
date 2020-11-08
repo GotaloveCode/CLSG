@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CommentRequest;
 use App\Http\Resources\VulnerableCustomerResource;
 use App\Models\BcpChecklist;
+use App\Models\EssentialOperationReport;
 use App\Models\VulnerableCustomer;
 use App\Traits\SendMailNotification;
 use App\Traits\VulnerableCustomerReportAuthTrait;
@@ -79,14 +80,15 @@ class VulnerableCustomerReportController extends Controller
 
     public function show(VulnerableCustomer $vulnerable_customer)
     {
-        $checklist = json_encode(new VulnerableCustomerResource($vulnerable_customer));
-        $customers = json_encode(BcpChecklist::where("type", "Vulnerable Customers")->get());
-        $staff = json_encode(BcpChecklist::where("type", "Staff Health Protection")->get());
+        $checklist = BcpChecklist::where("type", "Vulnerable Customers")->get();
+        $customer = $vulnerable_customer;
         if (\request()->has('print')) {
-            $pdf = \PDF::loadView('checklists.customer.print', compact('customer'));
+            $customer = $vulnerable_customer;
+            $pdf = \PDF::loadView('checklists.customer.print', compact('customer','checklist'));
             return $pdf->inline();
         }
-        return view("checklists.customer.show", compact("customers", "checklist", "staff"));
+        $progress = $customer->progress();
+        return view("checklists.customer.show", compact("customer", 'progress',"checklist"));
     }
 
 

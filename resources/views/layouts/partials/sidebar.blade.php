@@ -99,7 +99,7 @@
                            href="{{ route('vulnerable-customer.index')}}">Vulnerable Customers</a>
                     </li>
                     <li><a class="menu-item" data-title="Staff & Health Protection"
-                           href="{{ route('staff-health.list')}}">Staff & Health Protection</a>
+                           href="{{ route('staff-health.index')}}">Staff & Health Protection</a>
                     </li>
                     <li><a class="menu-item" href="{{ route('performance-score-card.list')}}"
                            data-i18n="Performance Scorecard">Performance Scorecard</a>
@@ -122,7 +122,7 @@
                                    href="{{ route('vulnerable-customer.index')}}">Vulnerable Customers</a>
                             </li>
                             <li><a class="menu-item" data-title="Staff & Health Protection"
-                                   href="{{ route('staff-health.list')}}">Staff & Health Protection</a>
+                                   href="{{ route('staff-health.index')}}">Staff & Health Protection</a>
                             </li>
                             <li><a class="menu-item" href="{{ route('performance-score-card.list')}}"
                                    data-i18n="Performance Scorecard">Performance Scorecard</a>
