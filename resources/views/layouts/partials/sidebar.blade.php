@@ -101,10 +101,9 @@
                     <li><a class="menu-item" data-title="Staff & Health Protection"
                            href="{{ route('staff-health.index')}}">Staff & Health Protection</a>
                     </li>
-                    <li><a class="menu-item" href="{{ route('performance-score-card.index')}}"
-                           data-i18n="Performance Scorecard">Performance Scorecard</a>
+                    <li><a class="menu-item" href="{{ route('performance-score-card.index')}}">Performance Scorecard</a>
                     </li>
-                    <li><a class="menu-item" data-title="CSLG CALCULATION" href="{{ route('cslg-calculation.list')}}">CSLG
+                    <li><a class="menu-item" data-title="CSLG CALCULATION" href="{{ route('cslg-calculation.index')}}">CSLG
                             Calculation</a>
                     </li>
                 </ul>
@@ -116,7 +115,8 @@
                         <ul class="menu-content">
                             <li><a class="menu-item" href="{{ route('wsp-reporting.index') }}">Monthly WSP</a>
                             </li>
-                            <li><a class="menu-item" href="{{ route('essential-operation.index') }}">Essential Operations</a>
+                            <li><a class="menu-item" href="{{ route('essential-operation.index') }}">Essential
+                                    Operations</a>
                             </li>
                             <li><a class="menu-item" data-title="Vulnerable Customers"
                                    href="{{ route('vulnerable-customer.index')}}">Vulnerable Customers</a>
@@ -124,25 +124,26 @@
                             <li><a class="menu-item" data-title="Staff & Health Protection"
                                    href="{{ route('staff-health.index')}}">Staff & Health Protection</a>
                             </li>
-                            <li><a class="menu-item" href="{{ route('performance-score-card.index')}}"
-                                   data-i18n="Performance Scorecard">Performance Scorecard</a>
+                            <li><a class="menu-item" href="{{ route('performance-score-card.index')}}">Performance
+                                    Scorecard</a>
                             </li>
-                            <li><a class="menu-item" data-title="CSLG CALCULATION" href="{{ route('cslg-calculation.list')}}">CSLG
+                            <li><a class="menu-item" data-title="CSLG CALCULATION"
+                                   href="{{ route('cslg-calculation.index')}}">CSLG
                                     Calculation</a>
                             </li>
                         </ul>
                     </li>
                 @endif
-            @endhasanyrole
-            @can('create-wsps')
-                <li class=" nav-item"><a href="#"><i class="feather icon-compass"></i><span
-                            class="menu-title">Wsps</span></a>
-                    <ul class="menu-content">
-                        <li><a class="menu-item" href="{{ route('wsps.export') }}">Import Wsps</a>
-                        </li>
-                    </ul>
-                </li>
-            @endcan
+                @endhasanyrole
+                @can('create-wsps')
+                    <li class=" nav-item"><a href="#"><i class="feather icon-compass"></i><span
+                                class="menu-title">Wsps</span></a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="{{ route('wsps.export') }}">Import Wsps</a>
+                            </li>
+                        </ul>
+                    </li>
+                @endcan
         </ul>
     </div>
 </div>

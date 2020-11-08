@@ -67,26 +67,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
     });
 
-
-    Route::group(['prefix' => 'reports'], function () {
-
-        //Vulnerable customers
-        Route::get("/vulnerable-customer-print/{id}", "ReportsController@printCustomer")->name('vulnerable-customer.print');
-
-
-        // Performance Scorecard
-        Route::get("/performance-score-card-print/{id}", "ReportsController@printCard")->name('performance-score-card.print');
-
-        //Wsp Reporting Monthly
-        Route::get("/wsp-reporting-attachments", "ReportsController@attachmentIndex")->name("wsp-reporting-attachments.list");
-//        Route::get("/wsp-reporting-show/{id}","ReportsController@showWsp")->name("wsp-reporting.show");
-
-        //Cslg Calculation
-        Route::get("/cslg-calculation-list", "ReportsController@CslgIndex")->name('cslg-calculation.list');
-        Route::post("/cslg-calculation", "ReportsController@saveCslg");
-        Route::post("/cslg-calculation/approve", "ReportsController@approveCslg");
-        Route::get("/cslg-calculation-show/{id}", "ReportsController@showCslg")->name("cslg-calculation.show");
-        Route::get("/cslg-calculation/create", "ReportsController@createCslg")->name("cslg-calculation.create");
+    Route::resource("cslg-calculation", "ClsgReportController")->except('edit', 'destroy');
+    Route::group(['prefix' => 'cslg-calculation'], function () {
+        Route::post("/approve", "ClsgReportController@approveCslg");
+        Route::post('{report}/review', 'ClsgReportController@review')->name('cslg-calculation.review');
+        Route::post('{report}/comment', 'ClsgReportController@comment')->name('cslg-calculation.comment');
     });
 
     Route::resource('wsp-reporting', 'WspReportingController')->except('edit', 'destroy');
@@ -97,7 +82,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{report}/review', 'WspReportingController@review')->name('wsp-reporting.review');
         Route::post('{report}/comment', 'WspReportingController@comment')->name('wsp-reporting.comment');
     });
-
 
     Route::resource('vulnerable-customer', 'VulnerableCustomerReportController')->except('edit', 'destroy');
     Route::group(['prefix' => 'vulnerable-customer'], function () {

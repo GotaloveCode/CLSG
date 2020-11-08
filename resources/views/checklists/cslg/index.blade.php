@@ -62,7 +62,7 @@
             $('#cslg-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{!! route('cslg-calculation.list') !!}',
+                ajax: '{!! route('cslg-calculation.index') !!}',
                 columns: [
                     {data: 'wsp', name: 'wsp'},
                     {data: 'month', name: 'month'},
