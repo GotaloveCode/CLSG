@@ -8,7 +8,7 @@ use App\Models\WspReporting;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class ScorecardReportController extends Controller
+class ScoreCardReportController extends Controller
 {
 
     public function index()
