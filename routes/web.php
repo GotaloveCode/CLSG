@@ -95,10 +95,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{report}/comment', 'StaffReportController@comment')->name('staff-health.comment');
     });
 
-    Route::resource('performance-score-card', 'ScoreCardReportController')->except('edit', 'destroy');
+    Route::resource('performance-score-card', 'ScorecardReportController')->except('edit', 'destroy');
     Route::group(['prefix' => 'performance-score-card'], function () {
-        Route::post('{report}/review', 'ScoreCardReportController@review')->name('performance-score-card.review');
-        Route::post('{report}/comment', 'ScoreCardReportController@comment')->name('performance-score-card.comment');
+        Route::post('{report}/review', 'ScorecardReportController@review')->name('performance-score-card.review');
+        Route::post('{report}/comment', 'ScorecardReportController@comment')->name('performance-score-card.comment');
     });
 
     Route::resource('essential-operation', 'EssentialReportController')->except('edit', 'destroy');
