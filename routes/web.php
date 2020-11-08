@@ -77,7 +77,6 @@ Route::group(['middleware' => ['auth']], function () {
         // Performance Scorecard
         Route::post("/performance-score-card", "ReportsController@saveCard");
         Route::get("/performance-score-card-print/{id}", "ReportsController@printCard")->name('performance-score-card.print');
-        Route::get("/performance-score-card-list", "ReportsController@cardIndex")->name('performance-score-card.list');
         Route::get("/performance-score-card/create", "ReportsController@createCard")->name('performance-score-card.create');
         Route::get("/performance-score-card-show/{id}", "ReportsController@showCard")->name('performance-score-card.show');
 
@@ -115,6 +114,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'staff-health'], function () {
         Route::post('{report}/review', 'StaffReportController@review')->name('staff-health.review');
         Route::post('{report}/comment', 'StaffReportController@comment')->name('staff-health.comment');
+    });
+
+    Route::resource('performance-score-card', 'StaffReportController')->except('edit', 'destroy');
+    Route::group(['prefix' => 'performance-score-card'], function () {
+        Route::post('{report}/review', 'StaffReportController@review')->name('performance-score-card.review');
+        Route::post('{report}/comment', 'StaffReportController@comment')->name('performance-score-card.comment');
     });
 
     Route::resource('essential-operation', 'EssentialReportController')->except('edit', 'destroy');

@@ -4,20 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\EssentialOperationReport;
 use App\Models\Operationcost;
-use App\Models\VulnerableCustomer;
 use App\Models\Service;
 use App\Models\WspReporting;
 use App\Models\CslgCalculation;
-use App\Models\StaffHealth;
 use App\Models\PerformanceScore;
-use App\Models\BcpChecklist;
 use App\Models\Erp;
 use Illuminate\Http\Request;
-use App\Http\Resources\EssentialReportResource;
-use App\Http\Resources\VulnerableCustomerResource;
-use App\Http\Resources\WspReportingResource;
 use App\Http\Resources\CslgResource;
-use App\Http\Resources\StaffHealthResource;
 use App\Http\Resources\PerformaceScoreResource;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -30,32 +23,6 @@ class ReportsController extends Controller
 {
     use FilesTrait, PeriodTrait;
 
-
-    public function cardIndex()
-    {
-        if (!request()->ajax()) {
-            return view('checklists.performance.list');
-        }
-        $wsp = auth()->user()->wsps()->first();
-
-        if ($wsp) {
-            if ($wsp->bcp) {
-                $score = PerformanceScore::where('bcp_id', $wsp->bcp->id)->get();
-            } else {
-                $score = [];
-            }
-        } else {
-            $score = PerformanceScore::get();
-        }
-        $score = PerformaceScoreResource::collection($score);
-
-        return Datatables::of($score)
-            ->addColumn('action', function ($score) {
-                return '<a href="' . route("performance-score-card.show", $score['id']) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
-            })
-            ->make(true);
-
-    }
 
     public function cslgIndex()
     {
@@ -152,11 +119,7 @@ class ReportsController extends Controller
 
     public function saveCard(Request $request)
     {
-        $request['month'] = $this->getMonth();
-        $request['year'] = $this->getYear();
-        $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
-        $score = PerformanceScore::create($request->all());
-        return response()->json($score);
+
     }
 
     public function approveCslg(Request $request)

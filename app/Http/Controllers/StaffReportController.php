@@ -67,13 +67,13 @@ class StaffReportController extends Controller
     }
 
 
-    public function show($id)
+    public function show(StaffHealth $staff_health)
     {
-        $checklist = json_encode(new StaffHealthResource(StaffHealth::find($id)));
-        $staff = json_encode(BcpChecklist::where("type", "Staff Health Protection")->get());
-        return view("checklists.staff.show", compact("checklist", "staff"));
+        $checklist = BcpChecklist::where("type", "Staff Health Protection")->get();
+        $staff = $staff_health;
+        $progress = $staff->progress();
+        return view("checklists.staff.show", compact("checklist", "staff", "progress"));
     }
-
 
 
     public function update(Request $request, $id)
