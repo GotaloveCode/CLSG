@@ -113,11 +113,11 @@ export default {
             }
             this.mths = months.filter(x => allowed.includes(x.no));
             this.essentials = this.items.filter(e => e.type === "Essential Operations");
-            if (this.essential_item.length) {
+            if (typeof (this.essential_item.id) !== 'undefined') {
                 this.form.year = this.essential_item.year;
                 for (let i = 0; i < this.essential_item.details.length; i++) {
-                    this.form.essential[i+1] = this.essential_item.details[i].status;
-                    this.form.essential_comment[i+1] = this.essential_item.details[i].comment;
+                    this.form.essential[i + 1] = this.essential_item.details[i].status;
+                    this.form.essential_comment[i + 1] = this.essential_item.details[i].comment;
                 }
             }
         },
@@ -127,7 +127,7 @@ export default {
             if (!ess) return this.$toastr.e("All Essential Operations Checklist fields are required!");
             this.error = '';
             this.loading = true;
-            this.essential_item.length ? this.updateData() : this.postData();
+            if (typeof (this.essential_item.id) !== 'undefined') this.updateData(); else this.postData();
         },
         postData() {
             axios.post("/essential-operation", {
