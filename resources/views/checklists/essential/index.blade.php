@@ -45,6 +45,7 @@
                                         <th>Completed</th>
                                         <th>In Progress</th>
                                         <th>Not Started</th>
+                                        <th>Status</th>
                                         <th>Created</th>
                                         <th></th>
                                     </tr>
@@ -105,6 +106,11 @@
                             })
                             return count + "/" + data.length;
                         },
+                    },
+                    {data: 'status', name: 'status',
+                        render : function (data, type, row) {
+                            return data == 'WASREB Approved' ? 'Pending Approval' : data
+                        }
                     },
                     {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}

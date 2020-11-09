@@ -42,6 +42,7 @@
                                         <th>Wsp</th>
                                         <th>Month</th>
                                         <th>Year</th>
+                                        <th>Status</th>
                                         <th>Created At</th>
                                         <th></th>
                                     </tr>
@@ -67,6 +68,11 @@
                     {data: 'wsp', name: 'wsp'},
                     {data: 'month', name: 'month'},
                     {data: 'year', name: 'year'},
+                    {data: 'status', name: 'status',
+                        render : function (data, type, row) {
+                            return data == 'WASREB Approved' ? 'Pending Approval' : data
+                        }
+                    },
                     {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
