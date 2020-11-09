@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PerformaceScoreResource;
+use App\Http\Resources\WspReportingResource;
+use App\Models\PerformanceScore;
 use App\Models\WspReporting;
 use App\Models\CslgCalculation;
 use App\Models\Erp;
@@ -36,25 +39,40 @@ class ClsgReportController extends Controller
     public function create()
     {
         $wsp = auth()->user()->wsps()->first();
-        $bcp_id = $wsp->bcp->id;
+        $bcp = $wsp->bcp;
+        $bcp_id = $bcp->id;
         $exiting_cslg = CslgCalculation::where('bcp_id', $bcp_id)
             ->latest()
             ->first();;
         $exiting_cslg ? $cslg = json_encode(new CslgResource($exiting_cslg)) : $cslg = json_encode([]);
 
-        $operations = WspReporting::select("clsg_total", "operations_costs", "revenue")
-            ->where('bcp_id', $bcp_id)
-            ->latest()
-            ->first();;
+        $operations = WspReporting::where('bcp_id', $bcp_id)->latest()->first();
 
         if (!$operations) return redirect()->back()->with('success', 'Please ensure you have created WSP Reporting first');
 
-        $erp = Erp::where('wsp_id', $wsp->id)->first();
+        $mgm = $bcp->mgms()
+            ->where('month', $operations->month)
+            ->where('year', $operations->year)
+            ->first();
 
-        if (!$erp) return redirect()->back()->with('success', 'Please ensure you have created ERP first');
-        $grant = $erp->erp_items->sum('cost');
+        $operations = json_encode(new WspReportingResource($operations));
 
-        return view("checklists.cslg.create", compact("cslg", "operations", 'grant'));
+        if (!$mgm) return redirect()->back()->with('success', 'Please ensure the Monthly Grant Multiplier for the month is set on the BCP');
+
+        $grant = floatval($mgm->amount);
+
+        $exiting_score = PerformanceScore::where('bcp_id', $bcp_id)->latest()->first();
+        $exiting_score ? $score = json_encode(new PerformaceScoreResource($exiting_score)) : $score = json_encode([]);
+        $score = json_decode($score);
+        if (!empty($score)) {
+            $score = intval($score->total);
+        } else {
+            $score = 0;
+        }
+
+//        $grant = $erp->erp_items->sum('cost');
+//dd($grant);
+        return view("checklists.cslg.create", compact("cslg", "operations", 'grant', 'score'));
     }
 
     public function show($id)

@@ -23,6 +23,7 @@
                     <div class="card-content">
                         <div class="card-body">
                             <cslg-calculation
+                                :score="{{ $score }}"
                                 :cslg="{{$cslg}}"
                                 :operations="{{$operations}}"
                                 :grant="{{$grant}}"
