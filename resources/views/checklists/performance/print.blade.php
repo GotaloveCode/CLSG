@@ -1,6 +1,6 @@
 @extends('layouts.print')
 @section('content')
-    <h4>MONTHLY SALES PERFORMANCE SCORECARD</h4>
+    <h4>PERFORMANCE SCORECARD</h4>
     <p><strong>Period : </strong> {{ getMonthName($score->month) }} {{ $score->year }}</p>
     <div class="table-responsive">
         <table class="table mb-0">
