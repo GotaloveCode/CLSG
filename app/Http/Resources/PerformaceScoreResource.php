@@ -39,6 +39,7 @@ class PerformaceScoreResource extends JsonResource
             'service_per_day_comment' => $this->service_per_day_comment,
             'service_per_day_score' => $this->service_per_day_score,
             'created_at' => Carbon::parse($this->created_at)->format("d-m-Y H:i"),
+            'status' => $this->status,
             'total' => (int)$this->service_per_day_score+(int)$this->performance_score+(int)$this->nrw_score+(int)$this->financial_score+(int)$this->erp_score+
                 (int)$this->drinking_water_score+(int)$this->compliance_score+(int)$this->collection_efficiency_score+(int)$this->bcp_score+(int)$this->bcp_erp_score,
         ];
