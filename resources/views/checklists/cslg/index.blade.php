@@ -42,6 +42,8 @@
                                         <th>Wsp</th>
                                         <th>Month</th>
                                         <th>Year</th>
+                                        <th>Revenue</th>
+                                        <th>CLSG Amount</th>
                                         <th>Status</th>
                                         <th>Created At</th>
                                         <th></th>
@@ -68,6 +70,8 @@
                     {data: 'wsp', name: 'wsp'},
                     {data: 'month', name: 'month'},
                     {data: 'year', name: 'year'},
+                    {data: 'revenue', name: 'revenue'},
+                    {data: 'gross_clsg', name: 'gross_clsg'},
                     {data: 'status', name: 'status',
                         render : function (data, type, row) {
                             return data == 'WASREB Approved' ? 'Pending Approval' : data

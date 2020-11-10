@@ -94,6 +94,17 @@ class Bcp extends Model
         return $this->hasMany(MonthlyGrantMultiplier::class);
     }
 
+    public function performanceScores()
+    {
+        return $this->hasMany(PerformanceScore::class);
+    }
+
+    public function wspReportings()
+    {
+        return $this->hasMany(WspReporting::class);
+    }
+
+
     public function scopeOfStatus($query, $status)
     {
         $query->where('status', $status);

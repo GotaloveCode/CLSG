@@ -7,26 +7,32 @@ use App\Http\Resources\WspReportingResource;
 use App\Models\PerformanceScore;
 use App\Models\WspReporting;
 use App\Models\CslgCalculation;
-use App\Models\Erp;
 use Illuminate\Http\Request;
 use App\Http\Resources\CslgResource;
-use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
-use App\Traits\FilesTrait;
-use App\Traits\PeriodTrait;
 
 
 class ClsgReportController extends Controller
 {
-    use FilesTrait, PeriodTrait;
-
 
     public function index()
     {
         if (!request()->ajax()) {
             return view('checklists.cslg.index');
         }
-        $reporting = CslgResource::collection(CslgCalculation::get());
+        $wsp = auth()->user()->wsps()->first();
+
+        if ($wsp) {
+            if ($wsp->bcp) {
+                $reporting = CslgCalculation::where('bcp_id', $wsp->bcp->id)->get();
+            } else {
+                $reporting = [];
+            }
+        } else {
+            $reporting = CslgCalculation::get();
+        }
+
+        $reporting = CslgResource::collection($reporting);
 
         return Datatables::of($reporting)
             ->addColumn('action', function ($reporting) {
@@ -69,29 +75,12 @@ class ClsgReportController extends Controller
         } else {
             $score = 0;
         }
-
-//        $grant = $erp->erp_items->sum('cost');
-//dd($grant);
         return view("checklists.cslg.create", compact("cslg", "operations", 'grant', 'score'));
     }
 
-    public function show($id)
+    public function show(CslgCalculation $cslg_calculation)
     {
-        $item = CslgCalculation::find($id);
-        $operations = WspReporting::with('attachments')->where('bcp_id', auth()->user()->wsps()->first()->bcp->id)->latest()->first();
-        if (!$operations) return redirect()->back();
-        $cslg = json_encode(new CslgResource($item));
-
-        return view("checklists.cslg.show", compact("cslg", "operations"));
-    }
-
-    public function store(Request $request)
-    {
-        $request['month'] = $this->getMonth();
-        $request['year'] = $this->getYear();
-        $request['bcp_id'] = auth()->user()->wsps()->first()->bcp->first()->id;
-        $cslg = CslgCalculation::create($request->all());
-        return response()->json($cslg);
+        return view("checklists.cslg.show", compact("cslg_calculation"));
     }
 
     public function approveCslg(Request $request)
@@ -100,20 +89,4 @@ class ClsgReportController extends Controller
         return response()->json('success');
     }
 
-    public function saveFileDoc($base64_image)
-    {
-        $fileName = "";
-        $type = explode(",", $base64_image)[0];
-        // your base64 encoded
-        @list($type, $file_data) = explode(';', $base64_image);
-        @list(, $file_data) = explode(',', $file_data);
-        if ($type == "data:application/pdf") {
-            $fileName = Str::random(6) . '' . date('s') . gettimeofday()['usec'] . '.pdf';
-            \Storage::disk('local')->put($fileName, base64_decode($file_data));
-        } else {
-            $fileName = Str::random(6) . '' . date('s') . gettimeofday()['usec'] . '.docx';
-            \Storage::disk('local')->put($fileName, base64_decode($file_data));
-        }
-        return $fileName;
-    }
 }

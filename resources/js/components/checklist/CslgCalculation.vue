@@ -14,7 +14,6 @@
             <tr>
                 <td>Grant Multiplier for this month (as per CLSG Agreement) :</td>
                 <td><span class="form-control-static" v-text="grant"></span></td>
-                <td></td>
             </tr>
             <tr>
                 <td>Actual Performance Score (%) :</td>
@@ -27,7 +26,6 @@
             <tr>
                 <td>Fixed Grant :</td>
                 <td> {{ $number.format(costs) }}</td>
-                <td></td>
             </tr>
             <tr>
                 <td>Gross CLSG Amount (KES)</td>
@@ -74,7 +72,7 @@ export default {
     },
     computed: {
         costs() {
-            return this.operations.operations_costs.reduce((a, b) => a + b.amount, 0);
+            return this.operations.status_of_covid_implementation.reduce((a, b) => a + parseInt(b.cost), 0);
         },
         monthly_clsg() {
             //TODO: check against budgeted maximum variable grant

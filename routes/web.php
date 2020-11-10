@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
     });
 
-    Route::resource("cslg-calculation", "ClsgReportController")->except('edit', 'destroy');
+    Route::resource("cslg-calculation", "ClsgReportController")->only('index','create', 'show');
     Route::group(['prefix' => 'cslg-calculation'], function () {
         Route::post("/approve", "ClsgReportController@approveCslg");
         Route::post('{report}/review', 'ClsgReportController@review')->name('cslg-calculation.review');
