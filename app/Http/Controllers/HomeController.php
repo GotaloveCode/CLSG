@@ -49,8 +49,4 @@ class HomeController extends Controller
         }
     }
 
-    public function clsg()
-    {
-        return view('clsg');
-    }
 }

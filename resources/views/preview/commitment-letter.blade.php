@@ -1,4 +1,4 @@
-<p class="text-right">Nairobi,{{ now()->format('d/m/Y') }}</p>
+<p class="text-right">Nairobi,<br>{{ now()->format('d/m/Y') }}</p>
 <p>
     {{ $eoi->wsp->name }}<br>
     {{ $eoi->wsp->postal_address }}-{{ $eoi->wsp->postalcode->code }} {{ $eoi->wsp->postalcode->county }}

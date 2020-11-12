@@ -20,7 +20,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('home', 'HomeController@index')->name('home');
-Route::get('clsg', 'HomeController@clsg')->name('clsg');
 
 Route::group(['middleware' => ['auth']], function () {
 
@@ -67,7 +66,14 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
     });
 
-    Route::resource("cslg-calculation", "ClsgReportController")->only('index','create', 'show');
+    Route::get('clsg', 'ClsgController@index')->name('clsg.index');
+    Route::get('clsg/formula', 'ClsgController@formula')->name('clsg.formula');
+    Route::get('clsg/{wsp}', 'ClsgController@show')->name('clsg.show');
+    Route::post('clsg/{wsp}', 'ClsgController@upload')->name('clsg.upload');
+    Route::get('clsg/attachments/{filename}', 'ClsgController@attachment')->name('clsg.attachments.show');
+
+
+    Route::resource("cslg-calculation", "ClsgReportController")->only('index', 'create', 'show');
     Route::group(['prefix' => 'cslg-calculation'], function () {
         Route::post("/approve", "ClsgReportController@approveCslg");
         Route::post('{report}/review', 'ClsgReportController@review')->name('cslg-calculation.review');

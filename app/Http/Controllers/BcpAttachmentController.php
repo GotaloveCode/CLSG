@@ -50,7 +50,6 @@ class BcpAttachmentController extends Controller
 
     public function show($filename)
     {
-
         return $this->showFile(storage_path('app/Bcp/' . $filename));
     }
 

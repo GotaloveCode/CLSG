@@ -48,10 +48,23 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a class="menu-item" href="{{ route('clsg') }}">
-                    <i class="feather icon-award"></i>
-                    <span class="menu-title">CLSG</span>
-                </a>
+                <a href="#"><i class="feather icon-award"></i><span class="menu-title">CLSG</span></a>
+                <ul class="menu-content">
+                    <li>
+                        <a class="menu-item" href="{{ route('clsg.formula') }}">
+                            CLSG Formula
+                        </a>
+                    </li>
+                    @can('list-erp')
+                        <li><a class="menu-item" href="{{ route('clsg.index') }}">CLSG List</a>
+                        </li>
+                    @else
+                        @if($wsp)
+                            <li><a class="menu-item" href="{{ route('clsg.show',$wsp->id) }}">View CLSG</a>
+                            </li>
+                        @endif
+                    @endcan
+                </ul>
             </li>
             <li class="nav-item"><a href="#"><i class="feather icon-life-buoy"></i><span class="menu-title">ERPs</span></a>
                 <ul class="menu-content">

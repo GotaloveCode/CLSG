@@ -3,7 +3,7 @@
         <div v-html="$error.handle(error)"/>
         <form @submit.prevent="handleSubmit(onSubmit)" class="form">
             <div class="form-group">
-                <label class="control-label">Signed Commitment letter</label>
+                <label class="control-label" v-text="documentName"></label>
                 <span class="webkit">
                     <input type="file" ref="the_document" required name="attachment" class="form-control">
                 </span>
@@ -22,6 +22,7 @@ export default {
     name: "CommitmentUpload",
     props: {
         submitUrl: {required: true, type: String},
+        documentName: {required: true, type: String},
     },
     data: () => ({
         error: '',

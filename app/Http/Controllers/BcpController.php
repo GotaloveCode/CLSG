@@ -163,7 +163,7 @@ class BcpController extends Controller
 
         if (\request()->has('print')) {
             $pdf = PDF::loadView('bcps.print', $bcp);
-            return $pdf->download();
+            return $pdf->inline();
         }
         $progress = $bcp->progress();
         return view('bcps.show')->with(compact('bcp', 'progress', 'eoi'));
