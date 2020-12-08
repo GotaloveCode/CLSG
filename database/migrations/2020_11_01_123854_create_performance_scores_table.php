@@ -37,6 +37,7 @@ class CreatePerformanceScoresTable extends Migration
             $table->string("service_per_day_score");
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->unsignedInteger('bcp_id');
+            $table->string('status')->default('Pending');
             $table->timestamps();
         });
     }

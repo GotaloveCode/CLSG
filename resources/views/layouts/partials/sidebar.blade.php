@@ -12,7 +12,7 @@
                     <span class="menu-title">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item"><a href="#"><i class="feather icon-edit"></i><span class="menu-title">EOIs</span></a>
+            <li class="nav-item"><a href="#"><i class="feather icon-edit"></i><span class="menu-title">EOI</span></a>
                 <ul class="menu-content">
                     @can('create-eoi')
                         @if($eoi)
@@ -29,14 +29,9 @@
                     @endcan
                 </ul>
             </li>
-            <li class="nav-item"><a href="#"><i class="feather icon-briefcase"></i><span class="menu-title">BCPs</span></a>
+            <li class="nav-item"><a href="#"><i class="feather icon-briefcase"></i><span
+                        class="menu-title">BCP</span></a>
                 <ul class="menu-content">
-                    <li>
-                        <a class="menu-item" href="{{ route('clsg') }}">
-                            <i class="feather icon-award"></i>
-                            <span class="menu-title">CLSG</span>
-                        </a>
-                    </li>
                     @can('create-bcp')
                         @if($bcp)
                             <li><a class="menu-item" href="{{ route('bcps.show',$bcp->id) }}">View BCP</a>
@@ -49,6 +44,25 @@
                     @can('list-bcp')
                         <li><a class="menu-item" href="{{ route('bcps.index') }}">BCP List</a>
                         </li>
+                    @endcan
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#"><i class="feather icon-award"></i><span class="menu-title">CLSG</span></a>
+                <ul class="menu-content">
+                    <li>
+                        <a class="menu-item" href="{{ route('clsg.formula') }}">
+                            CLSG Formula
+                        </a>
+                    </li>
+                    @can('list-erp')
+                        <li><a class="menu-item" href="{{ route('clsg.index') }}">CLSG List</a>
+                        </li>
+                    @else
+                        @if($wsp)
+                            <li><a class="menu-item" href="{{ route('clsg.show',$wsp->id) }}">View CLSG</a>
+                            </li>
+                        @endif
                     @endcan
                 </ul>
             </li>
@@ -86,46 +100,63 @@
                     </li>
                 </ul>
             </li>
+            @hasanyrole('wasreb|wstf')
             <li class=" nav-item"><a href="#"><i class="feather icon-bar-chart"></i><span
                         class="menu-title">Reports</span></a>
                 <ul class="menu-content">
-                    <li><a class="menu-item" href="#" data-i18n="Page Layouts">Monthly WSP</a>
-                        <ul class="menu-content">
-                            <li><a class="menu-item" href="{{ route('wsp-reporting.list')}}" data-i18n="General">General</a>
-                            </li>
-                            @can('create-bcp')
-                            @endcan
-                                <li><a class="menu-item" href="{{ route('performance-score-card.list')}}" data-i18n="Performance Scorecard">Performance Scorecard</a>
-                            </li>
-                        </ul>
+                    <li><a class="menu-item" href="{{ route('wsp-reporting.index') }}">Monthly WSP</a>
                     </li>
-{{--                    @role('wasreb')--}}
-{{--                    <li><a class="menu-item" data-title="Monthly Verification List" href="{{ route('verification.list')}}">Monthly Verification List</a>--}}
-{{--                    </li>--}}
-{{--                    @endrole--}}
-                    {{--                    @can('create-bcp')--}}
-                    {{--                        @if($bcp)--}}
-                    <li><a class="menu-item" href="{{ url('/reports/essential-operation-list') }}">Essential Operations</a>
+                    <li><a class="menu-item" href="{{ route('essential-operation.index') }}">Essential Operations</a>
                     </li>
-                    {{--                        @endif--}}
-                    {{--                    @endcan--}}
-                    <li><a class="menu-item" data-title="Vulnerable Customers" href="{{ route('vulnerable-customer.list')}}">Vulnerable Customers</a>
+                    <li><a class="menu-item" data-title="Vulnerable Customers"
+                           href="{{ route('vulnerable-customer.index')}}">Vulnerable Customers</a>
                     </li>
-                    <li><a class="menu-item" data-title="Staff & Health Protection" href="{{ route('staff-health.list')}}">Staff & Health Protection</a>
+                    <li><a class="menu-item" data-title="Staff & Health Protection"
+                           href="{{ route('staff-health.index')}}">Staff & Health Protection</a>
                     </li>
-
-                    <li><a class="menu-item" data-title="CSLG CALCULATION" href="{{ route('cslg-calculation.list')}}">CSLG Calculation</a>
+                    <li><a class="menu-item" href="{{ route('performance-score-card.index')}}">Performance Scorecard</a>
+                    </li>
+                    <li><a class="menu-item" data-title="CSLG CALCULATION" href="{{ route('cslg-calculation.index')}}">CSLG
+                            Calculation</a>
                     </li>
                 </ul>
             </li>
-            @can('create-wsps')
-                <li class=" nav-item"><a href="#"><i class="feather icon-compass"></i><span class="menu-title">Wsps</span></a>
-                    <ul class="menu-content">
-                        <li><a class="menu-item" href="{{ route('wsps.export') }}">Import Wsps</a>
-                        </li>
-                    </ul>
-                </li>
-            @endcan
+            @else
+                @if($bcp && $bcp->status == 'WSTF Approved')
+                    <li class=" nav-item"><a href="#"><i class="feather icon-bar-chart"></i><span
+                                class="menu-title">Reports</span></a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="{{ route('wsp-reporting.index') }}">Monthly WSP</a>
+                            </li>
+                            <li><a class="menu-item" href="{{ route('essential-operation.index') }}">Essential
+                                    Operations</a>
+                            </li>
+                            <li><a class="menu-item" data-title="Vulnerable Customers"
+                                   href="{{ route('vulnerable-customer.index')}}">Vulnerable Customers</a>
+                            </li>
+                            <li><a class="menu-item" data-title="Staff & Health Protection"
+                                   href="{{ route('staff-health.index')}}">Staff & Health Protection</a>
+                            </li>
+                            <li><a class="menu-item" href="{{ route('performance-score-card.index')}}">Performance
+                                    Scorecard</a>
+                            </li>
+                            <li><a class="menu-item" data-title="CSLG CALCULATION"
+                                   href="{{ route('cslg-calculation.index')}}">CSLG
+                                    Calculation</a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+                @endhasanyrole
+                @can('create-wsps')
+                    <li class=" nav-item"><a href="#"><i class="feather icon-compass"></i><span
+                                class="menu-title">Wsps</span></a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="{{ route('wsps.export') }}">Import Wsps</a>
+                            </li>
+                        </ul>
+                    </li>
+                @endcan
         </ul>
     </div>
 </div>

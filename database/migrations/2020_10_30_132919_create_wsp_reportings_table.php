@@ -18,16 +18,17 @@ class CreateWspReportingsTable extends Migration
             $table->integer("month");
             $table->year("year");
             $table->tinyInteger("challenges");
-            $table->text("challenges_cooment")->nullable();
-            $table->text("clsg_total");
+            $table->text("challenges_comment")->nullable();
+            $table->string("clsg_total");
             $table->text("expected_activities");
             $table->text("operations_costs");
-            $table->text("revenue");
+            $table->string("revenue");
             $table->text("status_of_covid_implementation");
             $table->tinyInteger("status_of_resolution");
             $table->text("status_of_resolution_comment")->nullable();
             $table->foreign('bcp_id')->references('id')->on('bcps');
             $table->unsignedInteger('bcp_id');
+            $table->string('status')->default('Pending');
             $table->timestamps();
         });
     }

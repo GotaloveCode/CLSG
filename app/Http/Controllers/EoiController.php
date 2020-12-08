@@ -186,8 +186,8 @@ class EoiController extends Controller
     {
         $this->validate_eoi_approved($eoi);
         if (request()->input('download')) {
-            $pdf = PDF::loadView('preview.eoi', compact('eoi'));
-            return $pdf->download('commitment-letter.pdf');
+            $pdf = PDF::loadView('wsps.print', compact('eoi'));
+            return $pdf->inline();
         }
         $eoi = $eoi->load(['wsp', 'wsp.postalcode', 'attachments']);
         return view('wsps.commitment-letter')->with(['eoi' => $eoi]);

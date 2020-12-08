@@ -158,16 +158,14 @@ class BcpController extends Controller
 
     public function show(Bcp $bcp)
     {
-
-        $progress = $bcp->progress();
         $eoi = $bcp->wsp->first()->eoi;
         $bcp = $bcp->load(['wsp', 'revenue_projections', 'essentialOperations', 'essentialOperations.essentialfunction', 'essentialOperations.primaryStaff', 'comments', 'comments.user', 'bcpteams']);
 
         if (\request()->has('print')) {
             $pdf = PDF::loadView('bcps.print', $bcp);
-            return $pdf->download();
+            return $pdf->inline();
         }
-
+        $progress = $bcp->progress();
         return view('bcps.show')->with(compact('bcp', 'progress', 'eoi'));
     }
 

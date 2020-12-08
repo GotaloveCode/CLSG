@@ -9,6 +9,7 @@ import VueToastr from "vue-toastr";
 import VueNumeric from 'vue-numeric';
 import VueSweetalert2 from 'vue-sweetalert2';
 import {Errors} from '../plugins/errors';
+import { Numeral } from '../plugins/numeral';
 
 
 extend("required", required);
@@ -30,4 +31,4 @@ Vue.use(VueToastr, {
 });
 Vue.use(VueNumeric);
 Vue.use(Errors);
-
+Vue.use(Numeral);

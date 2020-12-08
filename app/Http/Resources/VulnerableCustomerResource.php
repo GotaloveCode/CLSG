@@ -21,6 +21,7 @@ class VulnerableCustomerResource extends JsonResource
             'wsp' => $this->bcp()->first()->wsp->name,
             'month' => \DateTime::createFromFormat("!m",$this->month)->format("F"),
             'year' => $this->year,
+            'status' => $this->status,
             'created_at' => Carbon::parse($this->created_at)->format("d-m-Y")
         ];
     }

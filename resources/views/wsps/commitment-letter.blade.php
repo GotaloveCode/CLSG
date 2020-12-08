@@ -58,7 +58,7 @@
                                     Download
                                 </a>
                             @endif
-                            <commitment-upload submit-url="{{ route('eois.commitment_letter.store', $eoi->id) }}"></commitment-upload>
+                            <file-upload document-name="Signed Commitment Letter" submit-url="{{ route('eois.commitment_letter.store', $eoi->id) }}"></file-upload>
                         @endif
                     </div>
                 </div>
@@ -78,14 +78,12 @@
                     <div class="card-body">
                         @if(auth()->user()->hasRole('wsp'))
                             @if($eoi->status=='WSTF Approved')
-                                <button class="btn btn-success ml-2 mb-1"
-                                        @click.prevent="review('WASREB Approved')"><i
-                                        class="feather icon-download"></i>
+                                <a class="btn btn-primary mb-1" target="_blank"
+                                   href="{{ route('eois.commitment_letter',['eoi'=> $eoi->id,'download' => 'pdf']) }}"><i
+                                        class="fa fa-download"></i>
                                     Download
-                                </button>
+                                </a>
                             @endif
-                        @elseif(auth()->user()->hasRole('wstf'))
-
                         @endif
                         <ol>
                             @foreach($eoi->attachments->where('document_type','Commitment Letter') as $attachment)

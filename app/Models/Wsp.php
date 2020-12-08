@@ -97,4 +97,12 @@ class Wsp extends Model
         return $this->hasMany(MonthlyVerificationReport::class);
     }
 
+    /**
+     * Get the attachments for the Bcp.
+     */
+    public function attachments()
+    {
+        return $this->morphMany(Attachment::class, 'attachable');
+    }
+
 }
