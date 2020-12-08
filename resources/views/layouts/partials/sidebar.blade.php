@@ -15,13 +15,13 @@
             <li class="nav-item"><a href="#"><i class="feather icon-edit"></i><span class="menu-title">EOI</span></a>
                 <ul class="menu-content">
                     @can('create-eoi')
-                        @if($eoi)
+                        @isset($eoi)
                             <li><a class="menu-item" href="{{ route('eois.show',$eoi->id) }}">View EOI</a>
                             </li>
                         @else
                             <li><a class="menu-item" href="{{ route('eois.create') }}">Create EOI</a>
                             </li>
-                        @endif
+                        @endisset
                     @endcan
                     @can('list-eoi')
                         <li><a class="menu-item" href="{{ route('eois.index') }}">EOI List</a>
@@ -33,13 +33,13 @@
                         class="menu-title">BCP</span></a>
                 <ul class="menu-content">
                     @can('create-bcp')
-                        @if($bcp)
+                        @isset($bcp)
                             <li><a class="menu-item" href="{{ route('bcps.show',$bcp->id) }}">View BCP</a>
                             </li>
                         @else
                             <li><a class="menu-item" href="{{ route('bcps.create') }}">Create BCP</a>
                             </li>
-                        @endif
+                        @endisset
                     @endcan
                     @can('list-bcp')
                         <li><a class="menu-item" href="{{ route('bcps.index') }}">BCP List</a>
@@ -59,17 +59,17 @@
                         <li><a class="menu-item" href="{{ route('clsg.index') }}">CLSG List</a>
                         </li>
                     @else
-                        @if($wsp)
+                        @isset($wsp)
                             <li><a class="menu-item" href="{{ route('clsg.show',$wsp->id) }}">View CLSG</a>
                             </li>
-                        @endif
+                        @endisset
                     @endcan
                 </ul>
             </li>
             <li class="nav-item"><a href="#"><i class="feather icon-life-buoy"></i><span class="menu-title">ERPs</span></a>
                 <ul class="menu-content">
                     @can('create-erp')
-                        @if($erp)
+                        @isset($erp)
                             <li><a class="menu-item" href="{{ route('erps.show',$erp->id) }}">View ERP</a>
                             </li>
                         @else
@@ -122,7 +122,8 @@
                 </ul>
             </li>
             @else
-                @if($bcp && $bcp->status == 'WSTF Approved')
+                @isset($bcp)
+                    @if($bcp->status == 'WSTF Approved'))
                     <li class=" nav-item"><a href="#"><i class="feather icon-bar-chart"></i><span
                                 class="menu-title">Reports</span></a>
                         <ul class="menu-content">
@@ -147,6 +148,7 @@
                         </ul>
                     </li>
                 @endif
+                @endisset
                 @endhasanyrole
                 @can('create-wsps')
                     <li class=" nav-item"><a href="#"><i class="feather icon-compass"></i><span

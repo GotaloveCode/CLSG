@@ -1,6 +1,7 @@
 @extends('layouts.dashboard')
 @push('css')
-{{--    <link rel="stylesheet" href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">--}}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
 @endpush
 @section('content')
     <section class="content-body">
@@ -29,7 +30,7 @@
 
 @endsection
 @push('scripts')
-{{--    <script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>--}}
+    <script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
     <script>
         $(function () {
             $('#users-list-datatable').DataTable({
