@@ -15,6 +15,7 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Email</th>
+                                    <th>Role</th>
                                     <th>Created At</th>
                                     <th></th>
                                 </tr>
@@ -40,6 +41,7 @@
                 columns: [
                     {data: 'name', name: 'name'},
                     {data: 'email', name: 'email'},
+                    {data: 'role', name: 'role'},
                     {data: 'created_at', name: 'created_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]

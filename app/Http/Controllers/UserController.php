@@ -15,16 +15,19 @@ class UserController extends Controller
 
     public function index()
     {
-        if(!request()->ajax()){
+        if (!request()->ajax()) {
             return view('users.index');
         }
 
         $role = auth()->user()->roles()->first();
         if ($role->name == 'Super Admin') {
-            $users = User::query()->with('roles');
-        } else {
-            $users = User::query()->select('users.id', 'users.name', 'email', 'users.created_at')
+            $users = User::query()->select('users.id', 'users.name', 'email', 'roles.name as role', 'users.created_at')
                 ->join('user_roles', 'users.id', '=', 'user_id')
+                ->join('roles', 'roles.id', '=', 'user_roles.role_id');
+        } else {
+            $users = User::query()->select('users.id', 'users.name', 'email', 'roles.name as role', 'users.created_at')
+                ->join('user_roles', 'users.id', '=', 'user_id')
+                ->join('roles', 'roles.id', '=', 'user_roles.role_id')
                 ->where('user_roles.role_id', $role->id);
         }
 

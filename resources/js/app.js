@@ -32,6 +32,8 @@ const StaffHealth = () => import('./components/checklist/StaffHealth' /* webpack
 const PerformanceCard = () => import('./components/checklist/PerformanceCard' /* webpackChunkName: "js/components/reportFormat/performance-card" */);
 const ViewPerformanceCard = () => import('./components/checklist/ViewPerformanceCard' /* webpackChunkName: "js/components/reportFormat/view-performance-card" */);
 const FileUpload = () => import('./components/FileUpload' /* webpackChunkName: "js/components/file-upload" */);
+const ManageRole = () => import('./components/ManageRole' /* webpackChunkName: "js/components/manage-role" */);
+
 
 const app = new Vue({
     el: '#app',
@@ -59,6 +61,7 @@ const app = new Vue({
         PerformanceCard,
         ViewPerformanceCard,
         ApproveClgCalculation,
-        ManagePerformanceReview
+        ManagePerformanceReview,
+        ManageRole
     },
 });

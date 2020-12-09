@@ -23,6 +23,10 @@ Route::get('home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
 
+    Route::resource('roles', 'RoleController');
+
+    Route::post('roles/{role}/permissions', 'RoleController@permissions')->name('roles.permissions');
+
     Route::group(['prefix' => 'wsps'], function () {
         Route::get('', 'WspController@index')->name('wsps.index');
         Route::get('export', 'WspController@import_view')->name('wsps.export');

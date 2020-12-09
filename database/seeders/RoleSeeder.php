@@ -38,6 +38,7 @@ class RoleSeeder extends Seeder
         $wsp->syncPermissions([$create_eoi, $create_bcp, $create_erp, $create_staff]);
         $wasreb->syncPermissions([$list_eoi, $review_eoi, $list_bcp, $review_bcp, $list_erp, $review_erp]);
         $wstf->syncPermissions([$list_eoi, $review_eoi, $list_bcp, $review_bcp, $list_erp, $review_erp]);
+        $admin->syncPermissions(Permission::all());
 
         $user = User::firstOrCreate([
             'name' => 'Super Admin'],
