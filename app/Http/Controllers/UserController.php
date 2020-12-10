@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Mail\UserCreatedMailable;
+use App\Traits\Authorizable;
 use App\Traits\GenerateTokenTrait;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
-    use GenerateTokenTrait;
+    use GenerateTokenTrait,Authorizable;
 
     public function index()
     {
@@ -22,23 +23,30 @@ class UserController extends Controller
         }
 
         $role = auth()->user()->roles()->first();
-//        if ($role->name == 'Super Admin') {
-        $users = User::query()->with('roles')->select('users.*');
-//        } else {
-//            $users = User::query()
-//                ->select('users.id', 'users.name', 'email', 'roles.name as role', 'users.created_at')
-//                ->join('user_roles', 'users.id', '=', 'user_id')
-//                ->join('roles', 'roles.id', '=', 'user_roles.role_id')
-//                ->where('user_roles.role_id', $role->id);
-//        }
+
+        switch ($role->name){
+            case 'Super Admin':
+                $users = User::query()->with('roles')->select('users.*');
+                break;
+            case 'wsp':
+                $wsp = auth()->user()->wsps()->first();
+                $users = $wsp->users()->with('roles')->select('users.*');
+                break;
+            case 'wasreb':
+                $users = User::whereHas("roles", function($q) use($role){ $q->where("name", $role->name); })
+                    ->with('roles')->select('users.*');
+                break;
+            case 'wstf':
+                $users = User::whereHas("roles", function($q) use($role){ $q->where("name", $role->name); })
+                    ->with('roles')->select('users.*');
+                break;
+            default:
+                $users = User::whereHas("roles", function($q) use($role){ $q->where("name", $role->name); })
+                    ->with('roles')->select('users.*');
+        }
 
         $datatable = Datatables::of($users);
 
-//        if ($role->hasPermissionTo('create-users')) {
-//            $datatable->addColumn('action', function ($u) {
-//                return '<a href="' . route("roles.edit", $u->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>';
-//            });
-//        }
         return $datatable->make(true);
     }
 
@@ -113,6 +121,7 @@ class UserController extends Controller
 
     public function restore($id)
     {
+        abort_unless(auth()->user()->can('delete_users'),403,'You dont have delete_users permission!');
         User::onlyTrashed()->find($id)->restore();
         return response()->json(['message' => 'User restored successfully!']);
     }

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Wsp;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -23,7 +24,7 @@ class RoleSeeder extends Seeder
         $admin = Role::firstOrCreate(['name' => 'Super Admin']);
 
         Permission::firstOrCreate(['name' => 'create-wsps']);
-        Permission::firstOrCreate(['name' => 'create-users']);
+        Artisan::call('auth:permission users');
         $create_staff = Permission::firstOrCreate(['name' => 'create-staff']);
         $create_eoi = Permission::firstOrCreate(['name' => 'create-eoi']);
         $create_bcp = Permission::firstOrCreate(['name' => 'create-bcp']);
@@ -34,6 +35,7 @@ class RoleSeeder extends Seeder
         $review_eoi = Permission::firstOrCreate(['name' => 'review-eoi']);
         $review_erp = Permission::firstOrCreate(['name' => 'review-erp']);
         $list_erp = Permission::firstOrCreate(['name' => 'list-erp']);
+        Artisan::call('auth:permission roles');
 
         $wsp->syncPermissions([$create_eoi, $create_bcp, $create_erp, $create_staff]);
         $wasreb->syncPermissions([$list_eoi, $review_eoi, $list_bcp, $review_bcp, $list_erp, $review_erp]);
@@ -89,7 +91,7 @@ class RoleSeeder extends Seeder
             $water_company->users()->attach($user->id);
         }
 
-        $user = User::firstOrCreate([
+        $user = User::firstOrNew([
             'email' => 'info@bungomawater.test'],
             ['name' => 'Bungoma Water & Sewerage Company',
                 'password' => bcrypt('password')
@@ -138,6 +140,8 @@ class RoleSeeder extends Seeder
         if (!$user_exists) {
             $water_company->users()->attach($user->id);
         }
+
+
 
     }
 }

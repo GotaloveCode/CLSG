@@ -58,7 +58,7 @@ class WspsImport implements ToCollection,WithHeadingRow
             ]);
 
             $user->assignRole('wsp');
-            $user->givePermissionTo('create-users');
+            $user->givePermissionTo('create_users');
             $user->wsps()->attach($wsp->id);
 
             Mail::to($user)->queue(new WspCreatedMailable($wsp, $password));
