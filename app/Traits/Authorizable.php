@@ -11,8 +11,8 @@ trait Authorizable
         'edit' => 'edit',
         'show' => 'view',
         'update' => 'edit',
-        'create' => 'add',
-        'store' => 'add',
+        'create' => 'create',
+        'store' => 'create',
         'destroy' => 'delete'
     ];
 

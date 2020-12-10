@@ -33,6 +33,9 @@ const PerformanceCard = () => import('./components/checklist/PerformanceCard' /*
 const ViewPerformanceCard = () => import('./components/checklist/ViewPerformanceCard' /* webpackChunkName: "js/components/reportFormat/view-performance-card" */);
 const FileUpload = () => import('./components/FileUpload' /* webpackChunkName: "js/components/file-upload" */);
 const ManageRole = () => import('./components/ManageRole' /* webpackChunkName: "js/components/manage-role" */);
+const EditUser = () => import('./components/users/EditUser' /* webpackChunkName: "js/components/users/edit-user" */);
+const DeleteUser = () => import('./components/users/DeleteUser' /* webpackChunkName: "js/components/users/delete-user" */);
+const RestoreUser = () => import('./components/users/RestoreUser' /* webpackChunkName: "js/components/users/restore-user" */);
 
 
 const app = new Vue({
@@ -62,6 +65,9 @@ const app = new Vue({
         ViewPerformanceCard,
         ApproveClgCalculation,
         ManagePerformanceReview,
-        ManageRole
+        ManageRole,
+        EditUser,
+        DeleteUser,
+        RestoreUser
     },
 });

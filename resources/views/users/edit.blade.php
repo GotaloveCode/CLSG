@@ -30,9 +30,9 @@
                             <div class="heading-elements">
                                 <ul class="list-inline mb-0">
                                     <li>
-                                        <manage-role inline-template :role="{{ $role }}">
-                                            <a href="#" @click.prevent="deleteRole"><i class="fa fa-trash"></i></a>
-                                        </manage-role>
+                                        <delete-user inline-template :user="{{ $edit_user }}">
+                                            <button class="btn btn-sm btn-danger" @click.prevent="deleteUser"><i class="feather icon-trash"></i> Delete</button>
+                                        </delete-user>
                                     </li>
                                     <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
                                     <li><a data-action="close"><i class="feather icon-x"></i></a></li>
@@ -40,37 +40,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form action="{{ Route('users.update',  $user->id) }}" method="post">
-                                @method("put") @csrf
-                                <div class="form-group row @if ($errors->has('name')) has-error @endif">
-                                    <label for="name" class="col-md-3"> Name</label>
-                                    <input type="text" name="name" value="{{ $user->name }}" placeholder="Role Name"
-                                           class="form-control col-md-4">
-                                    @if ($errors->has('name')) <p
-                                        class="help-block">{{ $errors->first('name') }}</p> @endif
-                                </div>
-                                <div class="form-group row @if ($errors->has('email')) has-error @endif">
-                                    <label for="email" class="col-md-3"> Name</label>
-                                    <input type="email" name="email" value="{{ $user->email }}" placeholder="Role Name"
-                                           class="form-control col-md-4">
-                                    @if ($errors->has('email')) <p
-                                        class="help-block">{{ $errors->first('email') }}</p> @endif
-                                </div>
-{{--                                TODO: make this a vue component so you can use v-select with multiple roles --}}
-                                <div class="form-group row @if ($errors->has('permissions')) has-error @endif">
-                                    <label for="permissions" class="col-md-3"> Name</label>
-                                    <select name="roles"  placeholder="Role Name"
-                                           class="form-control col-md-4">
-                                    @if ($errors->has('permissions')) <p
-                                        class="help-block">{{ $errors->first('permissions') }}</p> @endif
-                                </div>
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-check-square-o"></i> Submit
-                                    </button>
-                                </div>
-                            </form>
+                            <edit-user :user="{{$edit_user}}" :roles="{{ $roles }}"></edit-user>
                         </div>
                     </div>
                 </div>
@@ -78,4 +48,3 @@
         </div>
     </div>
 @endsection
-

@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 @section('content')
     <div class="content-header row">
-        <div class="content-header-left col-md-6 col-12 mb-2">
+        <div class="content-header-left col-md-6 col-12 mb-1">
             <h3 class="content-header-title mb-0">{{ __('Roles') }}</h3>
             <div class="row breadcrumbs-top">
                 <div class="breadcrumb-wrapper col-12">

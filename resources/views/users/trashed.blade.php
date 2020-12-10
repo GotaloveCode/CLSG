@@ -6,19 +6,20 @@
 @section('content')
     <div class="content-header row">
         <div class="content-header-left col-md-6 col-12 mb-1">
-            <h3 class="content-header-title mb-0">{{ __('Users') }}</h3>
+            <h3 class="content-header-title mb-0">{{ __('Deleted Users') }}</h3>
             <div class="row breadcrumbs-top">
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url("/")}}">Home</a>
                         </li>
-                        <li class="breadcrumb-item active">{{ __('Users') }}
+                        <li class="breadcrumb-item active">{{ __('Deleted Users') }}
                         </li>
                     </ol>
                 </div>
             </div>
         </div>
     </div>
+
     <section class="content-body">
         <div class="users-list-table">
             <div class="card">
@@ -52,7 +53,7 @@
             $('#users-list-datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{!! route('users.index') !!}',
+                ajax: '{!! route('users.trashed') !!}',
                 columns: [
                     {data: 'name', name: 'name'},
                     {data: 'email', name: 'email'},
@@ -63,13 +64,13 @@
                         }
                     },
                     {data: 'created_at', name: 'created_at'},
-                        @can('edit-users')
+                        @can('delete-users')
                     {
                         data: 'id',
                         name: 'action', orderable: false, searchable: false,
                         render: function (data, type, row, meta) {
                             return type === 'display' ?
-                                '<a href="/users/' + data + '/edit"  class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>' :
+                                '<a href="/users/' + data + '"  class="btn btn-sm btn-primary"><i class="feather icon-eye"></i> View</a>' :
                                 data;
                         }
                     }

@@ -94,10 +94,19 @@
                     </li>
                 </ul>
             </li>
-            <li class=" nav-item"><a href="#"><i class="feather icon-user"></i><span class="menu-title">Users</span></a>
+            <li class=" nav-item"><a href="#"><i class="feather icon-user"></i><span
+                        class="menu-title">User Management</span></a>
                 <ul class="menu-content">
                     <li><a class="menu-item" href="{{ route('users.index') }}">Users List</a>
                     </li>
+                    @can('delete-users')
+                        <li><a class="menu-item" href="{{ route('users.trashed') }}">Deleted Users</a>
+                        </li>
+                    @endcan
+                    @can('view-roles')
+                        <li><a class="menu-item" href="{{ route('roles.index') }}">Roles</a>
+                        </li>
+                    @endcan
                 </ul>
             </li>
             @hasanyrole('wasreb|wstf')
@@ -147,7 +156,7 @@
                             </li>
                         </ul>
                     </li>
-                @endif
+                    @endif
                 @endisset
                 @endhasanyrole
                 @can('create-wsps')

@@ -46,7 +46,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{eoi}/commitment_letter', 'EoiController@upload_commitment_letter')->name('eois.commitment_letter.store');
     });
 
-    Route::resource('users', 'UserController')->only('index');
+    Route::get('users/trashed', 'UserController@trashed')->name('users.trashed');
+    Route::post('users/{id}/restore', 'UserController@restore');
+    Route::resource('users', 'UserController');
+
+
     Route::resource('bcps', 'BcpController')->except('edit', 'destroy');
 
     Route::group(['prefix' => 'bcps'], function () {

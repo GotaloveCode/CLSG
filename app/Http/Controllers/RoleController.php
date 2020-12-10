@@ -39,14 +39,13 @@ class RoleController extends Controller
     }
 
 
-    public function edit($id)
+    public function edit(Role $role)
     {
-        return view('roles.edit', ['role' => Role::find($id)]);
+        return view('roles.edit', compact('role' ));
     }
 
-    public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, Role $role): \Illuminate\Http\RedirectResponse
     {
-        $role = Role::findOrFail($id);
         $system_roles = collect(['wasreb', 'wsp', 'wstf']);
 
         if ($system_roles->contains($role->name)) {
@@ -79,15 +78,9 @@ class RoleController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        if ($role = Role::findOrFail($id)) {
-            if ($role->users()->exists()) {
-                return response()->json(['errors' => ['Role cannot be deleted if it has users linked!!']], 422);
-            }
-            $role->delete();
-        }
-
+        $role->delete();
         return response()->json(['message' => 'Role deleted successfully!'], 200);
     }
 

@@ -8,7 +8,9 @@
                 class="fa fa-ellipsis-v font-medium-3"></i></a>
         <div class="heading-elements">
             <ul class="list-inline mb-0">
-                <li><a href="{{ Route('roles.edit',$role->id) }}"><i class="fa fa-edit"></i></a></li>
+                @can('edit_roles')
+                    <li><a href="{{ Route('roles.edit',$role->id) }}"><i class="fa fa-edit"></i></a></li>
+                @endcan
                 <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
                 <li><a data-action="close"><i class="feather icon-x"></i></a></li>
             </ul>
