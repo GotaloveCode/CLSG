@@ -47,6 +47,23 @@
                     @endcan
                 </ul>
             </li>
+            <li class="nav-item"><a href="#"><i class="feather icon-life-buoy"></i><span class="menu-title">ERPs</span></a>
+                <ul class="menu-content">
+                    @can('create-erp')
+                        @isset($erp)
+                            <li><a class="menu-item" href="{{ route('erps.show',$erp->id) }}">View ERP</a>
+                            </li>
+                        @else
+                            <li><a class="menu-item" href="{{ route('erps.create') }}">Create ERP</a>
+                            </li>
+                        @endif
+                    @endcan
+                    @can('list-erp')
+                        <li><a class="menu-item" href="{{ route('erps.index') }}">ERP List</a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
             <li class="nav-item">
                 <a href="#"><i class="feather icon-award"></i><span class="menu-title">CLSG</span></a>
                 <ul class="menu-content">
@@ -63,23 +80,6 @@
                             <li><a class="menu-item" href="{{ route('clsg.show',$wsp->id) }}">View CLSG</a>
                             </li>
                         @endisset
-                    @endcan
-                </ul>
-            </li>
-            <li class="nav-item"><a href="#"><i class="feather icon-life-buoy"></i><span class="menu-title">ERPs</span></a>
-                <ul class="menu-content">
-                    @can('create-erp')
-                        @isset($erp)
-                            <li><a class="menu-item" href="{{ route('erps.show',$erp->id) }}">View ERP</a>
-                            </li>
-                        @else
-                            <li><a class="menu-item" href="{{ route('erps.create') }}">Create ERP</a>
-                            </li>
-                        @endif
-                    @endcan
-                    @can('list-erp')
-                        <li><a class="menu-item" href="{{ route('erps.index') }}">ERP List</a>
-                        </li>
                     @endcan
                 </ul>
             </li>
