@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{eoi}/comment', 'EoiController@comment')->name('eois.comment');
         Route::get('{eoi}/commitment_letter', 'EoiController@commitment_letter')->name('eois.commitment_letter');
         Route::post('{eoi}/commitment_letter', 'EoiController@upload_commitment_letter')->name('eois.commitment_letter.store');
+        Route::post('{eoi}/approver', 'EoiController@approver');
     });
 
     Route::get('users/trashed', 'UserController@trashed')->name('users.trashed');
@@ -61,6 +62,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{bcp}/attachments', 'BcpAttachmentController@store')->name('bcps.attachments.store');
         Route::post('{bcp}/review', 'BcpController@review')->name('bcps.review');
         Route::post('{bcp}/comment', 'BcpController@comment')->name('bcps.comment');
+        Route::post('{bcp}/approver', 'BcpController@approver');
     });
 
     Route::resource('erps', 'ErpController')->except('edit', 'destroy');
@@ -72,6 +74,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{erp}/attachments', 'ErpAttachmentController@store')->name('erps.attachments.store');
         Route::post('{erp}/review', 'ErpController@review')->name('erps.review');
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
+        Route::post('{erp}/approver', 'ErpController@approver');
     });
 
     Route::get('clsg', 'ClsgController@index')->name('clsg.index');

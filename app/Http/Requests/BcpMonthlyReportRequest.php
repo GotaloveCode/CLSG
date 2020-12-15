@@ -13,7 +13,7 @@ class BcpMonthlyReportRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->can('create-bcp');
+        return auth()->user()->can('create_bcp');
     }
 
     /**

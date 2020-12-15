@@ -27,7 +27,6 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Emergency Response Plan</h4>
                                     <a class="heading-elements-toggle"><i
                                             class="fa fa-ellipsis-v font-medium-3"></i></a>
                                     <div class="heading-elements">
@@ -94,7 +93,7 @@
             </div>
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
-                    @can('create-erp')
+                    @can('create_erp')
                         @if($erp->status=='Pending' || $erp->status =='Needs Review')
                             <div class="mb-2">
                                 <a class="btn btn-info" href="{{ route('erps.create') }}"><i
@@ -108,38 +107,48 @@
                         @endif
                     @endcan
                     <div>
-                        @can('review-erp')
-                            @if(auth()->user()->hasRole('wasreb'))
-                                @if($erp->status =='Pending')
-                                    <button class="btn btn-success ml-2 mb-1"
-                                            @click.prevent="review('WASREB Approved')"><i
-                                            class="feather icon-check"></i>
-                                        Approve
-                                    </button>
-                                    <button class="btn btn-danger mb-1"
-                                            @click.prevent="review('Needs Review')"><i
-                                            class="fa fa-pencil"></i>
-                                        Needs Review
-                                    </button>
+                        @can('review_erp')
+                            @if($erp->approvals->pluck('user_id')->contains(auth()->id()))
+                                @if(auth()->user()->hasRole('wasreb'))
+                                    @if($erp->status =='Pending')
+                                        <button class="btn btn-success ml-2 mb-1"
+                                                @click.prevent="review('WASREB Approved')"><i
+                                                class="feather icon-check"></i>
+                                            Approve
+                                        </button>
+                                        <button class="btn btn-danger mb-1"
+                                                @click.prevent="review('Needs Review')"><i
+                                                class="fa fa-pencil"></i>
+                                            Needs Review
+                                        </button>
+                                    @endif
+                                @elseif(auth()->user()->hasRole('wstf'))
+                                    @if($erp->status =='WASREB Approved' && $erp->attachments->count() > 0)
+                                        <button class="btn btn-success ml-2 mb-1"
+                                                @click.prevent="review('WSTF Approved')"><i
+                                                class="fa fa-check"></i>
+                                            Approve
+                                        </button>
+                                        <button class="btn btn-danger mb-1"
+                                                @click.prevent="review('Needs Review')"><i
+                                                class="fa fa-pencil"></i>
+                                            Review
+                                        </button>
+                                    @endif
                                 @endif
-                            @elseif(auth()->user()->hasRole('wstf'))
-                                @if($erp->status =='WASREB Approved' && $erp->attachments->count() > 0)
-                                    <button class="btn btn-success ml-2 mb-1"
-                                            @click.prevent="review('WSTF Approved')"><i
-                                            class="fa fa-check"></i>
-                                        Approve
+                            @else
+                                <div class="alert alert-info">Assign yourself as a reviewer to action on this ERP!<br><br>
+                                    <button class="btn btn-primary"
+                                            @click.prevent="assign()"><i
+                                            class="feather icon-user-plus"></i>
+                                        Become a Reviewer
                                     </button>
-                                    <button class="btn btn-danger mb-1"
-                                            @click.prevent="review('Needs Review')"><i
-                                            class="fa fa-pencil"></i>
-                                        Review
-                                    </button>
-                                @endif
+                                </div>
                             @endif
                         @endcan
                     </div>
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header pb-0">
                             <h4 class="card-title">ERP Status</h4>
                         </div>
                         <div class="card-content">
@@ -158,7 +167,7 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header pb-0">
                             <h4 class="card-title">Comment Box</h4>
                             <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                             <div class="heading-elements">
@@ -188,6 +197,36 @@
                                     @endforeach
                                 </ul>
                                 <comment-form submit-url="{{ route('erps.comment',$erp->id) }}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header pb-0">
+                            <h4 class="card-title">Reviewers</h4>
+                            <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                    <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    @foreach($erp->approvals as $approval)
+                                        <tr>
+                                            <td>{{ $approval->user->name }}</td>
+                                            <td>{{ $approval->user->roles()->first()->name }}</td>
+                                        </tr>
+                                    @endforeach
+                                </table>
                             </div>
                         </div>
                     </div>

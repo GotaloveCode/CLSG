@@ -207,4 +207,22 @@ class BcpController extends Controller
         return response()->json(['message' => 'Comment posted successfully']);
     }
 
+    public function approver(Bcp $bcp)
+    {
+        $this->canAccessBcp($bcp);
+        $hasApproval = $bcp->approvals()
+                ->where('user_id', auth()->id())
+                ->count() > 0;
+
+        if($hasApproval){
+            return response()->json(['message' => 'Reviewer already assigned!']);
+        }
+
+        $bcp->approvals()->create([
+            'user_id' => auth()->id()
+        ]);
+
+        return response()->json(['message' => 'Reviewer assignment successful!']);
+    }
+
 }

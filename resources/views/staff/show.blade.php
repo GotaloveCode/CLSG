@@ -34,7 +34,7 @@
                                 class="fa fa-ellipsis-v font-medium-3"></i></a>
                         <div class="heading-elements">
                             <ul class="list-inline mb-0">
-                                @can('create-staff')
+                                @can('create_staff')
                                     <li>
                                         <button class="btn btn-info btn-sm" @click.prevent="show_edit_dialog=true"><i
                                                 class="feather icon-edit"></i> Edit

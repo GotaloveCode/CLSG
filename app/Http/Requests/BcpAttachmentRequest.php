@@ -13,7 +13,7 @@ class BcpAttachmentRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->hasPermissionTo('create-bcp');
+        return auth()->user()->hasPermissionTo('create_bcp');
     }
 
     /**

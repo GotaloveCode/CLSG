@@ -44,8 +44,34 @@ export default {
                         }
                     });
                 }
-            })
-
-        }
+            });
+        },
+        assign(){
+            this.$swal({
+                title: 'Are you sure?',
+                text: "Assign yourself to review this",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.value) {
+                    axios.post(this.submitUrl.replace("review","approver")).then(response => {
+                        this.$toastr.s(response.data.message, "Success");
+                        location.reload();
+                    }).catch(error => {
+                        console.log(error);
+                        if(error.response.status === 422){
+                            let str = '';
+                            Object.values(error.response.data.errors).forEach(e => {
+                                str += '<p>' + e + '</p>';
+                            });
+                            this.$toastr.e(str);
+                        }else{
+                            this.$toastr.e("An error occured");
+                        }
+                    });
+                }
+            });
+        },
     }
 }

@@ -134,7 +134,7 @@
             </div>
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
-                    @can('create-bcp')
+                    @can('create_bcp')
                         @if($essential->status != 'WSTF Approved')
                             <div class="mb-1">
                                 <a class="btn btn-info" href="{{ route('essential-operation.create') }}"><i
@@ -144,7 +144,7 @@
                         @endif
                     @endcan
                     <div>
-                        @can('review-bcp')
+                        @can('review_bcp')
                             @if(auth()->user()->hasRole('wasreb'))
                                 @if($essential->status=='Pending')
                                     <button class="btn btn-success ml-2 mb-1"

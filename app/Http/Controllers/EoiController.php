@@ -146,7 +146,7 @@ class EoiController extends Controller
 
     public function review(Eoi $eoi, EoiReviewRequest $request)
     {
-        if (!auth()->user()->can('review-eoi')) {
+        if (!auth()->user()->can('review_eoi')) {
             $this->canAccessEoi($eoi);
         }
         $eoi->status = $request->status;
@@ -269,6 +269,24 @@ class EoiController extends Controller
         }
 
         return back()->with(['eoi' => $eoi]);
+    }
+
+    public function approver(Eoi $eoi)
+    {
+        $this->canAccessEoi($eoi);
+        $hasApproval = $eoi->approvals()
+                ->where('user_id', auth()->id())
+                ->count() > 0;
+
+        if($hasApproval){
+            return response()->json(['message' => 'Reviewer already assigned!']);
+        }
+
+        $eoi->approvals()->create([
+            'user_id' => auth()->id()
+        ]);
+
+        return response()->json(['message' => 'Reviewer assignment successful!']);
     }
 
 }

@@ -10,6 +10,7 @@ use Spatie\Permission\Models\Role;
 class AuthPermissionCommand extends Command
 {
     protected $signature = 'auth:permission {name} {--R|remove}';
+    protected $description = 'Create permissions for model';
 //eg. php artisan auth:permission roles
 
     public function handle()

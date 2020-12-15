@@ -13,7 +13,7 @@ class EoiServiceRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->hasPermissionTo('create-eoi');
+        return auth()->user()->hasPermissionTo('create_eoi');
     }
 
     /**

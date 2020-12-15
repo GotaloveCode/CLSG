@@ -104,9 +104,19 @@ class Bcp extends Model
         return $this->hasMany(WspReporting::class);
     }
 
+    /**
+     * Get the approvals for the Bcp.
+     */
+    public function approvals()
+    {
+        return $this->morphMany(Approval::class, 'approvable');
+    }
+
 
     public function scopeOfStatus($query, $status)
     {
         $query->where('status', $status);
     }
+
+
 }

@@ -65,32 +65,32 @@
                         <div class="card-content">
                             <div class="card-body">
                                 <table class="table table-borderless">
-                                    <tr>
-                                        <th>Service</th>
-                                        <th>Amount</th>
-                                        <th></th>
-                                    </tr>
-                                    <tr v-for="(item,k) in form.operations_costs" :key="k">
-                                        <td>
-                                            <v-select label="name" placeholder="Select Service"
-                                                      v-model="item.id" :reduce="s => s.id"
-                                                      :options="operationCosts" style="margin-top: 5px">
-                                            </v-select>
+                                        <tr class="d-flex">
+                                            <th class="col-6">Service</th>
+                                            <th class="col-4">Amount</th>
+                                            <th class="col-2"></th>
+                                        </tr>
+                                        <tr class="d-flex" v-for="(item,k) in form.operations_costs" :key="k">
+                                            <td class="col-6">
+                                                <v-select label="name" placeholder="Select Service"
+                                                          v-model="item.id" :reduce="s => s.id"
+                                                          :options="operationCosts" style="margin-top: 5px">
+                                                </v-select>
 
-                                        </td>
-                                        <td>
-                                            <vue-numeric separator="," v-model="item.amount"
-                                                         class="form-control"
-                                                         required></vue-numeric>
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-minus-circle ml-10 fs-20" @click="removeOp(k)"
-                                               v-show="k || ( !k && form.operations_costs.length > 1)"></i>
-                                            <i class="fa fa-plus-circle ml-10 fs-20" @click="addOp(k)"
-                                               v-show="k == form.operations_costs.length-1"></i>
-                                        </td>
-                                    </tr>
-                                </table>
+                                            </td>
+                                            <td class="col-4">
+                                                <vue-numeric separator="," v-model="item.amount"
+                                                             class="form-control"
+                                                             required></vue-numeric>
+                                            </td>
+                                            <td class="col-2">
+                                                <i class="fa fa-minus-circle ml-10 fs-20" @click="removeOp(k)"
+                                                   v-show="k || ( !k && form.operations_costs.length > 1)"></i>
+                                                <i class="fa fa-plus-circle ml-10 fs-20" @click="addOp(k)"
+                                                   v-show="k == form.operations_costs.length-1"></i>
+                                            </td>
+                                        </tr>
+                                    </table>
                             </div>
                         </div>
                     </div>

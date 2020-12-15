@@ -108,6 +108,14 @@ class Eoi extends Model
         return $this->morphMany(Attachment::class, 'attachable');
     }
 
+    /**
+     * Get the approvals for the Eoi.
+     */
+    public function approvals()
+    {
+        return $this->morphMany(Approval::class, 'approvable');
+    }
+
     public function scopeOfStatus($builder, $value): void
     {
         $builder->where('status', $value);

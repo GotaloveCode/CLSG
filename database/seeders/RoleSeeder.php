@@ -23,24 +23,32 @@ class RoleSeeder extends Seeder
         $wstf = Role::firstOrCreate(['name' => 'wstf']);
         $admin = Role::firstOrCreate(['name' => 'Super Admin']);
 
-        Permission::firstOrCreate(['name' => 'create-wsps']);
+        Permission::firstOrCreate(['name' => 'create_wsps']);
         Artisan::call('auth:permission users');
-        $create_staff = Permission::firstOrCreate(['name' => 'create-staff']);
-        $create_eoi = Permission::firstOrCreate(['name' => 'create-eoi']);
-        $create_bcp = Permission::firstOrCreate(['name' => 'create-bcp']);
-        $list_bcp = Permission::firstOrCreate(['name' => 'list-bcp']);
-        $review_bcp = Permission::firstOrCreate(['name' => 'review-bcp']);
-        $create_erp = Permission::firstOrCreate(['name' => 'create-erp']);
-        $list_eoi = Permission::firstOrCreate(['name' => 'list-eoi']);
-        $review_eoi = Permission::firstOrCreate(['name' => 'review-eoi']);
-        $review_erp = Permission::firstOrCreate(['name' => 'review-erp']);
-        $list_erp = Permission::firstOrCreate(['name' => 'list-erp']);
+        $create_staff = Permission::firstOrCreate(['name' => 'create_staff']);
+        $create_eoi = Permission::firstOrCreate(['name' => 'create_eoi']);
+        $view_eoi = Permission::firstOrCreate(['name' => 'view_eoi']);
+        $create_bcp = Permission::firstOrCreate(['name' => 'create_bcp']);
+        $view_bcp = Permission::firstOrCreate(['name' => 'view_bcp']);
+        $list_bcp = Permission::firstOrCreate(['name' => 'list_bcp']);
+        $review_bcp = Permission::firstOrCreate(['name' => 'review_bcp']);
+        $create_erp = Permission::firstOrCreate(['name' => 'create_erp']);
+        $view_erp = Permission::firstOrCreate(['name' => 'view_erp']);
+        $list_eoi = Permission::firstOrCreate(['name' => 'list_eoi']);
+        $review_eoi = Permission::firstOrCreate(['name' => 'review_eoi']);
+        $review_erp = Permission::firstOrCreate(['name' => 'review_erp']);
+        $list_erp = Permission::firstOrCreate(['name' => 'list_erp']);
         Artisan::call('auth:permission roles');
 
-        $wsp->syncPermissions([$create_eoi, $create_bcp, $create_erp, $create_staff]);
-        $wasreb->syncPermissions([$list_eoi, $review_eoi, $list_bcp, $review_bcp, $list_erp, $review_erp]);
-        $wstf->syncPermissions([$list_eoi, $review_eoi, $list_bcp, $review_bcp, $list_erp, $review_erp]);
-        $admin->syncPermissions(Permission::all());
+        $wsp->syncPermissions([$create_eoi, $create_bcp, $create_erp, $create_staff, $view_eoi, $view_bcp, $view_erp]);
+        $wasreb->syncPermissions([$list_eoi, $review_eoi, $list_bcp, $review_bcp, $list_erp, $review_erp, $view_eoi, $view_bcp, $view_erp]);
+        $wstf->syncPermissions([$list_eoi, $review_eoi, $list_bcp, $review_bcp, $list_erp, $review_erp, $view_eoi, $view_bcp, $view_erp]);
+        $admin->syncPermissions([
+            $create_staff, $view_eoi, $view_bcp, $view_erp,
+            $list_eoi, $review_eoi, $list_bcp, $review_bcp, $list_erp, $review_erp,
+            'create_roles', 'view_roles', 'delete_roles', 'edit_roles',
+            'create_users', 'view_users', 'delete_users', 'edit_users'
+        ]);
 
         $user = User::firstOrCreate([
             'name' => 'Super Admin'],
@@ -140,7 +148,6 @@ class RoleSeeder extends Seeder
         if (!$user_exists) {
             $water_company->users()->attach($user->id);
         }
-
 
 
     }

@@ -59,6 +59,14 @@ class Erp extends Model
             ->withTimestamps();
     }
 
+    /**
+     * Get the approvals for the Erp.
+     */
+    public function approvals()
+    {
+        return $this->morphMany(Approval::class, 'approvable');
+    }
+
     public function scopeOfStatus($query, $status)
     {
         $query->where('status', $status);

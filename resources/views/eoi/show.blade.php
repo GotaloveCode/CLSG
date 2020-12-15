@@ -88,7 +88,7 @@
             </div>
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
-                    @can('create-eoi')
+                    @can('create_eoi')
                         @if($eoi->status=='Pending' || $eoi->status =='Needs Review')
                             <div class="mb-2">
                                 <a class="btn btn-info" href="{{ route('eois.create') }}"><i
@@ -109,53 +109,65 @@
                         @endif
                     @endcan
                     <div>
-                        @can('review-eoi')
-                            @if(auth()->user()->hasRole('wasreb'))
-                                @if($eoi->status=='Pending'  || $eoi->status =='Needs Review')
-                                    <button class="btn btn-success ml-2 mb-1"
-                                            @click.prevent="review('WASREB Approved')"><i
-                                            class="feather icon-check"></i>
-                                        Approve
-                                    </button>
-                                    <button class="btn btn-danger mb-1"
-                                            @click.prevent="review('Needs Review')"><i
-                                            class="fa fa-pencil"></i>
-                                        Review
-                                    </button>
+                        @can('review_eoi')
+                            @if($eoi->approvals->pluck('user_id')->contains(auth()->id()))
+                                @if(auth()->user()->hasRole('wasreb'))
+                                    @if($eoi->status=='Pending'  || $eoi->status =='Needs Review')
+                                        <button class="btn btn-success ml-2 mb-1"
+                                                @click.prevent="review('WASREB Approved')"><i
+                                                class="feather icon-check"></i>
+                                            Approve
+                                        </button>
+                                        <button class="btn btn-danger mb-1"
+                                                @click.prevent="review('Needs Review')"><i
+                                                class="fa fa-pencil"></i>
+                                            Review
+                                        </button>
+                                    @endif
+                                @elseif(auth()->user()->hasRole('wstf'))
+                                    @if($eoi->status =='WASREB Approved' || $eoi->status =='Needs Review')
+                                        <button class="btn btn-success ml-2 mb-1"
+                                                @click.prevent="review('WSTF Approved')"><i
+                                                class="fa fa-check"></i>
+                                            Approve
+                                        </button>
+                                        <button class="btn btn-danger mb-1"
+                                                @click.prevent="review('Needs Review')"><i
+                                                class="fa fa-pencil"></i>
+                                            Needs Review
+                                        </button>
+                                    @endif
                                 @endif
-                            @elseif(auth()->user()->hasRole('wstf'))
-                                @if($eoi->status =='WASREB Approved' || $eoi->status =='Needs Review')
-                                    <button class="btn btn-success ml-2 mb-1"
-                                            @click.prevent="review('WSTF Approved')"><i
-                                            class="fa fa-check"></i>
-                                        Approve
-                                    </button>
-                                    <button class="btn btn-danger mb-1"
-                                            @click.prevent="review('Needs Review')"><i
-                                            class="fa fa-pencil"></i>
-                                        Needs Review
-                                    </button>
+                                @if($eoi->status =='WSTF Approved')
+                                    <div class="alert alert-success alert-dismissible mb-2" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        Please download <a
+                                            href="{{ route('eois.commitment_letter',$eoi->id) }}" class="alert-link">
+                                            the
+                                            commitment letter,</a> sign and upload
+                                    </div>
+                                    <a class="btn btn-info mt-1"
+                                       href="{{ route('eois.commitment_letter',$eoi->id) }}"><i
+                                            class="feather icon-eye"></i>
+                                        View Commitment Letter
+                                    </a>
                                 @endif
-                            @endif
-                            @if($eoi->status =='WSTF Approved')
-                                <div class="alert alert-success alert-dismissible mb-2" role="alert">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
+                            @else
+                                <div class="alert alert-info">Assign yourself as a reviewer to action on this
+                                    EOI!<br><br>
+                                    <button class="btn btn-primary"
+                                            @click.prevent="assign()"><i
+                                            class="feather icon-user-plus"></i>
+                                        Become a Reviewer
                                     </button>
-                                    Please download <a
-                                        href="{{ route('eois.commitment_letter',$eoi->id) }}" class="alert-link"> the
-                                        commitment letter,</a> sign and upload
                                 </div>
-                                <a class="btn btn-info mt-1"
-                                   href="{{ route('eois.commitment_letter',$eoi->id) }}"><i
-                                        class="feather icon-eye"></i>
-                                    View Commitment Letter
-                                </a>
                             @endif
                         @endcan
                     </div>
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header pb-0">
                             <h4 class="card-title">EOI Status</h4>
                             <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                             <div class="heading-elements">
@@ -181,7 +193,7 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header pb-0">
                             <h4 class="card-title">Comment Box</h4>
                             <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                             <div class="heading-elements">
@@ -211,6 +223,36 @@
                                     @endforeach
                                 </ul>
                                 <comment-form submit-url="{{ route('eois.comment',$eoi->id) }}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header pb-0">
+                            <h4 class="card-title">Reviewers</h4>
+                            <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="feather icon-minus"></i></a></li>
+                                    <li><a data-action="close"><i class="feather icon-x"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    @foreach($eoi->approvals as $approval)
+                                        <tr>
+                                            <td>{{ $approval->user->name }}</td>
+                                            <td>{{ $approval->user->roles()->first()->name }}</td>
+                                        </tr>
+                                    @endforeach
+                                </table>
                             </div>
                         </div>
                     </div>

@@ -14,16 +14,18 @@
             </li>
             <li class="nav-item"><a href="#"><i class="feather icon-edit"></i><span class="menu-title">EOI</span></a>
                 <ul class="menu-content">
-                    @can('create-eoi')
-                        @isset($eoi)
+                    @isset($eoi)
+                        @can('view_eoi')
                             <li><a class="menu-item" href="{{ route('eois.show',$eoi->id) }}">View EOI</a>
                             </li>
-                        @else
+                        @endcan
+                    @else
+                        @can('create_eoi')
                             <li><a class="menu-item" href="{{ route('eois.create') }}">Create EOI</a>
                             </li>
-                        @endisset
-                    @endcan
-                    @can('list-eoi')
+                        @endcan
+                    @endisset
+                    @can('list_eoi')
                         <li><a class="menu-item" href="{{ route('eois.index') }}">EOI List</a>
                         </li>
                     @endcan
@@ -32,16 +34,18 @@
             <li class="nav-item"><a href="#"><i class="feather icon-briefcase"></i><span
                         class="menu-title">BCP</span></a>
                 <ul class="menu-content">
-                    @can('create-bcp')
-                        @isset($bcp)
+                    @isset($bcp)
+                        @can('view_bcp')
                             <li><a class="menu-item" href="{{ route('bcps.show',$bcp->id) }}">View BCP</a>
                             </li>
-                        @else
+                        @endcan
+                    @else
+                        @can('create_bcp')
                             <li><a class="menu-item" href="{{ route('bcps.create') }}">Create BCP</a>
                             </li>
-                        @endisset
-                    @endcan
-                    @can('list-bcp')
+                        @endcan
+                    @endisset
+                    @can('list_bcp')
                         <li><a class="menu-item" href="{{ route('bcps.index') }}">BCP List</a>
                         </li>
                     @endcan
@@ -49,16 +53,20 @@
             </li>
             <li class="nav-item"><a href="#"><i class="feather icon-life-buoy"></i><span class="menu-title">ERPs</span></a>
                 <ul class="menu-content">
-                    @can('create-erp')
+                    @can('create_erp')
                         @isset($erp)
-                            <li><a class="menu-item" href="{{ route('erps.show',$erp->id) }}">View ERP</a>
-                            </li>
+                            @can('view_erp')
+                                <li><a class="menu-item" href="{{ route('erps.show',$erp->id) }}">View ERP</a>
+                                </li>
+                            @endcan
                         @else
-                            <li><a class="menu-item" href="{{ route('erps.create') }}">Create ERP</a>
-                            </li>
+                            @can('create_erp')
+                                <li><a class="menu-item" href="{{ route('erps.create') }}">Create ERP</a>
+                                </li>
+                            @endcan
                         @endif
                     @endcan
-                    @can('list-erp')
+                    @can('list_erp')
                         <li><a class="menu-item" href="{{ route('erps.index') }}">ERP List</a>
                         </li>
                     @endcan
@@ -72,7 +80,7 @@
                             CLSG Formula
                         </a>
                     </li>
-                    @can('list-erp')
+                    @can('list_erp')
                         <li><a class="menu-item" href="{{ route('clsg.index') }}">CLSG List</a>
                         </li>
                     @else
@@ -86,7 +94,7 @@
             <li class=" nav-item"><a href="#"><i class="feather icon-users"></i><span
                         class="menu-title">Staff</span></a>
                 <ul class="menu-content">
-                    @can('create-staff')
+                    @can('create_staff')
                         <li><a class="menu-item" href="{{ route('staff.create') }}">Create Staff</a>
                         </li>
                     @endcan
@@ -111,7 +119,7 @@
                     @endcan
                 </ul>
             </li>
-            @can('review-bcp')
+            @can('review_bcp')
                 <li class=" nav-item"><a href="#"><i class="feather icon-bar-chart"></i><span
                             class="menu-title">Reports</span></a>
                     <ul class="menu-content">
@@ -164,7 +172,7 @@
                     @endif
                 @endisset
             @endcan
-            @can('create-wsps')
+            @can('create_wsps')
                 <li class=" nav-item"><a href="#"><i class="feather icon-compass"></i><span
                             class="menu-title">Wsps</span></a>
                     <ul class="menu-content">

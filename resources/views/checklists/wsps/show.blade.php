@@ -87,7 +87,7 @@
             </div>
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
-                    @can('create-bcp')
+                    @can('create_bcp')
                         @if($wsp_report->status != 'WSTF Approved')
                             <div class="mb-2">
                                 <a class="btn btn-info" href="{{ route('wsp-reporting.create') }}"><i
@@ -97,7 +97,7 @@
                         @endif
                     @endcan
                     <div>
-                        @can('review-bcp')
+                        @can('review_bcp')
                             @if(auth()->user()->hasRole('wasreb'))
                                 @if($wsp_report->status=='Pending')
                                     <button class="btn btn-success ml-2 mb-1"

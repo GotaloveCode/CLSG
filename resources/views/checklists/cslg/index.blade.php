@@ -26,7 +26,7 @@
                     <div class="card-content">
                         <div class="card-header">
                             <div class="card-title text-right">
-                                @can("create-bcp")
+                                @can("create_bcp")
                                     @if($bcp)
                                         <a href="{{route("cslg-calculation.create")}}" class="btn btn-primary"> <i
                                                 class="fa fa-plus"></i> Add New</a>

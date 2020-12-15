@@ -85,7 +85,7 @@ class ErpController extends Controller
     {
         $progress = $erp->progress();
         $eoi = $erp->wsp->first()->eoi;
-        $erp = $erp->load(['wsp', 'erp_items', 'attachments']);
+        $erp = $erp->load(['wsp', 'erp_items', 'attachments','approvals','approvals.user']);
         if (\request()->has('print')) {
             $pdf = \PDF::loadView('erps.print', $erp);
             return $pdf->inline();
@@ -172,5 +172,23 @@ class ErpController extends Controller
         SendMailNotification::postComment($request->description, $erp->status, $erp->wsp_id, $route, $erp->wsp->name . ' ERP Comment');
 
         return response()->json(['message' => 'Comment posted successfully']);
+    }
+
+    public function approver(Erp $erp)
+    {
+        $this->canAccessErp($erp);
+        $hasApproval = $erp->approvals()
+                ->where('user_id', auth()->id())
+                ->count() > 0;
+
+        if($hasApproval){
+            return response()->json(['message' => 'Reviewer already assigned!']);
+        }
+
+        $erp->approvals()->create([
+            'user_id' => auth()->id()
+        ]);
+
+        return response()->json(['message' => 'Reviewer assignment successful!']);
     }
 }

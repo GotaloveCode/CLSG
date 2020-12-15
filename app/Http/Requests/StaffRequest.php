@@ -13,7 +13,7 @@ class StaffRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->hasPermissionTo('create-staff');
+        return auth()->user()->hasPermissionTo('create_staff');
     }
 
     /**

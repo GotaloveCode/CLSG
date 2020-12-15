@@ -13,7 +13,7 @@ class ErpRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->hasPermissionTo('create-erp');
+        return auth()->user()->hasPermissionTo('create_erp');
     }
 
     /**

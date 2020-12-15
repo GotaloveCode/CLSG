@@ -61,7 +61,7 @@
             </div>
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
-                    @can('create-bcp')
+                    @can('create_bcp')
                         @if($performance_score_card->status != 'WSTF Approved')
                             <div class="mb-1">
                                 <a class="btn btn-info" href="{{ route('performance-score-card.create') }}"><i
@@ -71,7 +71,7 @@
                         @endif
                     @endcan
                     <div>
-                        @can('review-bcp')
+                        @can('review_bcp')
                             @if(auth()->user()->hasRole('wasreb'))
                                 @if($performance_score_card->status=='Pending')
                                     <button class="btn btn-success ml-2 mb-1"
