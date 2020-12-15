@@ -6,6 +6,7 @@ use App\Http\Requests\BcpFormRequest;
 use App\Http\Requests\CommentRequest;
 use App\Http\Requests\MgmRequest;
 use App\Http\Resources\BcpResource;
+use App\Models\Approval;
 use App\Models\Bcp;
 use App\Models\Essentialfunction;
 use App\Traits\BcpAuthTrait;
@@ -29,6 +30,25 @@ class BcpController extends Controller
         return Datatables::of($bcp)
             ->addColumn('action', function ($bcp) {
                 return '<a href="' . route("bcps.show", $bcp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>View</a>';
+            })
+            ->make(true);
+    }
+
+    public function reviewerList()
+    {
+        if (!request()->ajax()) {
+            return view('bcps.list');
+        }
+
+        $ids = Approval::query()->where('user_id',auth()->id())
+            ->where('approvable_type','App\\Models\\Bcp')
+            ->pluck('approvable_id');
+
+        $bcps = Bcp::whereIn('bcps.id',$ids)->with('wsp:id,name')->select('bcps.*');
+
+        return Datatables::of($bcps)
+            ->addColumn('action', function ($erp) {
+                return '<a href="' . route("bcps.show", $erp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Review</a>';
             })
             ->make(true);
     }

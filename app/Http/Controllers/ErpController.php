@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ErpRequest;
 use App\Http\Resources\ErpResource;
+use App\Models\Approval;
 use App\Models\Erp;
 use App\Models\Mitigation;
 use App\Models\Operationcost;
@@ -27,6 +28,25 @@ class ErpController extends Controller
             return view('erps.index');
         }
         $erps = Erp::query()->with('wsp:id,name')->select('erps.*');
+
+        return Datatables::of($erps)
+            ->addColumn('action', function ($erp) {
+                return '<a href="' . route("erps.show", $erp->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Review</a>';
+            })
+            ->make(true);
+    }
+
+    public function reviewerList()
+    {
+        if (!request()->ajax()) {
+            return view('erps.list');
+        }
+
+        $ids = Approval::query()->where('user_id',auth()->id())
+            ->where('approvable_type','App\\Models\\Erp')
+            ->pluck('approvable_id');
+
+        $erps = Erp::whereIn('erps.id',$ids)->with('wsp:id,name')->select('erps.*');
 
         return Datatables::of($erps)
             ->addColumn('action', function ($erp) {

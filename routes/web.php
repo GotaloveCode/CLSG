@@ -33,8 +33,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('import', 'WspController@import')->name('wsps.import');
     });
 
-    Route::resource('eois', 'EoiController')->except('edit', 'destroy');
-
     Route::group(['prefix' => 'eois'], function () {
         Route::get('attachments/{filename}', 'EoiAttachmentController@show')->name('eois.attachments.show');
         Route::delete('attachments/{attachment}', 'EoiAttachmentController@destroy')->name('eois.attachments.destroy');
@@ -45,14 +43,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('{eoi}/commitment_letter', 'EoiController@commitment_letter')->name('eois.commitment_letter');
         Route::post('{eoi}/commitment_letter', 'EoiController@upload_commitment_letter')->name('eois.commitment_letter.store');
         Route::post('{eoi}/approver', 'EoiController@approver');
+        Route::get('reviewer-list', 'EoiController@reviewerList')->name('eois.reviewer-list');
     });
+    Route::resource('eois', 'EoiController')->except('edit', 'destroy');
 
     Route::get('users/trashed', 'UserController@trashed')->name('users.trashed');
     Route::post('users/{id}/restore', 'UserController@restore');
     Route::resource('users', 'UserController');
-
-
-    Route::resource('bcps', 'BcpController')->except('edit', 'destroy');
 
     Route::group(['prefix' => 'bcps'], function () {
         Route::get('attachments/{filename}', 'BcpAttachmentController@show')->name('bcps.attachments.show');
@@ -63,9 +60,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{bcp}/review', 'BcpController@review')->name('bcps.review');
         Route::post('{bcp}/comment', 'BcpController@comment')->name('bcps.comment');
         Route::post('{bcp}/approver', 'BcpController@approver');
+        Route::get('reviewer-list', 'BcpController@reviewerList')->name('bcps.reviewer-list');
     });
-
-    Route::resource('erps', 'ErpController')->except('edit', 'destroy');
+    Route::resource('bcps', 'BcpController')->except('edit', 'destroy');
 
     Route::group(['prefix' => 'erps'], function () {
         Route::get('attachments/{filename}', 'ErpAttachmentController@show')->name('erps.attachments.show');
@@ -75,7 +72,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('{erp}/review', 'ErpController@review')->name('erps.review');
         Route::post('{erp}/comment', 'ErpController@comment')->name('erps.comment');
         Route::post('{erp}/approver', 'ErpController@approver');
+        Route::get('reviewer-list', 'ErpController@reviewerList')->name('erps.reviewer-list');
     });
+    Route::resource('erps', 'ErpController')->except('edit', 'destroy');
 
     Route::get('clsg', 'ClsgController@index')->name('clsg.index');
     Route::get('clsg/formula', 'ClsgController@formula')->name('clsg.formula');

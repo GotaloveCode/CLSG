@@ -28,6 +28,8 @@
                     @can('list_eoi')
                         <li><a class="menu-item" href="{{ route('eois.index') }}">EOI List</a>
                         </li>
+                        <li><a class="menu-item" href="{{ route('eois.reviewer-list') }}">My List</a>
+                        </li>
                     @endcan
                 </ul>
             </li>
@@ -47,6 +49,8 @@
                     @endisset
                     @can('list_bcp')
                         <li><a class="menu-item" href="{{ route('bcps.index') }}">BCP List</a>
+                        </li>
+                        <li><a class="menu-item" href="{{ route('bcps.reviewer-list') }}">My List</a>
                         </li>
                     @endcan
                 </ul>
@@ -68,6 +72,8 @@
                     @endcan
                     @can('list_erp')
                         <li><a class="menu-item" href="{{ route('erps.index') }}">ERP List</a>
+                        </li>
+                        <li><a class="menu-item" href="{{ route('erps.reviewer-list') }}">My List</a>
                         </li>
                     @endcan
                 </ul>

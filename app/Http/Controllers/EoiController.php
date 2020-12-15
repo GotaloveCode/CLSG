@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EoiRequest;
 use App\Http\Requests\CommentRequest;
 use App\Http\Requests\EoiReviewRequest;
+use App\Models\Approval;
 use App\Models\Attachment;
 use App\Models\Connection;
 use App\Models\Eoi;
@@ -34,6 +35,26 @@ class EoiController extends Controller
         }
 
         $eois = Eoi::query()->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at', 'status')
+            ->with('wsp:id,name');
+
+        return Datatables::of($eois)
+            ->addColumn('action', function ($eoi) {
+                return '<a href="' . route("eois.show", $eoi->id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Review</a>';
+            })
+            ->make(true);
+    }
+
+    public function reviewerList()
+    {
+        if (!request()->ajax()) {
+            return view('eoi.list');
+        }
+
+        $ids = Approval::query()->where('user_id', auth()->id())
+            ->where('approvable_type', 'App\\Models\\Eoi')
+            ->pluck('approvable_id');
+
+        $eois = Eoi::query()->whereIn('eois.id', $ids)->select('eois.id', 'fixed_grant', 'variable_grant', 'emergency_intervention_total', 'operation_costs_total', 'wsp_id', 'wsps.name', 'eois.created_at', 'status')
             ->with('wsp:id,name');
 
         return Datatables::of($eois)
@@ -92,16 +113,16 @@ class EoiController extends Controller
 
     public function update(EoiRequest $request, Eoi $eoi)
     {
-        $statuses = collect("Pending","Needs Review");
+        $statuses = collect("Pending", "Needs Review");
 
-        if(!$statuses->has($eoi->status)){
+        if (!$statuses->has($eoi->status)) {
             return response()->json([
                 'message' => 'The EOI status is not Pending or Needs Review',
                 'errors' => ['wsp_id' => ['The EOI status is not Pending or Needs Review!']]
             ], 422);
         }
 
-        if($eoi->status == "WSTF Approved"){
+        if ($eoi->status == "WSTF Approved") {
             return response()->json([
                 'message' => 'The EOI has already been approved by WSFT no further changes can be made',
                 'errors' => ['wsp_id' => ['The EOI has already been approved by WSFT no further changes can be made!']]
@@ -137,7 +158,7 @@ class EoiController extends Controller
     {
         $progress = $eoi->progress();
         $eoi = $eoi->load(['wsp', 'services', 'connections', 'estimatedcosts', 'operationcosts']);
-        if(\request()->has('print')){
+        if (\request()->has('print')) {
             $pdf = PDF::loadView('eoi.print', $eoi);
             return $pdf->inline();
         }
@@ -278,7 +299,7 @@ class EoiController extends Controller
                 ->where('user_id', auth()->id())
                 ->count() > 0;
 
-        if($hasApproval){
+        if ($hasApproval) {
             return response()->json(['message' => 'Reviewer already assigned!']);
         }
 
