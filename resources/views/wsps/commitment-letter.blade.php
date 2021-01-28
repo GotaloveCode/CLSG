@@ -44,13 +44,24 @@
                 </div>
                 <div class="card-content collapse show">
                     <div class="card-body">
+                        @role("wsp")
                         <p><strong>The wsp should proceed as guided below:</strong></p>
+                        <ol>
+                            <li>Download Commitment Letter Signed by WSTF</li>
+                            <li>Sign commitment letter</li>
+                            <li>Upload signed commitment letter</li>
+                        </ol>
+                        @else
+                        <p><strong>WSTF should proceed as guided below:</strong></p>
                         <ol>
                             <li>Download Commitment Letter</li>
                             <li>Sign commitment letter</li>
                             <li>Upload signed commitment letter</li>
+                            <li>Wait for WSP to download sign and reupload</li>
                         </ol>
+                        @endrole
                         @if($eoi->status =='WSTF Approved')
+                            @role("wstf")
                             @if($eoi->attachments->where('document_type','Commitment Letter')->count() == 0)
                                 <a class="btn btn-primary mb-1" target="_blank"
                                    href="{{ route('eois.commitment_letter',['eoi'=> $eoi->id,'download' => 'pdf']) }}"><i
@@ -58,6 +69,7 @@
                                     Download
                                 </a>
                             @endif
+                            @endrole
                             <file-upload document-name="Signed Commitment Letter" submit-url="{{ route('eois.commitment_letter.store', $eoi->id) }}"></file-upload>
                         @endif
                     </div>
