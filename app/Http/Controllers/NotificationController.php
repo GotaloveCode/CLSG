@@ -10,14 +10,15 @@ class NotificationController extends Controller
     public function index(Request $request)
     {
         $notifications = auth()->user()->unreadNotifications;
+        $notifications_count = $notifications->count();
         if(!$request->ajax()){
-            return view('notifications')->with(compact('notifications'));
+            return view('notifications')->with(compact('notifications','notifications_count'));
         }
-        $count = $notifications->count();
+
         if($request->has('limit')){
             $notifications = $notifications->take($request->input('limit'));
         }
-        return response()->json(['notifications'=>  $notifications,'count' => $count]);
+        return response()->json(['notifications'=>  $notifications,'count' => $notifications_count]);
     }
 
     public function store(Request $request)
